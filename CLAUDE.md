@@ -37,7 +37,7 @@ Every data element on screen carries a **provenance badge**: `LIVE` (pulled from
 
 | Layer | PoC implementation | Maps to production |
 |---|---|---|
-| Frontend | **Next.js (App Router)** on **Vercel**, at `newcis.in4metrix.dev` | Power BI Service |
+| Frontend | **Next.js (App Router)** on **Vercel**, at `newcis.in4metrix.dev`. Design system: semantic CSS tokens + UI primitives in `src/components/ui/`, Inter + JetBrains Mono, lucide-react, framer-motion, dark/light themes. See `docs/design-system.md` (§11). | Power BI Service |
 | Ingestion | **GitHub Actions** scheduled workflow (Node/TS) → commits JSON to the repo | Power Automate / Data Factory |
 | Storage | **Versioned JSON files in the repo** (`/data/*.json`); province geometry as static GeoJSON in `/public` | SQL Server |
 | Risk engine | TypeScript module; thresholds in a config file | Power BI DAX measures |
@@ -197,3 +197,17 @@ Follow `BUILD_CHECKLIST.md`. High level:
 - Ingestion failures must degrade gracefully (show last-good + flag), never blank the dashboard.
 - Province-agnostic engine, focus-province seeding — so scaling to 22 provinces is data, not code.
 - Prefer keyless/free endpoints; defer anything needing paid licences or heavy raster processing to production notes.
+
+---
+
+## 11. Design system
+
+Full reference: [`docs/design-system.md`](./docs/design-system.md). Quick rules for new UI:
+
+- **Tokens, not hex.** Use semantic CSS vars (`--surface-1`, `--text-muted`, `--accent`, `--status-red`, …) or their Tailwind aliases (`bg-surface-1`, `text-text-muted`, `border-border-default`). Never hardcode zinc-* in new code.
+- **Primitives, not divs.** Compose with `Card`, `MetricTile`, `StatusPill`, `Badge`, `Button`, `SectionHeader`, `EmptyState` from `src/components/ui/`.
+- **Numbers get `data-numeric`** — routes them to JetBrains Mono with tabular nums.
+- **Status colour is intent.** Red/amber/green are reserved for traffic-light readouts; use `text-muted` for neutral meta.
+- **Icons:** lucide-react, `size={12}` inline, `size={14}` in section headers.
+- **Motion:** framer-motion only for meaningful state change (gauge fill on data update). Respect `prefers-reduced-motion` (handled in `globals.css`).
+- **Theming:** `.dark` (default) and `.light` on `<html>` swap the semantic token layer. `ThemeToggle` persists choice in `localStorage`; a no-flash inline script in `layout.tsx` applies it pre-paint.

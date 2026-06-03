@@ -1,8 +1,10 @@
 // Persistent status bar — always visible. Shows the national alert traffic-light,
 // ENSO phase, last-ingest timestamp, and which sources succeeded this cycle.
 import type { LastRun, NationalStatus } from "@/lib/types";
-import { ALERT_BG_CLASS, fmtDateTime } from "@/lib/ui";
+import { fmtDateTime } from "@/lib/ui";
+import { StatusPill } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
+import { Clock } from "lucide-react";
 
 const ENSO_LABEL: Record<NationalStatus["enso_phase"], string> = {
   neutral: "ENSO Neutral",
@@ -11,6 +13,13 @@ const ENSO_LABEL: Record<NationalStatus["enso_phase"], string> = {
   la_nina_watch: "La Niña Watch",
   la_nina_alert: "La Niña Alert",
 };
+
+const ALERT_STATUS = {
+  GREEN: "green",
+  AMBER: "amber",
+  RED: "red",
+  BLACK: "black",
+} as const;
 
 export function StatusBar({
   national,
@@ -23,38 +32,39 @@ export function StatusBar({
   const phase = national ? ENSO_LABEL[national.enso_phase] : "ENSO Neutral";
   const sources = lastRun?.sources_ok ?? {};
   const sourceEntries = Object.entries(sources);
+  const sourcesOk = sourceEntries.filter(([, ok]) => ok).length;
 
   return (
-    <div className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur sticky top-0 z-20">
-      <div className="px-6 py-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
-        <span
-          className={`inline-flex items-center gap-2 px-2.5 py-1 rounded font-semibold uppercase tracking-wider border ${ALERT_BG_CLASS[alert]}`}
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-current" />
+    <div className="border-b border-border-subtle bg-[var(--surface-overlay)] backdrop-blur-md sticky top-0 z-20">
+      <div className="px-6 py-2.5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs">
+        <StatusPill status={ALERT_STATUS[alert]} pulse={alert !== "GREEN"}>
           {alert}
+        </StatusPill>
+        <span className="text-text-2 font-medium">{phase}</span>
+        <span className="text-text-muted">
+          Forecast{" "}
+          <span className="text-text-2">{national?.forecast_period ?? "—"}</span>
         </span>
-        <span className="text-zinc-300 font-medium">{phase}</span>
-        <span className="text-zinc-500">
-          Forecast period:{" "}
-          <span className="text-zinc-300">{national?.forecast_period ?? "—"}</span>
-        </span>
-        <span className="ml-auto text-zinc-500">
-          Data updated{" "}
-          <span className="text-zinc-300 font-mono">
+        <span className="ml-auto flex items-center gap-1.5 text-text-muted">
+          <Clock size={12} />
+          <span data-numeric className="text-text-2">
             {fmtDateTime(lastRun?.finished_at ?? national?.updated_at)}
           </span>
         </span>
         {sourceEntries.length > 0 && (
-          <span className="flex items-center gap-2">
+          <span
+            className="flex items-center gap-2"
+            aria-label={`${sourcesOk} of ${sourceEntries.length} sources OK`}
+          >
             {sourceEntries.map(([k, ok]) => (
               <span
                 key={k}
                 title={k}
-                className={`w-2 h-2 rounded-full ${ok ? "bg-emerald-400" : "bg-red-500"}`}
+                className={`w-2 h-2 rounded-full ${ok ? "bg-status-green" : "bg-status-red"}`}
               />
             ))}
-            <span className="text-zinc-500">
-              {sourceEntries.filter(([, ok]) => ok).length}/{sourceEntries.length} sources
+            <span className="text-text-muted" data-numeric>
+              {sourcesOk}/{sourceEntries.length}
             </span>
           </span>
         )}

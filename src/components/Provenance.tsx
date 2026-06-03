@@ -6,14 +6,14 @@ export function ProvenanceBadge({ value }: { value: Provenance }) {
   const live = value === "LIVE";
   return (
     <span
-      className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider border ${
+      className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-[0.08em] border ${
         live
-          ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/40"
-          : "bg-zinc-500/15 text-zinc-300 border-zinc-500/40"
+          ? "bg-accent/15 text-accent border-accent/40"
+          : "bg-surface-2 text-text-muted border-border-default"
       }`}
     >
       <span
-        className={`w-1 h-1 rounded-full ${live ? "bg-emerald-400 animate-pulse" : "bg-zinc-400"}`}
+        className={`w-1 h-1 rounded-full ${live ? "bg-accent animate-pulse" : "bg-text-muted"}`}
       />
       {value}
     </span>

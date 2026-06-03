@@ -1,7 +1,4 @@
 // Page 3 — Sectoral Impact.
-// One panel per sector with lead agency, focus-province risk cells, driving
-// indicators, and provenance badge. Engine produces every cell; upstream
-// HDX rows escalate the relevant cells where present.
 import { PageNav } from "@/components/PageNav";
 import { SectorPanel } from "@/components/SectorPanel";
 import { StatusBar } from "@/components/StatusBar";
@@ -25,19 +22,20 @@ export default async function SectorsPage() {
   ]);
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
+    <main className="min-h-screen bg-surface-0 text-text-1">
       <StatusBar national={national} lastRun={lastRun} />
       <PageNav active="/sectors" />
 
-      <div className="px-6 py-5 border-b border-zinc-900">
-        <h1 className="text-xl font-semibold tracking-tight">
-          NEWCIS <span className="text-zinc-500 font-normal">· Sectoral Impact</span>
-        </h1>
-        <p className="text-xs text-zinc-500 mt-1">
-          Seven sectors, four focus provinces, traffic-light coloured. Each cell carries the
+      <header className="px-6 py-6 border-b border-border-subtle">
+        <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
+          Sectoral Impact
+        </div>
+        <h1 className="text-2xl font-semibold tracking-tight">NEWCIS</h1>
+        <p className="text-xs text-text-muted mt-2 max-w-3xl leading-relaxed">
+          Seven sectors × four focus provinces, traffic-light coloured. Each cell carries the
           engine's verdict; tooltip shows provenance and data source.
         </p>
-      </div>
+      </header>
 
       <div className="px-6 py-6">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -52,12 +50,14 @@ export default async function SectorsPage() {
         </div>
       </div>
 
-      <footer className="border-t border-zinc-900 px-6 py-3 text-[11px] text-zinc-500 flex flex-wrap justify-between gap-2">
+      <footer className="border-t border-border-subtle px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
         <span>
-          Last ingest:{" "}
-          <span className="text-zinc-300 font-mono">{fmtDateTime(lastRun?.finished_at)}</span>
+          Last ingest{" "}
+          <span className="text-text-2" data-numeric>
+            {fmtDateTime(lastRun?.finished_at)}
+          </span>
         </span>
-        <span>newcis.in4metrix.dev</span>
+        <span data-numeric>newcis.in4metrix.dev</span>
       </footer>
     </main>
   );

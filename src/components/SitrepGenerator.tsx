@@ -3,6 +3,8 @@
 // SITREP generator panel. POSTs current state → /api/sitrep, receives the
 // stored artefact, opens its HTML in a new tab for print-to-PDF.
 import { useState } from "react";
+import { FileText, ExternalLink } from "lucide-react";
+import { Card, Button } from "./ui";
 
 export function SitrepGenerator() {
   const [note, setNote] = useState("");
@@ -31,12 +33,15 @@ export function SitrepGenerator() {
   }
 
   return (
-    <div className="border border-zinc-800 rounded-lg p-4 bg-zinc-900/30 space-y-3">
+    <Card padding="lg" className="space-y-3">
       <div>
-        <h3 className="text-sm font-semibold text-zinc-100">Weekly SITREP</h3>
-        <p className="text-[11px] text-zinc-500">
-          Generate a templated situation report from current data. Opens in a new tab — use the
-          browser's print dialog to save as PDF.
+        <h3 className="text-sm font-semibold text-text-1 flex items-center gap-2">
+          <FileText size={14} className="text-accent" />
+          Weekly SITREP
+        </h3>
+        <p className="text-[11px] text-text-muted mt-1 leading-snug">
+          Generate a templated situation report from current data. Opens in a new tab — use
+          the browser's print dialog to save as PDF.
         </p>
       </div>
 
@@ -44,35 +49,34 @@ export function SitrepGenerator() {
         value={note}
         onChange={(e) => setNote(e.target.value)}
         rows={3}
+        aria-label="Analyst note"
         placeholder="Analyst note (optional) — appended to the report"
-        className="w-full bg-zinc-950 border border-zinc-800 rounded px-2 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/60"
+        className="w-full bg-surface-2 border border-border-default rounded px-2 py-1.5 text-xs text-text-1 placeholder:text-text-disabled focus:outline-none focus:border-accent transition-colors"
       />
 
       <div className="flex items-center justify-between gap-3">
-        <button
+        <Button
+          variant="primary"
           onClick={generate}
           disabled={busy}
-          className={`px-3 py-1.5 rounded text-xs uppercase tracking-wider font-semibold border ${
-            busy
-              ? "bg-zinc-800 text-zinc-500 border-zinc-700 cursor-wait"
-              : "bg-emerald-500/15 text-emerald-300 border-emerald-500/50 hover:bg-emerald-500/25"
-          }`}
+          icon={<FileText size={12} />}
         >
           {busy ? "Generating…" : "Generate SITREP"}
-        </button>
+        </Button>
         {latestId && (
           <a
             href={`/api/sitrep/${latestId}`}
             target="_blank"
             rel="noreferrer"
-            className="text-[11px] text-emerald-300 hover:underline truncate"
+            className="text-[11px] text-accent hover:underline inline-flex items-center gap-1"
           >
-            Reopen latest
+            <ExternalLink size={11} />
+            Reopen
           </a>
         )}
       </div>
 
-      {error && <div className="text-[11px] text-red-400">{error}</div>}
-    </div>
+      {error && <div className="text-[11px] text-status-red">{error}</div>}
+    </Card>
   );
 }

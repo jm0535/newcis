@@ -161,32 +161,44 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
 
   return (
     <div className="relative">
-      <div ref={containerRef} className="w-full h-[440px] rounded-lg border border-zinc-800 overflow-hidden" />
-      <div className="absolute top-3 right-3 flex gap-1 bg-zinc-950/85 border border-zinc-800 rounded p-1">
+      <div
+        ref={containerRef}
+        className="w-full h-[440px] rounded-lg border border-border-subtle overflow-hidden"
+      />
+      <div
+        className="absolute top-3 right-3 flex gap-0.5 bg-[var(--surface-overlay)] backdrop-blur border border-border-subtle rounded-md p-0.5 shadow-[var(--elevation-2)]"
+        role="radiogroup"
+        aria-label="Basemap"
+      >
         {(Object.keys(BASEMAPS) as Basemap[]).map((b) => (
           <button
             key={b}
             type="button"
+            role="radio"
+            aria-checked={basemap === b}
             onClick={() => setBasemap(b)}
-            className={`px-2 py-1 text-[10px] uppercase tracking-wider rounded transition-colors ${
+            className={`px-2.5 py-1 text-[10px] uppercase tracking-[0.08em] font-medium rounded transition-colors ${
               basemap === b
-                ? "bg-zinc-700 text-zinc-100"
-                : "text-zinc-400 hover:text-zinc-100"
+                ? "bg-surface-3 text-text-1"
+                : "text-text-muted hover:text-text-1"
             }`}
           >
             {b === "flat" ? "Flat" : BASEMAPS[b]?.label}
           </button>
         ))}
       </div>
-      <div className="absolute bottom-3 left-3 bg-zinc-950/85 border border-zinc-800 rounded px-2 py-1.5 text-[10px] uppercase tracking-wider text-zinc-400 flex items-center gap-3">
+      <div className="absolute bottom-3 left-3 bg-[var(--surface-overlay)] backdrop-blur border border-border-subtle rounded-md px-2.5 py-1.5 text-[10px] uppercase tracking-[0.08em] text-text-muted flex items-center gap-3 shadow-[var(--elevation-2)]">
         {(["low", "med", "high", "critical"] as RiskLevel[]).map((lv) => (
-          <span key={lv} className="inline-flex items-center gap-1">
-            <span className="w-2 h-2 rounded-sm" style={{ background: RISK_COLOUR[lv] }} />
+          <span key={lv} className="inline-flex items-center gap-1.5">
+            <span
+              className="w-2 h-2 rounded-sm"
+              style={{ background: RISK_COLOUR[lv] }}
+            />
             {lv}
           </span>
         ))}
-        <span className="inline-flex items-center gap-1 text-zinc-500">
-          <span className="w-2 h-2 rounded-sm bg-zinc-700" />
+        <span className="inline-flex items-center gap-1.5 text-text-disabled">
+          <span className="w-2 h-2 rounded-sm bg-border-default" />
           non-focus
         </span>
       </div>

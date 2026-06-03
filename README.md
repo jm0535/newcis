@@ -12,7 +12,8 @@ INGEST (NOAA, BoM, HDX HAPI) → INTELLIGENCE (risk engine, traffic-light) → P
 
 ## Stack
 - **Next.js 16** (App Router, Tailwind v4, Turbopack)
-- **MapLibre GL** for the provincial heat map
+- **MapLibre GL** for the provincial heat map (OSM, OpenTopo, Esri Satellite basemaps)
+- **Design system**: semantic CSS tokens + UI primitives (`src/components/ui/`), Inter + JetBrains Mono via `next/font`, lucide-react icons, framer-motion for subtle motion, dark/light themes. See [docs/design-system.md](./docs/design-system.md).
 - **Local cron + manual Refresh button** for ingestion (commits JSON back to the repo). GitHub Actions workflow is checked in as `.disabled` — see "Ingestion" below.
 - **Vercel** for hosting at `newcis.in4metrix.dev`
 - **No DB in the PoC** — versioned JSON files in `/data/` are the store.
@@ -85,4 +86,4 @@ serverless functions time out at 10–60s. Doing the pull outside Vercel keeps p
 fast and decoupled.
 
 ## Build status
-See [BUILD_CHECKLIST.md](./BUILD_CHECKLIST.md). Currently: **Phase 0 + Phase 1 partial.**
+See [BUILD_CHECKLIST.md](./BUILD_CHECKLIST.md). Currently: **Phases 0–9 substantially complete** — full thin slice deployed with design system polish; remaining work is data-source breadth (more LIVE sectoral feeds) and the production-stack mapping conversation.

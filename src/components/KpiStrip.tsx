@@ -2,7 +2,8 @@
 // affected population estimate, # high-risk provinces, forecast period.
 // Glanceable from across an ops centre — large numerals, single colour cue per card.
 import type { NationalStatus } from "@/lib/types";
-import { ALERT_BG_CLASS, RISK_BG_CLASS } from "@/lib/ui";
+import { MetricTile, EmptyState } from "./ui";
+import { Activity, AlertTriangle, Gauge, Users, MapPin, CalendarRange } from "lucide-react";
 
 const PHASE_SHORT: Record<NationalStatus["enso_phase"], string> = {
   neutral: "Neutral",
@@ -12,32 +13,27 @@ const PHASE_SHORT: Record<NationalStatus["enso_phase"], string> = {
   la_nina_alert: "La Niña Alert",
 };
 
-function Card({
-  label,
-  value,
-  className = "",
-  sub,
-}: {
-  label: string;
-  value: string;
-  className?: string;
-  sub?: string;
-}) {
-  return (
-    <div className={`rounded-lg border p-4 ${className}`}>
-      <div className="text-[10px] uppercase tracking-[0.15em] opacity-80">{label}</div>
-      <div className="mt-1 text-2xl font-semibold leading-tight">{value}</div>
-      {sub && <div className="mt-1 text-xs opacity-75">{sub}</div>}
-    </div>
-  );
-}
+const ALERT_TONE = {
+  GREEN: "green",
+  AMBER: "amber",
+  RED: "red",
+  BLACK: "black",
+} as const;
+
+const RISK_TONE = {
+  low: "green",
+  med: "amber",
+  high: "red",
+  critical: "black",
+} as const;
 
 export function KpiStrip({ national }: { national: NationalStatus | null }) {
   if (!national) {
     return (
-      <div className="text-sm text-zinc-500 border border-dashed border-zinc-700 rounded-lg p-6">
-        No national status available — ingest has not run yet.
-      </div>
+      <EmptyState
+        title="No national status"
+        description="Ingest has not run yet — trigger a refresh to populate."
+      />
     );
   }
 
@@ -46,37 +42,39 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
-      <Card
+      <MetricTile
+        icon={<Activity size={12} />}
         label="ENSO Phase"
-        value={PHASE_SHORT[national.enso_phase]}
-        className="bg-zinc-900/60 border-zinc-800 text-zinc-100"
+        value={<span className="text-lg">{PHASE_SHORT[national.enso_phase]}</span>}
       />
-      <Card
+      <MetricTile
+        icon={<AlertTriangle size={12} />}
         label="National Alert"
         value={national.alert_level}
-        className={ALERT_BG_CLASS[national.alert_level]}
+        tone={ALERT_TONE[national.alert_level]}
       />
-      <Card
+      <MetricTile
+        icon={<Gauge size={12} />}
         label="National Risk"
         value={national.national_risk_rating.toUpperCase()}
-        className={RISK_BG_CLASS[national.national_risk_rating]}
+        tone={RISK_TONE[national.national_risk_rating]}
       />
-      <Card
+      <MetricTile
+        icon={<Users size={12} />}
         label="Affected Population (est.)"
         value={affectedLabel}
-        sub="Phase 3 risk-engine extension"
-        className="bg-zinc-900/60 border-zinc-800 text-zinc-100"
+        hint="Phase 3 risk-engine extension"
       />
-      <Card
+      <MetricTile
+        icon={<MapPin size={12} />}
         label="High-Risk Provinces"
         value={String(national.high_risk_province_count)}
-        sub="Focus set (Enga, WH, SH, Gulf)"
-        className="bg-zinc-900/60 border-zinc-800 text-zinc-100"
+        hint="Focus set (Enga, WH, SH, Gulf)"
       />
-      <Card
+      <MetricTile
+        icon={<CalendarRange size={12} />}
         label="Forecast Period"
-        value={national.forecast_period}
-        className="bg-zinc-900/60 border-zinc-800 text-zinc-100"
+        value={<span className="text-lg">{national.forecast_period}</span>}
       />
     </div>
   );

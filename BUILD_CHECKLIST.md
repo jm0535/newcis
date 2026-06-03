@@ -142,6 +142,19 @@ Legend: ⬜ not started · 🟦 in progress · ✅ done
 
 ---
 
+## PHASE 9 — Design system & enterprise polish
+
+### ✅ 9.1 Design tokens + UI primitives
+Semantic CSS variable layer (`--surface-*`, `--text-*`, `--accent`, `--status-*`, spacing, radii, elevation, type scale, motion) in `src/app/globals.css`. Class-based theming (`.dark` / `.light` on `<html>`) with no-flash inline script. Primitives in `src/components/ui/` — `Card`, `MetricTile`, `StatusPill`, `SectionHeader`, `Badge`, `Button`, `EmptyState`.
+
+### ✅ 9.2 Component refactor + a11y + motion
+All dashboard components rewritten on primitives + tokens. Inter + JetBrains Mono via `next/font` (`data-numeric` attribute for tabular nums). lucide-react icons. focus-visible outlines, ARIA labels, `role="radiogroup"` on basemap switcher, `aria-current` on nav. Subtle motion via framer-motion (gauge marker animates in). `prefers-reduced-motion` respected.
+
+### ✅ 9.3 Docs
+Design tokens + primitives reference: see `docs/design-system.md`.
+
+---
+
 ## Mapping back to production (keep visible for the executive story)
 | PoC artefact | Becomes in production |
 |---|---|
