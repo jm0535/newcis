@@ -9,16 +9,5 @@
     "value": 0.11,
     "observed_at": "2026-03-15",
     "trend": "flat"
-  },
-  {
-    "key": "RAINFALL_ANOM",
-    "label": "Rainfall anomaly (focus provinces, latest dekad)",
-    "unit": "% deviation from long-term mean",
-    "source": "HDX HAPI · CHIRPS",
-    "update_frequency": "dekadal (10-day)",
-    "provenance": "LIVE",
-    "value": -8.2,
-    "observed_at": "2026-03-31",
-    "trend": "flat"
   }
 ]

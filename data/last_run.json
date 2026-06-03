@@ -1,11 +1,11 @@
 {
-  "started_at": "2026-06-03T09:15:08.804Z",
-  "finished_at": "2026-06-03T09:15:16.974Z",
-  "status": "ok",
+  "started_at": "2026-06-03T10:12:02.417Z",
+  "finished_at": "2026-06-03T10:12:08.103Z",
+  "status": "partial",
   "sources_ok": {
     "noaa_oni": true,
-    "hdx_rainfall": true,
-    "hdx_food_security": true
+    "hdx_rainfall": false,
+    "hdx_food_security": false
   },
-  "notes": "ONI 0.11 (4093ms) | Rainfall mean anom -8.2% (3366 raw rows, 3055ms) | Food security: HDX HAPI returned no current IPC food-security rows for PNG (PNG is not consistently in IPC publications). Sector will be DEMO-seeded."
+  "notes": "ONI 0.11 (5679ms) | Rainfall failed: no HDX_APP_ID | Food security failed: no HDX_APP_ID"
 }

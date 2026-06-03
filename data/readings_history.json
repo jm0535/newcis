@@ -1,12 +1,12 @@
 [
   {
-    "key": "ONI",
-    "value": 0.11,
-    "observed_at": "2026-03-15"
-  },
-  {
     "key": "RAINFALL_ANOM",
     "value": -8.2,
     "observed_at": "2026-03-31"
+  },
+  {
+    "key": "ONI",
+    "value": 0.11,
+    "observed_at": "2026-03-15"
   }
 ]

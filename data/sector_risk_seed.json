@@ -1,0 +1,122 @@
+[
+  {
+    "province_code": "PG08",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG09",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG07",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · driven by rainfall deficit + temp anomaly (engine)"
+  },
+  {
+    "province_code": "PG02",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG08",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live upstream proxy"
+  },
+  {
+    "province_code": "PG09",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Yonki reservoir inflow tracks rainfall (proxied via engine)"
+  },
+  {
+    "province_code": "PG07",
+    "sector": "Energy Security",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · highland hydropower exposed to rainfall deficit (engine)"
+  },
+  {
+    "province_code": "PG02",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
+  },
+  {
+    "province_code": "PG08",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · road closures land in ReliefWeb text reports; not parsed yet"
+  },
+  {
+    "province_code": "PG09",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Highlands Highway exposure (flood + landslip)"
+  },
+  {
+    "province_code": "PG07",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Hela/SHP arterial exposure to rainfall extremes"
+  },
+  {
+    "province_code": "PG02",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Fly/Sepik river transport depth tracks rainfall"
+  }
+]

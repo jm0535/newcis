@@ -123,17 +123,25 @@ export async function runIngest(): Promise<LastRun> {
   if (foodRes.ok && foodRes.value) upstreamRows.push(...foodRes.value.rows);
 
   // 5. Risk engine: produce a SectorRisk cell for every (focus province × sector),
-  //    combining national indicators with any matching upstream row.
+  //    combining national indicators with any matching upstream row. Seed rows
+  //    (data/sector_risk_seed.json) feed in for gap sectors with no live driver
+  //    — the engine sees them and only overrides when it has a stronger signal.
   const thresholds = await readJson<RiskThreshold[]>("risk_thresholds.json", []);
+  const seedRows = await readJson<SectorRisk[]>("sector_risk_seed.json", []);
+  const seedByKey = new Map(seedRows.map((r) => [`${r.province_code}::${r.sector}`, r]));
   const upstreamByKey = new Map(upstreamRows.map((r) => [`${r.province_code}::${r.sector}`, r]));
   const engineRows: SectorRisk[] = [];
   for (const provinceCode of FOCUS_CODES) {
     for (const sector of SECTORS) {
+      const key = `${provinceCode}::${sector}`;
+      // Seed acts as the baseline for indicator-less sectors. LIVE upstream
+      // (e.g. CHIRPS rainfall) always wins via provinceSectorRow.
+      const baseline = upstreamByKey.get(key) ?? seedByKey.get(key);
       engineRows.push(
         scoreSector(provinceCode, sector, {
           indicators: liveIndicators,
           thresholds,
-          provinceSectorRow: upstreamByKey.get(`${provinceCode}::${sector}`),
+          provinceSectorRow: baseline,
         }),
       );
     }
