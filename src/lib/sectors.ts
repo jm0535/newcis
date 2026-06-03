@@ -58,6 +58,6 @@ export const SECTOR_META: SectorMeta[] = [
     lead_agency: "Department of Provincial & Local Government Affairs",
     drivers: ["ONI"],
     description:
-      "Resource scarcity historically correlates with tribal conflict in Highlands provinces. Tracked here at national level; ACLED in Phase 2.",
+      "Resource scarcity historically correlates with tribal conflict in Highlands provinces. Province cells fed LIVE from ACLED conflict-events (90-day window via HDX HAPI).",
   },
 ];

@@ -9,5 +9,16 @@
     "value": 0.11,
     "observed_at": "2026-03-15",
     "trend": "flat"
+  },
+  {
+    "key": "SOIL_MOISTURE",
+    "label": "Root-zone soil moisture (focus provinces)",
+    "unit": "percentile vs 12-mo climatology",
+    "source": "NASA POWER · MERRA-2 GWETROOT",
+    "update_frequency": "monthly",
+    "provenance": "LIVE",
+    "value": 17,
+    "observed_at": "2025-12-01",
+    "trend": "flat"
   }
 ]

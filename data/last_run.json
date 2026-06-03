@@ -1,11 +1,13 @@
 {
-  "started_at": "2026-06-03T10:12:02.417Z",
-  "finished_at": "2026-06-03T10:12:08.103Z",
+  "started_at": "2026-06-03T10:24:51.318Z",
+  "finished_at": "2026-06-03T10:24:59.655Z",
   "status": "partial",
   "sources_ok": {
     "noaa_oni": true,
     "hdx_rainfall": false,
-    "hdx_food_security": false
+    "hdx_food_security": false,
+    "nasa_power_soil": true,
+    "hdx_acled": false
   },
-  "notes": "ONI 0.11 (5679ms) | Rainfall failed: no HDX_APP_ID | Food security failed: no HDX_APP_ID"
+  "notes": "ONI 0.11 (5284ms) | Rainfall failed: no HDX_APP_ID | Food security failed: no HDX_APP_ID | Soil moisture mean 17th pctile (3046ms) | ACLED failed: no HDX_APP_ID"
 }

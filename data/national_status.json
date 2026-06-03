@@ -1,9 +1,9 @@
 {
   "enso_phase": "neutral",
-  "alert_level": "GREEN",
-  "national_risk_rating": "low",
+  "alert_level": "RED",
+  "national_risk_rating": "high",
   "affected_population_est": 0,
-  "high_risk_province_count": 0,
+  "high_risk_province_count": 4,
   "forecast_period": "Next 3 months",
-  "updated_at": "2026-06-03T10:12:08.101Z"
+  "updated_at": "2026-06-03T10:24:59.652Z"
 }

@@ -8,5 +8,10 @@
     "key": "ONI",
     "value": 0.11,
     "observed_at": "2026-03-15"
+  },
+  {
+    "key": "SOIL_MOISTURE",
+    "value": 17,
+    "observed_at": "2025-12-01"
   }
 ]
