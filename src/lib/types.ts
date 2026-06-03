@@ -1,0 +1,92 @@
+// Data shapes for NEWCIS. JSON file storage in PoC; same shapes back a DB in Phase 2.
+// Keep these in sync with CLAUDE.md §3.
+
+export type Provenance = "LIVE" | "DEMO";
+export type Trend = "up" | "down" | "flat";
+export type AlertLevel = "GREEN" | "AMBER" | "RED" | "BLACK";
+export type RiskLevel = "low" | "med" | "high" | "critical";
+
+export type Sector =
+  | "Food Security"
+  | "Water Security"
+  | "Public Health"
+  | "Economic Stability"
+  | "Infrastructure"
+  | "Energy Security"
+  | "Social Stability";
+
+export interface Indicator {
+  key: string; // e.g. "ONI"
+  label: string;
+  unit: string;
+  source: string; // human-readable source name
+  update_frequency: string; // e.g. "monthly"
+  provenance: Provenance;
+  value: number | null;
+  observed_at: string; // ISO date
+  trend: Trend;
+}
+
+export interface HistoricalReading {
+  key: string;
+  value: number;
+  observed_at: string; // ISO date
+}
+
+export interface RiskThreshold {
+  metric: string; // matches Indicator.key
+  // Anything ≤ green_max is GREEN; ≤ amber_max is AMBER; ≤ red_max is RED; above is BLACK.
+  // For inverted metrics (lower = worse, e.g. SOI), negate values before comparing or
+  // configure a separate inverted threshold set — keep the band semantics here only.
+  green_max: number;
+  amber_max: number;
+  red_max: number;
+  inverted?: boolean; // if true, lower values escalate (used for SOI, NDVI, soil moisture)
+  unit?: string;
+  notes?: string;
+}
+
+export interface SectorRisk {
+  province_code: string; // p-code, matches GeoJSON feature.properties.code
+  sector: Sector;
+  level: RiskLevel;
+  score: number; // 0..1
+  trend: Trend;
+  provenance: Provenance;
+  as_of: string; // ISO date
+  data_source?: string;
+}
+
+export interface NationalStatus {
+  enso_phase: "neutral" | "el_nino_watch" | "el_nino_alert" | "la_nina_watch" | "la_nina_alert";
+  alert_level: AlertLevel;
+  national_risk_rating: RiskLevel;
+  affected_population_est: number;
+  high_risk_province_count: number;
+  forecast_period: string; // e.g. "JJA 2026"
+  updated_at: string; // ISO timestamp
+}
+
+export interface LastRun {
+  started_at: string;
+  finished_at: string;
+  status: "ok" | "partial" | "failed";
+  sources_ok: Record<string, boolean>;
+  notes: string;
+}
+
+export interface Sitrep {
+  id: string;
+  period: string; // e.g. "Week 23, 2026"
+  generated_at: string;
+  html: string;
+  summary: string;
+  analyst_note?: string;
+}
+
+export interface ProvinceProperties {
+  code: string; // p-code (e.g. "PG-EBR")
+  name: string;
+  is_focus: boolean;
+  population: number;
+}

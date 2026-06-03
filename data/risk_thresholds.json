@@ -1,0 +1,65 @@
+[
+  {
+    "metric": "ONI",
+    "unit": "°C SST anomaly (Niño 3.4)",
+    "green_max": 0.5,
+    "amber_max": 1.0,
+    "red_max": 1.5,
+    "inverted": false,
+    "notes": "NOAA CPC operational bands. ≤0.5 neutral; 0.5–1.0 weak El Niño (watch); 1.0–1.5 moderate (alert); >1.5 strong/very strong (emergency-class). Symmetric La Niña handled by absolute value upstream."
+  },
+  {
+    "metric": "SOI",
+    "unit": "Tahiti−Darwin pressure anomaly index",
+    "green_max": -7,
+    "amber_max": -10,
+    "red_max": -15,
+    "inverted": true,
+    "notes": "BoM SOI. Sustained negative values indicate El Niño. >-7 neutral; -7 to -10 El Niño watch; -10 to -15 alert; <-15 strong event."
+  },
+  {
+    "metric": "SST_ANOM_NINO34",
+    "unit": "°C",
+    "green_max": 0.5,
+    "amber_max": 1.0,
+    "red_max": 2.0,
+    "inverted": false,
+    "notes": "Niño 3.4 monthly SST anomaly. Aligned with ONI; included separately so weekly SST can escalate before the 3-month ONI does."
+  },
+  {
+    "metric": "RAINFALL_ANOM",
+    "unit": "% of normal (focus provinces, 3-month rolling)",
+    "green_max": -20,
+    "amber_max": -40,
+    "red_max": -60,
+    "inverted": true,
+    "notes": "PNG highland drought thresholds. -20% near-normal; -40% drought watch; -60% severe drought (1997 and 2015 events both >-60%). Inverted: more negative = worse."
+  },
+  {
+    "metric": "TEMP_ANOM",
+    "unit": "°C above 1991–2020 normal",
+    "green_max": 0.5,
+    "amber_max": 1.5,
+    "red_max": 2.5,
+    "inverted": false,
+    "notes": "Heat-stress proxy. Combined with rainfall deficit it drives crop and health risk in the highlands."
+  },
+  {
+    "metric": "SOIL_MOISTURE",
+    "unit": "percentile vs climatology",
+    "green_max": 40,
+    "amber_max": 20,
+    "red_max": 10,
+    "inverted": true,
+    "notes": "NASA SMAP-derived percentile. Inverted: lower percentile = drier = worse. <10th percentile = exceptional drought."
+  },
+  {
+    "metric": "NDVI",
+    "unit": "vegetation index anomaly vs 5-yr mean",
+    "green_max": -0.05,
+    "amber_max": -0.1,
+    "red_max": -0.2,
+    "inverted": true,
+    "notes": "MODIS NDVI anomaly. Vegetation stress lags rainfall by ~4–8 weeks; an early canary for food-security collapse."
+  }
+]
