@@ -1,41 +1,89 @@
-export default function Home() {
+// Page 1 — Executive Strategic Overview.
+// Server component: reads JSON straight off disk, hydrates the dashboard with
+// last-good state. The map is the only client island.
+import { HeatMap } from "@/components/HeatMap";
+import { KpiStrip } from "@/components/KpiStrip";
+import { ProvenanceBadge } from "@/components/Provenance";
+import { RiskMatrix } from "@/components/RiskMatrix";
+import { StatusBar } from "@/components/StatusBar";
+import { getLastRun, getNationalStatus, getSectorRisk } from "@/lib/data";
+import { fmtDateTime } from "@/lib/ui";
+
+// data/ changes on every ingest commit — Next will rebuild on push, but force
+// dynamic so dev mode reflects fresh writes immediately too.
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const [national, sectorRisk, lastRun] = await Promise.all([
+    getNationalStatus(),
+    getSectorRisk(),
+    getLastRun(),
+  ]);
+
+  const liveSourceCount = lastRun
+    ? Object.values(lastRun.sources_ok).filter(Boolean).length
+    : 0;
+  const totalSources = lastRun ? Object.keys(lastRun.sources_ok).length : 0;
+
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
-      <div className="border-b border-zinc-800 px-6 py-3 flex items-center justify-between text-xs uppercase tracking-wider">
-        <span className="text-zinc-500">National Security Advisory · Papua New Guinea</span>
-        <span className="inline-flex items-center gap-2 px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-semibold">
+    <main className="min-h-screen bg-zinc-950 text-zinc-100">
+      <StatusBar national={national} lastRun={lastRun} />
+
+      <div className="px-6 py-5 border-b border-zinc-900 flex flex-wrap items-baseline gap-x-6 gap-y-1">
+        <h1 className="text-xl font-semibold tracking-tight">
+          NEWCIS <span className="text-zinc-500 font-normal">· Executive Strategic Overview</span>
+        </h1>
+        <span className="text-xs uppercase tracking-wider text-zinc-500">
+          Papua New Guinea · {liveSourceCount}/{totalSources} sources LIVE
+        </span>
+        <span className="ml-auto inline-flex items-center gap-2 px-2 py-1 rounded bg-amber-500/15 text-amber-300 border border-amber-500/40 text-[10px] uppercase tracking-wider font-semibold">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
           Prototype
         </span>
       </div>
 
-      <section className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
-        <p className="text-xs uppercase tracking-[0.3em] text-zinc-500 mb-4">NEWCIS</p>
-        <h1 className="text-4xl sm:text-6xl font-semibold tracking-tight max-w-4xl leading-tight">
-          National ENSO Early Warning &<br />
-          <span className="text-emerald-400">Climate Intelligence System</span>
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-zinc-400">
-          A three-tier data-to-decision pipeline for Papua New Guinea: ingest, intelligence, present.
-          Proof-of-concept prototype.
-        </p>
+      <div className="px-6 py-6 space-y-6">
+        <section>
+          <KpiStrip national={national} />
+        </section>
 
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl w-full text-left">
-          {[
-            { k: "INGEST", v: "NOAA · BoM · HDX HAPI" },
-            { k: "INTELLIGENCE", v: "Traffic-light risk engine" },
-            { k: "PRESENT", v: "Executive operating picture" },
-          ].map((t) => (
-            <div key={t.k} className="border border-zinc-800 rounded-lg p-4 bg-zinc-900/40">
-              <div className="text-xs uppercase tracking-wider text-zinc-500">{t.k}</div>
-              <div className="mt-1 text-zinc-200 font-medium">{t.v}</div>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <section className="lg:col-span-2 border border-zinc-800 rounded-lg p-4 bg-zinc-900/30">
+            <div className="flex items-baseline justify-between mb-3">
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-300">
+                National Risk Matrix
+              </h2>
+              <span className="text-[10px] text-zinc-500">Engine-derived · per focus province</span>
             </div>
-          ))}
-        </div>
-      </section>
+            <RiskMatrix sectorRisk={sectorRisk} />
+            <div className="mt-3 text-[11px] text-zinc-500 flex flex-wrap gap-2">
+              {Array.from(new Set(sectorRisk.map((r) => r.provenance))).map((p) => (
+                <ProvenanceBadge key={p} value={p} />
+              ))}
+              <span>cells carry the worst risk across drivers; trend from prior ingest.</span>
+            </div>
+          </section>
 
-      <footer className="border-t border-zinc-800 px-6 py-4 text-xs text-zinc-500 flex flex-wrap gap-4 justify-between">
-        <span>Build: Phase 0 · empty shell</span>
+          <section className="lg:col-span-3 border border-zinc-800 rounded-lg p-4 bg-zinc-900/30">
+            <div className="flex items-baseline justify-between mb-3">
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-300">
+                Provincial Heat Map
+              </h2>
+              <span className="text-[10px] text-zinc-500">Click a province for detail</span>
+            </div>
+            <HeatMap sectorRisk={sectorRisk} />
+          </section>
+        </div>
+      </div>
+
+      <footer className="border-t border-zinc-900 px-6 py-3 text-[11px] text-zinc-500 flex flex-wrap justify-between gap-2">
+        <span>
+          Last ingest:{" "}
+          <span className="text-zinc-300 font-mono">
+            {fmtDateTime(lastRun?.finished_at)}
+          </span>
+          {lastRun && <span className="ml-2 text-zinc-600">· {lastRun.notes}</span>}
+        </span>
         <span>newcis.in4metrix.dev</span>
       </footer>
     </main>
