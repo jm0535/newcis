@@ -13,7 +13,7 @@ INGEST (NOAA, BoM, HDX HAPI) → INTELLIGENCE (risk engine, traffic-light) → P
 ## Stack
 - **Next.js 16** (App Router, Tailwind v4, Turbopack)
 - **MapLibre GL** for the provincial heat map
-- **GitHub Actions** for scheduled ingestion (commits JSON back to the repo)
+- **Local cron + manual Refresh button** for ingestion (commits JSON back to the repo). GitHub Actions workflow is checked in as `.disabled` — see "Ingestion" below.
 - **Vercel** for hosting at `newcis.in4metrix.dev`
 - **No DB in the PoC** — versioned JSON files in `/data/` are the store.
 
@@ -55,12 +55,34 @@ Steps:
 5. Confirm the first deploy is green. Subsequent pushes (including the ingestion Action's
    commits to `/data`) auto-trigger redeploys.
 
-## Why ingestion runs on GitHub Actions, not Vercel
-NOAA/NASA endpoints can take 30+ seconds; Vercel serverless functions time out at 10–60s.
-The Action does the slow pulls, computes risk via the engine, **commits the resulting JSON**,
-and the commit triggers a Vercel redeploy. Vercel itself only ever reads static files — so the
-executive demo is always fast and never blocks on an upstream API. Git history *is* the audit
-trail (no separate runs table needed at PoC scale).
+## Ingestion
+
+Ingestion is decoupled from the dashboard: it writes JSON files to `/data`, commits them,
+and the commit triggers a Vercel redeploy. Vercel itself only ever reads static files — so
+the demo is always fast and never blocks on an upstream API. Git history *is* the audit
+trail (no runs table needed at PoC scale).
+
+The same `runIngest()` library (`ingest/lib.ts`) is reachable two ways:
+
+**Option 1 — local cron (silent autopilot between demos).** Add a crontab line on your dev
+machine:
+
+```cron
+0 */6 * * * cd ~/Documents/workspace/projects/github/newcis && HDX_APP_ID=<your-id> /usr/bin/pnpm ingest && git add data/ && git diff --cached --quiet || (git commit -m "data: ingest $(date -u +%Y-%m-%dT%H:%MZ)" && git push)
+```
+
+**Option 2 — manual Refresh button (on stage).** The dashboard exposes a Refresh button that
+calls `/api/ingest`, which invokes `runIngest()` server-side. Punchy for live demos: you
+trigger a real pull in front of the audience. (Wired up when Page 1 / Page 4 land.)
+
+**Why not GitHub Actions?** The workflow is checked in at
+`.github/workflows/ingest.yml.disabled` and is the natural production path. It is disabled in
+this PoC because the repo owner's GitHub billing is currently locked; rename to `.yml` to
+re-enable when billing clears.
+
+**Why not Vercel Cron / functions?** NOAA + HDX pulls can take 30+ seconds and Vercel
+serverless functions time out at 10–60s. Doing the pull outside Vercel keeps presentation
+fast and decoupled.
 
 ## Build status
 See [BUILD_CHECKLIST.md](./BUILD_CHECKLIST.md). Currently: **Phase 0 + Phase 1 partial.**
