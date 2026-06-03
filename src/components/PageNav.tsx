@@ -5,6 +5,7 @@ import Link from "next/link";
 const PAGES = [
   { href: "/", label: "Overview" },
   { href: "/climate", label: "ENSO Climate" },
+  { href: "/sectors", label: "Sectoral Impact" },
 ];
 
 export function PageNav({ active }: { active: string }) {
