@@ -2,12 +2,20 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Dark is the default (operations-centre big screen). Light remaps the same
- * zinc-* utility classes via CSS vars so we don't rewrite every component. */
-:root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+/* ---------------------------------------------------------------------------
+ * Design tokens. Two layers:
+ *   1. Primitive scales (zinc ramp redefined per theme — keeps existing
+ *      utility classes working without rewriting every component).
+ *   2. Semantic tokens (--surface-*, --text-*, --border-*, etc.) for new
+ *      components built on top. New code should reach for semantic tokens.
+ * --------------------------------------------------------------------------- */
 
+:root {
+  /* Theme — dark default (operations centre big screen). */
+  --background: #09090b;
+  --foreground: #fafafa;
+
+  /* Primitive: zinc ramp (Tailwind defaults). */
   --color-zinc-50: oklch(0.985 0 0);
   --color-zinc-100: oklch(0.97 0 0);
   --color-zinc-200: oklch(0.922 0 0);
@@ -19,13 +27,88 @@
   --color-zinc-800: oklch(0.269 0 0);
   --color-zinc-900: oklch(0.205 0 0);
   --color-zinc-950: oklch(0.145 0 0);
+
+  /* Semantic — surfaces (elevation by lightness, not shadow). */
+  --surface-0: #09090b;       /* page background */
+  --surface-1: #131316;       /* card */
+  --surface-2: #1c1c20;       /* nested card / input */
+  --surface-3: #26262b;       /* hovered / selected */
+  --surface-overlay: rgba(9, 9, 11, 0.85);
+
+  /* Semantic — borders. */
+  --border-subtle: #26262b;
+  --border-default: #3f3f46;
+  --border-strong: #52525b;
+
+  /* Semantic — text. */
+  --text-1: #fafafa;          /* primary */
+  --text-2: #d4d4d8;          /* secondary */
+  --text-muted: #a1a1aa;      /* labels, meta */
+  --text-disabled: #52525b;
+
+  /* Semantic — brand / accent. NEWCIS = emerald for live signal. */
+  --accent: #10b981;
+  --accent-hover: #34d399;
+  --accent-muted: rgba(16, 185, 129, 0.15);
+
+  /* Semantic — status (traffic-light). Aligned with RISK_COLOUR map. */
+  --status-green: #16a34a;
+  --status-amber: #f59e0b;
+  --status-red: #dc2626;
+  --status-black: #18181b;
+
+  /* Spacing scale — multiples of 4px. Prefer Tailwind p- m- gap- utilities. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radii. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-full: 9999px;
+
+  /* Elevation. Soft, not heavy — enterprise dashboards aren't drop-shadow-heavy. */
+  --elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  --elevation-2: 0 2px 8px -2px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  --elevation-3: 0 8px 24px -4px rgba(0, 0, 0, 0.18), 0 2px 6px 0 rgba(0, 0, 0, 0.12);
+
+  /* Type scale. */
+  --text-2xs: 10px;
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+  --text-3xl: 36px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Motion. */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :root.light {
   --background: #fafafa;
   --foreground: #18181b;
 
-  /* Invert the ramp so existing utilities still read as foreground/background. */
+  /* Invert zinc ramp so legacy utility classes still read foreground/background. */
   --color-zinc-50: oklch(0.145 0 0);
   --color-zinc-100: oklch(0.205 0 0);
   --color-zinc-200: oklch(0.269 0 0);
@@ -37,19 +120,84 @@
   --color-zinc-800: oklch(0.93 0 0);
   --color-zinc-900: oklch(0.96 0 0);
   --color-zinc-950: oklch(0.985 0 0);
+
+  /* Semantic — light surfaces. */
+  --surface-0: #fafafa;
+  --surface-1: #ffffff;
+  --surface-2: #f4f4f5;
+  --surface-3: #e4e4e7;
+  --surface-overlay: rgba(255, 255, 255, 0.92);
+
+  --border-subtle: #e4e4e7;
+  --border-default: #d4d4d8;
+  --border-strong: #a1a1aa;
+
+  --text-1: #18181b;
+  --text-2: #3f3f46;
+  --text-muted: #71717a;
+  --text-disabled: #a1a1aa;
+
+  --accent: #059669;
+  --accent-hover: #10b981;
+  --accent-muted: rgba(5, 150, 105, 0.12);
+
+  --status-black: #27272a;
+
+  --elevation-1: 0 1px 2px 0 rgba(15, 23, 42, 0.06);
+  --elevation-2: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 1px 3px 0 rgba(15, 23, 42, 0.04);
+  --elevation-3: 0 12px 32px -8px rgba(15, 23, 42, 0.12), 0 2px 6px 0 rgba(15, 23, 42, 0.06);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+
+  --color-text-1: var(--text-1);
+  --color-text-2: var(--text-2);
+  --color-text-muted: var(--text-muted);
+  --color-text-disabled: var(--text-disabled);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+
+  --color-status-green: var(--status-green);
+  --color-status-amber: var(--status-amber);
+  --color-status-red: var(--status-red);
+  --color-status-black: var(--status-black);
+
+  --font-sans: var(--font-inter), var(--font-geist-sans);
+  --font-mono: var(--font-jetbrains), var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-feature-settings: "cv11", "ss01", "ss03";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Numeric data should be monospaced + tabular for stable column alignment. */
+.numeric, [data-numeric] {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Focus rings — visible and accent-coloured. WCAG 2.2. */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 /* MapLibre popup: kill the default white wrapper so our themed inner card shows clean. */
@@ -60,4 +208,13 @@ body {
 }
 .newcis-popup .maplibregl-popup-tip {
   display: none;
+}
+
+/* Reduce motion respect. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
