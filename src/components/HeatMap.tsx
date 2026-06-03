@@ -111,10 +111,14 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         const f = e.features?.[0];
         if (!f) return;
         const p = f.properties as { name: string; code: string; risk_level: string; is_focus: boolean };
+        const light = document.documentElement.classList.contains("light");
+        const fg = light ? "#18181b" : "#f4f4f5";
+        const bg = light ? "#ffffff" : "#18181b";
+        const border = light ? "#d4d4d8" : "#3f3f46";
         new maplibregl.Popup({ closeButton: false, className: "newcis-popup" })
           .setLngLat(e.lngLat)
           .setHTML(
-            `<div style="font-family: system-ui; font-size: 12px; color: #f4f4f5;">
+            `<div style="font-family: system-ui; font-size: 12px; color: ${fg}; background: ${bg}; border: 1px solid ${border}; padding: 6px 8px; border-radius: 4px;">
                <div style="font-weight: 600;">${p.name}</div>
                <div style="opacity: 0.7;">${p.code}</div>
                <div style="margin-top: 4px;">${p.is_focus ? `Risk: <b>${p.risk_level.toUpperCase()}</b>` : "Non-focus (not scored in PoC)"}</div>

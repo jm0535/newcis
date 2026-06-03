@@ -51,3 +51,13 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+/* MapLibre popup: kill the default white wrapper so our themed inner card shows clean. */
+.newcis-popup .maplibregl-popup-content {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+.newcis-popup .maplibregl-popup-tip {
+  display: none;
+}
