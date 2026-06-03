@@ -63,14 +63,18 @@ async function fetchJson(url: string): Promise<FC> {
 }
 
 function normaliseName(raw: string): string {
-  // GADM uses "Chimbu (Simbu)" etc. — trim to canonical PNG form.
-  return raw
+  // GADM uses concatenated CamelCase ("WesternHighlands") and parenthetical aliases
+  // ("Chimbu (Simbu)"). Split CamelCase, drop parentheticals, then apply known aliases.
+  const splitCamel = raw
     .replace(/\(.*\)/g, "")
-    .replace("Simbu", "Chimbu")
-    .replace("Sandaun", "West Sepik")
-    .replace("Bougainville", "Autonomous Region of Bougainville")
-    .replace("Northern", "Oro")
-    .replace("Western Province", "Western")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .trim();
+  return splitCamel
+    .replace(/^Simbu$/, "Chimbu")
+    .replace(/^Sandaun$/, "West Sepik")
+    .replace(/^Bougainville$/, "Autonomous Region of Bougainville")
+    .replace(/^Northern$/, "Oro")
+    .replace(/^Western Province$/, "Western")
     .trim();
 }
 
