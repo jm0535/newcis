@@ -19,7 +19,20 @@ import type {
   SectorRisk,
   LastRun,
   NationalStatus,
+  RiskThreshold,
+  Sector,
 } from "../src/lib/types";
+import { rollUpNational, scoreSector, computeTrend as engineTrend } from "../src/lib/risk-engine";
+
+const SECTORS: Sector[] = [
+  "Food Security",
+  "Water Security",
+  "Public Health",
+  "Economic Stability",
+  "Infrastructure",
+  "Energy Security",
+  "Social Stability",
+];
 
 const DATA = path.join(process.cwd(), "data");
 
@@ -55,20 +68,7 @@ async function run<T>(name: string, fn: () => Promise<T>): Promise<SourceResult<
   }
 }
 
-function computeTrend(
-  key: string,
-  newValue: number,
-  history: HistoricalReading[],
-): Indicator["trend"] {
-  const prior = history
-    .filter((h) => h.key === key)
-    .sort((a, b) => b.observed_at.localeCompare(a.observed_at))[0];
-  if (!prior) return "flat";
-  const delta = newValue - prior.value;
-  const threshold = Math.max(0.05, Math.abs(prior.value) * 0.05);
-  if (Math.abs(delta) < threshold) return "flat";
-  return delta > 0 ? "up" : "down";
-}
+const computeTrend = engineTrend;
 
 export async function runIngest(): Promise<LastRun> {
   const startedAt = new Date().toISOString();
@@ -117,50 +117,43 @@ export async function runIngest(): Promise<LastRun> {
     })
     .reverse();
 
-  const liveSectorRows: SectorRisk[] = [];
-  if (rainfallRes.ok && rainfallRes.value) liveSectorRows.push(...rainfallRes.value.sector_rows);
-  if (foodRes.ok && foodRes.value) liveSectorRows.push(...foodRes.value.rows);
+  // 4. Source-derived sector rows (province-specific datapoints from rainfall + food security).
+  const upstreamRows: SectorRisk[] = [];
+  if (rainfallRes.ok && rainfallRes.value) upstreamRows.push(...rainfallRes.value.sector_rows);
+  if (foodRes.ok && foodRes.value) upstreamRows.push(...foodRes.value.rows);
 
-  const liveKey = (r: SectorRisk) => `${r.province_code}::${r.sector}`;
-  const liveKeys = new Set(liveSectorRows.map(liveKey));
+  // 5. Risk engine: produce a SectorRisk cell for every (focus province × sector),
+  //    combining national indicators with any matching upstream row.
+  const thresholds = await readJson<RiskThreshold[]>("risk_thresholds.json", []);
+  const upstreamByKey = new Map(upstreamRows.map((r) => [`${r.province_code}::${r.sector}`, r]));
+  const engineRows: SectorRisk[] = [];
+  for (const provinceCode of FOCUS_CODES) {
+    for (const sector of SECTORS) {
+      engineRows.push(
+        scoreSector(provinceCode, sector, {
+          indicators: liveIndicators,
+          thresholds,
+          provinceSectorRow: upstreamByKey.get(`${provinceCode}::${sector}`),
+        }),
+      );
+    }
+  }
+
+  // 6. Merge: engine rows for focus provinces overlay everything; preserve unrelated
+  //    DEMO rows (e.g. non-focus provinces) untouched.
+  const engineKeys = new Set(engineRows.map((r) => `${r.province_code}::${r.sector}`));
   const preservedDemo = existingSectorRisk.filter(
-    (r) => r.provenance === "DEMO" && !liveKeys.has(liveKey(r)),
+    (r) => r.provenance === "DEMO" && !engineKeys.has(`${r.province_code}::${r.sector}`),
   );
-  const mergedSectorRisk = [...liveSectorRows, ...preservedDemo];
+  const mergedSectorRisk = [...engineRows, ...preservedDemo];
 
-  const focusRowsLive = liveSectorRows.filter((r) => FOCUS_CODES.includes(r.province_code));
-  const highRiskProvinces = new Set(
-    focusRowsLive.filter((r) => r.level === "high" || r.level === "critical").map((r) => r.province_code),
+  // 7. National rollup via the engine.
+  const nationalStatus = rollUpNational(
+    liveIndicators,
+    thresholds,
+    mergedSectorRisk,
+    FOCUS_CODES,
   );
-  const overallLevel: NationalStatus["alert_level"] =
-    oniRes.ok && oniRes.value && Math.abs(oniRes.value.indicator.value ?? 0) > 1.5
-      ? "BLACK"
-      : oniRes.ok && oniRes.value && Math.abs(oniRes.value.indicator.value ?? 0) > 1.0
-        ? "RED"
-        : oniRes.ok && oniRes.value && Math.abs(oniRes.value.indicator.value ?? 0) > 0.5
-          ? "AMBER"
-          : "GREEN";
-
-  const nationalStatus: NationalStatus = {
-    enso_phase:
-      oniRes.ok && oniRes.value
-        ? (oniRes.value.indicator.value ?? 0) > 0.5
-          ? (oniRes.value.indicator.value ?? 0) > 1.0
-            ? "el_nino_alert"
-            : "el_nino_watch"
-          : (oniRes.value.indicator.value ?? 0) < -0.5
-            ? (oniRes.value.indicator.value ?? 0) < -1.0
-              ? "la_nina_alert"
-              : "la_nina_watch"
-            : "neutral"
-        : "neutral",
-    alert_level: overallLevel,
-    national_risk_rating: highRiskProvinces.size >= 2 ? "high" : highRiskProvinces.size >= 1 ? "med" : "low",
-    affected_population_est: 0,
-    high_risk_province_count: highRiskProvinces.size,
-    forecast_period: "Next 3 months",
-    updated_at: new Date().toISOString(),
-  };
 
   await writeJson("indicators.json", liveIndicators);
   await writeJson("readings_history.json", dedupedHistory);
