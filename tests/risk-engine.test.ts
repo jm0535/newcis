@@ -5,6 +5,7 @@
 import { describe, expect, it } from "vitest";
 import {
   classifyIndicator,
+  computeTrend,
   rollUpNational,
   scoreSector,
 } from "../src/lib/risk-engine";
@@ -162,5 +163,28 @@ describe("rollUpNational", () => {
     const r = rollUpNational([indicator("ONI", 0.1)], TH, sectors, FOCUS);
     expect(r.national_risk_rating).toBe("med");
     expect(r.high_risk_province_count).toBe(1);
+  });
+});
+
+describe("computeTrend", () => {
+  const hist = [
+    { key: "ONI", value: 0.8, observed_at: "2025-12-01" },
+    { key: "ONI", value: 0.6, observed_at: "2025-11-01" },
+  ];
+
+  it("rising value → up", () => {
+    expect(computeTrend("ONI", 1.4, hist)).toBe("up");
+  });
+
+  it("falling value → down", () => {
+    expect(computeTrend("ONI", 0.2, hist)).toBe("down");
+  });
+
+  it("tiny delta under threshold → flat", () => {
+    expect(computeTrend("ONI", 0.82, hist)).toBe("flat");
+  });
+
+  it("no prior reading → flat", () => {
+    expect(computeTrend("NEW_METRIC", 1.0, hist)).toBe("flat");
   });
 });

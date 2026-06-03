@@ -64,7 +64,7 @@ Legend: ⬜ not started · 🟦 in progress · ✅ done
 **Prompt:** "Implement `lib/risk/engine.ts`: a pure module that takes indicator readings + sectoral data + thresholds and returns (a) per-indicator alert levels, (b) per-province per-sector risk levels, (c) a national rollup. No file I/O inside. Follow CLAUDE.md §5. Keep formulas simple and commented so a non-technical reviewer can follow 'why is this province red'."
 **Done when:** function compiles with clear typed inputs/outputs.
 
-### ⬜ 3.2 Tests (this convinces the technical room)
+### ✅ 3.2 Tests (this convinces the technical room)
 **Prompt:** "Write unit tests for the risk engine with fixtures: a neutral scenario → GREEN; a strong-El-Niño ONI + dry rainfall anomaly → RED with the focus provinces escalated. Assert national rollup matches."
 **Done when:** tests pass; an El Niño fixture deterministically yields RED.
 
@@ -136,7 +136,7 @@ Legend: ⬜ not started · 🟦 in progress · ✅ done
 **Prompt:** "Verify graceful degradation: simulate an HDX/NOAA failure and confirm the dashboard shows last-good values (the previously committed `/data` files) with a data-health warning rather than blanking. Confirm `last_run.json` reflects the failure. Also confirm SITREP generation works as a client-side render/download (Vercel runtime is read-only, so it cannot self-commit — persisting a SITREP to `/data/sitreps/` is done by the Action or a manual commit; document this)."
 **Done when:** a forced source failure degrades gracefully; SITREP behaviour documented.
 
-### ⬜ 8.3 Demo script + README
+### ✅ 8.3 Demo script + README
 **Prompt:** "Write `README.md` (architecture, how to run, how ingestion is decoupled) and `DEMO.md`: a 5-minute walkthrough for a mixed technical+executive audience — what's LIVE vs DEMO, the El Niño risk-logic story, and the SITREP finale."
 **Done when:** a newcomer can run and demo the PoC from the docs.
 

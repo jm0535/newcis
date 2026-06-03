@@ -3,6 +3,7 @@
 > Proof-of-concept prototype for Papua New Guinea. See [CLAUDE.md](./CLAUDE.md) for the
 > single source of truth on architecture, scope, and build order.
 > Task tracking lives in [BUILD_CHECKLIST.md](./BUILD_CHECKLIST.md).
+> Demoing it? See [DEMO.md](./DEMO.md) — 5-minute walkthrough for mixed exec + technical audiences.
 
 A three-tier data-to-decision pipeline:
 
