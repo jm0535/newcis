@@ -3,6 +3,7 @@
 // last-good state. The map is the only client island.
 import { HeatMap } from "@/components/HeatMap";
 import { KpiStrip } from "@/components/KpiStrip";
+import { PageNav } from "@/components/PageNav";
 import { ProvenanceBadge } from "@/components/Provenance";
 import { RiskMatrix } from "@/components/RiskMatrix";
 import { StatusBar } from "@/components/StatusBar";
@@ -28,6 +29,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
       <StatusBar national={national} lastRun={lastRun} />
+      <PageNav active="/" />
 
       <div className="px-6 py-5 border-b border-zinc-900 flex flex-wrap items-baseline gap-x-6 gap-y-1">
         <h1 className="text-xl font-semibold tracking-tight">
