@@ -1,8 +1,42 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Dark is the default (operations-centre big screen). Light remaps the same
+ * zinc-* utility classes via CSS vars so we don't rewrite every component. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  --color-zinc-50: oklch(0.985 0 0);
+  --color-zinc-100: oklch(0.97 0 0);
+  --color-zinc-200: oklch(0.922 0 0);
+  --color-zinc-300: oklch(0.87 0 0);
+  --color-zinc-400: oklch(0.708 0 0);
+  --color-zinc-500: oklch(0.556 0 0);
+  --color-zinc-600: oklch(0.439 0 0);
+  --color-zinc-700: oklch(0.371 0 0);
+  --color-zinc-800: oklch(0.269 0 0);
+  --color-zinc-900: oklch(0.205 0 0);
+  --color-zinc-950: oklch(0.145 0 0);
+}
+
+:root.light {
+  --background: #fafafa;
+  --foreground: #18181b;
+
+  /* Invert the ramp so existing utilities still read as foreground/background. */
+  --color-zinc-50: oklch(0.145 0 0);
+  --color-zinc-100: oklch(0.205 0 0);
+  --color-zinc-200: oklch(0.269 0 0);
+  --color-zinc-300: oklch(0.371 0 0);
+  --color-zinc-400: oklch(0.556 0 0);
+  --color-zinc-500: oklch(0.6 0 0);
+  --color-zinc-600: oklch(0.708 0 0);
+  --color-zinc-700: oklch(0.87 0 0);
+  --color-zinc-800: oklch(0.93 0 0);
+  --color-zinc-900: oklch(0.96 0 0);
+  --color-zinc-950: oklch(0.985 0 0);
 }
 
 @theme inline {
@@ -12,15 +46,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }

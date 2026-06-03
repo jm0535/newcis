@@ -2,6 +2,7 @@
 // ENSO phase, last-ingest timestamp, and which sources succeeded this cycle.
 import type { LastRun, NationalStatus } from "@/lib/types";
 import { ALERT_BG_CLASS, fmtDateTime } from "@/lib/ui";
+import { ThemeToggle } from "./ThemeToggle";
 
 const ENSO_LABEL: Record<NationalStatus["enso_phase"], string> = {
   neutral: "ENSO Neutral",
@@ -57,6 +58,7 @@ export function StatusBar({
             </span>
           </span>
         )}
+        <ThemeToggle />
       </div>
     </div>
   );

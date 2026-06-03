@@ -28,6 +28,9 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
+    const isLight = document.documentElement.classList.contains("light");
+    const bgColour = isLight ? "#fafafa" : "#09090b";
+
     const map = new maplibregl.Map({
       container: containerRef.current,
       // Raster-tile-free open style: just a flat backdrop so the polygons read clearly.
@@ -36,7 +39,7 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         version: 8,
         sources: {},
         layers: [
-          { id: "bg", type: "background", paint: { "background-color": "#09090b" } },
+          { id: "bg", type: "background", paint: { "background-color": bgColour } },
         ],
         glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
       },
@@ -56,7 +59,7 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
       for (const f of geojson.features) {
         const code: string = f.properties.code;
         const level = worst[code];
-        f.properties.risk_colour = level ? RISK_COLOUR[level] : "#27272a"; // zinc-800
+        f.properties.risk_colour = level ? RISK_COLOUR[level] : (isLight ? "#d4d4d8" : "#27272a"); // zinc-300 / zinc-800
         f.properties.risk_level = level ?? "none";
       }
 
