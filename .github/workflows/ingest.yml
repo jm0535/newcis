@@ -12,7 +12,7 @@ on:
     # Every 6 hours. NOAA ONI updates monthly, CHIRPS rainfall dekadally — this cadence is
     # comfortably above any source's refresh rate without hammering them.
     - cron: "17 */6 * * *"
-  workflow_dispatch: {} # manual trigger from the Actions tab
+  workflow_dispatch:
 
 permissions:
   contents: write # commit /data updates back to main
