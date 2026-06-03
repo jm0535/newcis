@@ -36,7 +36,7 @@ export function StatusBar({
 
   return (
     <div className="border-b border-border-subtle bg-[var(--surface-overlay)] backdrop-blur-md sticky top-0 z-20">
-      <div className="px-6 py-2.5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs">
+      <div className="px-4 md:px-6 py-2.5 flex flex-wrap items-center gap-x-4 md:gap-x-5 gap-y-2 text-xs">
         <StatusPill status={ALERT_STATUS[alert]} pulse={alert !== "GREEN"}>
           {alert}
         </StatusPill>

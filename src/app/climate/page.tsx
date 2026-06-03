@@ -34,11 +34,11 @@ export default async function ClimatePage() {
       <StatusBar national={national} lastRun={lastRun} />
       <PageNav active="/climate" />
 
-      <header className="px-6 py-6 border-b border-border-subtle">
+      <header className="px-4 md:px-6 py-6 border-b border-border-subtle">
         <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
           ENSO Climate Intelligence
         </div>
-        <h1 className="text-2xl font-semibold tracking-tight">NEWCIS</h1>
+        <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
         <p className="text-xs text-text-muted mt-2 max-w-3xl leading-relaxed">
           Live oceanic + atmospheric indicators driving the national alert level. Threshold
           bands shown on every chart — gauges, trends, and history all read from the same
@@ -46,7 +46,7 @@ export default async function ClimatePage() {
         </p>
       </header>
 
-      <div className="px-6 py-6 space-y-8">
+      <div className="px-4 md:px-6 py-6 space-y-8">
         <section aria-label="Live indicators">
           <SectionHeader title="Indicators" description="Latest reading per source" />
           {indicators.length === 0 ? (
@@ -109,7 +109,7 @@ export default async function ClimatePage() {
         </section>
       </div>
 
-      <footer className="border-t border-border-subtle px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
+      <footer className="border-t border-border-subtle px-4 md:px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
         <span>
           Last ingest{" "}
           <span className="text-text-2" data-numeric>

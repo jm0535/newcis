@@ -163,7 +163,7 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
     <div className="relative">
       <div
         ref={containerRef}
-        className="w-full h-[440px] rounded-lg border border-border-subtle overflow-hidden"
+        className="w-full h-[320px] md:h-[440px] rounded-lg border border-border-subtle overflow-hidden"
       />
       <div
         className="absolute top-3 right-3 flex gap-0.5 bg-[var(--surface-overlay)] backdrop-blur border border-border-subtle rounded-md p-0.5 shadow-[var(--elevation-2)]"

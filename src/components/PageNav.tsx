@@ -13,7 +13,7 @@ export function PageNav({ active }: { active: string }) {
   return (
     <nav
       aria-label="Primary"
-      className="px-6 border-b border-border-subtle flex gap-1 text-xs"
+      className="px-4 md:px-6 border-b border-border-subtle flex gap-1 text-xs overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {PAGES.map((p) => {
         const isActive = active === p.href;

@@ -29,12 +29,12 @@ export default async function Home() {
       <StatusBar national={national} lastRun={lastRun} />
       <PageNav active="/" />
 
-      <header className="px-6 py-6 border-b border-border-subtle flex flex-wrap items-end gap-x-6 gap-y-2">
+      <header className="px-4 md:px-6 py-6 border-b border-border-subtle flex flex-wrap items-end gap-x-6 gap-y-2">
         <div className="min-w-0">
           <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
             Executive Strategic Overview
           </div>
-          <h1 className="text-2xl font-semibold tracking-tight text-text-1">
+          <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-text-1">
             NEWCIS
             <span className="text-text-muted font-normal text-lg ml-2">
               · Papua New Guinea
@@ -52,7 +52,7 @@ export default async function Home() {
         </Badge>
       </header>
 
-      <div className="px-6 py-6 space-y-6">
+      <div className="px-4 md:px-6 py-6 space-y-6">
         <section aria-label="National key performance indicators">
           <KpiStrip national={national} />
         </section>
@@ -86,7 +86,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <footer className="border-t border-border-subtle px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
+      <footer className="border-t border-border-subtle px-4 md:px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
         <span>
           Last ingest{" "}
           <span className="text-text-2" data-numeric>

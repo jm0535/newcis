@@ -20,6 +20,15 @@ export const metadata: Metadata = {
     "Proof-of-concept national climate intelligence dashboard for Papua New Guinea.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

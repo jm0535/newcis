@@ -84,12 +84,12 @@ export default async function OperationsPage() {
       <StatusBar national={national} lastRun={lastRun} />
       <PageNav active="/operations" />
 
-      <header className="px-6 py-6 border-b border-border-subtle flex flex-wrap items-end justify-between gap-3">
+      <header className="px-4 md:px-6 py-6 border-b border-border-subtle flex flex-wrap items-end justify-between gap-3">
         <div>
           <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
             Intelligence &amp; Operations
           </div>
-          <h1 className="text-2xl font-semibold tracking-tight">NEWCIS</h1>
+          <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
           <p className="text-xs text-text-muted mt-2 max-w-2xl leading-relaxed">
             National situation, focus-province risk, cluster status, and the SITREP generator.
           </p>
@@ -97,7 +97,7 @@ export default async function OperationsPage() {
         <RefreshButton />
       </header>
 
-      <div className="px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="px-4 md:px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <section className="lg:col-span-2 space-y-6">
           <Card padding="lg">
             <SectionHeader title="National Situation" />
@@ -180,7 +180,7 @@ export default async function OperationsPage() {
               title="Cluster Status Board"
               action={<ProvenanceBadge value="DEMO" />}
             />
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto"><table className="w-full text-sm min-w-[420px]">
               <thead className="text-[10px] uppercase tracking-[0.08em] text-text-muted">
                 <tr>
                   <th className="text-left pl-2 py-1 font-medium">Cluster</th>
@@ -201,7 +201,7 @@ export default async function OperationsPage() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table></div>
           </Card>
 
           <Card padding="lg">
@@ -210,7 +210,7 @@ export default async function OperationsPage() {
               {ACTIONS.map((a, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-3 border-b border-border-subtle pb-1.5"
+                  className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border-subtle pb-1.5"
                 >
                   <span className="text-[10px] uppercase tracking-[0.08em] text-text-muted w-16 shrink-0">
                     {a.owner}
@@ -284,7 +284,7 @@ export default async function OperationsPage() {
         </aside>
       </div>
 
-      <footer className="border-t border-border-subtle px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
+      <footer className="border-t border-border-subtle px-4 md:px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
         <span>
           Last ingest{" "}
           <span className="text-text-2" data-numeric>
