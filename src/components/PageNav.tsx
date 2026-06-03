@@ -6,6 +6,7 @@ const PAGES = [
   { href: "/", label: "Overview" },
   { href: "/climate", label: "ENSO Climate" },
   { href: "/sectors", label: "Sectoral Impact" },
+  { href: "/operations", label: "Operations" },
 ];
 
 export function PageNav({ active }: { active: string }) {
