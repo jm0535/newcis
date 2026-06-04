@@ -311,7 +311,17 @@ export default async function OperationsPage() {
           </span>
         </span>
         <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
-        <span data-numeric>newcis.in4metrix.dev</span>
+        <span>
+          Powered by{" "}
+          <a
+            href="https://www.in4metrix.dev"
+            target="_blank"
+            rel="noreferrer"
+            className="text-accent hover:underline"
+          >
+            in4metrix
+          </a>
+        </span>
       </footer>
     </main>
   );

@@ -101,7 +101,17 @@ export default async function Home() {
           {lastRun && <span className="ml-2 text-text-disabled">· {lastRun.notes}</span>}
         </span>
         <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
-        <span data-numeric>newcis.in4metrix.dev</span>
+        <span>
+          Powered by{" "}
+          <a
+            href="https://www.in4metrix.dev"
+            target="_blank"
+            rel="noreferrer"
+            className="text-accent hover:underline"
+          >
+            in4metrix
+          </a>
+        </span>
       </footer>
     </main>
   );
