@@ -2,9 +2,10 @@
 // ENSO phase, last-ingest timestamp, and which sources succeeded this cycle.
 import type { LastRun, NationalStatus } from "@/lib/types";
 import { fmtDateTime } from "@/lib/ui";
+import { LiveClock } from "./LiveClock";
 import { StatusPill } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
-import { Clock } from "lucide-react";
+import { Clock, RefreshCw } from "lucide-react";
 
 const ENSO_LABEL: Record<NationalStatus["enso_phase"], string> = {
   neutral: "ENSO Neutral",
@@ -47,6 +48,14 @@ export function StatusBar({
         </span>
         <span className="ml-auto flex items-center gap-1.5 text-text-muted">
           <Clock size={12} />
+          <LiveClock />
+        </span>
+        <span
+          className="flex items-center gap-1.5 text-text-muted"
+          title="When the data was last refreshed (Papua New Guinea time)"
+        >
+          <RefreshCw size={11} />
+          <span className="hidden sm:inline">Updated</span>
           <span data-numeric className="text-text-2">
             {fmtDateTime(lastRun?.finished_at ?? national?.updated_at)}
           </span>

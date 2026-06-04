@@ -100,9 +100,28 @@ export const INDICATOR_META: Record<string, IndicatorMeta> = {
   },
 };
 
+// PNG runs on Port Moresby time (UTC+10, no daylight saving). Stored timestamps
+// are UTC (correct for the data layer); we DISPLAY them in national time so a
+// reader in PNG sees their own wall clock, not a UTC value that looks "behind".
+// "PGT" = Papua New Guinea Time.
+const PNG_TZ = "Pacific/Port_Moresby";
+
+const PNG_DATETIME_FMT = new Intl.DateTimeFormat("en-GB", {
+  timeZone: PNG_TZ,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+});
+
 export function fmtDateTime(iso: string | undefined | null): string {
   if (!iso) return "—";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "—";
-  return d.toISOString().replace("T", " ").slice(0, 16) + " UTC";
+  // en-GB gives "04/06/2026, 18:27"; normalise to "2026-06-04 18:27 PGT".
+  const parts = PNG_DATETIME_FMT.formatToParts(d);
+  const p = (t: string) => parts.find((x) => x.type === t)?.value ?? "";
+  return `${p("year")}-${p("month")}-${p("day")} ${p("hour")}:${p("minute")} PGT`;
 }
