@@ -1,8 +1,9 @@
 "use client";
 
 // Hands-free data refresh for the operating picture. Every `intervalMs` (default
-// 5 min — aligned to the ~6-hourly ingest cadence, but frequent enough to catch a
-// manual ingest quickly) it calls router.refresh(), which re-runs every server
+// 2 min — frequent enough to catch a manual ingest or live-event update quickly,
+// while the real ingest cadence stays ~6-hourly) it calls router.refresh(),
+// which re-runs every server
 // component and re-paints all cards with the latest /data state. No reload, no
 // flicker — React reconciles only what changed.
 //
@@ -22,7 +23,7 @@ const CHECK_FMT = new Intl.DateTimeFormat("en-GB", {
   hour12: false,
 });
 
-export function AutoRefresh({ intervalMs = 5 * 60_000 }: { intervalMs?: number }) {
+export function AutoRefresh({ intervalMs = 2 * 60_000 }: { intervalMs?: number }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [lastChecked, setLastChecked] = useState<string | null>(null);
