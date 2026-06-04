@@ -39,7 +39,13 @@ data/               JSON store — written by the ingestion Action
   risk_thresholds.md     Rationale for each band
 public/provinces.geojson  PNG admin-1 boundaries (built by scripts/)
 scripts/            One-off build scripts (GeoJSON, HDX bootstrap)
+docs/               Design system + architecture references
 ```
+
+## Architecture references
+- [docs/design-system.md](./docs/design-system.md) — tokens + UI primitives.
+- [docs/architecture-production.md](./docs/architecture-production.md) — open-stack production target (Postgres/PostGIS, Zod, self-hosted observability/CI). A reviewable **backup plan** alongside the Power BI + ArcGIS path, for a developer-staffed deployment.
+- [docs/living-atlas.md](./docs/living-atlas.md) — how to use **keyless** ArcGIS Living Atlas content (Public-tier only) in the MapLibre map, without an ArcGIS subscription.
 
 ## Deploying to Vercel
 
