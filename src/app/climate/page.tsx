@@ -48,7 +48,10 @@ export default async function ClimatePage() {
 
       <div className="px-4 md:px-6 py-6 space-y-8">
         <section aria-label="Live indicators">
-          <SectionHeader title="Indicators" description="Latest reading per source" />
+          <SectionHeader
+            title="Indicators"
+            description="Latest reading per signal. The coloured bar shows where today's value sits across the GREEN→AMBER→RED→BLACK bands — the marker is the current value, so a glance answers 'are we in trouble yet?'"
+          />
           {indicators.length === 0 ? (
             <EmptyState
               title="No indicators yet"
@@ -68,18 +71,27 @@ export default async function ClimatePage() {
         </section>
 
         <section aria-label="12-month trend">
-          <SectionHeader title="12-Month Trend" description="Recent readings vs threshold bands" />
+          <SectionHeader
+            title="12-Month Trend"
+            description="Each chart tracks one signal over time. The dashed lines are the alert thresholds — when the trend crosses one, the national level escalates to AMBER, RED, or BLACK."
+          />
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-3 text-[11px] text-text-muted">
+            <span className="font-semibold uppercase tracking-[0.08em]">Threshold lines:</span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="w-4 border-t-2 border-dashed border-status-amber" /> AMBER · ENSO watch
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="w-4 border-t-2 border-dashed border-status-red" /> RED · ENSO alert
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="w-4 border-t-2 border-dashed border-status-black" /> BLACK · emergency
+            </span>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {indicators.map((i) => (
               <Card key={i.key} padding="md">
-                <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-xs uppercase tracking-[0.08em] text-text-muted font-semibold">
-                    {i.key}
-                  </span>
-                  <span className="text-[11px] text-text-muted">{i.unit}</span>
-                </div>
                 <TrendChart
-                  indicatorKey={i.key}
+                  indicator={i}
                   history={history}
                   threshold={thresholdByKey.get(i.key)}
                 />

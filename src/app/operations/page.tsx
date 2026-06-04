@@ -91,7 +91,8 @@ export default async function OperationsPage() {
           </div>
           <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
           <p className="text-xs text-text-muted mt-2 max-w-2xl leading-relaxed">
-            National situation, focus-province risk, cluster status, and the SITREP generator.
+            The action view: where things stand, which provinces need attention, who is on
+            standby, what is owed and by whom — and a one-click Weekly SITREP for Cabinet.
           </p>
         </div>
         <RefreshButton />
@@ -100,7 +101,10 @@ export default async function OperationsPage() {
       <div className="px-4 md:px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <section className="lg:col-span-2 space-y-6">
           <Card padding="lg">
-            <SectionHeader title="National Situation" />
+            <SectionHeader
+              title="National Situation"
+              description="The headline numbers at a glance — the alert level we are at, the Pacific climate phase, the overall risk rating, and how many focus provinces are in trouble."
+            />
             {national ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <MetricTile
@@ -130,7 +134,10 @@ export default async function OperationsPage() {
           </Card>
 
           <Card padding="lg">
-            <SectionHeader title="Focus Provinces — Worst Sector Risk" />
+            <SectionHeader
+              title="Focus Provinces — Worst Sector Risk"
+              description="For each of the 4 provinces, the single worst-hit sector and its level. The list below names every sector currently at HIGH or CRITICAL — the priority watch-list."
+            />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {focusProvinceRisks.map((p) => (
                 <Card key={p.code} variant="muted" padding="sm">
@@ -178,6 +185,7 @@ export default async function OperationsPage() {
           <Card padding="lg">
             <SectionHeader
               title="Cluster Status Board"
+              description="Response teams by sector. STANDBY = ready but not activated · ACTIVE = mobilised and responding · STAND-DOWN = no current role. Seeded for the demo."
               action={<ProvenanceBadge value="DEMO" />}
             />
             <div className="overflow-x-auto"><table className="w-full text-sm min-w-[420px]">
@@ -205,7 +213,11 @@ export default async function OperationsPage() {
           </Card>
 
           <Card padding="lg">
-            <SectionHeader title="Action Tracker" action={<ProvenanceBadge value="DEMO" />} />
+            <SectionHeader
+              title="Action Tracker"
+              description="Who owes what, by when. OPEN = still to do · DONE = complete. Seeded for the demo."
+              action={<ProvenanceBadge value="DEMO" />}
+            />
             <ul className="space-y-1.5 text-sm">
               {ACTIONS.map((a, i) => (
                 <li
@@ -230,7 +242,10 @@ export default async function OperationsPage() {
           <SitrepGenerator />
 
           <Card padding="lg">
-            <SectionHeader title="Recent SITREPs" />
+            <SectionHeader
+              title="Recent SITREPs"
+              description="Reports generated this session — click to reopen and print."
+            />
             {sitreps.length === 0 ? (
               <EmptyState
                 icon={<FileText size={28} />}
@@ -260,7 +275,10 @@ export default async function OperationsPage() {
           </Card>
 
           <Card padding="lg">
-            <SectionHeader title="Ingest Pipeline" />
+            <SectionHeader
+              title="Ingest Pipeline"
+              description="Health of the data feed — when it last ran and how much it pulled. The dashboard always shows the last good data, even if a source fails."
+            />
             <div className="text-xs text-text-2 space-y-1.5">
               <div>
                 Last{" "}

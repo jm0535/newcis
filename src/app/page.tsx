@@ -1,4 +1,5 @@
 // Page 1 — Executive Strategic Overview.
+import { ExecutiveHeadline } from "@/components/ExecutiveHeadline";
 import { HeatMap } from "@/components/HeatMap";
 import { KpiStrip } from "@/components/KpiStrip";
 import { PageNav } from "@/components/PageNav";
@@ -53,6 +54,10 @@ export default async function Home() {
       </header>
 
       <div className="px-4 md:px-6 py-6 space-y-6">
+        <section aria-label="Bottom-line summary">
+          <ExecutiveHeadline national={national} />
+        </section>
+
         <section aria-label="National key performance indicators">
           <KpiStrip national={national} />
         </section>
@@ -62,7 +67,7 @@ export default async function Home() {
             <Card padding="lg">
               <SectionHeader
                 title="National Risk Matrix"
-                description="Engine-derived · per focus province"
+                description="Each cell rates one sector in one province: green = OK, amber = watch, red = high stress, violet = critical. Scan for red and violet — that's where action is needed."
               />
               <RiskMatrix sectorRisk={sectorRisk} />
               <div className="mt-4 pt-3 border-t border-border-subtle text-[11px] text-text-muted flex flex-wrap items-center gap-2">
@@ -78,7 +83,7 @@ export default async function Home() {
             <Card padding="lg">
               <SectionHeader
                 title="Provincial Heat Map"
-                description="Click a province for detail · swap basemaps top-right"
+                description="The 4 focus provinces coloured by their worst sector risk. Click a province for detail · swap basemaps top-right."
               />
               <HeatMap sectorRisk={sectorRisk} />
             </Card>

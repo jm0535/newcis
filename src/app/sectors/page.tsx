@@ -32,8 +32,10 @@ export default async function SectorsPage() {
         </div>
         <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
         <p className="text-xs text-text-muted mt-2 max-w-3xl leading-relaxed">
-          Seven sectors × four focus provinces, traffic-light coloured. Each cell carries the
-          engine's verdict; tooltip shows provenance and data source.
+          How the climate is stressing each part of national life. Eight sectors across the four
+          focus provinces, each rated green → amber → red → violet. Every panel names the lead
+          agency and the signals behind the rating. Scan for red and violet — that&apos;s where
+          a sector is under real stress.
         </p>
       </header>
 

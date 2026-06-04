@@ -5,7 +5,7 @@
 // executive question "are we in trouble yet?" reduces to one glance.
 import { motion } from "framer-motion";
 import type { AlertLevel, Indicator, RiskThreshold } from "@/lib/types";
-import { ALERT_COLOUR, TREND_GLYPH } from "@/lib/ui";
+import { ALERT_COLOUR, INDICATOR_META, TREND_GLYPH } from "@/lib/ui";
 import { ProvenanceBadge } from "./Provenance";
 import { Card, StatusPill } from "./ui";
 import { classifyIndicator } from "@/lib/risk-engine";
@@ -36,6 +36,7 @@ export function IndicatorGauge({
   threshold: RiskThreshold | undefined;
 }) {
   const level: AlertLevel = classifyIndicator(indicator.value, threshold);
+  const meta = INDICATOR_META[indicator.key];
   const range = threshold ? axisRange(threshold) : ([-2, 2] as [number, number]);
   const valuePct = indicator.value === null ? null : pct(indicator.value, range);
 
@@ -83,6 +84,10 @@ export function IndicatorGauge({
           </StatusPill>
         </div>
       </div>
+
+      {meta && (
+        <p className="text-xs text-text-2 leading-relaxed -mt-1">{meta.plain}</p>
+      )}
 
       <div className="flex items-baseline gap-2">
         <span className="text-3xl font-semibold text-text-1" data-numeric>

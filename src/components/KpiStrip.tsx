@@ -13,6 +13,31 @@ const PHASE_SHORT: Record<NationalStatus["enso_phase"], string> = {
   la_nina_alert: "La Niña Alert",
 };
 
+// One-line plain-English hint per phase — what it means for PNG, so a non-technical
+// reader gets the "so what" without knowing the science.
+const PHASE_HINT: Record<NationalStatus["enso_phase"], string> = {
+  neutral: "Pacific in a normal state — no El Niño or La Niña forcing.",
+  el_nino_watch: "Conditions building toward El Niño — drought/frost risk rising.",
+  el_nino_alert: "El Niño underway — highland drought & frost likely.",
+  la_nina_watch: "Conditions building toward La Niña — flood risk rising.",
+  la_nina_alert: "La Niña underway — heavy rain & flooding likely.",
+};
+
+// What each alert level means as an instruction to leadership.
+const ALERT_HINT: Record<NationalStatus["alert_level"], string> = {
+  GREEN: "Routine — normal monitoring.",
+  AMBER: "Watch — brief sector leads, verify readiness.",
+  RED: "Alert — pre-position supplies, advise focus provinces.",
+  BLACK: "Emergency — activate national operations centre.",
+};
+
+const RISK_HINT: Record<NationalStatus["national_risk_rating"], string> = {
+  low: "Few sectors stressed across focus provinces.",
+  med: "Several sectors stressed — monitor closely.",
+  high: "Many sectors stressed — action needed now.",
+  critical: "Widespread severe stress — crisis footing.",
+};
+
 const ALERT_TONE = {
   GREEN: "green",
   AMBER: "amber",
@@ -46,18 +71,21 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
         icon={<Activity size={12} />}
         label="ENSO Phase"
         value={<span className="text-lg">{PHASE_SHORT[national.enso_phase]}</span>}
+        hint={PHASE_HINT[national.enso_phase]}
       />
       <MetricTile
         icon={<AlertTriangle size={12} />}
         label="National Alert"
         value={national.alert_level}
         tone={ALERT_TONE[national.alert_level]}
+        hint={ALERT_HINT[national.alert_level]}
       />
       <MetricTile
         icon={<Gauge size={12} />}
         label="National Risk"
         value={national.national_risk_rating.toUpperCase()}
         tone={RISK_TONE[national.national_risk_rating]}
+        hint={RISK_HINT[national.national_risk_rating]}
       />
       <MetricTile
         icon={<Users size={12} />}

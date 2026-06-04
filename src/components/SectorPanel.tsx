@@ -101,23 +101,19 @@ export function SectorPanel({
 
       {driverInds.length > 0 && (
         <div className="text-[11px] text-text-muted pt-2 border-t border-border-subtle">
-          <span className="uppercase tracking-[0.06em] text-text-disabled mr-1.5 font-medium">
-            Drivers
-          </span>
-          {driverInds.map((d, i) => (
-            <span key={d.key}>
-              <span className="text-text-2 font-medium" data-numeric>
-                {d.key}
-              </span>
-              <span className="text-text-muted" data-numeric>
-                {" "}
-                {d.value === null ? "—" : d.value}
-              </span>
-              {i < driverInds.length - 1 && (
-                <span className="text-border-default"> · </span>
-              )}
-            </span>
-          ))}
+          <div className="uppercase tracking-[0.06em] text-text-disabled mb-1 font-medium">
+            What drives this rating
+          </div>
+          <div className="flex flex-col gap-0.5">
+            {driverInds.map((d) => (
+              <div key={d.key} className="flex items-baseline justify-between gap-2" title={d.key}>
+                <span className="text-text-2 truncate">{d.label}</span>
+                <span className="text-text-muted shrink-0" data-numeric>
+                  {d.value === null ? "—" : `${d.value} ${d.unit}`}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </Card>

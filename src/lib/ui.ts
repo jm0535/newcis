@@ -43,6 +43,63 @@ export const TREND_GLYPH: Record<Trend, string> = {
   flat: "▬",
 };
 
+// Plain-language explainer for each climate/hazard indicator. Written for a dual
+// audience: an executive should grasp "what is this and which way is bad" in one
+// line; a technical reader gets the same vocabulary the risk engine uses.
+//   - plain:  one sentence, no jargon — what the signal actually tells us.
+//   - danger: which direction escalates the alert (drives the caption + arrow).
+// `dangerLabel` is the human phrasing of that direction shown next to the chart.
+export interface IndicatorMeta {
+  plain: string;
+  danger: "high" | "low" | "extreme"; // up=high, down=low, away-from-zero=extreme
+  dangerLabel: string;
+}
+
+export const INDICATOR_META: Record<string, IndicatorMeta> = {
+  ONI: {
+    plain:
+      "The master El Niño / La Niña dial — Pacific Ocean temperature that drives PNG's drought and flood seasons.",
+    danger: "extreme",
+    dangerLabel: "Far from 0 is dangerous — high = El Niño (drought), very low = La Niña (floods).",
+  },
+  SST_ANOM_NINO34: {
+    plain: "Sea-surface temperature anomaly in the Niño-3.4 region — the raw ENSO ocean signal.",
+    danger: "extreme",
+    dangerLabel: "Far from 0 is dangerous in either direction.",
+  },
+  RAINFALL_ANOM: {
+    plain: "How far rainfall is above or below normal across the focus provinces.",
+    danger: "low",
+    dangerLabel: "Falling / negative is dangerous — a drought signal.",
+  },
+  SOIL_MOISTURE: {
+    plain: "How wet the root-zone soil is versus a normal year — feeds crops and water supply.",
+    danger: "low",
+    dangerLabel: "Falling is dangerous — crops and water under stress.",
+  },
+  TEMP_ANOM: {
+    plain: "How many degrees hotter or cooler than the seasonal normal it has been.",
+    danger: "high",
+    dangerLabel: "Rising heat is dangerous — health stress, evaporation, fire risk.",
+  },
+  SEISMIC: {
+    plain:
+      "Count of magnitude-4.5+ earthquakes in PNG over 30 days — PNG sits on the Ring of Fire.",
+    danger: "high",
+    dangerLabel: "Rising count is dangerous — more shaking, higher disaster risk.",
+  },
+  NDVI: {
+    plain: "Satellite vegetation health — greener crops and forest read higher.",
+    danger: "low",
+    dangerLabel: "Falling is dangerous — drying or failing vegetation.",
+  },
+  SOI: {
+    plain: "Southern Oscillation Index — atmospheric pressure see-saw that confirms ENSO phase.",
+    danger: "low",
+    dangerLabel: "Strongly negative is dangerous — reinforces El Niño.",
+  },
+};
+
 export function fmtDateTime(iso: string | undefined | null): string {
   if (!iso) return "—";
   const d = new Date(iso);
