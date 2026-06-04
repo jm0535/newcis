@@ -6,9 +6,9 @@
     "source": "NOAA CPC",
     "update_frequency": "monthly",
     "provenance": "LIVE",
-    "value": 0.11,
-    "observed_at": "2026-03-15",
-    "trend": "flat"
+    "value": 0.48,
+    "observed_at": "2026-04-15",
+    "trend": "up"
   },
   {
     "key": "RAINFALL_ANOM",
@@ -30,6 +30,28 @@
     "provenance": "LIVE",
     "value": 17,
     "observed_at": "2025-12-01",
+    "trend": "flat"
+  },
+  {
+    "key": "SEISMIC",
+    "label": "Seismic tempo (M4.5+ events, PNG)",
+    "unit": "count / 30d",
+    "source": "USGS FDSNWS earthquake catalogue",
+    "update_frequency": "continuous (polled per cycle)",
+    "provenance": "LIVE",
+    "value": 28,
+    "observed_at": "2026-06-04T08:26:42.796Z",
+    "trend": "flat"
+  },
+  {
+    "key": "TEMP_ANOM",
+    "label": "Temperature anomaly (focus provinces, 30-day Tmax)",
+    "unit": "°C vs 8-yr normal",
+    "source": "Open-Meteo archive (ERA5-derived)",
+    "update_frequency": "daily",
+    "provenance": "LIVE",
+    "value": 0.9,
+    "observed_at": "2026-06-04T08:27:03.066Z",
     "trend": "flat"
   }
 ]

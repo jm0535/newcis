@@ -61,5 +61,14 @@
     "red_max": -0.2,
     "inverted": true,
     "notes": "MODIS NDVI anomaly. Vegetation stress lags rainfall by ~4–8 weeks; an early canary for food-security collapse."
+  },
+  {
+    "metric": "SEISMIC",
+    "unit": "count of M4.5+ events in PNG (30-day window)",
+    "green_max": 10,
+    "amber_max": 25,
+    "red_max": 45,
+    "inverted": false,
+    "notes": "USGS FDSNWS earthquake tempo for the PNG bbox. PNG sits on the Ring of Fire; a typical month sees ~10–25 M4.5+ events. Elevated tempo (>25) flags a seismically active period; a major shock or swarm pushes >45. Non-inverted: higher count = worse."
   }
 ]

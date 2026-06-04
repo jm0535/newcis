@@ -12,6 +12,7 @@ const SECTORS: Sector[] = [
   "Infrastructure",
   "Energy Security",
   "Social Stability",
+  "Disaster & Hazard",
 ];
 
 const FOCUS: { code: string; label: string }[] = [

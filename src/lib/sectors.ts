@@ -60,4 +60,11 @@ export const SECTOR_META: SectorMeta[] = [
     description:
       "Resource scarcity historically correlates with tribal conflict in Highlands provinces. Province cells fed LIVE from ACLED conflict-events (90-day window via HDX HAPI).",
   },
+  {
+    sector: "Disaster & Hazard",
+    lead_agency: "National Disaster Centre (NDC)",
+    drivers: ["SEISMIC"],
+    description:
+      "Multi-hazard tempo: earthquakes, cyclones, floods, volcanoes, drought. Fed LIVE from GDACS national alert levels and USGS seismic count. PNG's Ring-of-Fire exposure makes this a standing rather than seasonal risk.",
+  },
 ];

@@ -13,7 +13,8 @@ export type Sector =
   | "Economic Stability"
   | "Infrastructure"
   | "Energy Security"
-  | "Social Stability";
+  | "Social Stability"
+  | "Disaster & Hazard";
 
 export interface Indicator {
   key: string; // e.g. "ONI"

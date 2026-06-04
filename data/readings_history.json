@@ -5,6 +5,11 @@
     "observed_at": "2026-03-15"
   },
   {
+    "key": "ONI",
+    "value": 0.48,
+    "observed_at": "2026-04-15"
+  },
+  {
     "key": "RAINFALL_ANOM",
     "value": -8.2,
     "observed_at": "2026-03-31"
@@ -13,5 +18,15 @@
     "key": "SOIL_MOISTURE",
     "value": 17,
     "observed_at": "2025-12-01"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 28,
+    "observed_at": "2026-06-04T08:26:42.796Z"
+  },
+  {
+    "key": "TEMP_ANOM",
+    "value": 0.9,
+    "observed_at": "2026-06-04T08:27:03.066Z"
   }
 ]

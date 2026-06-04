@@ -15,6 +15,9 @@ import { fetchHdxFoodSecurity } from "./sources/hdx-food-security";
 import { fetchHdxRainfall } from "./sources/hdx-rainfall";
 import { fetchNasaPowerSoil } from "./sources/nasa-power-soil";
 import { fetchHdxAcled } from "./sources/hdx-acled";
+import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
+import { fetchGdacs } from "./sources/gdacs";
+import { fetchOpenMeteo } from "./sources/open-meteo";
 import type {
   Indicator,
   HistoricalReading,
@@ -34,6 +37,7 @@ const SECTORS: Sector[] = [
   "Infrastructure",
   "Energy Security",
   "Social Stability",
+  "Disaster & Hazard",
 ];
 
 const DATA = path.join(process.cwd(), "data");
@@ -89,6 +93,10 @@ export async function runIngest(): Promise<LastRun> {
   const acledRes = appId
     ? await run("hdx_acled", () => fetchHdxAcled(appId, FOCUS_CODES))
     : { ok: false, value: null, error: "no HDX_APP_ID", ms: 0 };
+  // Keyless sources — always run.
+  const usgsRes = await run("usgs_earthquakes", () => fetchUsgsEarthquakes(FOCUS_CODES));
+  const gdacsRes = await run("gdacs", () => fetchGdacs(FOCUS_CODES));
+  const openMeteoRes = await run("open_meteo", () => fetchOpenMeteo(FOCUS_CODES));
 
   const history = await readJson<HistoricalReading[]>("readings_history.json", []);
   const existingSectorRisk = await readJson<SectorRisk[]>("sector_risk.json", []);
@@ -122,6 +130,37 @@ export async function runIngest(): Promise<LastRun> {
     }
   }
 
+  // USGS seismic tempo — a standing PNG hazard indicator (Ring of Fire).
+  if (usgsRes.ok && usgsRes.value) {
+    const ind = usgsRes.value.indicator;
+    if (ind.value !== null) {
+      ind.trend = computeTrend(ind.key, ind.value, history);
+      liveIndicators.push(ind);
+      history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+    }
+  }
+
+  // Open-Meteo backstop: PROMOTE its rainfall/temp anomalies only when the
+  // primary feed is absent, so we never double-count. HDX is the primary for
+  // RAINFALL_ANOM; TEMP_ANOM has no primary feed, so Open-Meteo always supplies it.
+  if (openMeteoRes.ok && openMeteoRes.value) {
+    const haveRainfall = liveIndicators.some((i) => i.key === "RAINFALL_ANOM");
+    if (!haveRainfall) {
+      const ind = openMeteoRes.value.rainfall_indicator;
+      if (ind.value !== null) {
+        ind.trend = computeTrend(ind.key, ind.value, history);
+        liveIndicators.push(ind);
+        history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+      }
+    }
+    const tempInd = openMeteoRes.value.temp_indicator;
+    if (tempInd.value !== null) {
+      tempInd.trend = computeTrend(tempInd.key, tempInd.value, history);
+      liveIndicators.push(tempInd);
+      history.push({ key: tempInd.key, value: tempInd.value, observed_at: tempInd.observed_at });
+    }
+  }
+
   const seen = new Set<string>();
   const dedupedHistory = [...history]
     .reverse()
@@ -142,6 +181,13 @@ export async function runIngest(): Promise<LastRun> {
   if (soilRes.ok && soilRes.value) upstreamRows.push(...soilRes.value.sector_rows);
   if (foodRes.ok && foodRes.value) upstreamRows.push(...foodRes.value.rows);
   if (acledRes.ok && acledRes.value) upstreamRows.push(...acledRes.value.sector_rows);
+  // Disaster & Hazard: GDACS multi-hazard alert + USGS seismic, max-merged below.
+  if (gdacsRes.ok && gdacsRes.value) upstreamRows.push(...gdacsRes.value.sector_rows);
+  if (usgsRes.ok && usgsRes.value) upstreamRows.push(...usgsRes.value.sector_rows);
+  // Open-Meteo Water Security rows only when HDX rainfall is absent (backstop).
+  if (openMeteoRes.ok && openMeteoRes.value && !(rainfallRes.ok && rainfallRes.value)) {
+    upstreamRows.push(...openMeteoRes.value.sector_rows);
+  }
 
   // When two upstream sources target the same (province, sector) cell, collapse
   // to the worst — explainable, no opaque weighting.
@@ -203,9 +249,9 @@ export async function runIngest(): Promise<LastRun> {
   const lastRun: LastRun = {
     started_at: startedAt,
     finished_at: new Date().toISOString(),
-    status: [oniRes, rainfallRes, foodRes, soilRes, acledRes].every((r) => r.ok)
+    status: [oniRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, openMeteoRes].every((r) => r.ok)
       ? "ok"
-      : [oniRes, rainfallRes, foodRes, soilRes, acledRes].some((r) => r.ok)
+      : [oniRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, openMeteoRes].some((r) => r.ok)
         ? "partial"
         : "failed",
     sources_ok: {
@@ -214,6 +260,9 @@ export async function runIngest(): Promise<LastRun> {
       hdx_food_security: foodRes.ok,
       nasa_power_soil: soilRes.ok,
       hdx_acled: acledRes.ok,
+      usgs_earthquakes: usgsRes.ok,
+      gdacs: gdacsRes.ok,
+      open_meteo: openMeteoRes.ok,
     },
     notes: [
       oniRes.ok ? `ONI ${oniRes.value?.indicator.value} (${oniRes.ms}ms)` : `ONI failed: ${oniRes.error}`,
@@ -225,6 +274,9 @@ export async function runIngest(): Promise<LastRun> {
         ? `Soil moisture mean ${soilRes.value?.indicator.value}th pctile (${soilRes.ms}ms)`
         : `Soil moisture failed: ${soilRes.error}`,
       acledRes.ok ? `ACLED: ${acledRes.value?.note}` : `ACLED failed: ${acledRes.error}`,
+      usgsRes.ok ? `USGS: ${usgsRes.value?.note} (${usgsRes.ms}ms)` : `USGS failed: ${usgsRes.error}`,
+      gdacsRes.ok ? `GDACS: ${gdacsRes.value?.note} (${gdacsRes.ms}ms)` : `GDACS failed: ${gdacsRes.error}`,
+      openMeteoRes.ok ? `Open-Meteo: ${openMeteoRes.value?.note} (${openMeteoRes.ms}ms)` : `Open-Meteo failed: ${openMeteoRes.error}`,
     ].join(" | "),
   };
   await writeJson("last_run.json", lastRun);

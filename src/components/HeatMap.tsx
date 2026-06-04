@@ -12,10 +12,13 @@ import { RISK_COLOUR } from "@/lib/ui";
 
 const RISK_RANK: Record<RiskLevel, number> = { low: 0, med: 1, high: 2, critical: 3 };
 
-type Basemap = "flat" | "osm" | "opentopo" | "satellite";
+type Basemap = "flat" | "osm" | "opentopo" | "satellite" | "esri-vector";
 
 // Keyless XYZ raster sources. OSM + OpenTopo are community tile servers (fair-use
 // caps but fine for a PoC). Esri World Imagery is the standard keyless satellite.
+// `esri-vector` is special: it's an ArcGIS VectorTileServer style (not a raster
+// XYZ source), loaded via its Public-tier, CORS-enabled root.json — see
+// docs/living-atlas.md. Cosmetic only; never a LIVE data badge.
 const BASEMAPS: Record<Basemap, { label: string; tiles: string[]; attribution: string } | null> = {
   flat: null,
   osm: {
@@ -35,7 +38,21 @@ const BASEMAPS: Record<Basemap, { label: string; tiles: string[]; attribution: s
     ],
     attribution: "Esri World Imagery",
   },
+  "esri-vector": {
+    label: "Esri Vector",
+    // Public-tier ArcGIS VectorTileServer — keyless, CORS *. Verified in docs/living-atlas.md.
+    tiles: [],
+    attribution: "Esri World Basemap (Public)",
+  },
 };
+
+const ESRI_VECTOR_STYLE_URL =
+  "https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/resources/styles/root.json";
+
+// IDs of the basemap layers/sources we inject for the Esri vector style, so the
+// swap effect can cleanly tear them down before applying a different basemap.
+const ESRI_SOURCE_PREFIX = "esri-bm-src";
+const ESRI_LAYER_PREFIX = "esri-bm-";
 
 function worstByProvince(sectorRisk: SectorRisk[]): Record<string, RiskLevel> {
   const out: Record<string, RiskLevel> = {};
@@ -137,13 +154,34 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
     };
   }, [sectorRisk]);
 
-  // Swap the raster basemap layer beneath the provinces without rebuilding the map.
+  // Swap the basemap beneath the provinces without rebuilding the map. Two code
+  // paths: a single raster source for XYZ basemaps, or — for the keyless ArcGIS
+  // VectorTileServer — fetch its Mapbox-style root.json and inject its sources +
+  // layers (prefixed so we can tear them down on the next swap).
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-    const apply = () => {
+    let cancelled = false;
+
+    // Remove whatever basemap is currently mounted (raster OR esri-vector).
+    const teardown = () => {
       if (map.getLayer("basemap")) map.removeLayer("basemap");
       if (map.getSource("basemap")) map.removeSource("basemap");
+      for (const layer of map.getStyle().layers ?? []) {
+        if (layer.id.startsWith(ESRI_LAYER_PREFIX) && map.getLayer(layer.id)) {
+          map.removeLayer(layer.id);
+        }
+      }
+      for (const id of Object.keys(map.getStyle().sources ?? {})) {
+        if (id.startsWith(ESRI_SOURCE_PREFIX) && map.getSource(id)) {
+          map.removeSource(id);
+        }
+      }
+    };
+
+    const beforeLayer = () => (map.getLayer("provinces-fill") ? "provinces-fill" : undefined);
+
+    const applyRaster = () => {
       const cfg = BASEMAPS[basemap];
       if (!cfg) return;
       map.addSource("basemap", {
@@ -152,11 +190,68 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         tileSize: 256,
         attribution: cfg.attribution,
       });
-      const before = map.getLayer("provinces-fill") ? "provinces-fill" : undefined;
-      map.addLayer({ id: "basemap", type: "raster", source: "basemap" }, before);
+      map.addLayer({ id: "basemap", type: "raster", source: "basemap" }, beforeLayer());
     };
+
+    const applyEsriVector = async () => {
+      const styleRes = await fetch(ESRI_VECTOR_STYLE_URL);
+      if (!styleRes.ok) return;
+      const style = await styleRes.json();
+      if (cancelled || !mapRef.current) return;
+
+      // Relative refs in root.json resolve against the style URL's directory.
+      const base = ESRI_VECTOR_STYLE_URL.replace(/\/[^/]*$/, "/");
+      const resolve = (u: string) =>
+        u.startsWith("http") ? u : new URL(u, base).toString();
+
+      // Point glyphs + sprite at Esri's services so symbol (label/icon) layers
+      // render instead of 404-ing against the demotiles endpoints.
+      if (style.glyphs && typeof map.setGlyphs === "function") {
+        map.setGlyphs(resolve(style.glyphs));
+      }
+      if (style.sprite && typeof map.setSprite === "function") {
+        map.setSprite(resolve(style.sprite));
+      }
+
+      // Map the style's source names → our prefixed names so we can rename them
+      // in each layer's `source` ref and tear them down cleanly later.
+      const rename: Record<string, string> = {};
+      for (const [name, src] of Object.entries(style.sources as Record<string, { url?: string; type: string }>)) {
+        const id = `${ESRI_SOURCE_PREFIX}-${name}`;
+        rename[name] = id;
+        if (map.getSource(id)) continue;
+        map.addSource(id, {
+          ...src,
+          ...(src.url ? { url: resolve(src.url) } : {}),
+          attribution: BASEMAPS["esri-vector"]?.attribution,
+        } as maplibregl.SourceSpecification);
+      }
+
+      const before = beforeLayer();
+      for (const layer of style.layers as Array<{ id: string; source?: string }>) {
+        const injected = {
+          ...layer,
+          id: `${ESRI_LAYER_PREFIX}${layer.id}`,
+          ...(layer.source ? { source: rename[layer.source] ?? layer.source } : {}),
+        };
+        if (map.getLayer(injected.id)) continue;
+        map.addLayer(injected as maplibregl.LayerSpecification, before);
+      }
+    };
+
+    const apply = () => {
+      teardown();
+      if (basemap === "flat") return;
+      if (basemap === "esri-vector") void applyEsriVector();
+      else applyRaster();
+    };
+
     if (map.isStyleLoaded()) apply();
     else map.once("load", apply);
+
+    return () => {
+      cancelled = true;
+    };
   }, [basemap]);
 
   return (

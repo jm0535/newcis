@@ -6,7 +6,7 @@
     "score": 0.6666666666666666,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.627Z",
+    "as_of": "2026-06-04T08:27:03.073Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
@@ -16,17 +16,17 @@
     "score": 0.83,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-03T13:43:22.627Z",
+    "as_of": "2026-06-04T08:27:03.073Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
     "province_code": "PG08",
     "sector": "Public Health",
-    "level": "low",
-    "score": 0.2,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.627Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -36,18 +36,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.627Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG08",
     "sector": "Infrastructure",
-    "level": "low",
-    "score": 0.2,
+    "level": "high",
+    "score": 0.6666666666666666,
     "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.627Z",
-    "data_source": "DEMO · road closures land in ReliefWeb text reports; not parsed yet"
+    "provenance": "LIVE",
+    "as_of": "2026-06-04T08:27:03.074Z",
+    "data_source": "USGS · 28 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG08",
@@ -56,7 +56,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.627Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live upstream proxy"
   },
   {
@@ -66,8 +66,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG08",
+    "sector": "Disaster & Hazard",
+    "level": "high",
+    "score": 0.6666666666666666,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-04T08:27:03.074Z",
+    "data_source": "USGS · 28 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG09",
@@ -76,7 +86,7 @@
     "score": 0.6666666666666666,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
@@ -86,17 +96,17 @@
     "score": 0.75,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "NASA POWER · GWETROOT 25th pctile"
   },
   {
     "province_code": "PG09",
     "sector": "Public Health",
-    "level": "low",
-    "score": 0.2,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -106,18 +116,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG09",
     "sector": "Infrastructure",
-    "level": "low",
-    "score": 0.2,
+    "level": "high",
+    "score": 0.6666666666666666,
     "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
-    "data_source": "DEMO · Highlands Highway exposure (flood + landslip)"
+    "provenance": "LIVE",
+    "as_of": "2026-06-04T08:27:03.074Z",
+    "data_source": "USGS · 28 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG09",
@@ -126,7 +136,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "DEMO · Yonki reservoir inflow tracks rainfall (proxied via engine)"
   },
   {
@@ -136,8 +146,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG09",
+    "sector": "Disaster & Hazard",
+    "level": "high",
+    "score": 0.6666666666666666,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-04T08:27:03.074Z",
+    "data_source": "USGS · 28 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG07",
@@ -146,7 +166,7 @@
     "score": 0.6666666666666666,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
@@ -156,7 +176,7 @@
     "score": 0.83,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -166,7 +186,7 @@
     "score": 0.4,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "DEMO · driven by rainfall deficit + temp anomaly (engine)"
   },
   {
@@ -176,18 +196,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG07",
     "sector": "Infrastructure",
-    "level": "med",
-    "score": 0.4,
+    "level": "high",
+    "score": 0.6666666666666666,
     "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
-    "data_source": "DEMO · Hela/SHP arterial exposure to rainfall extremes"
+    "provenance": "LIVE",
+    "as_of": "2026-06-04T08:27:03.074Z",
+    "data_source": "USGS · 28 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG07",
@@ -196,7 +216,7 @@
     "score": 0.4,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "DEMO · highland hydropower exposed to rainfall deficit (engine)"
   },
   {
@@ -206,8 +226,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG07",
+    "sector": "Disaster & Hazard",
+    "level": "high",
+    "score": 0.6666666666666666,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-04T08:27:03.074Z",
+    "data_source": "USGS · 28 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG02",
@@ -216,7 +246,7 @@
     "score": 0.6666666666666666,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
@@ -226,17 +256,17 @@
     "score": 0.92,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.074Z",
     "data_source": "NASA POWER · GWETROOT 8th pctile"
   },
   {
     "province_code": "PG02",
     "sector": "Public Health",
-    "level": "low",
-    "score": 0.2,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.075Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -246,18 +276,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.075Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG02",
     "sector": "Infrastructure",
-    "level": "med",
-    "score": 0.4,
+    "level": "high",
+    "score": 0.6666666666666666,
     "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
-    "data_source": "DEMO · Fly/Sepik river transport depth tracks rainfall"
+    "provenance": "LIVE",
+    "as_of": "2026-06-04T08:27:03.075Z",
+    "data_source": "USGS · 28 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG02",
@@ -266,7 +296,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.075Z",
     "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
   },
   {
@@ -276,7 +306,17 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-03T13:43:22.628Z",
+    "as_of": "2026-06-04T08:27:03.075Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG02",
+    "sector": "Disaster & Hazard",
+    "level": "high",
+    "score": 0.6666666666666666,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-04T08:27:03.075Z",
+    "data_source": "USGS · 28 M4.5+ in 30d, max M5.7 (PNG-wide)"
   }
 ]

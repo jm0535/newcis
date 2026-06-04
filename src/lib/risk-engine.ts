@@ -86,9 +86,13 @@ const SECTOR_DRIVERS: Record<Sector, string[]> = {
   "Food Security": ["RAINFALL_ANOM", "NDVI", "SOIL_MOISTURE"],
   "Public Health": ["TEMP_ANOM", "RAINFALL_ANOM"],
   "Economic Stability": ["ONI"],
-  Infrastructure: ["RAINFALL_ANOM"],
+  Infrastructure: ["RAINFALL_ANOM", "SEISMIC"],
   "Energy Security": ["RAINFALL_ANOM"],
   "Social Stability": ["ONI"],
+  // Multi-hazard sector. Indicator driver is SEISMIC (USGS quake tempo); the
+  // dominant signal is the GDACS upstream row (EQ/TC/FL/DR/VO alert level),
+  // which max-merges in via provinceSectorRow.
+  "Disaster & Hazard": ["SEISMIC"],
 };
 
 export interface SectorContext {
