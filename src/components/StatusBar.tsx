@@ -2,6 +2,7 @@
 // ENSO phase, last-ingest timestamp, and which sources succeeded this cycle.
 import type { LastRun, NationalStatus } from "@/lib/types";
 import { fmtDateTime } from "@/lib/ui";
+import { AutoRefresh } from "./AutoRefresh";
 import { LiveClock } from "./LiveClock";
 import { StatusPill } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
@@ -60,6 +61,7 @@ export function StatusBar({
             {fmtDateTime(lastRun?.finished_at ?? national?.updated_at)}
           </span>
         </span>
+        <AutoRefresh />
         {sourceEntries.length > 0 && (
           <span
             className="flex items-center gap-2"
