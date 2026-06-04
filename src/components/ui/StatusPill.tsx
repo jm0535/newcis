@@ -6,7 +6,7 @@ const STATUS_CLASS: Record<Status, string> = {
   green: "bg-status-green/15 text-status-green border-status-green/40",
   amber: "bg-status-amber/15 text-status-amber border-status-amber/40",
   red: "bg-status-red/15 text-status-red border-status-red/50",
-  black: "bg-status-black text-text-1 border-border-strong",
+  black: "bg-status-black/15 text-status-black border-status-black/50",
   neutral: "bg-surface-2 text-text-2 border-border-default",
 };
 
@@ -14,7 +14,7 @@ const DOT_CLASS: Record<Status, string> = {
   green: "bg-status-green",
   amber: "bg-status-amber",
   red: "bg-status-red",
-  black: "bg-text-1",
+  black: "bg-status-black",
   neutral: "bg-text-muted",
 };
 

@@ -3,32 +3,38 @@
 // in one place, the whole operating picture follows.
 import type { AlertLevel, RiskLevel, Trend } from "./types";
 
+// Vibrant traffic-light palette, tuned to stay visible on BOTH the dark UI and
+// the light theme / map imagery. "critical"/BLACK is a vibrant violet (the
+// "beyond red" emergency colour) — a literal black vanished on dark surfaces.
+// Keep in sync with the --status-* tokens in globals.css.
 export const RISK_COLOUR: Record<RiskLevel, string> = {
   low: "#22c55e", // green-500
-  med: "#f59e0b", // amber-500
-  high: "#ef4444", // red-500
-  critical: "#000000",
+  med: "#fbbf24", // amber-400
+  high: "#f43f5e", // rose-500
+  critical: "#a855f7", // violet-500
 };
 
 export const ALERT_COLOUR: Record<AlertLevel, string> = {
   GREEN: "#22c55e",
-  AMBER: "#f59e0b",
-  RED: "#ef4444",
-  BLACK: "#000000",
+  AMBER: "#fbbf24",
+  RED: "#f43f5e",
+  BLACK: "#a855f7",
 };
 
+// Theme-aware pill classes routed through the --status-* tokens so they read in
+// both dark and light themes (no hardcoded zinc/emerald that breaks on flip).
 export const RISK_BG_CLASS: Record<RiskLevel, string> = {
-  low: "bg-emerald-500/20 text-emerald-300 border-emerald-500/50",
-  med: "bg-amber-500/20 text-amber-300 border-amber-500/50",
-  high: "bg-red-500/25 text-red-300 border-red-500/60",
-  critical: "bg-black text-zinc-100 border-zinc-100/60",
+  low: "bg-status-green/15 text-status-green border-status-green/40",
+  med: "bg-status-amber/15 text-status-amber border-status-amber/40",
+  high: "bg-status-red/15 text-status-red border-status-red/50",
+  critical: "bg-status-black/15 text-status-black border-status-black/50",
 };
 
 export const ALERT_BG_CLASS: Record<AlertLevel, string> = {
-  GREEN: "bg-emerald-500/20 text-emerald-300 border-emerald-500/50",
-  AMBER: "bg-amber-500/20 text-amber-300 border-amber-500/50",
-  RED: "bg-red-500/25 text-red-300 border-red-500/60",
-  BLACK: "bg-black text-zinc-100 border-zinc-100/60",
+  GREEN: "bg-status-green/15 text-status-green border-status-green/40",
+  AMBER: "bg-status-amber/15 text-status-amber border-status-amber/40",
+  RED: "bg-status-red/15 text-status-red border-status-red/50",
+  BLACK: "bg-status-black/15 text-status-black border-status-black/50",
 };
 
 export const TREND_GLYPH: Record<Trend, string> = {

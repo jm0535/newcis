@@ -16,7 +16,7 @@ const VALUE_TONE_CLASS: Record<Tone, string> = {
   green: "text-status-green",
   amber: "text-status-amber",
   red: "text-status-red",
-  black: "text-text-1",
+  black: "text-status-black",
 };
 
 export interface MetricTileProps {

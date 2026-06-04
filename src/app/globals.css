@@ -51,11 +51,14 @@
   --accent-hover: #34d399;
   --accent-muted: rgba(16, 185, 129, 0.15);
 
-  /* Semantic — status (traffic-light). Aligned with RISK_COLOUR map. */
-  --status-green: #16a34a;
-  --status-amber: #f59e0b;
-  --status-red: #dc2626;
-  --status-black: #18181b;
+  /* Semantic — status (traffic-light). Vibrant, high-contrast on the dark
+     surface. "black"/critical is a deep VIOLET — the conventional "beyond red /
+     emergency" colour — because a literal black is invisible on a dark UI.
+     Aligned with RISK_COLOUR / ALERT_COLOUR in src/lib/ui.ts. */
+  --status-green: #22c55e;
+  --status-amber: #fbbf24;
+  --status-red: #f43f5e;
+  --status-black: #a855f7;
 
   /* Spacing scale — multiples of 4px. Prefer Tailwind p- m- gap- utilities. */
   --space-1: 4px;
@@ -141,7 +144,12 @@
   --accent-hover: #10b981;
   --accent-muted: rgba(5, 150, 105, 0.12);
 
-  --status-black: #27272a;
+  /* Light-theme status: deeper, saturated variants so text/fills stay legible
+     on the near-white surfaces. "black"/critical stays violet for continuity. */
+  --status-green: #15803d;
+  --status-amber: #b45309;
+  --status-red: #e11d48;
+  --status-black: #7e22ce;
 
   --elevation-1: 0 1px 2px 0 rgba(15, 23, 42, 0.06);
   --elevation-2: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 1px 3px 0 rgba(15, 23, 42, 0.04);

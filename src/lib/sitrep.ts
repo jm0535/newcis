@@ -137,7 +137,7 @@ export function generateSitrep(inputs: SitrepInputs): Sitrep {
     .pill.GREEN { background: #dcfce7; color: #166534; }
     .pill.AMBER { background: #fef3c7; color: #92400e; }
     .pill.RED { background: #fee2e2; color: #991b1b; }
-    .pill.BLACK { background: #18181b; color: #fafafa; }
+    .pill.BLACK { background: #f3e8ff; color: #7e22ce; }
     ul { padding-left: 18px; }
     footer { margin-top: 32px; font-size: 11px; color: #71717a; border-top: 1px solid #e4e4e7; padding-top: 8px; }
   </style>
