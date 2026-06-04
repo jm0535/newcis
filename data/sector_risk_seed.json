@@ -118,5 +118,185 @@
     "provenance": "DEMO",
     "as_of": "2026-06-03T00:00:00.000Z",
     "data_source": "DEMO · Fly/Sepik river transport depth tracks rainfall"
+  },
+  {
+    "province_code": "PG12",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG12",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Ramu grid serves Morobe; inflow tracks rainfall (engine proxy)"
+  },
+  {
+    "province_code": "PG12",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Lae port + Highlands Highway head exposed to flood/landslip"
+  },
+  {
+    "province_code": "PG14",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG14",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
+  },
+  {
+    "province_code": "PG14",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Sepik river transport depth tracks rainfall"
+  },
+  {
+    "province_code": "PG16",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG16",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · island grid; diesel-dependent baseline"
+  },
+  {
+    "province_code": "PG16",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · small-island infrastructure; sea-state exposure"
+  },
+  {
+    "province_code": "PG17",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG17",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · island grid; diesel-dependent baseline"
+  },
+  {
+    "province_code": "PG17",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · coastal road + wharf exposure"
+  },
+  {
+    "province_code": "PG18",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG18",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Rabaul grid; geothermal + diesel baseline"
+  },
+  {
+    "province_code": "PG18",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Rabaul volcanic + coastal infrastructure exposure"
+  },
+  {
+    "province_code": "PG20",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG20",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · island grid; diesel-dependent baseline"
+  },
+  {
+    "province_code": "PG20",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Bougainville road network; rainfall-exposed"
   }
 ]

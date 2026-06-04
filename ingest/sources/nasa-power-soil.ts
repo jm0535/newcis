@@ -16,18 +16,15 @@
  * NASA Earthdata's SPoRT-LIS product is presented). One band file, both sources.
  */
 import type { Indicator, SectorRisk } from "../../src/lib/types";
+import { FOCUS_PROVINCES } from "../../src/lib/focus-provinces";
 
 const POWER_BASE = "https://power.larc.nasa.gov/api/temporal/monthly/point";
 
-// One representative interior point per focus province. Coordinates chosen at
-// the agricultural centre of each — Wabag (Enga), Mount Hagen (WHP), Mendi
-// (SHP), Kerema (Gulf) — so the value reflects the populated/cropped area.
-const POINTS: { code: string; name: string; lon: number; lat: number }[] = [
-  { code: "PG08", name: "Enga", lon: 143.71, lat: -5.49 },
-  { code: "PG09", name: "Western Highlands", lon: 144.23, lat: -5.86 },
-  { code: "PG07", name: "Southern Highlands", lon: 143.66, lat: -6.15 },
-  { code: "PG02", name: "Gulf", lon: 145.78, lat: -7.96 },
-];
+// One representative interior point per focus province — sourced from the
+// canonical focus-province list (src/lib/focus-provinces.ts), so a province
+// added there is automatically pulled here with no drift.
+const POINTS: { code: string; name: string; lon: number; lat: number }[] =
+  FOCUS_PROVINCES.map(({ code, name, lon, lat }) => ({ code, name, lon, lat }));
 
 interface PowerResponse {
   properties: { parameter: { GWETROOT: Record<string, number> } };

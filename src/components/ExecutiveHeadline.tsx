@@ -2,6 +2,7 @@
 // status into plain English — "what's happening, how bad, what to do" — so a
 // non-technical leader gets the bottom line before scanning any tile or matrix.
 import type { NationalStatus } from "@/lib/types";
+import { FOCUS_COUNT } from "@/lib/focus-provinces";
 import { StatusPill } from "./ui";
 import { AlertTriangle } from "lucide-react";
 
@@ -33,7 +34,7 @@ export function ExecutiveHeadline({ national }: { national: NationalStatus | nul
     `${PHASE_PLAIN[national.enso_phase]}, but the national alert is ` +
     `${level} and overall risk is ${risk}` +
     (provinces > 0
-      ? ` — ${provinces} of the 4 focus provinces are stressed across multiple sectors.`
+      ? ` — ${provinces} of the ${FOCUS_COUNT} focus provinces are stressed across multiple sectors.`
       : ".");
 
   return (

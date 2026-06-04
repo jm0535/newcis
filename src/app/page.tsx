@@ -9,6 +9,7 @@ import { RiskMatrix } from "@/components/RiskMatrix";
 import { StatusBar } from "@/components/StatusBar";
 import { Card, SectionHeader, Badge } from "@/components/ui";
 import { getLastRun, getNationalStatus, getSectorRisk } from "@/lib/data";
+import { FOCUS_COUNT } from "@/lib/focus-provinces";
 import { fmtDateTime } from "@/lib/ui";
 import { Sparkles } from "lucide-react";
 
@@ -84,7 +85,7 @@ export default async function Home() {
             <Card padding="lg">
               <SectionHeader
                 title="Provincial Heat Map"
-                description="The 4 focus provinces coloured by their worst sector risk. Click a province for detail · swap basemaps top-right."
+                description={`The ${FOCUS_COUNT} focus provinces coloured by their worst sector risk. Click a province for detail · swap basemaps top-right.`}
               />
               <HeatMap sectorRisk={sectorRisk} />
             </Card>

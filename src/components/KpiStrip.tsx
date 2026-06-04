@@ -2,6 +2,7 @@
 // affected population estimate, # high-risk provinces, forecast period.
 // Glanceable from across an ops centre — large numerals, single colour cue per card.
 import type { NationalStatus } from "@/lib/types";
+import { FOCUS_COUNT } from "@/lib/focus-provinces";
 import { MetricTile, EmptyState } from "./ui";
 import { Activity, AlertTriangle, Gauge, Users, MapPin, CalendarRange } from "lucide-react";
 
@@ -97,7 +98,7 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
         icon={<MapPin size={12} />}
         label="High-Risk Provinces"
         value={String(national.high_risk_province_count)}
-        hint="Focus set (Enga, WH, SH, Gulf)"
+        hint={`Of the ${FOCUS_COUNT} focus provinces in this prototype`}
       />
       <MetricTile
         icon={<CalendarRange size={12} />}

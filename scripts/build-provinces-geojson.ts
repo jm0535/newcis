@@ -14,8 +14,11 @@
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { FOCUS_PROVINCES } from "../src/lib/focus-provinces";
 
-const FOCUS_NAMES = new Set(["Enga", "Western Highlands", "Southern Highlands", "Gulf"]);
+// Focus-province set derived from the canonical list — add a province there and
+// it is automatically flagged `is_focus: true` on the next geojson rebuild.
+const FOCUS_NAMES = new Set(FOCUS_PROVINCES.map((p) => p.name));
 
 // Approximate PNG admin1 populations (2021 census, in thousands → multiplied to absolute).
 // These are baked into the GeoJSON so the engine can compute affected-population estimates

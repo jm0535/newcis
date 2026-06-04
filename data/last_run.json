@@ -1,7 +1,7 @@
 {
-  "started_at": "2026-06-04T08:26:21.655Z",
-  "finished_at": "2026-06-04T08:27:03.079Z",
-  "status": "ok",
+  "started_at": "2026-06-04T11:15:57.234Z",
+  "finished_at": "2026-06-04T11:16:57.447Z",
+  "status": "partial",
   "sources_ok": {
     "noaa_oni": true,
     "hdx_rainfall": true,
@@ -10,7 +10,7 @@
     "hdx_acled": true,
     "usgs_earthquakes": true,
     "gdacs": true,
-    "open_meteo": true
+    "open_meteo": false
   },
-  "notes": "ONI 0.48 (6868ms) | Rainfall mean anom -8.2% (3366 raw rows, 6127ms) | Food security: HDX HAPI returned no current IPC food-security rows for PNG (PNG is not consistently in IPC publications). Sector will be DEMO-seeded. | Soil moisture mean 17th pctile (1742ms) | ACLED: 3 ACLED rows aggregated to 4 focus-province cells | USGS: 28 M4.5+ events (max M5.7) → high (5022ms) | GDACS: 1 active PNG event(s); worst = Green (GDACS · Green Earthquake — Magnitude 4.5M, Depth:290.75km) (4502ms) | Open-Meteo: Open-Meteo: rainfall -30.9% of normal, temp +0.9°C (mean of 4 provinces) (15768ms)"
+  "notes": "ONI 0.48 (7797ms) | Rainfall mean anom 4.7% (3366 raw rows, 11046ms) | Food security: HDX HAPI returned no current IPC food-security rows for PNG (PNG is not consistently in IPC publications). Sector will be DEMO-seeded. | Soil moisture mean 47th pctile (10245ms) | ACLED: 3 ACLED rows aggregated to 10 focus-province cells | USGS: 28 M4.5+ events (max M5.7) → high (4499ms) | GDACS: 1 active PNG event(s); worst = Green (GDACS · Green Earthquake — Magnitude 4.5M, Depth:290.75km) (12702ms) | Open-Meteo failed: Error: Open-Meteo: HTTP 429"
 }

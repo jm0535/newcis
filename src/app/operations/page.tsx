@@ -14,16 +14,10 @@ import {
   listSitreps,
 } from "@/lib/data";
 import { fmtDateTime } from "@/lib/ui";
+import { FOCUS_NAMES, FOCUS_COUNT } from "@/lib/focus-provinces";
 import { FileText, ExternalLink } from "lucide-react";
 
 export const dynamic = "force-dynamic";
-
-const FOCUS_NAMES: Record<string, string> = {
-  PG08: "Enga",
-  PG09: "Western Highlands",
-  PG07: "Southern Highlands",
-  PG02: "Gulf",
-};
 
 const ALERT_TONE = {
   GREEN: "green",
@@ -137,9 +131,9 @@ export default async function OperationsPage() {
           <Card padding="lg">
             <SectionHeader
               title="Focus Provinces — Worst Sector Risk"
-              description="For each of the 4 provinces, the single worst-hit sector and its level. The list below names every sector currently at HIGH or CRITICAL — the priority watch-list."
+              description={`For each of the ${FOCUS_COUNT} provinces, the single worst-hit sector and its level. The list below names every sector currently at HIGH or CRITICAL — the priority watch-list.`}
             />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
               {focusProvinceRisks.map((p) => (
                 <Card key={p.code} variant="muted" padding="sm">
                   <div className="text-[10px] text-text-muted uppercase tracking-[0.08em]" data-numeric>

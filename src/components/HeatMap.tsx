@@ -1,7 +1,7 @@
 "use client";
 
 // Provincial heat map. All 22 provinces drawn from /public/provinces.geojson;
-// only the 4 focus provinces are coloured by their *worst* sector risk (the
+// only the focus provinces (is_focus) are coloured by their *worst* sector risk (the
 // signal an executive cares about: which provinces should I look at first?).
 // Non-focus provinces are greyed — explicit reminder this PoC is a slice.
 import { useEffect, useRef, useState } from "react";

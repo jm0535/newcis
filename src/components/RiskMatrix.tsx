@@ -2,6 +2,7 @@
 // Reading "Why is Enga red?" reduces to one row + its data_source caption.
 import type { SectorRisk, Sector } from "@/lib/types";
 import { TREND_GLYPH } from "@/lib/ui";
+import { FOCUS_PROVINCES } from "@/lib/focus-provinces";
 import { StatusPill } from "./ui";
 
 const SECTORS: Sector[] = [
@@ -15,12 +16,10 @@ const SECTORS: Sector[] = [
   "Disaster & Hazard",
 ];
 
-const FOCUS: { code: string; label: string }[] = [
-  { code: "PG08", label: "Enga" },
-  { code: "PG09", label: "Western H." },
-  { code: "PG07", label: "Southern H." },
-  { code: "PG02", label: "Gulf" },
-];
+const FOCUS: { code: string; label: string }[] = FOCUS_PROVINCES.map((p) => ({
+  code: p.code,
+  label: p.shortLabel,
+}));
 
 const RISK_STATUS = {
   low: "green",

@@ -6,13 +6,12 @@ import type { SectorMeta } from "@/lib/sectors";
 import { ProvenanceBadge } from "./Provenance";
 import { Card, StatusPill } from "./ui";
 import { TREND_GLYPH } from "@/lib/ui";
+import { FOCUS_PROVINCES } from "@/lib/focus-provinces";
 
-const FOCUS: { code: string; label: string }[] = [
-  { code: "PG08", label: "Enga" },
-  { code: "PG09", label: "Western H." },
-  { code: "PG07", label: "Southern H." },
-  { code: "PG02", label: "Gulf" },
-];
+const FOCUS: { code: string; label: string }[] = FOCUS_PROVINCES.map((p) => ({
+  code: p.code,
+  label: p.shortLabel,
+}));
 
 const RISK_STATUS = {
   low: "green",
@@ -65,7 +64,7 @@ export function SectorPanel({
 
       <p className="text-[11px] leading-snug text-text-2">{meta.description}</p>
 
-      <div className="grid grid-cols-4 gap-1.5">
+      <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-1.5">
         {FOCUS.map((p) => {
           const r = byCode.get(p.code);
           if (!r) {

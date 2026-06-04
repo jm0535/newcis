@@ -8,7 +8,7 @@
     "provenance": "LIVE",
     "value": 0.48,
     "observed_at": "2026-04-15",
-    "trend": "up"
+    "trend": "flat"
   },
   {
     "key": "RAINFALL_ANOM",
@@ -17,9 +17,9 @@
     "source": "HDX HAPI · CHIRPS",
     "update_frequency": "dekadal (10-day)",
     "provenance": "LIVE",
-    "value": -8.2,
+    "value": 4.7,
     "observed_at": "2026-03-31",
-    "trend": "flat"
+    "trend": "up"
   },
   {
     "key": "SOIL_MOISTURE",
@@ -28,9 +28,9 @@
     "source": "NASA POWER · MERRA-2 GWETROOT",
     "update_frequency": "monthly",
     "provenance": "LIVE",
-    "value": 17,
+    "value": 47,
     "observed_at": "2025-12-01",
-    "trend": "flat"
+    "trend": "up"
   },
   {
     "key": "SEISMIC",
@@ -40,18 +40,7 @@
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
     "value": 28,
-    "observed_at": "2026-06-04T08:26:42.796Z",
-    "trend": "flat"
-  },
-  {
-    "key": "TEMP_ANOM",
-    "label": "Temperature anomaly (focus provinces, 30-day Tmax)",
-    "unit": "°C vs 8-yr normal",
-    "source": "Open-Meteo archive (ERA5-derived)",
-    "update_frequency": "daily",
-    "provenance": "LIVE",
-    "value": 0.9,
-    "observed_at": "2026-06-04T08:27:03.066Z",
+    "observed_at": "2026-06-04T11:16:34.264Z",
     "trend": "flat"
   }
 ]

@@ -27,6 +27,7 @@ import type {
   RiskThreshold,
   Sector,
 } from "../src/lib/types";
+import { FOCUS_CODES } from "../src/lib/focus-provinces";
 import { rollUpNational, scoreSector, computeTrend as engineTrend } from "../src/lib/risk-engine";
 
 const SECTORS: Sector[] = [
@@ -41,9 +42,6 @@ const SECTORS: Sector[] = [
 ];
 
 const DATA = path.join(process.cwd(), "data");
-
-// Focus province HDX admin1 p-codes (Enga, Western Highlands, Southern Highlands, Gulf).
-const FOCUS_CODES = ["PG08", "PG09", "PG07", "PG02"];
 
 async function readJson<T>(file: string, fallback: T): Promise<T> {
   try {

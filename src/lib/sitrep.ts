@@ -12,13 +12,7 @@ import type {
   SectorRisk,
   Sitrep,
 } from "./types";
-
-const FOCUS_NAMES: Record<string, string> = {
-  PG08: "Enga",
-  PG09: "Western Highlands",
-  PG07: "Southern Highlands",
-  PG02: "Gulf",
-};
+import { FOCUS_NAMES } from "./focus-provinces";
 
 const ENSO_LABEL: Record<NationalStatus["enso_phase"], string> = {
   neutral: "ENSO Neutral",

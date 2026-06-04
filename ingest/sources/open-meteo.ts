@@ -19,15 +19,14 @@
  * nasa-power-soil.ts so all per-province climate signals describe the same place.
  */
 import type { Indicator, SectorRisk } from "../../src/lib/types";
+import { FOCUS_PROVINCES } from "../../src/lib/focus-provinces";
 
 const ARCHIVE = "https://archive-api.open-meteo.com/v1/archive";
 
-const POINTS: { code: string; name: string; lon: number; lat: number }[] = [
-  { code: "PG08", name: "Enga", lon: 143.71, lat: -5.49 },
-  { code: "PG09", name: "Western Highlands", lon: 144.23, lat: -5.86 },
-  { code: "PG07", name: "Southern Highlands", lon: 143.66, lat: -6.15 },
-  { code: "PG02", name: "Gulf", lon: 145.78, lat: -7.96 },
-];
+// Per-province interior points come from the canonical focus-province list, so
+// the climate signals always describe exactly the provinces the dashboard shows.
+const POINTS: { code: string; name: string; lon: number; lat: number }[] =
+  FOCUS_PROVINCES.map(({ code, name, lon, lat }) => ({ code, name, lon, lat }));
 
 const NORMAL_YEARS = 8;
 
