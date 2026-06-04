@@ -1,4 +1,5 @@
 // Page 4 — Intelligence & Operations.
+import { AUTO_REFRESH_LABEL } from "@/components/AutoRefresh";
 import { PageNav } from "@/components/PageNav";
 import { ProvenanceBadge } from "@/components/Provenance";
 import { RefreshButton } from "@/components/RefreshButton";
@@ -309,6 +310,7 @@ export default async function OperationsPage() {
             {fmtDateTime(lastRun?.finished_at)}
           </span>
         </span>
+        <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
         <span data-numeric>newcis.in4metrix.dev</span>
       </footer>
     </main>

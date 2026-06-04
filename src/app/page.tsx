@@ -1,4 +1,5 @@
 // Page 1 — Executive Strategic Overview.
+import { AUTO_REFRESH_LABEL } from "@/components/AutoRefresh";
 import { ExecutiveHeadline } from "@/components/ExecutiveHeadline";
 import { HeatMap } from "@/components/HeatMap";
 import { KpiStrip } from "@/components/KpiStrip";
@@ -99,6 +100,7 @@ export default async function Home() {
           </span>
           {lastRun && <span className="ml-2 text-text-disabled">· {lastRun.notes}</span>}
         </span>
+        <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
         <span data-numeric>newcis.in4metrix.dev</span>
       </footer>
     </main>

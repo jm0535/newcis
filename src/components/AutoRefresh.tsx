@@ -16,6 +16,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 
+// Single source of truth for the auto-refresh cadence, so the footer label and
+// the timer can never drift apart. Change it here and both follow.
+export const AUTO_REFRESH_MS = 2 * 60_000;
+export const AUTO_REFRESH_LABEL = "every 2 min";
+
 const CHECK_FMT = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Pacific/Port_Moresby",
   hour: "2-digit",
@@ -23,7 +28,7 @@ const CHECK_FMT = new Intl.DateTimeFormat("en-GB", {
   hour12: false,
 });
 
-export function AutoRefresh({ intervalMs = 2 * 60_000 }: { intervalMs?: number }) {
+export function AutoRefresh({ intervalMs = AUTO_REFRESH_MS }: { intervalMs?: number }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [lastChecked, setLastChecked] = useState<string | null>(null);

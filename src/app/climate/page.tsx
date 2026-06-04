@@ -1,4 +1,5 @@
 // Page 2 — ENSO Climate Intelligence.
+import { AUTO_REFRESH_LABEL } from "@/components/AutoRefresh";
 import { HistoricalCompare } from "@/components/HistoricalCompare";
 import { IndicatorGauge } from "@/components/IndicatorGauge";
 import { PageNav } from "@/components/PageNav";
@@ -128,6 +129,7 @@ export default async function ClimatePage() {
             {fmtDateTime(lastRun?.finished_at)}
           </span>
         </span>
+        <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
         <span data-numeric>newcis.in4metrix.dev</span>
       </footer>
     </main>

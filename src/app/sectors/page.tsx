@@ -1,4 +1,5 @@
 // Page 3 — Sectoral Impact.
+import { AUTO_REFRESH_LABEL } from "@/components/AutoRefresh";
 import { PageNav } from "@/components/PageNav";
 import { SectorPanel } from "@/components/SectorPanel";
 import { StatusBar } from "@/components/StatusBar";
@@ -59,6 +60,7 @@ export default async function SectorsPage() {
             {fmtDateTime(lastRun?.finished_at)}
           </span>
         </span>
+        <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
         <span data-numeric>newcis.in4metrix.dev</span>
       </footer>
     </main>
