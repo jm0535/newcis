@@ -200,9 +200,15 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
       if (cancelled || !mapRef.current) return;
 
       // Relative refs in root.json resolve against the style URL's directory.
+      // `new URL()` percent-encodes braces, so it would turn the glyphs template
+      // "{fontstack}/{range}" into "%7Bfontstack%7D/%7Brange%7D" — which MapLibre
+      // rejects ("url must include a {fontstack} token"). Decode the brace tokens
+      // back after resolving so templated URLs survive.
       const base = ESRI_VECTOR_STYLE_URL.replace(/\/[^/]*$/, "/");
       const resolve = (u: string) =>
-        u.startsWith("http") ? u : new URL(u, base).toString();
+        (u.startsWith("http") ? u : new URL(u, base).toString())
+          .replace(/%7B/gi, "{")
+          .replace(/%7D/gi, "}");
 
       // Point glyphs + sprite at Esri's services so symbol (label/icon) layers
       // render instead of 404-ing against the demotiles endpoints.
@@ -215,16 +221,47 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
 
       // Map the style's source names → our prefixed names so we can rename them
       // in each layer's `source` ref and tear them down cleanly later.
+      //
+      // The style's source `url` (e.g. "../../") resolves to the ArcGIS
+      // VectorTileServer ROOT, which returns *Esri* service metadata — NOT
+      // MapLibre-compatible TileJSON. Handing that url straight to MapLibre
+      // makes the source load nothing (the bug that made esri-vector look
+      // identical to flat). So we fetch the service metadata ourselves, read its
+      // `tiles` template + `tileInfo.lods`, and build an explicit vector source
+      // with absolute tile URLs.
       const rename: Record<string, string> = {};
-      for (const [name, src] of Object.entries(style.sources as Record<string, { url?: string; type: string }>)) {
+      for (const [name, src] of Object.entries(
+        style.sources as Record<string, { url?: string; type: string }>,
+      )) {
         const id = `${ESRI_SOURCE_PREFIX}-${name}`;
         rename[name] = id;
         if (map.getSource(id)) continue;
-        map.addSource(id, {
-          ...src,
-          ...(src.url ? { url: resolve(src.url) } : {}),
-          attribution: BASEMAPS["esri-vector"]?.attribution,
-        } as maplibregl.SourceSpecification);
+
+        if (src.type === "vector" && src.url) {
+          const serviceRoot = resolve(src.url).replace(/\/?$/, "/");
+          const metaRes = await fetch(`${serviceRoot}?f=json`);
+          if (!metaRes.ok || cancelled || !mapRef.current) return;
+          const meta = (await metaRes.json()) as {
+            tiles?: string[];
+            tileInfo?: { lods?: { level: number }[] };
+          };
+          const template = meta.tiles?.[0] ?? "tile/{z}/{y}/{x}.pbf";
+          const lods = meta.tileInfo?.lods ?? [];
+          const levels = lods.map((l) => l.level);
+          map.addSource(id, {
+            type: "vector",
+            tiles: [`${serviceRoot}${template}`],
+            minzoom: levels.length ? Math.min(...levels) : 0,
+            maxzoom: levels.length ? Math.max(...levels) : 22,
+            attribution: BASEMAPS["esri-vector"]?.attribution,
+          });
+        } else {
+          map.addSource(id, {
+            ...src,
+            ...(src.url ? { url: resolve(src.url) } : {}),
+            attribution: BASEMAPS["esri-vector"]?.attribution,
+          } as maplibregl.SourceSpecification);
+        }
       }
 
       const before = beforeLayer();
