@@ -298,5 +298,205 @@
     "provenance": "DEMO",
     "as_of": "2026-06-03T00:00:00.000Z",
     "data_source": "DEMO · Bougainville road network; rainfall-exposed"
-  }
-]
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Food Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Water Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Disaster & Hazard",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Food Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Water Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Disaster & Hazard",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Food Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Water Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+*** End of Replace String
