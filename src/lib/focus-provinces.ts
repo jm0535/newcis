@@ -32,6 +32,27 @@ export const FOCUS_PROVINCES: FocusProvince[] = [
   { code: "PG20", name: "Autonomous Region of Bougainville", shortLabel: "Bougainville", lon: 155.2, lat: -6.23 },
 ];
 
+// Add the remaining provinces so the prototype can compute risk for all 22 PNG provinces.
+export const ALL_PROVINCES_ADDITIONAL: FocusProvince[] = [
+  { code: "PG03", name: "Central", shortLabel: "Central", lon: 146.8836, lat: -9.4283 },
+  { code: "PG04", name: "National Capital District", shortLabel: "NCD", lon: 147.0925, lat: -9.5131 },
+  { code: "PG05", name: "Milne Bay", shortLabel: "Milne Bay", lon: 153.5119, lat: -11.6174 },
+  { code: "PG06", name: "Oro", shortLabel: "Oro", lon: 149.4438, lat: -9.5878 },
+  { code: "PG01", name: "Western", shortLabel: "Western", lon: 143.2525, lat: -9.0947 },
+  { code: "PG10", name: "Chimbu", shortLabel: "Chimbu", lon: 145.1855, lat: -6.3603 },
+  { code: "PG11", name: "Eastern Highlands", shortLabel: "Eastern H.", lon: 146.0616, lat: -6.5586 },
+  { code: "PG13", name: "Madang", shortLabel: "Madang", lon: 145.7405, lat: -5.3869 },
+  { code: "PG15", name: "West Sepik", shortLabel: "West Sepik", lon: 140.9998, lat: -4.8974 },
+  { code: "PG19", name: "West New Britain", shortLabel: "W. New Britain", lon: 149.5031, lat: -6.3244 },
+  { code: "PG21", name: "Hela", shortLabel: "Hela", lon: 143.156, lat: -5.7189 },
+  { code: "PG22", name: "Jiwaka", shortLabel: "Jiwaka", lon: 144.7359, lat: -6.1032 },
+];
+
+// Export a combined list that consumers can import if they want all provinces.
+export const ALL_PROVINCES: FocusProvince[] = FOCUS_PROVINCES.concat(ALL_PROVINCES_ADDITIONAL);
+
+export const ALL_CODES: string[] = ALL_PROVINCES.map((p) => p.code);
+
 // Derived helpers — every consumer imports from here, so the lists can never drift.
 export const FOCUS_CODES: string[] = FOCUS_PROVINCES.map((p) => p.code);
 
