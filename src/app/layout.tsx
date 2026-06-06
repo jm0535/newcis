@@ -18,6 +18,16 @@ export const metadata: Metadata = {
   title: "NEWCIS — National ENSO Early Warning & Climate Intelligence System",
   description:
     "Proof-of-concept national climate intelligence dashboard for Papua New Guinea.",
+  icons: [
+    {
+      rel: "icon",
+      url: "/globe.svg",
+    },
+    {
+      rel: "apple-touch-icon",
+      url: "/globe.svg",
+    },
+  ],
 };
 
 export const viewport = {

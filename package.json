@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "git:save": "sh scripts/commit-and-push.sh",
     "ingest": "tsx ingest/run.ts",
     "build:provinces": "tsx scripts/build-provinces-geojson.ts && tsx scripts/reconcile-hdx-pcodes.ts",
     "test": "vitest run"

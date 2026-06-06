@@ -26,6 +26,21 @@ pnpm install
 pnpm dev          # http://localhost:3000
 pnpm build        # production build
 pnpm lint
+
+### Quick commit-and-push
+
+To stage, commit, and push workspace changes quickly use the helper script or the npm wrapper:
+
+```bash
+# default message
+pnpm git:save
+
+# custom message
+pnpm git:save -- "fix(ui): tweak header spacing"
+```
+
+This runs `scripts/commit-and-push.sh` which stages all changes, commits (with an optional
+message) and pushes the current branch.
 ```
 
 ## Repo layout
