@@ -21,11 +21,11 @@ export const metadata: Metadata = {
   icons: [
     {
       rel: "icon",
-      url: "/globe.svg",
+      url: "/icon-gauge.svg",
     },
     {
       rel: "apple-touch-icon",
-      url: "/globe.svg",
+      url: "/icon-gauge.svg",
     },
   ],
 };
