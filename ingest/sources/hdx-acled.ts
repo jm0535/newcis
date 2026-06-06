@@ -11,6 +11,7 @@
  * the trend); counts track operational tempo better.
  */
 import type { SectorRisk } from "../../src/lib/types";
+import { hdxFetch } from "./hdx-client";
 
 const ENDPOINT = "https://hapi.humdata.org/api/v2/coordination-context/conflict-events";
 
@@ -60,7 +61,7 @@ export async function fetchHdxAcled(appId: string, focusCodes: string[]): Promis
     limit: "10000",
     app_identifier: appId,
   });
-  const res = await fetch(`${ENDPOINT}?${params}`, { signal: AbortSignal.timeout(30_000) });
+  const res = await hdxFetch(`${ENDPOINT}?${params}`);
   if (!res.ok) throw new Error(`HDX ACLED: HTTP ${res.status}`);
   const body = (await res.json()) as { data: AcledRow[] };
   const rows = body.data ?? [];

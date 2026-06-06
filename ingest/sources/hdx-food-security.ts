@@ -15,6 +15,7 @@
  * and the summed population_in_phase across phases ≥3 (crisis or worse).
  */
 import type { SectorRisk, RiskLevel } from "../../src/lib/types";
+import { hdxFetch } from "./hdx-client";
 
 const BASE = "https://hapi.humdata.org/api/v2/food-security-nutrition-poverty/food-security";
 
@@ -42,7 +43,7 @@ export async function fetchHdxFoodSecurity(
   provinceCodes: string[],
 ): Promise<{ rows: SectorRisk[]; raw_count: number; note: string }> {
   const url = `${BASE}?location_code=PNG&ipc_type=current&output_format=json&limit=10000&app_identifier=${appId}`;
-  const res = await fetch(url, { headers: { "user-agent": "newcis-ingest/0.1" } });
+  const res = await hdxFetch(url);
   if (!res.ok) throw new Error(`HDX food-security: HTTP ${res.status}`);
   const body = (await res.json()) as { data: HapiRow[] };
 

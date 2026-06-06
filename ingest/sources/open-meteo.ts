@@ -45,6 +45,29 @@ function shiftYears(d: Date, years: number): Date {
   return out;
 }
 
+async function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fetchWithRetry(url: string, retries = 3): Promise<DailyBlock> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const res = await fetch(url, { signal: AbortSignal.timeout(20_000) });
+    if (res.ok) {
+      const body = (await res.json()) as { daily: DailyBlock };
+      return body.daily;
+    }
+
+    const status = res.status;
+    const isRetryable = status === 429 || status === 502 || status === 503 || status === 504;
+    const text = await res.text();
+    if (!isRetryable || attempt === retries) {
+      throw new Error(`Open-Meteo: HTTP ${status} ${text}`);
+    }
+    await sleep(400 * attempt);
+  }
+  throw new Error("Open-Meteo: retry loop exited unexpectedly");
+}
+
 async function fetchWindow(lon: number, lat: number, start: Date, end: Date): Promise<DailyBlock> {
   const params = new URLSearchParams({
     latitude: String(lat),
@@ -54,10 +77,7 @@ async function fetchWindow(lon: number, lat: number, start: Date, end: Date): Pr
     daily: "precipitation_sum,temperature_2m_max",
     timezone: "UTC",
   });
-  const res = await fetch(`${ARCHIVE}?${params}`, { signal: AbortSignal.timeout(20_000) });
-  if (!res.ok) throw new Error(`Open-Meteo: HTTP ${res.status}`);
-  const body = (await res.json()) as { daily: DailyBlock };
-  return body.daily;
+  return fetchWithRetry(`${ARCHIVE}?${params}`);
 }
 
 function sum(xs: (number | null)[]): number {
@@ -91,6 +111,7 @@ async function fetchProvince(p: (typeof POINTS)[number]): Promise<ProvinceAnomal
     normPrecip.push(sum(block.precipitation_sum));
     const t = block.temperature_2m_max.filter((v): v is number => v !== null);
     if (t.length) normTmax.push(mean(t));
+    await sleep(250);
   }
 
   const normalPrecip = mean(normPrecip);
@@ -113,7 +134,10 @@ export interface OpenMeteoResult {
 
 export async function fetchOpenMeteo(focusCodes: string[]): Promise<OpenMeteoResult> {
   const points = POINTS.filter((p) => focusCodes.includes(p.code));
-  const results = await Promise.all(points.map(fetchProvince));
+  const results: ProvinceAnomaly[] = [];
+  for (const point of points) {
+    results.push(await fetchProvince(point));
+  }
 
   const meanRain = Math.round((results.reduce((s, r) => s + r.rainfall_anom_pct, 0) / results.length) * 10) / 10;
   const meanTemp = Math.round((results.reduce((s, r) => s + r.temp_anom_c, 0) / results.length) * 10) / 10;

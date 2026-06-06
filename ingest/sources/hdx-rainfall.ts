@@ -10,6 +10,7 @@
  * are configured in %-of-normal deficits, e.g. -40% AMBER).
  */
 import type { SectorRisk, Indicator } from "../../src/lib/types";
+import { hdxFetch } from "./hdx-client";
 
 const BASE = "https://hapi.humdata.org/api/v2/climate/rainfall";
 
@@ -42,7 +43,7 @@ export async function fetchHdxRainfall(
   const PAGE = 10000;
   for (let i = 0; i < 5; i++) {
     const url = `${BASE}?location_code=PNG&aggregation_period=dekad&output_format=json&limit=${PAGE}&offset=${offset}&app_identifier=${appId}`;
-    const res = await fetch(url, { headers: { "user-agent": "newcis-ingest/0.1" } });
+    const res = await hdxFetch(url);
     if (!res.ok) throw new Error(`HDX rainfall: HTTP ${res.status}`);
     const body = (await res.json()) as { data: RainRow[] };
     rows.push(...body.data);

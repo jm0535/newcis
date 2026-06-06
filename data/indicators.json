@@ -30,7 +30,7 @@
     "provenance": "LIVE",
     "value": 47,
     "observed_at": "2025-12-01",
-    "trend": "up"
+    "trend": "flat"
   },
   {
     "key": "SEISMIC",
@@ -39,8 +39,19 @@
     "source": "USGS FDSNWS earthquake catalogue",
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
-    "value": 28,
-    "observed_at": "2026-06-04T11:16:34.264Z",
+    "value": 30,
+    "observed_at": "2026-06-06T02:37:28.373Z",
+    "trend": "flat"
+  },
+  {
+    "key": "TEMP_ANOM",
+    "label": "Temperature anomaly (focus provinces, 30-day Tmax)",
+    "unit": "°C vs 8-yr normal",
+    "source": "Open-Meteo archive (ERA5-derived)",
+    "update_frequency": "daily",
+    "provenance": "LIVE",
+    "value": 0.6,
+    "observed_at": "2026-06-06T02:39:26.992Z",
     "trend": "flat"
   }
 ]
