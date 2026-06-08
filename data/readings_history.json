@@ -55,21 +55,6 @@
     "observed_at": "2026-06-06T02:35:52.562Z"
   },
   {
-    "key": "ONI",
-    "value": 0.48,
-    "observed_at": "2026-04-15"
-  },
-  {
-    "key": "RAINFALL_ANOM",
-    "value": 4.7,
-    "observed_at": "2026-03-31"
-  },
-  {
-    "key": "SOIL_MOISTURE",
-    "value": 47,
-    "observed_at": "2025-12-01"
-  },
-  {
     "key": "SEISMIC",
     "value": 30,
     "observed_at": "2026-06-06T02:37:28.373Z"
@@ -78,5 +63,40 @@
     "key": "TEMP_ANOM",
     "value": 0.6,
     "observed_at": "2026-06-06T02:39:26.992Z"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 18,
+    "observed_at": "2026-06-08T23:29:55.186Z"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 18,
+    "observed_at": "2026-06-08T23:30:38.409Z"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 18,
+    "observed_at": "2026-06-08T23:35:39.770Z"
+  },
+  {
+    "key": "ONI",
+    "value": 0.48,
+    "observed_at": "2026-04-15"
+  },
+  {
+    "key": "RAINFALL_ANOM",
+    "value": 6.9,
+    "observed_at": "2026-03-31"
+  },
+  {
+    "key": "SOIL_MOISTURE",
+    "value": 38,
+    "observed_at": "2025-12-01"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 18,
+    "observed_at": "2026-06-08T23:36:31.294Z"
   }
 ]

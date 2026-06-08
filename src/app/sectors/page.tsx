@@ -34,10 +34,10 @@ export default async function SectorsPage() {
         </div>
         <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
         <p className="text-xs text-text-muted mt-2 max-w-3xl leading-relaxed">
-          How the climate is stressing each part of national life. Eight sectors across the{" "}
-          {FOCUS_COUNT} focus provinces, each rated green → amber → red → black. Every panel names
-          the lead agency and the signals behind the rating. Scan for red and black — that&apos;s
-          where a sector is under real stress.
+          How the climate is stressing each part of national life. Eight sectors across all{" "}
+          {FOCUS_COUNT} provinces. Each panel shows the national shape — how many provinces sit at
+          each risk level — then names the worst-affected provinces and the signals behind the
+          rating. Scan the bars for red and black — that&apos;s where a sector is under real stress.
         </p>
       </header>
 

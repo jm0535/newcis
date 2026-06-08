@@ -2,12 +2,12 @@
   {
     "province_code": "PG08",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.888Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG08",
@@ -16,7 +16,7 @@
     "score": 0.83,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.889Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -26,7 +26,7 @@
     "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.889Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -36,18 +36,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.889Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG08",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.889Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG08",
@@ -56,7 +56,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.889Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live upstream proxy"
   },
   {
@@ -66,28 +66,28 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.890Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG08",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.890Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG09",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.890Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG09",
@@ -96,7 +96,7 @@
     "score": 0.75,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.890Z",
     "data_source": "NASA POWER · GWETROOT 25th pctile"
   },
   {
@@ -106,7 +106,7 @@
     "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.890Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -116,18 +116,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.890Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG09",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.890Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG09",
@@ -136,7 +136,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.890Z",
     "data_source": "DEMO · Yonki reservoir inflow tracks rainfall (proxied via engine)"
   },
   {
@@ -146,28 +146,28 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.890Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG09",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.890Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG07",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.890Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG07",
@@ -176,7 +176,7 @@
     "score": 0.83,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.890Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -186,7 +186,7 @@
     "score": 0.4,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.890Z",
     "data_source": "DEMO · driven by rainfall deficit + temp anomaly (engine)"
   },
   {
@@ -196,18 +196,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.890Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG07",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.890Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG07",
@@ -216,7 +216,7 @@
     "score": 0.4,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "DEMO · highland hydropower exposed to rainfall deficit (engine)"
   },
   {
@@ -226,28 +226,28 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG07",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG02",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG02",
@@ -256,7 +256,7 @@
     "score": 0.92,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "NASA POWER · GWETROOT 8th pctile"
   },
   {
@@ -266,7 +266,7 @@
     "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -276,18 +276,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG02",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG02",
@@ -296,7 +296,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
   },
   {
@@ -306,28 +306,28 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG02",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.998Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG12",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG12",
@@ -336,7 +336,7 @@
     "score": 0.83,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -346,7 +346,7 @@
     "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -356,18 +356,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG12",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG12",
@@ -376,7 +376,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "DEMO · Ramu grid serves Morobe; inflow tracks rainfall (engine proxy)"
   },
   {
@@ -386,28 +386,28 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG12",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG14",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG14",
@@ -416,7 +416,7 @@
     "score": 0.92,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "NASA POWER · GWETROOT 8th pctile"
   },
   {
@@ -426,7 +426,7 @@
     "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -436,18 +436,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG14",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG14",
@@ -456,7 +456,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
   },
   {
@@ -466,37 +466,37 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.891Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG14",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.891Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG16",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.892Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG16",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.27304287499999996,
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
@@ -506,7 +506,7 @@
     "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -516,18 +516,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG16",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.892Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG16",
@@ -536,7 +536,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "DEMO · island grid; diesel-dependent baseline"
   },
   {
@@ -546,37 +546,37 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG16",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.892Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG17",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.892Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG17",
     "sector": "Water Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
@@ -586,7 +586,7 @@
     "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -596,18 +596,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG17",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.892Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG17",
@@ -616,7 +616,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "DEMO · island grid; diesel-dependent baseline"
   },
   {
@@ -626,37 +626,37 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.892Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG17",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.892Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG18",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG18",
     "sector": "Water Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
@@ -666,7 +666,7 @@
     "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -676,18 +676,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG18",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG18",
@@ -696,7 +696,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "DEMO · Rabaul grid; geothermal + diesel baseline"
   },
   {
@@ -706,37 +706,37 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG18",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG20",
     "sector": "Food Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "indicators"
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG20",
     "sector": "Water Security",
-    "level": "low",
-    "score": 0,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
@@ -746,7 +746,7 @@
     "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -756,18 +756,18 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG20",
     "sector": "Infrastructure",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.3333333333333333,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   },
   {
     "province_code": "PG20",
@@ -776,7 +776,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "DEMO · island grid; diesel-dependent baseline"
   },
   {
@@ -786,17 +786,977 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
+    "as_of": "2026-06-08T23:36:36.894Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG20",
     "sector": "Disaster & Hazard",
-    "level": "high",
-    "score": 0.6666666666666666,
+    "level": "med",
+    "score": 0.4,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-06T02:39:26.999Z",
-    "data_source": "USGS · 30 M4.5+ in 30d, max M5.7 (PNG-wide)"
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Water Security",
+    "level": "med",
+    "score": 0.6699999999999999,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "NASA POWER · GWETROOT 33th pctile"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG03",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Water Security",
+    "level": "med",
+    "score": 0.6699999999999999,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "NASA POWER · GWETROOT 33th pctile"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG04",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Water Security",
+    "level": "med",
+    "score": 0.75,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "NASA POWER · GWETROOT 25th pctile"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.894Z",
+    "data_source": "DEMO · seeded for full-province coverage"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG05",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Water Security",
+    "level": "high",
+    "score": 0.83,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · GWETROOT 17th pctile"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Water Security",
+    "level": "med",
+    "score": 0.3470173750000001,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "HDX HAPI · CHIRPS rainfall"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Water Security",
+    "level": "med",
+    "score": 0.6699999999999999,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · GWETROOT 33th pctile"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Water Security",
+    "level": "med",
+    "score": 0.75,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · GWETROOT 25th pctile"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Water Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "HDX HAPI · CHIRPS rainfall"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Water Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "HDX HAPI · CHIRPS rainfall"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Water Security",
+    "level": "critical",
+    "score": 1,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · GWETROOT 0th pctile"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Water Security",
+    "level": "high",
+    "score": 0.83,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · GWETROOT 17th pctile"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Food Security",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · MERRA-2 GWETROOT"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Water Security",
+    "level": "med",
+    "score": 0.6699999999999999,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "NASA POWER · GWETROOT 33th pctile"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Economic Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "indicators"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Infrastructure",
+    "level": "med",
+    "score": 0.3333333333333333,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Social Stability",
+    "level": "low",
+    "score": 0,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "ACLED · 0 events / 0 fatalities (90d)"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Disaster & Hazard",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "LIVE",
+    "as_of": "2026-06-08T23:36:36.895Z",
+    "data_source": "USGS · 18 M4.5+ in 30d, max M5.7 (PNG-wide)"
   }
 ]

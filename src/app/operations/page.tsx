@@ -62,17 +62,29 @@ export default async function OperationsPage() {
     listSitreps(),
   ]);
 
-  const highRiskRows = sectorRisk.filter(
-    (r) => FOCUS_NAMES[r.province_code] && (r.level === "high" || r.level === "critical"),
-  );
-  const focusProvinceRisks = Object.keys(FOCUS_NAMES).map((code) => {
-    const rows = sectorRisk.filter((r) => r.province_code === code);
-    const worst = rows.sort((a, b) => {
-      const rank = { low: 0, med: 1, high: 2, critical: 3 } as const;
-      return rank[b.level] - rank[a.level];
-    })[0];
-    return { code, name: FOCUS_NAMES[code], worst };
-  });
+  const RANK = { low: 0, med: 1, high: 2, critical: 3 } as const;
+  // One row per province: its single worst-hit sector and how many of its sectors
+  // are at HIGH or CRITICAL. Ranked worst-first so the operations watch-list leads
+  // with the provinces that need attention — at 22 provinces a flat grid buries
+  // the priorities; a severity-ranked table surfaces them.
+  const provinceWatchlist = Object.keys(FOCUS_NAMES)
+    .map((code) => {
+      const rows = sectorRisk.filter((r) => r.province_code === code);
+      const worst = [...rows].sort((a, b) => RANK[b.level] - RANK[a.level])[0];
+      const stressedCount = rows.filter(
+        (r) => r.level === "high" || r.level === "critical",
+      ).length;
+      return { code, name: FOCUS_NAMES[code], worst, stressedCount };
+    })
+    .sort(
+      (a, b) =>
+        (b.worst ? RANK[b.worst.level] : -1) - (a.worst ? RANK[a.worst.level] : -1) ||
+        b.stressedCount - a.stressedCount ||
+        a.name.localeCompare(b.name),
+    );
+  const provincesAtRisk = provinceWatchlist.filter(
+    (p) => p.worst && (p.worst.level === "high" || p.worst.level === "critical"),
+  ).length;
 
   return (
     <main className="min-h-screen bg-surface-0 text-text-1">
@@ -130,51 +142,68 @@ export default async function OperationsPage() {
 
           <Card padding="lg">
             <SectionHeader
-              title="Focus Provinces — Worst Sector Risk"
-              description={`For each of the ${FOCUS_COUNT} provinces, the single worst-hit sector and its level. The list below names every sector currently at HIGH or CRITICAL — the priority watch-list.`}
+              title="Provincial Watch-List"
+              description={`All ${FOCUS_COUNT} provinces ranked worst-first by their single most-stressed sector — the priority order for operational attention. "Stressed" counts how many of a province's sectors sit at HIGH or CRITICAL.`}
+              action={
+                <span className="text-[11px] text-text-muted">
+                  <span className="text-status-red font-semibold" data-numeric>
+                    {provincesAtRisk}
+                  </span>{" "}
+                  of{" "}
+                  <span data-numeric>{FOCUS_COUNT}</span> at risk
+                </span>
+              }
             />
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              {focusProvinceRisks.map((p) => (
-                <Card key={p.code} variant="muted" padding="sm">
-                  <div className="text-[10px] text-text-muted uppercase tracking-[0.08em]" data-numeric>
-                    {p.code}
-                  </div>
-                  <div className="text-sm font-semibold text-text-1 mt-0.5">{p.name}</div>
-                  {p.worst ? (
-                    <div className="mt-2 flex items-center gap-2">
-                      <StatusPill status={RISK_STATUS[p.worst.level]} size="sm">
-                        {p.worst.level}
-                      </StatusPill>
-                      <span className="text-[11px] text-text-muted truncate">
-                        {p.worst.sector}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="mt-2 text-[11px] text-text-muted">No risk data</div>
-                  )}
-                </Card>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm min-w-[460px]">
+                <thead className="text-[10px] uppercase tracking-[0.08em] text-text-muted">
+                  <tr>
+                    <th className="text-left pl-2 py-1 font-medium w-8">#</th>
+                    <th className="text-left py-1 font-medium">Province</th>
+                    <th className="text-left py-1 font-medium">Worst level</th>
+                    <th className="text-left py-1 font-medium">Worst sector</th>
+                    <th className="text-right pr-2 py-1 font-medium">Stressed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {provinceWatchlist.map((p, i) => (
+                    <tr
+                      key={p.code}
+                      className="border-t border-border-subtle"
+                    >
+                      <td className="pl-2 py-2 text-text-muted" data-numeric>
+                        {i + 1}
+                      </td>
+                      <td className="py-2">
+                        <span className="text-text-1 font-medium">{p.name}</span>
+                        <span className="text-text-disabled text-[10px] ml-1.5" data-numeric>
+                          {p.code}
+                        </span>
+                      </td>
+                      <td className="py-2">
+                        {p.worst ? (
+                          <StatusPill status={RISK_STATUS[p.worst.level]} size="sm">
+                            {p.worst.level}
+                          </StatusPill>
+                        ) : (
+                          <span className="text-text-muted text-xs">—</span>
+                        )}
+                      </td>
+                      <td className="py-2 text-text-muted text-xs truncate max-w-[10rem]">
+                        {p.worst?.sector ?? "—"}
+                      </td>
+                      <td className="pr-2 py-2 text-right" data-numeric>
+                        {p.stressedCount > 0 ? (
+                          <span className="text-status-red font-semibold">{p.stressedCount}</span>
+                        ) : (
+                          <span className="text-text-disabled">0</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            {highRiskRows.length > 0 && (
-              <ul className="mt-4 space-y-1 text-xs">
-                {highRiskRows.map((r, i) => (
-                  <li
-                    key={i}
-                    className="flex justify-between items-center border-b border-border-subtle pb-1.5"
-                  >
-                    <span>
-                      <span className="text-text-1 font-medium">
-                        {FOCUS_NAMES[r.province_code]}
-                      </span>
-                      <span className="text-text-muted"> · {r.sector}</span>
-                    </span>
-                    <StatusPill status={RISK_STATUS[r.level]} size="sm">
-                      {r.level}
-                    </StatusPill>
-                  </li>
-                ))}
-              </ul>
-            )}
           </Card>
 
           <Card padding="lg">

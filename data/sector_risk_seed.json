@@ -10,36 +10,6 @@
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
-    "province_code": "PG09",
-    "sector": "Public Health",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T00:00:00.000Z",
-    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
-  },
-  {
-    "province_code": "PG07",
-    "sector": "Public Health",
-    "level": "med",
-    "score": 0.4,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T00:00:00.000Z",
-    "data_source": "DEMO · driven by rainfall deficit + temp anomaly (engine)"
-  },
-  {
-    "province_code": "PG02",
-    "sector": "Public Health",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T00:00:00.000Z",
-    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
-  },
-  {
     "province_code": "PG08",
     "sector": "Energy Security",
     "level": "low",
@@ -48,36 +18,6 @@
     "provenance": "DEMO",
     "as_of": "2026-06-03T00:00:00.000Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live upstream proxy"
-  },
-  {
-    "province_code": "PG09",
-    "sector": "Energy Security",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T00:00:00.000Z",
-    "data_source": "DEMO · Yonki reservoir inflow tracks rainfall (proxied via engine)"
-  },
-  {
-    "province_code": "PG07",
-    "sector": "Energy Security",
-    "level": "med",
-    "score": 0.4,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T00:00:00.000Z",
-    "data_source": "DEMO · highland hydropower exposed to rainfall deficit (engine)"
-  },
-  {
-    "province_code": "PG02",
-    "sector": "Energy Security",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-03T00:00:00.000Z",
-    "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
   },
   {
     "province_code": "PG08",
@@ -91,6 +31,26 @@
   },
   {
     "province_code": "PG09",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG09",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · Yonki reservoir inflow tracks rainfall (proxied via engine)"
+  },
+  {
+    "province_code": "PG09",
     "sector": "Infrastructure",
     "level": "low",
     "score": 0.2,
@@ -101,6 +61,26 @@
   },
   {
     "province_code": "PG07",
+    "sector": "Public Health",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · driven by rainfall deficit + temp anomaly (engine)"
+  },
+  {
+    "province_code": "PG07",
+    "sector": "Energy Security",
+    "level": "med",
+    "score": 0.4,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · highland hydropower exposed to rainfall deficit (engine)"
+  },
+  {
+    "province_code": "PG07",
     "sector": "Infrastructure",
     "level": "med",
     "score": 0.4,
@@ -108,6 +88,26 @@
     "provenance": "DEMO",
     "as_of": "2026-06-03T00:00:00.000Z",
     "data_source": "DEMO · Hela/SHP arterial exposure to rainfall extremes"
+  },
+  {
+    "province_code": "PG02",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG02",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-03T00:00:00.000Z",
+    "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
   },
   {
     "province_code": "PG02",
@@ -301,47 +301,7 @@
   },
   {
     "province_code": "PG03",
-    "sector": "Food Security",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG03",
-    "sector": "Water Security",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG03",
     "sector": "Public Health",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG03",
-    "sector": "Economic Stability",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG03",
-    "sector": "Infrastructure",
     "level": "low",
     "score": 0.2,
     "trend": "flat",
@@ -361,37 +321,7 @@
   },
   {
     "province_code": "PG03",
-    "sector": "Social Stability",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG03",
-    "sector": "Disaster & Hazard",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG04",
-    "sector": "Food Security",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG04",
-    "sector": "Water Security",
+    "sector": "Infrastructure",
     "level": "low",
     "score": 0.2,
     "trend": "flat",
@@ -402,26 +332,6 @@
   {
     "province_code": "PG04",
     "sector": "Public Health",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG04",
-    "sector": "Economic Stability",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG04",
-    "sector": "Infrastructure",
     "level": "low",
     "score": 0.2,
     "trend": "flat",
@@ -441,37 +351,7 @@
   },
   {
     "province_code": "PG04",
-    "sector": "Social Stability",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG04",
-    "sector": "Disaster & Hazard",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG05",
-    "sector": "Food Security",
-    "level": "low",
-    "score": 0.2,
-    "trend": "flat",
-    "provenance": "DEMO",
-    "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
-  },
-  {
-    "province_code": "PG05",
-    "sector": "Water Security",
+    "sector": "Infrastructure",
     "level": "low",
     "score": 0.2,
     "trend": "flat",
@@ -491,12 +371,292 @@
   },
   {
     "province_code": "PG05",
-    "sector": "Economic Stability",
+    "sector": "Energy Security",
     "level": "low",
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
     "as_of": "2026-06-06T00:00:00.000Z",
-    "data_source": "DEMO · seeded for full-province coverage"
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
-*** End of Replace String
+  {
+    "province_code": "PG05",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG06",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG01",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG10",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG11",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG13",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG15",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG19",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG21",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Public Health",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Energy Security",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
+  },
+  {
+    "province_code": "PG22",
+    "sector": "Infrastructure",
+    "level": "low",
+    "score": 0.2,
+    "trend": "flat",
+    "provenance": "DEMO",
+    "as_of": "2026-06-06T00:00:00.000Z",
+    "data_source": "DEMO · road/wharf closures land in ReliefWeb text only (no API)"
+  }
+]

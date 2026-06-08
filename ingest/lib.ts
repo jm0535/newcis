@@ -98,6 +98,10 @@ export async function runIngest(): Promise<LastRun> {
 
   const history = await readJson<HistoricalReading[]>("readings_history.json", []);
   const existingSectorRisk = await readJson<SectorRisk[]>("sector_risk.json", []);
+  // Last-good indicators from the previous cycle. When a source fails this cycle
+  // (transient network), we backfill its prior reading rather than blank the
+  // gauge — CLAUDE.md §10: "show last-good + flag, never blank the dashboard."
+  const previousIndicators = await readJson<Indicator[]>("indicators.json", []);
 
   const liveIndicators: Indicator[] = [];
 
@@ -157,6 +161,16 @@ export async function runIngest(): Promise<LastRun> {
       liveIndicators.push(tempInd);
       history.push({ key: tempInd.key, value: tempInd.value, observed_at: tempInd.observed_at });
     }
+  }
+
+  // Backfill last-good: any indicator the previous cycle had but this cycle
+  // failed to produce (source down) carries forward, so the gauge shows its
+  // last real reading instead of vanishing. Its stale observed_at + the failed
+  // source flag in last_run.json together signal the staleness honestly — we
+  // never fabricate a fresh LIVE reading.
+  const liveKeys = new Set(liveIndicators.map((i) => i.key));
+  for (const prev of previousIndicators) {
+    if (!liveKeys.has(prev.key)) liveIndicators.push(prev);
   }
 
   const seen = new Set<string>();

@@ -17,7 +17,7 @@
     "source": "HDX HAPI · CHIRPS",
     "update_frequency": "dekadal (10-day)",
     "provenance": "LIVE",
-    "value": 4.7,
+    "value": 6.9,
     "observed_at": "2026-03-31",
     "trend": "up"
   },
@@ -28,7 +28,7 @@
     "source": "NASA POWER · MERRA-2 GWETROOT",
     "update_frequency": "monthly",
     "provenance": "LIVE",
-    "value": 47,
+    "value": 38,
     "observed_at": "2025-12-01",
     "trend": "flat"
   },
@@ -39,8 +39,8 @@
     "source": "USGS FDSNWS earthquake catalogue",
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
-    "value": 30,
-    "observed_at": "2026-06-06T02:37:28.373Z",
+    "value": 18,
+    "observed_at": "2026-06-08T23:36:31.294Z",
     "trend": "flat"
   },
   {

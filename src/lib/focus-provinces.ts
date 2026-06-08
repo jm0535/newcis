@@ -19,7 +19,14 @@ export interface FocusProvince {
   lat: number;
 }
 
+// FULL national coverage: all 22 PNG provinces are now the focus set. The risk
+// engine + ingest iterate this list, so every province here flows through the
+// whole pipeline — climate points pulled, sectors scored, every page renders it.
+// The first block is the original high-risk seed set (ENSO/highlands + islands);
+// the second completes the national picture. Order does not matter (pages sort
+// by severity), but it is kept here for readability.
 export const FOCUS_PROVINCES: FocusProvince[] = [
+  // Original high-risk focus set
   { code: "PG08", name: "Enga", shortLabel: "Enga", lon: 143.71, lat: -5.49 },
   { code: "PG09", name: "Western Highlands", shortLabel: "Western H.", lon: 144.23, lat: -5.86 },
   { code: "PG07", name: "Southern Highlands", shortLabel: "Southern H.", lon: 143.66, lat: -6.15 },
@@ -30,10 +37,7 @@ export const FOCUS_PROVINCES: FocusProvince[] = [
   { code: "PG17", name: "New Ireland", shortLabel: "New Ireland", lon: 151.97, lat: -3.42 },
   { code: "PG18", name: "East New Britain", shortLabel: "East New Britain", lon: 151.84, lat: -4.61 },
   { code: "PG20", name: "Autonomous Region of Bougainville", shortLabel: "Bougainville", lon: 155.2, lat: -6.23 },
-];
-
-// Add the remaining provinces so the prototype can compute risk for all 22 PNG provinces.
-export const ALL_PROVINCES_ADDITIONAL: FocusProvince[] = [
+  // Remaining provinces — completing all 22 for full national coverage
   { code: "PG03", name: "Central", shortLabel: "Central", lon: 146.8836, lat: -9.4283 },
   { code: "PG04", name: "National Capital District", shortLabel: "NCD", lon: 147.0925, lat: -9.5131 },
   { code: "PG05", name: "Milne Bay", shortLabel: "Milne Bay", lon: 153.5119, lat: -11.6174 },
@@ -48,8 +52,9 @@ export const ALL_PROVINCES_ADDITIONAL: FocusProvince[] = [
   { code: "PG22", name: "Jiwaka", shortLabel: "Jiwaka", lon: 144.7359, lat: -6.1032 },
 ];
 
-// Export a combined list that consumers can import if they want all provinces.
-export const ALL_PROVINCES: FocusProvince[] = FOCUS_PROVINCES.concat(ALL_PROVINCES_ADDITIONAL);
+// All 22 provinces are now the focus set — these aliases remain so existing
+// consumers that imported the "all provinces" view keep working unchanged.
+export const ALL_PROVINCES: FocusProvince[] = FOCUS_PROVINCES;
 
 export const ALL_CODES: string[] = ALL_PROVINCES.map((p) => p.code);
 
