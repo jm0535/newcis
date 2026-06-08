@@ -64,33 +64,33 @@ export default async function Home() {
           <KpiStrip national={national} />
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          <section className="lg:col-span-2" aria-label="National risk matrix">
-            <Card padding="lg">
-              <SectionHeader
-                title="National Risk Matrix"
-                description="Each cell rates one sector in one province: green = OK, amber = watch, red = high stress, black = critical. Scan for red and black — that's where action is needed."
-              />
-              <RiskMatrix sectorRisk={sectorRisk} />
-              <div className="mt-4 pt-3 border-t border-border-subtle text-[11px] text-text-muted flex flex-wrap items-center gap-2">
-                {Array.from(new Set(sectorRisk.map((r) => r.provenance))).map((p) => (
-                  <ProvenanceBadge key={p} value={p} />
-                ))}
-                <span>cells carry worst risk across drivers; trend from prior ingest.</span>
-              </div>
-            </Card>
-          </section>
+        {/* Matrix gets its own full-width row — at the full province set an 8×22
+            colour heatmap needs the width, and it is the primary executive artifact. */}
+        <section aria-label="National risk matrix">
+          <Card padding="lg">
+            <SectionHeader
+              title="National Risk Matrix"
+              description="Every sector × province, coloured by risk — provinces sorted worst-first so trouble sits at the left. The 'National' column is each sector's worst level and how many provinces sit there. Click a cell for the detail behind it."
+            />
+            <RiskMatrix sectorRisk={sectorRisk} />
+            <div className="mt-4 pt-3 border-t border-border-subtle text-[11px] text-text-muted flex flex-wrap items-center gap-2">
+              {Array.from(new Set(sectorRisk.map((r) => r.provenance))).map((p) => (
+                <ProvenanceBadge key={p} value={p} />
+              ))}
+              <span>cells carry worst risk across drivers; trend from prior ingest.</span>
+            </div>
+          </Card>
+        </section>
 
-          <section className="lg:col-span-3" aria-label="Provincial heat map">
-            <Card padding="lg">
-              <SectionHeader
-                title="Provincial Heat Map"
-                description={`The ${FOCUS_COUNT} focus provinces coloured by their worst sector risk. Click a province for detail · swap basemaps top-right.`}
-              />
-              <HeatMap sectorRisk={sectorRisk} />
-            </Card>
-          </section>
-        </div>
+        <section aria-label="Provincial heat map">
+          <Card padding="lg">
+            <SectionHeader
+              title="Provincial Heat Map"
+              description={`The ${FOCUS_COUNT} focus provinces coloured by their worst sector risk. Click a province for detail · swap basemaps top-right.`}
+            />
+            <HeatMap sectorRisk={sectorRisk} />
+          </Card>
+        </section>
       </div>
 
       <footer className="border-t border-border-subtle px-4 md:px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">

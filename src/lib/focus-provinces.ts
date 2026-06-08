@@ -65,3 +65,15 @@ export const FOCUS_SHORT_LABELS: Record<string, string> = Object.fromEntries(
 );
 
 export const FOCUS_COUNT = FOCUS_PROVINCES.length;
+
+// Lookups across ALL provinces (full 22) so any consumer rendering whatever
+// provinces appear in the data — not just the focus set — can resolve a label.
+// The risk matrix is province-count-agnostic: it renders the provinces present
+// in sector_risk.json, so these must cover the full national set.
+export const ALL_NAMES: Record<string, string> = Object.fromEntries(
+  ALL_PROVINCES.map((p) => [p.code, p.name]),
+);
+
+export const ALL_SHORT_LABELS: Record<string, string> = Object.fromEntries(
+  ALL_PROVINCES.map((p) => [p.code, p.shortLabel]),
+);
