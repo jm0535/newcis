@@ -16,7 +16,9 @@ const VALUE_TONE_CLASS: Record<Tone, string> = {
   green: "text-status-green",
   amber: "text-status-amber",
   red: "text-status-red",
-  black: "text-status-black",
+  // BLACK is a dark tier — colouring the value slate-on-slate would be unreadable
+  // over the dark-tinted card, so the value keeps the high-contrast primary text.
+  black: "text-text-1",
 };
 
 export interface MetricTileProps {

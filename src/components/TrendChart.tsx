@@ -54,8 +54,8 @@ export function TrendChart({
     .map((h) => ({ date: h.observed_at.slice(0, 10), value: h.value }));
 
   // Threshold reference lines, each LABELLED so the dashed line reads as "RED here".
-  // Every chart shows all three escalation lines (AMBER, RED, BLACK/critical) so a
-  // viewer sees the full ladder. Symmetric metrics (ENSO temperature anomalies) also
+  // Every chart shows all three escalation lines (AMBER, RED, BLACK) so a viewer
+  // sees the full ladder. Symmetric metrics (ENSO temperature anomalies) also
   // mirror the lines below zero; one-sided metrics (counts, percentiles) do not.
   const refs: { y: number; c: string; label: string }[] = (() => {
     if (!threshold) return [];
@@ -63,13 +63,13 @@ export function TrendChart({
       return [
         { y: threshold.green_max, c: ALERT_COLOUR.AMBER, label: "AMBER" },
         { y: threshold.amber_max, c: ALERT_COLOUR.RED, label: "RED" },
-        { y: threshold.red_max, c: ALERT_COLOUR.BLACK, label: "CRITICAL" },
+        { y: threshold.red_max, c: ALERT_COLOUR.BLACK, label: "BLACK" },
       ];
     }
     const positive = [
       { y: threshold.green_max, c: ALERT_COLOUR.AMBER, label: "AMBER" },
       { y: threshold.amber_max, c: ALERT_COLOUR.RED, label: "RED" },
-      { y: threshold.red_max, c: ALERT_COLOUR.BLACK, label: "CRITICAL" },
+      { y: threshold.red_max, c: ALERT_COLOUR.BLACK, label: "BLACK" },
     ];
     // Default to symmetric for non-inverted metrics unless explicitly one-sided.
     if (threshold.symmetric === false) return positive;
@@ -77,8 +77,31 @@ export function TrendChart({
       ...positive,
       { y: -threshold.green_max, c: ALERT_COLOUR.AMBER, label: "AMBER" },
       { y: -threshold.amber_max, c: ALERT_COLOUR.RED, label: "RED" },
-      { y: -threshold.red_max, c: ALERT_COLOUR.BLACK, label: "CRITICAL" },
+      { y: -threshold.red_max, c: ALERT_COLOUR.BLACK, label: "BLACK" },
     ];
+  })();
+
+  // CRITICAL FIX: Recharts auto-fits the Y-axis to the DATA only. When the live
+  // readings sit far below the thresholds (e.g. ONI ~0.4 vs a 1.5 BLACK line),
+  // the RED/BLACK reference lines fall OUTSIDE the visible axis and silently
+  // vanish — the user sees a chart "missing its threshold lines". So we widen the
+  // domain to span BOTH the data and every reference line, then pad ~8% so the
+  // top/bottom lines and their labels aren't clipped at the frame edge.
+  const yDomain: [number, number] = (() => {
+    const ys = [...series.map((s) => s.value), ...refs.map((r) => r.y)];
+    if (ys.length === 0) return [0, 1];
+    let min = Math.min(...ys);
+    const max = Math.max(...ys);
+    // Anchor the baseline at 0 for explicitly one-sided metrics (e.g. SEISMIC
+    // counts) that can never go negative, so the axis reads from a true zero.
+    if (threshold?.symmetric === false && min > 0) min = 0;
+    if (min === max) {
+      // Degenerate (single flat value) — open a small window around it.
+      const pad = Math.abs(max) * 0.1 || 1;
+      return [min - pad, max + pad];
+    }
+    const pad = (max - min) * 0.08;
+    return [min - pad, max + pad];
   })();
 
   return (
@@ -122,7 +145,12 @@ export function TrendChart({
                 tick={{ fill: TOKEN.axis, fontSize: 10 }}
                 minTickGap={24}
               />
-              <YAxis tick={{ fill: TOKEN.axis, fontSize: 10 }} width={32} />
+              <YAxis
+                domain={yDomain}
+                allowDataOverflow
+                tick={{ fill: TOKEN.axis, fontSize: 10 }}
+                width={32}
+              />
               <Tooltip
                 contentStyle={{
                   background: TOKEN.surface,

@@ -4,34 +4,35 @@
 import type { AlertLevel, RiskLevel, Trend } from "./types";
 
 // Vibrant traffic-light palette, tuned to stay visible on BOTH the dark UI and
-// the light theme / map imagery. "critical"/BLACK is a vibrant violet (the
-// "beyond red" emergency colour) — a literal black vanished on dark surfaces.
-// Keep in sync with the --status-* tokens in globals.css.
+// the light theme / map imagery. The top "BLACK"/critical tier is a dark SLATE,
+// NOT a hue — the doctrine names the above-RED emergency rung "BLACK", and a
+// near-black slate is what reads as "beyond red". A literal #000 vanished on
+// dark surfaces, so we use the darkest tone that still shows (a thin outline on
+// pills/markers keeps it legible). Keep in sync with --status-* in globals.css.
 export const RISK_COLOUR: Record<RiskLevel, string> = {
   low: "#22c55e", // green-500
   med: "#fbbf24", // amber-400
   high: "#f43f5e", // rose-500
-  critical: "#a855f7", // violet-500
+  critical: "#334155", // slate-700 — "black" emergency tier
 };
 
 export const ALERT_COLOUR: Record<AlertLevel, string> = {
   GREEN: "#22c55e",
   AMBER: "#fbbf24",
   RED: "#f43f5e",
-  BLACK: "#a855f7",
+  BLACK: "#334155", // slate-700 — dark "black" tier, visible on the dark UI
 };
 
-// Human-facing label for an alert level. The internal AlertLevel "BLACK" is the
-// concept's national-emergency tier, but its swatch is VIOLET (literal black is
-// invisible on a dark UI). To stop "purple labelled BLACK" from confusing
-// viewers, indicator + trend readouts show the colour-matched word "CRITICAL"
-// (same vocabulary as the sector-risk "critical" level). The national alert
-// banner keeps "BLACK" — that is the named tier in the operating doctrine.
+// Human-facing label for an alert level. "BLACK" is the doctrine's national-
+// emergency tier (the rung above RED) and its swatch is now a dark near-black
+// slate — so the label and the colour finally agree, and every readout shows
+// the doctrinal word "BLACK". (Earlier this was relabelled "CRITICAL" only to
+// paper over a violet swatch; with a true dark tier that indirection is gone.)
 export const ALERT_LABEL: Record<AlertLevel, string> = {
   GREEN: "GREEN",
   AMBER: "AMBER",
   RED: "RED",
-  BLACK: "CRITICAL",
+  BLACK: "BLACK",
 };
 
 // Theme-aware pill classes routed through the --status-* tokens so they read in

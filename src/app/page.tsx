@@ -69,7 +69,7 @@ export default async function Home() {
             <Card padding="lg">
               <SectionHeader
                 title="National Risk Matrix"
-                description="Each cell rates one sector in one province: green = OK, amber = watch, red = high stress, violet = critical. Scan for red and violet — that's where action is needed."
+                description="Each cell rates one sector in one province: green = OK, amber = watch, red = high stress, black = critical. Scan for red and black — that's where action is needed."
               />
               <RiskMatrix sectorRisk={sectorRisk} />
               <div className="mt-4 pt-3 border-t border-border-subtle text-[11px] text-text-muted flex flex-wrap items-center gap-2">

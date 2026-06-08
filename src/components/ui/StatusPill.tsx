@@ -6,7 +6,11 @@ const STATUS_CLASS: Record<Status, string> = {
   green: "bg-status-green/15 text-status-green border-status-green/40",
   amber: "bg-status-amber/15 text-status-amber border-status-amber/40",
   red: "bg-status-red/15 text-status-red border-status-red/50",
-  black: "bg-status-black/15 text-status-black border-status-black/50",
+  // BLACK (emergency) is a DARK tier, so the faint-tint + coloured-text pattern
+  // the other levels use would be dark-on-dark and illegible. Instead fill it
+  // solid slate with light text and a bright outline — it reads as a solid
+  // "beyond red" emergency chip on both dark and light surfaces.
+  black: "bg-status-black text-white border-status-black ring-1 ring-white/25",
   neutral: "bg-surface-2 text-text-2 border-border-default",
 };
 
@@ -14,7 +18,8 @@ const DOT_CLASS: Record<Status, string> = {
   green: "bg-status-green",
   amber: "bg-status-amber",
   red: "bg-status-red",
-  black: "bg-status-black",
+  // White dot — the pill is filled solid slate, so a slate dot would vanish.
+  black: "bg-white",
   neutral: "bg-text-muted",
 };
 

@@ -3,6 +3,7 @@
 import type { Indicator } from "@/lib/types";
 import { classifyIndicator } from "@/lib/risk-engine";
 import type { RiskThreshold } from "@/lib/types";
+import { ALERT_LABEL } from "@/lib/ui";
 import { Card, StatusPill } from "./ui";
 
 const EVENTS: { label: string; oni: number; note: string }[] = [
@@ -51,7 +52,7 @@ export function HistoricalCompare({
                 {current === null && isCurrent ? "—" : e.oni.toFixed(2)}
               </span>
               <StatusPill status={ALERT_STATUS[level]} size="sm">
-                {level}
+                {ALERT_LABEL[level]}
               </StatusPill>
             </div>
             <div className="mt-2 text-[11px] text-text-muted leading-snug">{e.note}</div>

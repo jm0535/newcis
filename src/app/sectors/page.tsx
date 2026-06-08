@@ -10,6 +10,7 @@ import {
   getSectorRisk,
 } from "@/lib/data";
 import { SECTOR_META } from "@/lib/sectors";
+import { FOCUS_COUNT } from "@/lib/focus-provinces";
 import { fmtDateTime } from "@/lib/ui";
 
 export const dynamic = "force-dynamic";
@@ -33,10 +34,10 @@ export default async function SectorsPage() {
         </div>
         <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
         <p className="text-xs text-text-muted mt-2 max-w-3xl leading-relaxed">
-          How the climate is stressing each part of national life. Eight sectors across the four
-          focus provinces, each rated green → amber → red → violet. Every panel names the lead
-          agency and the signals behind the rating. Scan for red and violet — that&apos;s where
-          a sector is under real stress.
+          How the climate is stressing each part of national life. Eight sectors across the{" "}
+          {FOCUS_COUNT} focus provinces, each rated green → amber → red → black. Every panel names
+          the lead agency and the signals behind the rating. Scan for red and black — that&apos;s
+          where a sector is under real stress.
         </p>
       </header>
 
