@@ -36,9 +36,12 @@ export interface HistoricalReading {
 
 export interface RiskThreshold {
   metric: string; // matches Indicator.key
-  // Anything ≤ green_max is GREEN; ≤ amber_max is AMBER; ≤ red_max is RED; above is BLACK.
-  // For inverted metrics (lower = worse, e.g. SOI), negate values before comparing or
-  // configure a separate inverted threshold set — keep the band semantics here only.
+  // Band edges, named for their UPPER bound. For a normal (non-inverted) metric,
+  // classifyIndicator escalates as the value RISES past each edge: ≤ green_max is
+  // GREEN, (green_max, amber_max] is AMBER, (amber_max, red_max] is RED, and
+  // above red_max is BLACK. For inverted metrics (lower = worse, e.g. SOI,
+  // RAINFALL_ANOM) the direction flips — the edges are written in the *worse*
+  // (more-negative) direction and a value ≤ an edge escalates to that band.
   green_max: number;
   amber_max: number;
   red_max: number;

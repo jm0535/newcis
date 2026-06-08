@@ -26,12 +26,17 @@ import type {
 /**
  * Map a raw indicator value to GREEN/AMBER/RED/BLACK using its threshold row.
  *
- * Non-inverted (e.g. ONI, SST): more positive = worse, but ENSO is symmetric — La Niña
- * (very negative ONI) is also a hazard. So we compare |value| to the bands.
+ * Non-inverted + symmetric (default, e.g. ONI, SST): ENSO is two-sided — both a
+ * very positive (El Niño) AND a very negative (La Niña) anomaly are hazards, so
+ * we compare |value| to the bands.
  *
- * Inverted (e.g. RAINFALL_ANOM, SOI, NDVI, SOIL_MOISTURE): more negative / lower = worse.
- * Bands in the file are written as the *worse* direction (e.g. rainfall green_max = -20),
- * so we escalate when value ≤ band.
+ * Non-inverted + symmetric:false (e.g. SEISMIC event counts): one-sided — the
+ * value only escalates as it RISES and can never be negative, so we compare the
+ * raw value (no absolute value, which would invent phantom negative hazards).
+ *
+ * Inverted (e.g. RAINFALL_ANOM, SOI, NDVI, SOIL_MOISTURE): more negative / lower
+ * = worse. Bands in the file are written as the *worse* direction (e.g. rainfall
+ * green_max = -20), so we escalate when value ≤ band.
  */
 export function classifyIndicator(
   value: number | null,
@@ -46,7 +51,9 @@ export function classifyIndicator(
     return "GREEN";
   }
 
-  const v = Math.abs(value);
+  // Symmetric unless explicitly flagged one-sided. Symmetric metrics use |value|
+  // (La Niña is as dangerous as El Niño); one-sided metrics use the raw value.
+  const v = threshold.symmetric === false ? value : Math.abs(value);
   if (v > threshold.red_max) return "BLACK";
   if (v > threshold.amber_max) return "RED";
   if (v > threshold.green_max) return "AMBER";
@@ -165,6 +172,13 @@ export function rollUpNational(
   sectorRisks: SectorRisk[],
   focusCodes: string[],
   forecastPeriod = "Next 3 months",
+  /**
+   * Province population by p-code (from provinces.geojson). When supplied,
+   * affected_population_est is the summed population of provinces that have ANY
+   * sector at high/critical — a real, traceable figure rather than a guess. When
+   * absent (e.g. a unit test with no geojson) it stays 0 and the UI shows "—".
+   */
+  populationByCode?: Record<string, number>,
 ): NationalStatus {
   const thresholdByKey = new Map(thresholds.map((t) => [t.metric, t]));
 
@@ -173,17 +187,23 @@ export function rollUpNational(
     worstAlert = maxAlert(worstAlert, classifyIndicator(ind.value, thresholdByKey.get(ind.key)));
   }
 
+  // ENSO phase reads its band edges from the ONI threshold row, so the gauge
+  // colour and the phase label can never disagree: watch starts at the AMBER
+  // edge (green_max), alert at the RED edge (amber_max). Symmetric for La Niña.
   const oni = indicators.find((i) => i.key === "ONI")?.value ?? null;
+  const oniBand = thresholdByKey.get("ONI");
+  const watchEdge = oniBand?.green_max ?? 0.5; // first escalation (AMBER)
+  const alertEdge = oniBand?.amber_max ?? 1.0; // alert tier (RED)
   const ensoPhase: NationalStatus["enso_phase"] =
     oni === null
       ? "neutral"
-      : oni > 1.0
+      : oni >= alertEdge
         ? "el_nino_alert"
-        : oni > 0.5
+        : oni >= watchEdge
           ? "el_nino_watch"
-          : oni < -1.0
+          : oni <= -alertEdge
             ? "la_nina_alert"
-            : oni < -0.5
+            : oni <= -watchEdge
               ? "la_nina_watch"
               : "neutral";
 
@@ -203,11 +223,18 @@ export function rollUpNational(
         ? "med"
         : "low";
 
+  // Affected-population estimate: the summed population of every high/critical
+  // province, drawn from real provinces.geojson figures. Provinces with no
+  // population entry contribute 0 rather than a fabricated number.
+  const affectedPopulation = populationByCode
+    ? [...highRiskProvinces].reduce((sum, code) => sum + (populationByCode[code] ?? 0), 0)
+    : 0;
+
   return {
     enso_phase: ensoPhase,
     alert_level: worstAlert,
     national_risk_rating: rating,
-    affected_population_est: 0, // populated when /public/provinces.geojson is joined upstream
+    affected_population_est: affectedPopulation,
     high_risk_province_count: highRiskProvinces.size,
     forecast_period: forecastPeriod,
     updated_at: new Date().toISOString(),

@@ -55,6 +55,33 @@ async function writeJson(file: string, value: unknown): Promise<void> {
   await fs.writeFile(path.join(DATA, file), JSON.stringify(value, null, 2) + "\n");
 }
 
+/**
+ * Province population by p-code, read from the static provinces.geojson in
+ * /public. This is the single source of truth for population, so the national
+ * affected-population estimate traces to a real figure per province. Returns an
+ * empty map (→ estimate 0) if the file is missing or malformed — never throws.
+ */
+async function loadProvincePopulations(): Promise<Record<string, number>> {
+  try {
+    const raw = await fs.readFile(
+      path.join(process.cwd(), "public", "provinces.geojson"),
+      "utf8",
+    );
+    const geo = JSON.parse(raw) as {
+      features: { properties: { code?: string; population?: number } }[];
+    };
+    const out: Record<string, number> = {};
+    for (const f of geo.features ?? []) {
+      const code = f.properties?.code;
+      const pop = f.properties?.population;
+      if (code && typeof pop === "number" && pop > 0) out[code] = pop;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
 interface SourceResult<T> {
   ok: boolean;
   value: T | null;
@@ -237,6 +264,24 @@ export async function runIngest(): Promise<LastRun> {
     }
   }
 
+  // 5b. Cell trends from the prior cycle. Several live sources (ACLED, USGS,
+  //     GDACS) report a national signal and hardcode trend="flat" because they
+  //     have no per-cell history. Here we derive a REAL trend by comparing this
+  //     cycle's score to the previous cycle's score for the same (province,
+  //     sector), with a dead-band so measurement noise doesn't flip the arrow.
+  //     This only adjusts LIVE cells; DEMO/seed rows keep their authored trend.
+  const TREND_DEADBAND = 0.05; // score units (0..1); ~one-sixth of a risk band
+  const priorScoreByKey = new Map(
+    existingSectorRisk.map((r) => [`${r.province_code}::${r.sector}`, r.score]),
+  );
+  for (const row of engineRows) {
+    if (row.provenance !== "LIVE") continue;
+    const prior = priorScoreByKey.get(`${row.province_code}::${row.sector}`);
+    if (prior === undefined) continue; // first sighting → keep flat
+    const delta = row.score - prior;
+    row.trend = Math.abs(delta) < TREND_DEADBAND ? "flat" : delta > 0 ? "up" : "down";
+  }
+
   // 6. Merge: engine rows for focus provinces overlay everything; preserve unrelated
   //    DEMO rows (e.g. non-focus provinces) untouched.
   const engineKeys = new Set(engineRows.map((r) => `${r.province_code}::${r.sector}`));
@@ -245,12 +290,17 @@ export async function runIngest(): Promise<LastRun> {
   );
   const mergedSectorRisk = [...engineRows, ...preservedDemo];
 
-  // 7. National rollup via the engine.
+  // 7. National rollup via the engine. Province populations come straight from
+  //    provinces.geojson so affected_population_est is a real, traceable figure
+  //    (summed population of high/critical provinces), not a hardcoded placeholder.
+  const populationByCode = await loadProvincePopulations();
   const nationalStatus = rollUpNational(
     liveIndicators,
     thresholds,
     mergedSectorRisk,
     FOCUS_CODES,
+    "Next 3 months",
+    populationByCode,
   );
 
   await writeJson("indicators.json", liveIndicators);

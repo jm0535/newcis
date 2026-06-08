@@ -58,6 +58,18 @@ describe("classifyIndicator", () => {
     expect(classifyIndicator(-10, byKey("RAINFALL_ANOM"))).toBe("GREEN");
   });
 
+  it("SEISMIC is one-sided (symmetric:false) — raw count escalates, no abs()", () => {
+    expect(classifyIndicator(5, byKey("SEISMIC"))).toBe("GREEN"); // ≤10
+    expect(classifyIndicator(18, byKey("SEISMIC"))).toBe("AMBER"); // >10
+    expect(classifyIndicator(30, byKey("SEISMIC"))).toBe("RED"); // >25
+    expect(classifyIndicator(50, byKey("SEISMIC"))).toBe("BLACK"); // >45
+  });
+
+  it("ONI stays symmetric — La Niña escalates via |value|, El Niño directly", () => {
+    expect(classifyIndicator(-2.4, byKey("ONI"))).toBe("BLACK"); // strong La Niña
+    expect(classifyIndicator(2.4, byKey("ONI"))).toBe("BLACK"); // strong El Niño
+  });
+
   it("null value → GREEN (degrades gracefully, never throws)", () => {
     expect(classifyIndicator(null, byKey("ONI"))).toBe("GREEN");
   });
@@ -163,6 +175,45 @@ describe("rollUpNational", () => {
     const r = rollUpNational([indicator("ONI", 0.1)], TH, sectors, FOCUS);
     expect(r.national_risk_rating).toBe("med");
     expect(r.high_risk_province_count).toBe(1);
+  });
+
+  // ENSO phase must agree with the gauge colour: both come from the ONI
+  // threshold band, so a value in the RED band reads as "alert", AMBER as
+  // "watch". This pins that the phase reads the file, not a hardcoded edge.
+  it("ENSO phase agrees with the indicator alert band (watch vs alert)", () => {
+    const oniBand = byKey("ONI");
+    // Mid-AMBER band → watch (and classifyIndicator agrees it is AMBER).
+    const watchVal = (oniBand.green_max + oniBand.amber_max) / 2; // 0.75
+    expect(classifyIndicator(watchVal, oniBand)).toBe("AMBER");
+    expect(rollUpNational([indicator("ONI", watchVal)], TH, [], FOCUS).enso_phase).toBe(
+      "el_nino_watch",
+    );
+    // Inside the RED band → alert (classifyIndicator agrees it is RED).
+    const alertVal = (oniBand.amber_max + oniBand.red_max) / 2; // 1.25
+    expect(classifyIndicator(alertVal, oniBand)).toBe("RED");
+    expect(rollUpNational([indicator("ONI", alertVal)], TH, [], FOCUS).enso_phase).toBe(
+      "el_nino_alert",
+    );
+  });
+
+  it("affected_population_est sums only high/critical provinces from real populations", () => {
+    const sectors: SectorRisk[] = [
+      { province_code: "PG08", sector: "Water Security", level: "critical", score: 1, trend: "flat", provenance: "LIVE", as_of: "2026-01-01" },
+      { province_code: "PG09", sector: "Water Security", level: "high", score: 0.7, trend: "flat", provenance: "LIVE", as_of: "2026-01-01" },
+      { province_code: "PG07", sector: "Water Security", level: "med", score: 0.4, trend: "flat", provenance: "LIVE", as_of: "2026-01-01" },
+    ];
+    const pop = { PG08: 432000, PG09: 362000, PG07: 510000 };
+    const r = rollUpNational([indicator("ONI", 0.1)], TH, sectors, FOCUS, "Next 3 months", pop);
+    // PG08 + PG09 are high/critical; PG07 (med) excluded.
+    expect(r.affected_population_est).toBe(432000 + 362000);
+  });
+
+  it("affected_population_est is 0 when no population map is supplied (UI shows —)", () => {
+    const sectors: SectorRisk[] = [
+      { province_code: "PG08", sector: "Water Security", level: "critical", score: 1, trend: "flat", provenance: "LIVE", as_of: "2026-01-01" },
+    ];
+    const r = rollUpNational([indicator("ONI", 0.1)], TH, sectors, FOCUS);
+    expect(r.affected_population_est).toBe(0);
   });
 });
 
