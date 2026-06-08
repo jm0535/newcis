@@ -19,7 +19,7 @@ import {
 } from "recharts";
 import type { HistoricalReading, Indicator, RiskThreshold } from "@/lib/types";
 import { classifyIndicator } from "@/lib/risk-engine";
-import { ALERT_COLOUR, INDICATOR_META } from "@/lib/ui";
+import { ALERT_COLOUR, ALERT_LABEL, INDICATOR_META } from "@/lib/ui";
 import { StatusPill } from "./ui";
 
 const ALERT_STATUS = { GREEN: "green", AMBER: "amber", RED: "red", BLACK: "black" } as const;
@@ -54,20 +54,32 @@ export function TrendChart({
     .map((h) => ({ date: h.observed_at.slice(0, 10), value: h.value }));
 
   // Threshold reference lines, each LABELLED so the dashed line reads as "RED here".
-  const refs: { y: number; c: string; label: string }[] = threshold
-    ? threshold.inverted
-      ? [
-          { y: threshold.green_max, c: ALERT_COLOUR.AMBER, label: "AMBER" },
-          { y: threshold.amber_max, c: ALERT_COLOUR.RED, label: "RED" },
-          { y: threshold.red_max, c: ALERT_COLOUR.BLACK, label: "BLACK" },
-        ]
-      : [
-          { y: threshold.green_max, c: ALERT_COLOUR.AMBER, label: "AMBER" },
-          { y: -threshold.green_max, c: ALERT_COLOUR.AMBER, label: "AMBER" },
-          { y: threshold.amber_max, c: ALERT_COLOUR.RED, label: "RED" },
-          { y: -threshold.amber_max, c: ALERT_COLOUR.RED, label: "RED" },
-        ]
-    : [];
+  // Every chart shows all three escalation lines (AMBER, RED, BLACK/critical) so a
+  // viewer sees the full ladder. Symmetric metrics (ENSO temperature anomalies) also
+  // mirror the lines below zero; one-sided metrics (counts, percentiles) do not.
+  const refs: { y: number; c: string; label: string }[] = (() => {
+    if (!threshold) return [];
+    if (threshold.inverted) {
+      return [
+        { y: threshold.green_max, c: ALERT_COLOUR.AMBER, label: "AMBER" },
+        { y: threshold.amber_max, c: ALERT_COLOUR.RED, label: "RED" },
+        { y: threshold.red_max, c: ALERT_COLOUR.BLACK, label: "CRITICAL" },
+      ];
+    }
+    const positive = [
+      { y: threshold.green_max, c: ALERT_COLOUR.AMBER, label: "AMBER" },
+      { y: threshold.amber_max, c: ALERT_COLOUR.RED, label: "RED" },
+      { y: threshold.red_max, c: ALERT_COLOUR.BLACK, label: "CRITICAL" },
+    ];
+    // Default to symmetric for non-inverted metrics unless explicitly one-sided.
+    if (threshold.symmetric === false) return positive;
+    return [
+      ...positive,
+      { y: -threshold.green_max, c: ALERT_COLOUR.AMBER, label: "AMBER" },
+      { y: -threshold.amber_max, c: ALERT_COLOUR.RED, label: "RED" },
+      { y: -threshold.red_max, c: ALERT_COLOUR.BLACK, label: "CRITICAL" },
+    ];
+  })();
 
   return (
     <div className="flex flex-col gap-2">
@@ -81,7 +93,7 @@ export function TrendChart({
         </div>
         {threshold && (
           <StatusPill status={ALERT_STATUS[level]} size="sm">
-            {level}
+            {ALERT_LABEL[level]}
           </StatusPill>
         )}
       </div>

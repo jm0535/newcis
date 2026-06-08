@@ -85,7 +85,7 @@ export default async function ClimatePage() {
               <span className="w-4 border-t-2 border-dashed border-status-red" /> RED · ENSO alert
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="w-4 border-t-2 border-dashed border-status-black" /> BLACK · emergency
+              <span className="w-4 border-t-2 border-dashed border-status-black" /> CRITICAL · emergency (violet)
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

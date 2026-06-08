@@ -5,7 +5,7 @@
 // executive question "are we in trouble yet?" reduces to one glance.
 import { motion } from "framer-motion";
 import type { AlertLevel, Indicator, RiskThreshold } from "@/lib/types";
-import { ALERT_COLOUR, INDICATOR_META, TREND_GLYPH } from "@/lib/ui";
+import { ALERT_COLOUR, ALERT_LABEL, INDICATOR_META, TREND_GLYPH, fmtAge, isReadingStale } from "@/lib/ui";
 import { ProvenanceBadge } from "./Provenance";
 import { Card, StatusPill } from "./ui";
 import { classifyIndicator } from "@/lib/risk-engine";
@@ -17,7 +17,19 @@ const ALERT_STATUS = {
   BLACK: "black",
 } as const;
 
+// An inverted metric whose bands are all positive lives in a bounded positive
+// domain (e.g. SOIL_MOISTURE is a 0–100 percentile: lower = worse). It must NOT
+// share the negative-going axis used by RAINFALL_ANOM / SOI / NDVI.
+function isPositiveDomainInverted(t: RiskThreshold): boolean {
+  return Boolean(t.inverted) && t.green_max > 0 && t.amber_max > 0 && t.red_max > 0;
+}
+
 function axisRange(t: RiskThreshold): [number, number] {
+  // Positive-domain inverted (percentile-style): fixed 0..100-ish window.
+  if (isPositiveDomainInverted(t)) {
+    const top = Math.max(100, t.green_max * 1.3);
+    return [0, top];
+  }
   const widest = Math.max(Math.abs(t.green_max), Math.abs(t.amber_max), Math.abs(t.red_max));
   const padded = widest * 1.3;
   return t.inverted ? [-padded, 0] : [-padded, padded];
@@ -42,7 +54,11 @@ export function IndicatorGauge({
 
   const stops = threshold
     ? threshold.inverted
-      ? [
+      ? // Inverted: lower value = worse. The band edges (red_max < amber_max <
+        // green_max as you improve) map left→right from BLACK to GREEN. This
+        // holds for both negative-going (rainfall/SOI/NDVI) and positive-domain
+        // (soil-moisture percentile) metrics because pct() handles the axis.
+        [
           { c: ALERT_COLOUR.BLACK, end: pct(threshold.red_max, range) },
           { c: ALERT_COLOUR.RED, end: pct(threshold.amber_max, range) },
           { c: ALERT_COLOUR.AMBER, end: pct(threshold.green_max, range) },
@@ -80,7 +96,7 @@ export function IndicatorGauge({
         <div className="flex flex-col items-end gap-1">
           <ProvenanceBadge value={indicator.provenance} />
           <StatusPill status={ALERT_STATUS[level]} size="sm">
-            {level}
+            {ALERT_LABEL[level]}
           </StatusPill>
         </div>
       </div>
@@ -128,7 +144,23 @@ export function IndicatorGauge({
 
       <div className="text-[10px] text-text-muted flex justify-between gap-2 pt-1 border-t border-border-subtle">
         <span className="truncate">{indicator.source}</span>
-        <span data-numeric>{indicator.observed_at}</span>
+        <span className="flex items-center gap-1.5 shrink-0" data-numeric>
+          <span>{indicator.observed_at.slice(0, 10)}</span>
+          <span
+            className={
+              isReadingStale(indicator.key, indicator.observed_at)
+                ? "text-status-amber"
+                : "text-text-muted"
+            }
+            title={
+              isReadingStale(indicator.key, indicator.observed_at)
+                ? "Reading is older than this source's usual update cadence — the upstream feed may be lagging. The dashboard always shows the last good value."
+                : "Age of this reading. Some climate products (e.g. monthly soil moisture, 3-month ONI) are naturally lagged."
+            }
+          >
+            · {fmtAge(indicator.observed_at)}
+          </span>
+        </span>
       </div>
     </Card>
   );

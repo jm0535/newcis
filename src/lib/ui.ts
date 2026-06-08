@@ -21,6 +21,19 @@ export const ALERT_COLOUR: Record<AlertLevel, string> = {
   BLACK: "#a855f7",
 };
 
+// Human-facing label for an alert level. The internal AlertLevel "BLACK" is the
+// concept's national-emergency tier, but its swatch is VIOLET (literal black is
+// invisible on a dark UI). To stop "purple labelled BLACK" from confusing
+// viewers, indicator + trend readouts show the colour-matched word "CRITICAL"
+// (same vocabulary as the sector-risk "critical" level). The national alert
+// banner keeps "BLACK" — that is the named tier in the operating doctrine.
+export const ALERT_LABEL: Record<AlertLevel, string> = {
+  GREEN: "GREEN",
+  AMBER: "AMBER",
+  RED: "RED",
+  BLACK: "CRITICAL",
+};
+
 // Theme-aware pill classes routed through the --status-* tokens so they read in
 // both dark and light themes (no hardcoded zinc/emerald that breaks on flip).
 export const RISK_BG_CLASS: Record<RiskLevel, string> = {
@@ -124,4 +137,49 @@ export function fmtDateTime(iso: string | undefined | null): string {
   const parts = PNG_DATETIME_FMT.formatToParts(d);
   const p = (t: string) => parts.find((x) => x.type === t)?.value ?? "";
   return `${p("year")}-${p("month")}-${p("day")} ${p("hour")}:${p("minute")} PGT`;
+}
+
+// Human "age" of a reading relative to now — e.g. "today", "3d ago", "6mo ago".
+// Many climate products are inherently lagged (NOAA ONI is a 3-month mean; NASA
+// POWER soil moisture publishes ~monthly), so an OLD observed_at is normal, not a
+// failure. Surfacing the age — and flagging when it exceeds the source's natural
+// cadence — lets a viewer tell "correct but lagged" from "feed has stalled".
+export function fmtAge(iso: string | undefined | null, now: Date = new Date()): string {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "—";
+  const days = Math.floor((now.getTime() - d.getTime()) / 86_400_000);
+  if (days <= 0) return "today";
+  if (days === 1) return "1d ago";
+  if (days < 30) return `${days}d ago`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months}mo ago`;
+  return `${Math.floor(months / 12)}y ago`;
+}
+
+// Each source has a natural publication cadence (days). A reading older than its
+// cadence + a grace margin is "behind schedule" and worth flagging amber. Keyed
+// by indicator key; unknown keys fall back to a generous default.
+const SOURCE_CADENCE_DAYS: Record<string, number> = {
+  ONI: 35, // NOAA CPC ONI: 3-month mean, refreshed monthly
+  SST_ANOM_NINO34: 10,
+  RAINFALL_ANOM: 16, // CHIRPS dekad (~10d) + processing lag
+  SOIL_MOISTURE: 45, // NASA POWER monthly assimilation
+  TEMP_ANOM: 5, // Open-Meteo archive, near-real-time
+  NDVI: 21,
+  SEISMIC: 2, // USGS near-real-time
+  SOI: 10,
+};
+
+export function isReadingStale(
+  key: string,
+  iso: string | undefined | null,
+  now: Date = new Date(),
+): boolean {
+  if (!iso) return false;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return false;
+  const days = (now.getTime() - d.getTime()) / 86_400_000;
+  const cadence = SOURCE_CADENCE_DAYS[key] ?? 60;
+  return days > cadence;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 // Hands-free data refresh for the operating picture. Every `intervalMs` (default
-// 2 min — frequent enough to catch a manual ingest or live-event update quickly,
+// 10 min — frequent enough to catch a manual ingest or live-event update,
 // while the real ingest cadence stays ~6-hourly) it calls router.refresh(),
 // which re-runs every server
 // component and re-paints all cards with the latest /data state. No reload, no
@@ -18,8 +18,8 @@ import { useEffect, useRef, useState, useTransition } from "react";
 
 // Single source of truth for the auto-refresh cadence, so the footer label and
 // the timer can never drift apart. Change it here and both follow.
-export const AUTO_REFRESH_MS = 2 * 60_000;
-export const AUTO_REFRESH_LABEL = "every 2 min";
+export const AUTO_REFRESH_MS = 10 * 60_000;
+export const AUTO_REFRESH_LABEL = "every 10 min";
 
 const CHECK_FMT = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Pacific/Port_Moresby",

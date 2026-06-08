@@ -43,6 +43,12 @@ export interface RiskThreshold {
   amber_max: number;
   red_max: number;
   inverted?: boolean; // if true, lower values escalate (used for SOI, NDVI, soil moisture)
+  // For non-inverted metrics: if true (default) the band is mirrored around 0 — a
+  // very negative value is as dangerous as a very positive one (ENSO is symmetric:
+  // El Niño AND La Niña both hazardous). Set false for one-sided metrics that can
+  // never go negative (e.g. SEISMIC event counts) so charts don't draw phantom
+  // negative threshold lines.
+  symmetric?: boolean;
   unit?: string;
   notes?: string;
 }
