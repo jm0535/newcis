@@ -107,14 +107,23 @@ function buildHazardMarker(ev: HazardEvent): maplibregl.Marker {
   const style = HAZARD_STYLE[ev.kind];
   const active = ev.kind === "volcano" && ev.year !== null && new Date().getFullYear() - ev.year <= 5;
 
+  // CRITICAL: MapLibre positions the marker by writing `transform: translate(...)`
+  // onto THIS outer element. So the pulse animation (which animates `transform:
+  // scale()`) must NOT touch it — otherwise the keyframe clobbers the translate and
+  // the marker snaps to the map's 0,0 corner (the bug that hid active volcanoes like
+  // Titan Ridge). We pulse an INNER glyph span instead, leaving `el` transform-free.
   const el = document.createElement("div");
   el.className = `newcis-hazard-marker newcis-hazard-${ev.kind}`;
   el.setAttribute("role", "img");
   el.setAttribute("aria-label", `${style.label}: ${ev.name} (${ev.location}, ${ev.date})`);
-  el.style.cssText =
-    "font-size:14px;line-height:1;cursor:pointer;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.7));" +
+  el.style.cssText = "cursor:pointer;";
+
+  const glyph = document.createElement("span");
+  glyph.style.cssText =
+    "display:block;font-size:14px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.7));" +
     (active ? "animation:newcis-volcano-pulse 1.6s ease-in-out infinite;filter:drop-shadow(0 0 4px #f43f5e);" : "");
-  el.textContent = style.glyph;
+  glyph.textContent = style.glyph;
+  el.appendChild(glyph);
 
   const light = document.documentElement.classList.contains("light");
   const fg = light ? "#18181b" : "#f4f4f5";
@@ -152,6 +161,10 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
   });
   // Bumped once hazards.json resolves, to re-run the marker-sync effect.
   const [hazardsLoaded, setHazardsLoaded] = useState(0);
+  // Bumped when the map finishes loading its style/layers, so the marker effect
+  // only mounts markers onto a map whose projection is actually laid out (adding
+  // them earlier strands every marker at the 0,0 corner — they get no transform).
+  const [mapReady, setMapReady] = useState(0);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -231,6 +244,9 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
 
       map.on("mouseenter", "provinces-fill", () => (map.getCanvas().style.cursor = "pointer"));
       map.on("mouseleave", "provinces-fill", () => (map.getCanvas().style.cursor = ""));
+
+      // Map is now fully laid out — signal the marker effect it's safe to mount.
+      if (mapRef.current === map) setMapReady((n) => n + 1);
     });
 
     return () => {
@@ -267,29 +283,25 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
   // toggle genuinely declutters the picture.
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    // mapReady === 0 means the current map hasn't fired `load` yet; bail and let
+    // the bump re-run this effect. Adding markers before load strands them at 0,0.
+    if (!map || mapReady === 0) return;
     const markers = hazardMarkersRef.current;
 
-    const sync = () => {
-      if (!mapRef.current) return;
-      for (const kind of HAZARD_KINDS) {
-        const shouldShow = visibleLayers[kind];
-        const mounted = markers[kind].length > 0;
-        if (shouldShow && !mounted) {
-          markers[kind] = eventsRef.current
-            .filter((ev) => ev.kind === kind && Number.isFinite(ev.lon) && Number.isFinite(ev.lat))
-            .map((ev) => buildHazardMarker(ev).addTo(map));
-        } else if (!shouldShow && mounted) {
-          for (const m of markers[kind]) m.remove();
-          markers[kind] = [];
-        }
+    for (const kind of HAZARD_KINDS) {
+      const shouldShow = visibleLayers[kind];
+      const mounted = markers[kind].length > 0;
+      if (shouldShow && !mounted) {
+        markers[kind] = eventsRef.current
+          .filter((ev) => ev.kind === kind && Number.isFinite(ev.lon) && Number.isFinite(ev.lat))
+          .map((ev) => buildHazardMarker(ev).addTo(map));
+      } else if (!shouldShow && mounted) {
+        for (const m of markers[kind]) m.remove();
+        markers[kind] = [];
       }
-    };
-
-    if (map.isStyleLoaded()) sync();
-    else map.once("load", sync);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visibleLayers, hazardsLoaded, sectorRisk]);
+  }, [visibleLayers, hazardsLoaded, mapReady]);
 
   // On unmount, drop every hazard marker so none are orphaned after the map is
   // torn down (the map-build effect rebuilds on sectorRisk; this clears stale refs).
