@@ -1,0 +1,397 @@
+{
+  "source": "Smithsonian Global Volcanism Program (GVP) · VOTW Holocene",
+  "generated_at": "2026-06-09T01:12:59.235Z",
+  "count": 39,
+  "volcanoes": [
+    {
+      "name": "St. Andrew Strait",
+      "type": "Complex",
+      "last_eruption_year": 1957,
+      "lon": 147.35,
+      "lat": -2.38,
+      "province_code": "PG16",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Titan Ridge",
+      "type": "Fissure vent",
+      "last_eruption_year": 1972,
+      "lon": 147.78,
+      "lat": -3.03,
+      "province_code": "PG16",
+      "attribution": "nearest",
+      "level": "low"
+    },
+    {
+      "name": "Blup Blup",
+      "type": "Stratovolcano",
+      "last_eruption_year": null,
+      "lon": 144.605,
+      "lat": -3.507,
+      "province_code": "PG14",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Kadovar",
+      "type": "Stratovolcano",
+      "last_eruption_year": 2023,
+      "lon": 144.588,
+      "lat": -3.608,
+      "province_code": "PG14",
+      "attribution": "contains",
+      "level": "med"
+    },
+    {
+      "name": "Bam",
+      "type": "Stratovolcano",
+      "last_eruption_year": 1960,
+      "lon": 144.818,
+      "lat": -3.613,
+      "province_code": "PG14",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Manam",
+      "type": "Stratovolcano",
+      "last_eruption_year": 2026,
+      "lon": 145.037,
+      "lat": -4.08,
+      "province_code": "PG13",
+      "attribution": "contains",
+      "level": "high"
+    },
+    {
+      "name": "Karkar",
+      "type": "Stratovolcano",
+      "last_eruption_year": 1979,
+      "lon": 145.976,
+      "lat": -4.647,
+      "province_code": "PG13",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Hankow Reef",
+      "type": "Stratovolcano",
+      "last_eruption_year": null,
+      "lon": 146.717,
+      "lat": -4.883,
+      "province_code": "PG13",
+      "attribution": "nearest",
+      "level": "low"
+    },
+    {
+      "name": "Long Island",
+      "type": "Complex",
+      "last_eruption_year": 1993,
+      "lon": 147.105,
+      "lat": -5.3144,
+      "province_code": "PG13",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Umboi",
+      "type": "Complex",
+      "last_eruption_year": null,
+      "lon": 147.892,
+      "lat": -5.592,
+      "province_code": "PG12",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Ritter Island",
+      "type": "Stratovolcano",
+      "last_eruption_year": 2007,
+      "lon": 148.115,
+      "lat": -5.519,
+      "province_code": "PG12",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Sakar",
+      "type": "Stratovolcano",
+      "last_eruption_year": null,
+      "lon": 148.0836,
+      "lat": -5.4098,
+      "province_code": "PG12",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Langila",
+      "type": "Complex",
+      "last_eruption_year": 2026,
+      "lon": 148.42,
+      "lat": -5.525,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "high"
+    },
+    {
+      "name": "Dakataua",
+      "type": "Caldera",
+      "last_eruption_year": 1895,
+      "lon": 150.0996,
+      "lat": -5.0455,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Bola",
+      "type": "Stratovolcano",
+      "last_eruption_year": null,
+      "lon": 150.038,
+      "lat": -5.141,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Garua Harbour",
+      "type": "Volcanic field",
+      "last_eruption_year": null,
+      "lon": 150.07,
+      "lat": -5.3,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Lolo",
+      "type": "Stratovolcano",
+      "last_eruption_year": null,
+      "lon": 150.509,
+      "lat": -5.466,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Krummel-Garbuna-Welcker",
+      "type": "Stratovolcano(es)",
+      "last_eruption_year": 2008,
+      "lon": 150.027,
+      "lat": -5.416,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Witori",
+      "type": "Caldera",
+      "last_eruption_year": 2012,
+      "lon": 150.5161,
+      "lat": -5.5745,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Sulu Range",
+      "type": "Stratovolcano(es)",
+      "last_eruption_year": null,
+      "lon": 150.942,
+      "lat": -5.5,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Hargy",
+      "type": "Stratovolcano",
+      "last_eruption_year": 950,
+      "lon": 151.1,
+      "lat": -5.33,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Bamus",
+      "type": "Stratovolcano",
+      "last_eruption_year": 1886,
+      "lon": 151.23,
+      "lat": -5.2,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Ulawun",
+      "type": "Stratovolcano",
+      "last_eruption_year": 2025,
+      "lon": 151.33,
+      "lat": -5.05,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "high"
+    },
+    {
+      "name": "Lolobau",
+      "type": "Caldera",
+      "last_eruption_year": 1912,
+      "lon": 151.1617,
+      "lat": -4.9156,
+      "province_code": "PG19",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Rabaul",
+      "type": "Caldera",
+      "last_eruption_year": 2014,
+      "lon": 152.1937,
+      "lat": -4.2459,
+      "province_code": "PG18",
+      "attribution": "nearest",
+      "level": "low"
+    },
+    {
+      "name": "Tavui",
+      "type": "Caldera",
+      "last_eruption_year": -4946,
+      "lon": 152.2134,
+      "lat": -4.1089,
+      "province_code": "PG18",
+      "attribution": "nearest",
+      "level": "low"
+    },
+    {
+      "name": "Hydrographers Range",
+      "type": "Stratovolcano",
+      "last_eruption_year": null,
+      "lon": 148.37,
+      "lat": -9,
+      "province_code": "PG06",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Lamington",
+      "type": "Stratovolcano",
+      "last_eruption_year": 1956,
+      "lon": 148.15,
+      "lat": -8.95,
+      "province_code": "PG06",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Managlase Plateau",
+      "type": "Volcanic field",
+      "last_eruption_year": null,
+      "lon": 148.33,
+      "lat": -9.08,
+      "province_code": "PG06",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Victory",
+      "type": "Stratovolcano",
+      "last_eruption_year": 1935,
+      "lon": 149.072,
+      "lat": -9.2003,
+      "province_code": "PG06",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Goodenough",
+      "type": "Volcanic field",
+      "last_eruption_year": null,
+      "lon": 150.246,
+      "lat": -9.358,
+      "province_code": "PG05",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Sessagara Hills",
+      "type": "Volcanic field",
+      "last_eruption_year": 1944,
+      "lon": 149.1278,
+      "lat": -9.5542,
+      "province_code": "PG06",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Iamalele",
+      "type": "Lava dome(s)",
+      "last_eruption_year": null,
+      "lon": 150.5239,
+      "lat": -9.5056,
+      "province_code": "PG05",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Dawson Strait Group",
+      "type": "Volcanic field",
+      "last_eruption_year": 1350,
+      "lon": 150.88,
+      "lat": -9.62,
+      "province_code": "PG05",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Billy Mitchell",
+      "type": "Caldera",
+      "last_eruption_year": 1580,
+      "lon": 155.2254,
+      "lat": -6.0898,
+      "province_code": "PG20",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Balbi",
+      "type": "Stratovolcano",
+      "last_eruption_year": null,
+      "lon": 155.0008,
+      "lat": -5.9156,
+      "province_code": "PG20",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Takuan Group",
+      "type": "Compound",
+      "last_eruption_year": null,
+      "lon": 155.608,
+      "lat": -6.442,
+      "province_code": "PG20",
+      "attribution": "contains",
+      "level": "low"
+    },
+    {
+      "name": "Bagana",
+      "type": "Lava cone",
+      "last_eruption_year": 2026,
+      "lon": 155.196,
+      "lat": -6.137,
+      "province_code": "PG20",
+      "attribution": "contains",
+      "level": "high"
+    },
+    {
+      "name": "Loloru",
+      "type": "Compound",
+      "last_eruption_year": -1050,
+      "lon": 155.62,
+      "lat": -6.52,
+      "province_code": "PG20",
+      "attribution": "contains",
+      "level": "low"
+    }
+  ]
+}

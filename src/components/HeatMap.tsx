@@ -9,13 +9,21 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { RiskLevel, SectorRisk } from "@/lib/types";
 import { RISK_COLOUR } from "@/lib/ui";
-import { ALL_PROVINCES } from "@/lib/focus-provinces";
 
-// Representative interior point per province code (lon/lat) — used to anchor the
-// volcano marker. Same coordinates the ingest nearest-province fallback uses.
-const PROVINCE_CENTROID: Record<string, [number, number]> = Object.fromEntries(
-  ALL_PROVINCES.map((p) => [p.code, [p.lon, p.lat] as [number, number]]),
-);
+// A single catalogued volcano at its REAL coordinates (from /public/volcanoes.json,
+// written each ingest from the Smithsonian GVP Holocene catalogue). Every volcano
+// is plotted individually — so Madang shows Manam AND Karkar, and Umboi sits on
+// Umboi Island rather than at a province centroid.
+interface VolcanoFeature {
+  name: string;
+  type: string;
+  last_eruption_year: number | null;
+  lon: number;
+  lat: number;
+  province_code: string;
+  attribution: "contains" | "nearest";
+  level: RiskLevel;
+}
 
 const RISK_RANK: Record<RiskLevel, number> = { low: 0, med: 1, high: 2, critical: 3 };
 
@@ -70,20 +78,14 @@ function worstByProvince(sectorRisk: SectorRisk[]): Record<string, RiskLevel> {
   return out;
 }
 
-// Provinces carrying a catalogued volcano this cycle, keyed by code → the GVP
-// caption (volcano name + last-eruption year). A row's `data_source` begins
-// "GVP ·" iff it came from the Smithsonian volcano feed, so we read the badge
-// straight off the Disaster & Hazard row rather than re-deriving it. The caption
-// is shown verbatim in the marker tooltip — same fact the matrix drill-down gives.
-function volcanoByProvince(sectorRisk: SectorRisk[]): Record<string, { caption: string; level: RiskLevel }> {
-  const out: Record<string, { caption: string; level: RiskLevel }> = {};
-  for (const r of sectorRisk) {
-    if (r.sector !== "Disaster & Hazard") continue;
-    const src = r.data_source ?? "";
-    if (!src.startsWith("GVP ·")) continue;
-    out[r.province_code] = { caption: src.replace(/^GVP ·\s*/, ""), level: r.level };
-  }
-  return out;
+// Human caption for a volcano marker tooltip — name, type, and the recency fact.
+function volcanoCaption(v: VolcanoFeature): string {
+  const type = v.type ? v.type.toLowerCase() : "volcano";
+  const recency =
+    v.last_eruption_year === null
+      ? "no Holocene eruption dated"
+      : `last erupted ${v.last_eruption_year}`;
+  return `${v.name} ${type}, ${recency}`;
 }
 
 export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
@@ -178,35 +180,48 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
     };
   }, [sectorRisk]);
 
-  // Volcano markers — a 🌋 pin on every province carrying a catalogued GVP volcano
-  // this cycle. These are DOM markers (not a map layer) so they survive basemap
-  // swaps and ride above the fill. Active eruptions (high) pulse; the tooltip
-  // names the volcano + last-eruption year, the same fact the matrix drill shows.
+  // Volcano markers — a 🌋 pin on EVERY catalogued PNG volcano, at its real
+  // coordinates (fetched from /public/volcanoes.json, written each ingest from the
+  // Smithsonian GVP Holocene catalogue). DOM markers (not a map layer) so they
+  // survive basemap swaps and ride above the fill. Active eruptions (high band)
+  // pulse and glow rose; the tooltip names the volcano + last-eruption year — the
+  // same fact the matrix drill shows. Plotting every volcano (not one-per-province)
+  // is why Madang shows Manam AND Karkar, and why Umboi sits on Umboi Island.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
+    let cancelled = false;
 
-    const place = () => {
-      // Clear any prior markers before re-placing (data changed / re-render).
+    const place = async () => {
+      let volcanoes: VolcanoFeature[] = [];
+      try {
+        const res = await fetch("/volcanoes.json");
+        if (res.ok) volcanoes = ((await res.json()).volcanoes ?? []) as VolcanoFeature[];
+      } catch {
+        volcanoes = [];
+      }
+      if (cancelled || !mapRef.current) return;
+
       for (const m of volcanoMarkersRef.current) m.remove();
       volcanoMarkersRef.current = [];
 
-      const volcanoes = volcanoByProvince(sectorRisk);
-      for (const [code, { caption, level }] of Object.entries(volcanoes)) {
-        const centroid = PROVINCE_CENTROID[code];
-        if (!centroid) continue;
-        const active = level === "high"; // erupting within the active window
+      for (const v of volcanoes) {
+        if (!Number.isFinite(v.lon) || !Number.isFinite(v.lat)) continue;
+        const caption = volcanoCaption(v);
+        const active = v.level === "high"; // erupting within the active window
         const el = document.createElement("div");
         el.className = "newcis-volcano-marker";
         el.setAttribute("role", "img");
         el.setAttribute("aria-label", `Volcano: ${caption}`);
         el.style.cssText =
-          "font-size:15px;line-height:1;cursor:pointer;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.6));" +
-          (active ? "animation:newcis-volcano-pulse 1.6s ease-in-out infinite;" : "");
+          "font-size:14px;line-height:1;cursor:pointer;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.7));" +
+          (active
+            ? "animation:newcis-volcano-pulse 1.6s ease-in-out infinite;filter:drop-shadow(0 0 4px #f43f5e);"
+            : "");
         el.textContent = "🌋";
 
         const marker = new maplibregl.Marker({ element: el, anchor: "center" })
-          .setLngLat(centroid)
+          .setLngLat([v.lon, v.lat])
           .setPopup(
             new maplibregl.Popup({ closeButton: false, offset: 12, className: "newcis-popup" }).setHTML(
               (() => {
@@ -215,9 +230,13 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
                 const bg = light ? "#ffffff" : "#18181b";
                 const border = light ? "#d4d4d8" : "#3f3f46";
                 const tag = active ? "#f43f5e" : "#a1a1aa";
-                return `<div style="font-family:system-ui;font-size:12px;color:${fg};background:${bg};border:1px solid ${border};padding:6px 8px;border-radius:4px;max-width:200px;">
-                   <div style="font-weight:600;display:flex;align-items:center;gap:4px;">🌋 Volcano${active ? ` <span style="color:${tag};font-size:10px;font-weight:700;">ACTIVE</span>` : ""}</div>
-                   <div style="margin-top:3px;opacity:0.85;">${caption}</div>
+                const offshore = v.attribution === "nearest"
+                  ? `<div style="margin-top:2px;opacity:0.55;font-size:10px;">offshore · nearest province ${v.province_code}</div>`
+                  : "";
+                return `<div style="font-family:system-ui;font-size:12px;color:${fg};background:${bg};border:1px solid ${border};padding:6px 8px;border-radius:4px;max-width:210px;">
+                   <div style="font-weight:600;display:flex;align-items:center;gap:4px;">🌋 ${v.name}${active ? ` <span style="color:${tag};font-size:10px;font-weight:700;">ACTIVE</span>` : ""}</div>
+                   <div style="margin-top:3px;opacity:0.85;">${v.type ? v.type : "volcano"} · ${v.last_eruption_year === null ? "no Holocene eruption dated" : `last erupted ${v.last_eruption_year}`}</div>
+                   ${offshore}
                    <div style="margin-top:3px;opacity:0.6;font-size:10px;">Smithsonian GVP · LIVE</div>
                  </div>`;
               })(),
@@ -228,14 +247,15 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
       }
     };
 
-    if (map.isStyleLoaded()) place();
-    else map.once("load", place);
+    if (map.isStyleLoaded()) void place();
+    else map.once("load", () => void place());
 
     return () => {
+      cancelled = true;
       for (const m of volcanoMarkersRef.current) m.remove();
       volcanoMarkersRef.current = [];
     };
-  }, [sectorRisk]);
+  }, []);
 
   // Swap the basemap beneath the provinces without rebuilding the map. Two code
   // paths: a single raster source for XYZ basemaps, or — for the keyless ArcGIS

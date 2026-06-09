@@ -17,7 +17,7 @@ import { fetchNasaPowerSoil } from "./sources/nasa-power-soil";
 import { fetchHdxAcled } from "./sources/hdx-acled";
 import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
-import { fetchGvpVolcanoes } from "./sources/gvp-volcanoes";
+import { fetchGvpVolcanoes, recencyLevel } from "./sources/gvp-volcanoes";
 import { fetchOpenMeteo } from "./sources/open-meteo";
 import { parseProvincePolygons, type ProvincePolygon } from "./geo";
 import type {
@@ -44,6 +44,7 @@ const SECTORS: Sector[] = [
 ];
 
 const DATA = path.join(process.cwd(), "data");
+const PUBLIC = path.join(process.cwd(), "public");
 
 async function readJson<T>(file: string, fallback: T): Promise<T> {
   try {
@@ -55,6 +56,12 @@ async function readJson<T>(file: string, fallback: T): Promise<T> {
 
 async function writeJson(file: string, value: unknown): Promise<void> {
   await fs.writeFile(path.join(DATA, file), JSON.stringify(value, null, 2) + "\n");
+}
+
+// Some artefacts must be fetchable by the client map at runtime (like the static
+// GeoJSON), so they live in /public rather than /data.
+async function writePublicJson(file: string, value: unknown): Promise<void> {
+  await fs.writeFile(path.join(PUBLIC, file), JSON.stringify(value, null, 2) + "\n");
 }
 
 /**
@@ -350,6 +357,29 @@ export async function runIngest(): Promise<LastRun> {
   await writeJson("readings_history.json", dedupedHistory);
   await writeJson("sector_risk.json", mergedSectorRisk);
   await writeJson("national_status.json", nationalStatus);
+
+  // Persist the FULL volcano catalogue (every Holocene PNG volcano, at its real
+  // coordinates) for the map to render — not just the one-worst-per-province that
+  // drives the matrix cell. This is why Madang can show Manam AND Karkar, and why
+  // a marker sits on Umboi Island rather than at the province centroid. Written
+  // to /public so the client map can fetch it like provinces.geojson.
+  const currentYear = new Date().getUTCFullYear();
+  const volcanoFeatures = (gvpRes.ok && gvpRes.value ? gvpRes.value.volcanoes : []).map((v) => ({
+    name: v.name,
+    type: v.type,
+    last_eruption_year: v.lastEruptionYear,
+    lon: v.lon,
+    lat: v.lat,
+    province_code: v.provinceCode,
+    attribution: v.attribution,
+    level: recencyLevel(v.lastEruptionYear, currentYear),
+  }));
+  await writePublicJson("volcanoes.json", {
+    source: "Smithsonian Global Volcanism Program (GVP) · VOTW Holocene",
+    generated_at: new Date().toISOString(),
+    count: volcanoFeatures.length,
+    volcanoes: volcanoFeatures,
+  });
 
   const lastRun: LastRun = {
     started_at: startedAt,
