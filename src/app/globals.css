@@ -222,6 +222,13 @@ body {
   display: none;
 }
 
+/* Hero-tour label: the map sits behind two scrim gradients + the hero copy, all
+   later DOM siblings. Lift the auto-touring label above those scrims so it shows
+   (the headline still owns the far left; labels are offset to the right). */
+.newcis-hero-popup {
+  z-index: 5;
+}
+
 /* Volcano marker — an active-eruption pin pulses to draw the eye; dormant pins
    sit static. Neutralised by the reduced-motion block below. */
 @keyframes newcis-volcano-pulse {

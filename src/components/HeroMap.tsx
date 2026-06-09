@@ -2,11 +2,20 @@
 
 // HeroMap — the landing-page hero's living backdrop. A deliberately STRIPPED,
 // NON-interactive cousin of HeatMap: same /public/provinces.geojson, same
-// worst-risk tint per focus province, but no controls, no popups, no hazard
-// markers, no basemap swap, and no pointer interaction (the page scrolls over
-// it). It exists to prove — in the first viewport — that NEWCIS renders the real
-// national picture, not a stock photo. A slow, gentle rotate gives it life
-// without demanding attention. All interaction lives at /dashboard.
+// worst-risk tint per focus province, but no controls, no pointer interaction
+// (the page scrolls over it). It exists to prove — in the first viewport — that
+// NEWCIS renders the REAL national picture, not a stock photo.
+//
+// Instead of an aimless rotation, it runs a CINEMATIC AUTO-TOUR: an establishing
+// shot of all of PNG, then a slow fly between a few high-signal real stops —
+// the worst-risk focus province, an active volcano, a recent major disaster —
+// zooming in and popping a label card at each, then looping. Every stop is drawn
+// from the same real data the dashboard uses (sector_risk.json + hazards.json),
+// and hazard stops are badged REFERENCE, never LIVE.
+//
+// All stops are offset to the RIGHT half of the frame so the zoomed province
+// never collides with the hero's left-aligned headline — and so PNG fills the
+// space that used to be empty. Reduced-motion users get a single static shot.
 import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -24,10 +33,69 @@ function worstByProvince(sectorRisk: SectorRisk[]): Record<string, RiskLevel> {
   return out;
 }
 
+// One stop on the tour. `label` (when present) renders a small card at the point.
+interface Stop {
+  center: [number, number];
+  zoom: number;
+  label?: { title: string; sub: string; tag: string; tone: "risk-critical" | "risk-high" | "reference" };
+  dwell: number; // ms to hold here before flying on
+}
+
+const TONE_CSS: Record<NonNullable<Stop["label"]>["tone"], { fg: string; dot: string }> = {
+  "risk-critical": { fg: "#f87171", dot: "#334155" },
+  "risk-high": { fg: "#fb7185", dot: "#f43f5e" },
+  reference: { fg: "#a1a1aa", dot: "#a1a1aa" },
+};
+
+// Curated tour — all coordinates/labels from real data (see hazards.json &
+// sector_risk.json). Gulf is the worst focus province (critical); Ulawun is an
+// active volcano; Yambali is the 2024 catastrophic landslide.
+const TOUR: Stop[] = [
+  // Establishing shot — the whole country.
+  { center: [147.0, -6.3], zoom: 4.6, dwell: 3200 },
+  {
+    center: [144.82, -7.65],
+    zoom: 6.2,
+    label: { title: "Gulf", sub: "Worst-risk focus province", tag: "CRITICAL", tone: "risk-critical" },
+    dwell: 4200,
+  },
+  {
+    center: [151.33, -5.05],
+    zoom: 6.8,
+    label: { title: "Ulawun", sub: "Active volcano · West New Britain", tag: "REFERENCE", tone: "reference" },
+    dwell: 4200,
+  },
+  {
+    center: [143.62, -5.28],
+    zoom: 6.6,
+    label: { title: "Yambali landslide", sub: "2024 · Enga · catastrophic", tag: "REFERENCE", tone: "reference" },
+    dwell: 4200,
+  },
+];
+
+// Shift the flyTo target left in screen space so the zoomed point lands in the
+// RIGHT portion of the hero (clear of the headline). Positive x ⇒ target moves
+// toward the right edge. Scaled to container width.
+function rightOffset(width: number): [number, number] {
+  return [Math.min(width * 0.22, 320), 0];
+}
+
+function buildLabelHTML(l: NonNullable<Stop["label"]>): string {
+  const t = TONE_CSS[l.tone];
+  return `<div style="font-family:system-ui;font-size:12px;color:#f4f4f5;background:rgba(9,9,11,0.92);border:1px solid #3f3f46;border-radius:6px;padding:8px 11px;box-shadow:0 8px 24px rgba(0,0,0,0.5);min-width:150px;">
+      <div style="display:flex;align-items:center;gap:6px;font-weight:600;">
+        <span style="width:7px;height:7px;border-radius:9999px;background:${t.dot};"></span>${l.title}
+      </div>
+      <div style="margin-top:3px;opacity:0.75;font-size:11px;">${l.sub}</div>
+      <div style="margin-top:6px;font-size:9px;font-weight:700;letter-spacing:0.08em;color:${t.fg};">${l.tag}</div>
+    </div>`;
+}
+
 export function HeroMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const rafRef = useRef<number | null>(null);
+  const popupRef = useRef<maplibregl.Popup | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -42,13 +110,17 @@ export function HeroMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         sources: {},
         layers: [{ id: "bg", type: "background", paint: { "background-color": bgColour } }],
       },
-      center: [144.5, -6.3],
-      zoom: 4.5,
+      center: TOUR[0].center,
+      zoom: TOUR[0].zoom,
       // Non-interactive: the page owns the pointer, the map is pure backdrop.
       interactive: false,
       attributionControl: false,
     });
     mapRef.current = map;
+
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
     map.on("load", async () => {
       try {
@@ -88,25 +160,65 @@ export function HeroMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         // so the canvas fills the whole hero instead of locking to its default.
         requestAnimationFrame(() => mapRef.current === map && map.resize());
       } catch {
-        // A failed geojson fetch just leaves the flat background — the hero's
-        // overlay copy still reads, so the page degrades gracefully.
+        // A failed geojson fetch leaves the flat background — the hero's overlay
+        // copy still reads, so the page degrades gracefully.
       }
 
-      // Slow, respectful drift. Honour prefers-reduced-motion: hold a static
-      // bearing for anyone who's asked the system to stop moving things.
-      const reduce =
-        typeof window !== "undefined" &&
-        window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-      if (reduce) return;
+      // Reduced motion (or a single-stop tour): hold a static, well-framed shot
+      // offset to the right; no fly loop, no label churn.
+      if (reduce || TOUR.length < 2) {
+        const w = containerRef.current?.clientWidth ?? map.getCanvas().width;
+        map.easeTo({ center: TOUR[1]?.center ?? TOUR[0].center, zoom: 5.4, offset: rightOffset(w), duration: 0 });
+        return;
+      }
 
-      const start = performance.now();
-      const spin = (now: number) => {
+      // Cinematic auto-tour. flyTo each stop, dwell, then advance — looping.
+      let i = 0;
+      const go = () => {
         if (mapRef.current !== map) return;
-        // ~0.6°/s rotation — barely-there life, never distracting.
-        map.setBearing(((now - start) / 1000) * 0.6);
-        rafRef.current = requestAnimationFrame(spin);
+        const stop = TOUR[i];
+        const w = containerRef.current?.clientWidth ?? 1000;
+
+        // Clear the previous label before moving.
+        if (popupRef.current) {
+          popupRef.current.remove();
+          popupRef.current = null;
+        }
+
+        map.flyTo({
+          center: stop.center,
+          zoom: stop.zoom,
+          offset: rightOffset(w),
+          speed: 0.5, // gentle
+          curve: 1.5,
+          essential: true,
+        });
+
+        // Drop the label once we arrive, if this stop has one.
+        const showLabel = () => {
+          if (mapRef.current !== map || !stop.label) return;
+          popupRef.current = new maplibregl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 14,
+            // newcis-popup kills the default white wrapper; newcis-hero-popup
+            // lifts the label above the hero's scrim gradients (which are later
+            // DOM siblings and would otherwise paint over it).
+            className: "newcis-popup newcis-hero-popup",
+          })
+            .setLngLat(stop.center)
+            .setHTML(buildLabelHTML(stop.label))
+            .addTo(map);
+        };
+        map.once("moveend", showLabel);
+
+        // Schedule the next stop after the dwell.
+        timerRef.current = setTimeout(() => {
+          i = (i + 1) % TOUR.length;
+          go();
+        }, stop.dwell);
       };
-      rafRef.current = requestAnimationFrame(spin);
+      go();
     });
 
     // Keep the backdrop filling its box across viewport/orientation changes.
@@ -114,7 +226,11 @@ export function HeroMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
     ro.observe(containerRef.current);
 
     return () => {
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      if (popupRef.current) {
+        popupRef.current.remove();
+        popupRef.current = null;
+      }
       ro.disconnect();
       map.remove();
       mapRef.current = null;
@@ -124,8 +240,8 @@ export function HeroMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
   // MapLibre's own stylesheet forces `.maplibregl-map { position: relative }`,
   // which beats a Tailwind `absolute` utility on the SAME element — so the
   // container can't be the absolutely-positioned fill layer (it would collapse
-  // to height 0). Instead an OUTER wrapper owns the `absolute inset-0` fill, and
-  // the MapLibre container just stretches to fill that wrapper at h/w 100%.
+  // to height 0). An OUTER wrapper owns the `absolute inset-0` fill instead, and
+  // the MapLibre container stretches to fill it at h/w 100%.
   return (
     <div aria-hidden className="absolute inset-0">
       <div ref={containerRef} className="h-full w-full" />

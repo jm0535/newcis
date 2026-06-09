@@ -265,7 +265,7 @@ export default async function Landing() {
         <div className="relative mx-auto max-w-7xl px-4 md:px-6 pb-4">
           <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.08em] text-text-muted">
             <span className="h-1.5 w-1.5 rounded-full bg-status-green animate-pulse" />
-            Live national risk map · focus provinces tinted by worst sector risk
+            Live national risk map · touring real risk &amp; hazard sites
           </span>
         </div>
       </section>
