@@ -1,7 +1,7 @@
 // Data shapes for NEWCIS. JSON file storage in PoC; same shapes back a DB in Phase 2.
 // Keep these in sync with CLAUDE.md §3.
 
-export type Provenance = "LIVE" | "DEMO";
+export type Provenance = "LIVE" | "DEMO" | "REFERENCE";
 export type Trend = "up" | "down" | "flat";
 export type AlertLevel = "GREEN" | "AMBER" | "RED" | "BLACK";
 export type RiskLevel = "low" | "med" | "high" | "critical";

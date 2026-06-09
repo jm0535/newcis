@@ -5,6 +5,7 @@ import { classifyIndicator } from "@/lib/risk-engine";
 import type { RiskThreshold } from "@/lib/types";
 import { ALERT_LABEL } from "@/lib/ui";
 import { Card, StatusPill } from "./ui";
+import { ProvenanceBadge } from "./Provenance";
 
 const EVENTS: { label: string; oni: number; note: string }[] = [
   { label: "1997–98", oni: 2.4, note: "Super El Niño · PNG severe drought + frost" },
@@ -44,8 +45,13 @@ export function HistoricalCompare({
             padding="sm"
             className={isCurrent ? "border-accent/50 ring-1 ring-accent/30" : ""}
           >
-            <div className="text-[10px] uppercase tracking-[0.08em] text-text-muted font-semibold">
-              {e.label}
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[10px] uppercase tracking-[0.08em] text-text-muted font-semibold">
+                {e.label}
+              </span>
+              {/* Past events are curated historical record (REFERENCE); the
+                  Current card is the live ONI reading. */}
+              <ProvenanceBadge value={isCurrent ? "LIVE" : "REFERENCE"} />
             </div>
             <div className="mt-1 flex items-baseline justify-between gap-2">
               <span className="text-2xl font-semibold text-text-1" data-numeric>

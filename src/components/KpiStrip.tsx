@@ -4,6 +4,7 @@
 import type { NationalStatus } from "@/lib/types";
 import { FOCUS_COUNT } from "@/lib/focus-provinces";
 import { MetricTile, EmptyState } from "./ui";
+import { ProvenanceBadge } from "./Provenance";
 import { Activity, AlertTriangle, Gauge, Users, MapPin, CalendarRange } from "lucide-react";
 
 const PHASE_SHORT: Record<NationalStatus["enso_phase"], string> = {
@@ -67,7 +68,17 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
   const affectedLabel = affected > 0 ? affected.toLocaleString() : "—";
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+    <div className="space-y-2">
+      {/* These KPIs are the risk-engine rollup of the live ingest cycle —
+          LIVE-derived. One strip-level badge keeps the credibility rule intact
+          without crowding six glanceable tiles. */}
+      <div className="flex items-center gap-2">
+        <ProvenanceBadge value="LIVE" />
+        <span className="text-[10px] text-text-muted">
+          Derived from this cycle&apos;s national rollup
+        </span>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
       <MetricTile
         icon={<Activity size={12} />}
         label="ENSO Phase"
@@ -100,11 +111,12 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
         value={String(national.high_risk_province_count)}
         hint={`Of the ${FOCUS_COUNT} focus provinces in this prototype`}
       />
-      <MetricTile
-        icon={<CalendarRange size={12} />}
-        label="Forecast Period"
-        value={<span className="text-lg">{national.forecast_period}</span>}
-      />
+        <MetricTile
+          icon={<CalendarRange size={12} />}
+          label="Forecast Period"
+          value={<span className="text-lg">{national.forecast_period}</span>}
+        />
+      </div>
     </div>
   );
 }
