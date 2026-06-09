@@ -267,7 +267,12 @@ export default async function OperationsPage() {
         </section>
 
         <aside className="space-y-6">
-          <SitrepGenerator />
+          {/* Anchor target for the landing-page "Weekly SITREP" CTA
+              (/operations#sitrep). scroll-mt clears the sticky status bar +
+              page nav so the panel isn't hidden under them on jump. */}
+          <div id="sitrep" className="scroll-mt-28">
+            <SitrepGenerator />
+          </div>
 
           <Card padding="lg">
             <SectionHeader

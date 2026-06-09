@@ -263,6 +263,13 @@ export default async function Landing() {
                 <CloudSun size={15} />
                 ENSO Climate
               </Link>
+              <Link
+                href="/operations#sitrep"
+                className="inline-flex items-center justify-center gap-2 rounded font-medium uppercase tracking-[0.06em] text-sm px-6 py-3 bg-surface-1/80 backdrop-blur text-text-1 hover:bg-surface-2 border border-border-default transition-colors"
+              >
+                <FileText size={15} />
+                Weekly SITREP
+              </Link>
             </div>
           </div>
         </div>

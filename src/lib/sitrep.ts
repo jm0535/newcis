@@ -8,6 +8,7 @@ import type {
   Indicator,
   LastRun,
   NationalStatus,
+  RiskLevel,
   Sector,
   SectorRisk,
   Sitrep,
@@ -56,6 +57,60 @@ function recommendedActions(national: NationalStatus): string[] {
   ];
 }
 
+const LEVEL_RANK: Record<RiskLevel, number> = { low: 0, med: 1, high: 2, critical: 3 };
+
+// One row per focus province: its single worst-hit sector + how many of its
+// sectors sit at HIGH or CRITICAL ("stressed"). Ranked worst-first so the report
+// leads with the provinces that need attention — the same ordering the live
+// Operations watch-list uses, kept deliberately in step so the printed SITREP and
+// the on-screen view tell one story.
+interface ProvinceRow {
+  code: string;
+  name: string;
+  worstLevel: RiskLevel | null;
+  worstSector: Sector | null;
+  worstScore: number;
+  stressed: number;
+}
+
+function provincialRiskRows(risk: SectorRisk[]): ProvinceRow[] {
+  return Object.keys(FOCUS_NAMES)
+    .map((code) => {
+      const rows = risk.filter((r) => r.province_code === code);
+      const worst = [...rows].sort(
+        (a, b) => LEVEL_RANK[b.level] - LEVEL_RANK[a.level] || b.score - a.score,
+      )[0];
+      const stressed = rows.filter(
+        (r) => r.level === "high" || r.level === "critical",
+      ).length;
+      return {
+        code,
+        name: FOCUS_NAMES[code],
+        worstLevel: worst?.level ?? null,
+        worstSector: worst?.sector ?? null,
+        worstScore: worst?.score ?? 0,
+        stressed,
+      };
+    })
+    .sort(
+      (a, b) =>
+        (b.worstLevel ? LEVEL_RANK[b.worstLevel] : -1) -
+          (a.worstLevel ? LEVEL_RANK[a.worstLevel] : -1) ||
+        b.stressed - a.stressed ||
+        b.worstScore - a.worstScore ||
+        a.name.localeCompare(b.name),
+    );
+}
+
+// Map a sector RiskLevel onto the report's alert-pill palette so the printed
+// provincial table reads with the same traffic-light vocabulary as the header.
+const LEVEL_PILL: Record<RiskLevel, string> = {
+  low: "GREEN",
+  med: "AMBER",
+  high: "RED",
+  critical: "BLACK",
+};
+
 function topSectorMovers(risk: SectorRisk[]): string[] {
   const rank: Record<string, number> = { low: 0, med: 1, high: 2, critical: 3 };
   const focused = risk.filter((r) => FOCUS_NAMES[r.province_code]);
@@ -82,6 +137,10 @@ export function generateSitrep(inputs: SitrepInputs): Sitrep {
   const now = new Date();
   const id = `sitrep-${now.toISOString().replace(/[:.]/g, "-")}`;
   const period = periodLabel(now);
+  // Browsers name a print-to-PDF from the document <title>. Keep it clean and
+  // filename-safe (no arrows/colons) so the saved file is e.g.
+  // "NEWCIS SITREP 2026-06-09.pdf" rather than a mangled period string.
+  const docTitle = `NEWCIS SITREP ${now.toISOString().slice(0, 10)}`;
   const national = inputs.national;
   const enso = national ? ENSO_LABEL[national.enso_phase] : "ENSO Neutral";
   const alert = national?.alert_level ?? "GREEN";
@@ -93,6 +152,21 @@ export function generateSitrep(inputs: SitrepInputs): Sitrep {
         `<tr><td>${i.key}</td><td>${i.label}</td><td style="text-align:right">${i.value ?? "—"}</td><td>${i.unit}</td><td>${i.provenance}</td><td>${i.observed_at}</td></tr>`,
     )
     .join("\n");
+
+  const provinceRows = provincialRiskRows(inputs.sectorRisk);
+  const provincesAtRisk = provinceRows.filter(
+    (p) => p.worstLevel === "high" || p.worstLevel === "critical",
+  ).length;
+  const provinceTableRows = provinceRows.length
+    ? provinceRows
+        .map((p, i) => {
+          const pill = p.worstLevel
+            ? `<span class="pill ${LEVEL_PILL[p.worstLevel]}">${p.worstLevel.toUpperCase()}</span>`
+            : "—";
+          return `<tr><td style="text-align:right">${i + 1}</td><td>${p.name} <span style="color:#a1a1aa">${p.code}</span></td><td>${pill}</td><td>${p.worstSector ?? "—"}</td><td style="text-align:right">${p.stressed || "0"}</td></tr>`;
+        })
+        .join("\n")
+    : '<tr><td colspan="5">No focus-province sector cells available.</td></tr>';
 
   const movers = topSectorMovers(inputs.sectorRisk);
   const moverList = movers.length
@@ -122,7 +196,7 @@ export function generateSitrep(inputs: SitrepInputs): Sitrep {
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>NEWCIS Weekly SITREP · ${period}</title>
+  <title>${docTitle}</title>
   <style>
     body { font: 14px/1.5 -apple-system, system-ui, sans-serif; color: #18181b; max-width: 820px; margin: 32px auto; padding: 0 24px; }
     h1 { font-size: 22px; margin: 0 0 4px; }
@@ -153,6 +227,15 @@ export function generateSitrep(inputs: SitrepInputs): Sitrep {
     <table>
       <thead><tr><th>Key</th><th>Label</th><th style="text-align:right">Value</th><th>Unit</th><th>Source</th><th>Observed</th></tr></thead>
       <tbody>${indicatorRows || '<tr><td colspan="6">No indicators available.</td></tr>'}</tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Provincial risk</h2>
+    <p style="margin:4px 0 0;color:#52525b;font-size:12px">All ${provinceRows.length} provinces ranked worst-first by their single most-stressed sector. <b>${provincesAtRisk}</b> of ${provinceRows.length} sit at HIGH or CRITICAL. "Stressed" counts how many of a province's sectors are at HIGH or CRITICAL.</p>
+    <table>
+      <thead><tr><th style="text-align:right">#</th><th>Province</th><th>Worst level</th><th>Worst sector</th><th style="text-align:right">Stressed</th></tr></thead>
+      <tbody>${provinceTableRows}</tbody>
     </table>
   </section>
 
