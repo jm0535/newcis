@@ -85,6 +85,43 @@ export interface LastRun {
   notes: string;
 }
 
+// Structured, render-agnostic content of one report. Both the HTML view and the
+// editable .docx export are built from THIS single model — so the two formats can
+// never drift. Persisted alongside the report (Sitrep.model) so a download can
+// reproduce the exact point-in-time snapshot rather than re-read live data.
+export interface SitrepModel {
+  id: string;
+  generatedAt: string; // ISO
+  period: string;
+  docTitle: string; // clean, filename-safe ("NEWCIS SITREP <date>")
+  enso: string;
+  alert: string;
+  rating: string;
+  summary: string;
+  indicators: {
+    key: string;
+    label: string;
+    value: string;
+    unit: string;
+    provenance: string;
+    observedAt: string;
+  }[];
+  provinces: {
+    rank: number;
+    name: string;
+    code: string;
+    level: string; // upper-cased, or "—"
+    sector: string;
+    stressed: number;
+  }[];
+  provinceCount: number;
+  provincesAtRisk: number;
+  movers: string[];
+  actions: string[];
+  sources: { name: string; ok: boolean }[];
+  analystNote?: string;
+}
+
 export interface Sitrep {
   id: string;
   period: string; // e.g. "Week 23, 2026"
@@ -92,6 +129,9 @@ export interface Sitrep {
   html: string;
   summary: string;
   analyst_note?: string;
+  // Optional for back-compat with reports stored before the model was persisted;
+  // the .docx route falls back gracefully when absent.
+  model?: SitrepModel;
 }
 
 export interface ProvinceProperties {

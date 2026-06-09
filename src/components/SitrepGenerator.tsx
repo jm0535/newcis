@@ -1,9 +1,10 @@
 "use client";
 
-// SITREP generator panel. POSTs current state → /api/sitrep, receives the
-// stored artefact, opens its HTML in a new tab for print-to-PDF.
+// SITREP generator panel. POSTs current state → /api/sitrep, receives the stored
+// artefact, opens its HTML in a new tab for print-to-PDF, and offers an editable
+// .docx download so executives can revise the report in Word and re-share.
 import { useState } from "react";
-import { FileText, ExternalLink } from "lucide-react";
+import { FileText, ExternalLink, FileDown } from "lucide-react";
 import { Card, Button } from "./ui";
 
 export function SitrepGenerator() {
@@ -40,8 +41,9 @@ export function SitrepGenerator() {
           Weekly SITREP
         </h3>
         <p className="text-[11px] text-text-muted mt-1 leading-snug">
-          Generate a templated situation report from current data. Opens in a new tab — use
-          the browser's print dialog to save as PDF.
+          Generate a templated situation report from current data. Opens in a new tab — print
+          to PDF, or download an editable <span className="text-text-2">.docx</span> to revise
+          in Word.
         </p>
       </div>
 
@@ -64,15 +66,24 @@ export function SitrepGenerator() {
           {busy ? "Generating…" : "Generate SITREP"}
         </Button>
         {latestId && (
-          <a
-            href={`/api/sitrep/${latestId}`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-[11px] text-accent hover:underline inline-flex items-center gap-1"
-          >
-            <ExternalLink size={11} />
-            Reopen
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href={`/api/sitrep/${latestId}`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-[11px] text-accent hover:underline inline-flex items-center gap-1"
+            >
+              <ExternalLink size={11} />
+              Reopen
+            </a>
+            <a
+              href={`/api/sitrep/${latestId}/docx`}
+              className="text-[11px] text-accent hover:underline inline-flex items-center gap-1"
+            >
+              <FileDown size={11} />
+              .docx
+            </a>
+          </div>
         )}
       </div>
 

@@ -12,6 +12,7 @@ import type {
   Sector,
   SectorRisk,
   Sitrep,
+  SitrepModel,
 } from "./types";
 import { FOCUS_NAMES } from "./focus-provinces";
 
@@ -133,53 +134,46 @@ export interface SitrepInputs {
   analystNote?: string;
 }
 
-export function generateSitrep(inputs: SitrepInputs): Sitrep {
+// Pure: current data → structured model. No I/O, no formatting decisions beyond
+// shaping values into display strings.
+export function buildSitrepModel(inputs: SitrepInputs): SitrepModel {
   const now = new Date();
   const id = `sitrep-${now.toISOString().replace(/[:.]/g, "-")}`;
   const period = periodLabel(now);
-  // Browsers name a print-to-PDF from the document <title>. Keep it clean and
-  // filename-safe (no arrows/colons) so the saved file is e.g.
-  // "NEWCIS SITREP 2026-06-09.pdf" rather than a mangled period string.
   const docTitle = `NEWCIS SITREP ${now.toISOString().slice(0, 10)}`;
   const national = inputs.national;
   const enso = national ? ENSO_LABEL[national.enso_phase] : "ENSO Neutral";
   const alert = national?.alert_level ?? "GREEN";
   const rating = national?.national_risk_rating.toUpperCase() ?? "LOW";
 
-  const indicatorRows = inputs.indicators
-    .map(
-      (i) =>
-        `<tr><td>${i.key}</td><td>${i.label}</td><td style="text-align:right">${i.value ?? "—"}</td><td>${i.unit}</td><td>${i.provenance}</td><td>${i.observed_at}</td></tr>`,
-    )
-    .join("\n");
+  const indicators = inputs.indicators.map((i) => ({
+    key: i.key,
+    label: i.label,
+    value: i.value === null || i.value === undefined ? "—" : String(i.value),
+    unit: i.unit,
+    provenance: i.provenance,
+    observedAt: i.observed_at,
+  }));
 
-  const provinceRows = provincialRiskRows(inputs.sectorRisk);
-  const provincesAtRisk = provinceRows.filter(
+  const rows = provincialRiskRows(inputs.sectorRisk);
+  const provinces = rows.map((p, i) => ({
+    rank: i + 1,
+    name: p.name,
+    code: p.code,
+    level: p.worstLevel ? p.worstLevel.toUpperCase() : "—",
+    sector: p.worstSector ?? "—",
+    stressed: p.stressed,
+  }));
+  const provincesAtRisk = rows.filter(
     (p) => p.worstLevel === "high" || p.worstLevel === "critical",
   ).length;
-  const provinceTableRows = provinceRows.length
-    ? provinceRows
-        .map((p, i) => {
-          const pill = p.worstLevel
-            ? `<span class="pill ${LEVEL_PILL[p.worstLevel]}">${p.worstLevel.toUpperCase()}</span>`
-            : "—";
-          return `<tr><td style="text-align:right">${i + 1}</td><td>${p.name} <span style="color:#a1a1aa">${p.code}</span></td><td>${pill}</td><td>${p.worstSector ?? "—"}</td><td style="text-align:right">${p.stressed || "0"}</td></tr>`;
-        })
-        .join("\n")
-    : '<tr><td colspan="5">No focus-province sector cells available.</td></tr>';
 
   const movers = topSectorMovers(inputs.sectorRisk);
-  const moverList = movers.length
-    ? movers.map((m) => `<li>${m}</li>`).join("")
-    : "<li>No focus-province sector cells available.</li>";
-
   const actions = national ? recommendedActions(national) : [];
-  const actionList = actions.map((a) => `<li>${a}</li>`).join("");
-
-  const sources = inputs.lastRun?.sources_ok ?? {};
-  const sourceRow = Object.entries(sources)
-    .map(([k, ok]) => `<span>${k}: <b>${ok ? "OK" : "FAIL"}</b></span>`)
-    .join(" · ");
+  const sources = Object.entries(inputs.lastRun?.sources_ok ?? {}).map(([name, ok]) => ({
+    name,
+    ok,
+  }));
 
   const summary =
     `${alert} · ${enso} · national risk ${rating}. ` +
@@ -188,15 +182,75 @@ export function generateSitrep(inputs: SitrepInputs): Sitrep {
       ? ` ${national.high_risk_province_count} focus province(s) at high risk.`
       : "");
 
-  const analystSection = inputs.analystNote
-    ? `<section><h2>Analyst note</h2><p>${inputs.analystNote}</p></section>`
+  return {
+    id,
+    generatedAt: now.toISOString(),
+    period,
+    docTitle,
+    enso,
+    alert,
+    rating,
+    summary,
+    indicators,
+    provinces,
+    provinceCount: rows.length,
+    provincesAtRisk,
+    movers,
+    actions,
+    sources,
+    analystNote: inputs.analystNote,
+  };
+}
+
+// Escape user/text content destined for the HTML report so an analyst note (free
+// text) can never inject markup.
+function esc(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+export function renderSitrepHtml(m: SitrepModel): string {
+  const indicatorRows = m.indicators
+    .map(
+      (i) =>
+        `<tr><td>${esc(i.key)}</td><td>${esc(i.label)}</td><td style="text-align:right">${esc(i.value)}</td><td>${esc(i.unit)}</td><td>${esc(i.provenance)}</td><td>${esc(i.observedAt)}</td></tr>`,
+    )
+    .join("\n");
+
+  const provinceTableRows = m.provinces.length
+    ? m.provinces
+        .map((p) => {
+          const pill =
+            p.level !== "—"
+              ? `<span class="pill ${LEVEL_PILL[p.level.toLowerCase() as RiskLevel] ?? "GREEN"}">${p.level}</span>`
+              : "—";
+          return `<tr><td style="text-align:right">${p.rank}</td><td>${esc(p.name)} <span style="color:#a1a1aa">${esc(p.code)}</span></td><td>${pill}</td><td>${esc(p.sector)}</td><td style="text-align:right">${p.stressed || "0"}</td></tr>`;
+        })
+        .join("\n")
+    : '<tr><td colspan="5">No focus-province sector cells available.</td></tr>';
+
+  const moverList = m.movers.length
+    ? m.movers.map((mv) => `<li>${esc(mv)}</li>`).join("")
+    : "<li>No focus-province sector cells available.</li>";
+
+  const actionList = m.actions.map((a) => `<li>${esc(a)}</li>`).join("");
+
+  const sourceRow = m.sources
+    .map((s) => `<span>${esc(s.name)}: <b>${s.ok ? "OK" : "FAIL"}</b></span>`)
+    .join(" · ");
+
+  const analystSection = m.analystNote
+    ? `<section><h2>Analyst note</h2><p>${esc(m.analystNote)}</p></section>`
     : "";
 
-  const html = `<!doctype html>
+  return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>${docTitle}</title>
+  <title>${m.docTitle}</title>
   <style>
     body { font: 14px/1.5 -apple-system, system-ui, sans-serif; color: #18181b; max-width: 820px; margin: 32px auto; padding: 0 24px; }
     h1 { font-size: 22px; margin: 0 0 4px; }
@@ -214,12 +268,12 @@ export function generateSitrep(inputs: SitrepInputs): Sitrep {
 </head>
 <body>
   <h1>NEWCIS · Weekly ENSO Situation Report</h1>
-  <div>Period: <b>${period}</b> · Generated <b>${now.toISOString()}</b></div>
-  <div style="margin-top:8px"><span class="pill ${alert}">${alert}</span> &nbsp; ${enso} &nbsp; · National risk: <b>${rating}</b></div>
+  <div>Period: <b>${m.period}</b> · Generated <b>${m.generatedAt}</b></div>
+  <div style="margin-top:8px"><span class="pill ${m.alert}">${m.alert}</span> &nbsp; ${m.enso} &nbsp; · National risk: <b>${m.rating}</b></div>
 
   <section>
     <h2>Summary</h2>
-    <p>${summary}</p>
+    <p>${esc(m.summary)}</p>
   </section>
 
   <section>
@@ -232,7 +286,7 @@ export function generateSitrep(inputs: SitrepInputs): Sitrep {
 
   <section>
     <h2>Provincial risk</h2>
-    <p style="margin:4px 0 0;color:#52525b;font-size:12px">All ${provinceRows.length} provinces ranked worst-first by their single most-stressed sector. <b>${provincesAtRisk}</b> of ${provinceRows.length} sit at HIGH or CRITICAL. "Stressed" counts how many of a province's sectors are at HIGH or CRITICAL.</p>
+    <p style="margin:4px 0 0;color:#52525b;font-size:12px">All ${m.provinceCount} provinces ranked worst-first by their single most-stressed sector. <b>${m.provincesAtRisk}</b> of ${m.provinceCount} sit at HIGH or CRITICAL. "Stressed" counts how many of a province's sectors are at HIGH or CRITICAL.</p>
     <table>
       <thead><tr><th style="text-align:right">#</th><th>Province</th><th>Worst level</th><th>Worst sector</th><th style="text-align:right">Stressed</th></tr></thead>
       <tbody>${provinceTableRows}</tbody>
@@ -257,13 +311,20 @@ export function generateSitrep(inputs: SitrepInputs): Sitrep {
   </footer>
 </body>
 </html>`;
+}
 
+// Generate a complete, persistable report. The structured model is stored
+// alongside the HTML so an editable .docx download (see /api/sitrep/[id]/docx)
+// can reproduce the same point-in-time snapshot.
+export function generateSitrep(inputs: SitrepInputs): Sitrep {
+  const model = buildSitrepModel(inputs);
   return {
-    id,
-    period,
-    generated_at: now.toISOString(),
-    html,
-    summary,
+    id: model.id,
+    period: model.period,
+    generated_at: model.generatedAt,
+    html: renderSitrepHtml(model),
+    summary: model.summary,
     analyst_note: inputs.analystNote,
+    model,
   };
 }

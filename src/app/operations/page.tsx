@@ -15,7 +15,7 @@ import {
 } from "@/lib/data";
 import { fmtDateTime } from "@/lib/ui";
 import { FOCUS_NAMES, FOCUS_COUNT } from "@/lib/focus-provinces";
-import { FileText, ExternalLink } from "lucide-react";
+import { FileText, ExternalLink, FileDown } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -298,8 +298,18 @@ export default async function OperationsPage() {
                       <ExternalLink size={11} />
                       {s.period}
                     </a>
-                    <span className="text-text-muted shrink-0" data-numeric>
-                      {s.generated_at.slice(11, 16)}
+                    <span className="flex items-center gap-2 shrink-0">
+                      <a
+                        href={`/api/sitrep/${s.id}/docx`}
+                        className="text-text-muted hover:text-accent inline-flex items-center gap-0.5"
+                        title="Download editable Word document"
+                      >
+                        <FileDown size={11} />
+                        docx
+                      </a>
+                      <span className="text-text-muted" data-numeric>
+                        {s.generated_at.slice(11, 16)}
+                      </span>
                     </span>
                   </li>
                 ))}
