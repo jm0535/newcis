@@ -221,7 +221,7 @@ export default async function Landing() {
         <div className="absolute inset-0 bg-gradient-to-b from-surface-0/70 via-surface-0/40 to-surface-0/90" />
         <div className="absolute inset-0 bg-gradient-to-r from-surface-0/80 to-transparent" />
 
-        <div className="relative flex-1 w-full mx-auto max-w-7xl px-4 md:px-6 py-20 md:py-28 flex items-center">
+        <div className="relative z-10 flex-1 w-full mx-auto max-w-7xl px-4 md:px-6 py-20 md:py-28 flex items-center">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface-0/70 backdrop-blur px-3 py-1 mb-5">
               <span

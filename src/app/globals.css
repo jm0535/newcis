@@ -222,11 +222,19 @@ body {
   display: none;
 }
 
-/* Hero-tour label: the map sits behind two scrim gradients + the hero copy, all
-   later DOM siblings. Lift the auto-touring label above those scrims so it shows
-   (the headline still owns the far left; labels are offset to the right). */
+/* Hero-tour label: sits between the scrims and the hero copy. z-index 5 lifts it
+   above the two scrim gradients (so the label reads over the dimmed map), but the
+   hero content wrapper is z-10 and always paints OVER the label — the headline and
+   body text are never covered. On small screens there is no clear right-hand space,
+   so the label would land on the copy: hide it on mobile, show from md up. */
 .newcis-hero-popup {
   z-index: 5;
+  display: none;
+}
+@media (min-width: 768px) {
+  .newcis-hero-popup {
+    display: block;
+  }
 }
 
 /* Volcano marker — an active-eruption pin pulses to draw the eye; dormant pins
