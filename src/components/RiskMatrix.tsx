@@ -73,9 +73,13 @@ export function RiskMatrix({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
       );
   }, [sectorRisk]);
 
-  // Per-sector national roll-up: worst level across provinces + how many sit at it.
+  // Per-sector national roll-up: worst level across provinces + how many sit at it,
+  // and whether the sector carries ANY real (LIVE) feed this cycle. A sector is
+  // badged LIVE if at least one province row was pulled from a real source; DEMO
+  // if every row is seeded — so the matrix states, per row, which sectors are
+  // genuinely fed vs placeholder (the credibility rule, made visible).
   const rollup = useMemo(() => {
-    const out = new Map<Sector, { level: RiskLevel; count: number }>();
+    const out = new Map<Sector, { level: RiskLevel; count: number; live: boolean }>();
     for (const sector of SECTORS) {
       const rows = sectorRisk.filter((r) => r.sector === sector);
       if (rows.length === 0) continue;
@@ -84,7 +88,8 @@ export function RiskMatrix({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         "low",
       );
       const count = rows.filter((r) => r.level === worst).length;
-      out.set(sector, { level: worst, count });
+      const live = rows.some((r) => r.provenance === "LIVE");
+      out.set(sector, { level: worst, count, live });
     }
     return out;
   }, [sectorRisk]);
@@ -148,7 +153,25 @@ export function RiskMatrix({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
               return (
                 <tr key={sector}>
                   <td className="sticky left-0 z-10 bg-surface-1 text-text-1 pr-3 py-0.5 font-medium whitespace-nowrap">
-                    {sector}
+                    <span className="inline-flex items-center gap-2">
+                      {sector}
+                      {roll && (
+                        <span
+                          className={`text-[8px] font-bold uppercase tracking-[0.06em] rounded px-1 py-px border leading-none ${
+                            roll.live
+                              ? "text-accent border-accent/40 bg-accent/10"
+                              : "text-text-muted border-border-default bg-surface-3"
+                          }`}
+                          title={
+                            roll.live
+                              ? "LIVE — at least one province in this sector is fed by a real source this cycle"
+                              : "DEMO — every province in this sector is seeded placeholder data"
+                          }
+                        >
+                          {roll.live ? "LIVE" : "DEMO"}
+                        </span>
+                      )}
+                    </span>
                   </td>
                   {/* National roll-up cell */}
                   <td className="px-0.5 py-0.5 w-[3.5rem]">
@@ -209,15 +232,47 @@ export function RiskMatrix({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
           </tbody>
         </table>
 
-        {/* Legend */}
-        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[10px] text-text-muted">
-          {(["low", "med", "high", "critical"] as RiskLevel[]).map((lvl) => (
-            <span key={lvl} className="inline-flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-sm border border-white/10" style={{ background: RISK_COLOUR[lvl] }} />
-              {LEVEL_LABEL[lvl]}
+        {/* Legend — every glyph spelled out so a first-time viewer needs no
+            explanation. Colour = severity, the caret on each cell = trend
+            direction, and the per-row LIVE/DEMO badge = is this fed or seeded. */}
+        <div className="mt-3 flex flex-col gap-1.5 text-[10px] text-text-muted">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            <span className="text-text-2 font-semibold uppercase tracking-[0.06em]">Severity</span>
+            {(["low", "med", "high", "critical"] as RiskLevel[]).map((lvl) => (
+              <span key={lvl} className="inline-flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-sm border border-white/10" style={{ background: RISK_COLOUR[lvl] }} />
+                {LEVEL_LABEL[lvl]}
+              </span>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            <span className="text-text-2 font-semibold uppercase tracking-[0.06em]">Trend</span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-text-2" data-numeric>▲</span> rising (worsening)
             </span>
-          ))}
-          <span className="text-text-disabled">▲▼▬ = trend · click a cell for detail</span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-text-2" data-numeric>▼</span> falling (improving)
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-text-2" data-numeric>▬</span> flat (no change vs last cycle)
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            <span className="text-text-2 font-semibold uppercase tracking-[0.06em]">Source</span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-[8px] font-bold uppercase tracking-[0.06em] rounded px-1 py-px border leading-none text-accent border-accent/40 bg-accent/10">
+                LIVE
+              </span>
+              real feed pulled this cycle
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-[8px] font-bold uppercase tracking-[0.06em] rounded px-1 py-px border leading-none text-text-muted border-border-default bg-surface-3">
+                DEMO
+              </span>
+              seeded placeholder
+            </span>
+            <span className="text-text-disabled">· click any cell for the detail behind it</span>
+          </div>
         </div>
       </div>
 

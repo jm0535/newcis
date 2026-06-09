@@ -9,6 +9,13 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { RiskLevel, SectorRisk } from "@/lib/types";
 import { RISK_COLOUR } from "@/lib/ui";
+import { ALL_PROVINCES } from "@/lib/focus-provinces";
+
+// Representative interior point per province code (lon/lat) — used to anchor the
+// volcano marker. Same coordinates the ingest nearest-province fallback uses.
+const PROVINCE_CENTROID: Record<string, [number, number]> = Object.fromEntries(
+  ALL_PROVINCES.map((p) => [p.code, [p.lon, p.lat] as [number, number]]),
+);
 
 const RISK_RANK: Record<RiskLevel, number> = { low: 0, med: 1, high: 2, critical: 3 };
 
@@ -63,9 +70,26 @@ function worstByProvince(sectorRisk: SectorRisk[]): Record<string, RiskLevel> {
   return out;
 }
 
+// Provinces carrying a catalogued volcano this cycle, keyed by code → the GVP
+// caption (volcano name + last-eruption year). A row's `data_source` begins
+// "GVP ·" iff it came from the Smithsonian volcano feed, so we read the badge
+// straight off the Disaster & Hazard row rather than re-deriving it. The caption
+// is shown verbatim in the marker tooltip — same fact the matrix drill-down gives.
+function volcanoByProvince(sectorRisk: SectorRisk[]): Record<string, { caption: string; level: RiskLevel }> {
+  const out: Record<string, { caption: string; level: RiskLevel }> = {};
+  for (const r of sectorRisk) {
+    if (r.sector !== "Disaster & Hazard") continue;
+    const src = r.data_source ?? "";
+    if (!src.startsWith("GVP ·")) continue;
+    out[r.province_code] = { caption: src.replace(/^GVP ·\s*/, ""), level: r.level };
+  }
+  return out;
+}
+
 export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
+  const volcanoMarkersRef = useRef<maplibregl.Marker[]>([]);
   const [basemap, setBasemap] = useState<Basemap>("flat");
 
   useEffect(() => {
@@ -151,6 +175,65 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
     return () => {
       map.remove();
       mapRef.current = null;
+    };
+  }, [sectorRisk]);
+
+  // Volcano markers — a 🌋 pin on every province carrying a catalogued GVP volcano
+  // this cycle. These are DOM markers (not a map layer) so they survive basemap
+  // swaps and ride above the fill. Active eruptions (high) pulse; the tooltip
+  // names the volcano + last-eruption year, the same fact the matrix drill shows.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    const place = () => {
+      // Clear any prior markers before re-placing (data changed / re-render).
+      for (const m of volcanoMarkersRef.current) m.remove();
+      volcanoMarkersRef.current = [];
+
+      const volcanoes = volcanoByProvince(sectorRisk);
+      for (const [code, { caption, level }] of Object.entries(volcanoes)) {
+        const centroid = PROVINCE_CENTROID[code];
+        if (!centroid) continue;
+        const active = level === "high"; // erupting within the active window
+        const el = document.createElement("div");
+        el.className = "newcis-volcano-marker";
+        el.setAttribute("role", "img");
+        el.setAttribute("aria-label", `Volcano: ${caption}`);
+        el.style.cssText =
+          "font-size:15px;line-height:1;cursor:pointer;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.6));" +
+          (active ? "animation:newcis-volcano-pulse 1.6s ease-in-out infinite;" : "");
+        el.textContent = "🌋";
+
+        const marker = new maplibregl.Marker({ element: el, anchor: "center" })
+          .setLngLat(centroid)
+          .setPopup(
+            new maplibregl.Popup({ closeButton: false, offset: 12, className: "newcis-popup" }).setHTML(
+              (() => {
+                const light = document.documentElement.classList.contains("light");
+                const fg = light ? "#18181b" : "#f4f4f5";
+                const bg = light ? "#ffffff" : "#18181b";
+                const border = light ? "#d4d4d8" : "#3f3f46";
+                const tag = active ? "#f43f5e" : "#a1a1aa";
+                return `<div style="font-family:system-ui;font-size:12px;color:${fg};background:${bg};border:1px solid ${border};padding:6px 8px;border-radius:4px;max-width:200px;">
+                   <div style="font-weight:600;display:flex;align-items:center;gap:4px;">🌋 Volcano${active ? ` <span style="color:${tag};font-size:10px;font-weight:700;">ACTIVE</span>` : ""}</div>
+                   <div style="margin-top:3px;opacity:0.85;">${caption}</div>
+                   <div style="margin-top:3px;opacity:0.6;font-size:10px;">Smithsonian GVP · LIVE</div>
+                 </div>`;
+              })(),
+            ),
+          )
+          .addTo(map);
+        volcanoMarkersRef.current.push(marker);
+      }
+    };
+
+    if (map.isStyleLoaded()) place();
+    else map.once("load", place);
+
+    return () => {
+      for (const m of volcanoMarkersRef.current) m.remove();
+      volcanoMarkersRef.current = [];
     };
   }, [sectorRisk]);
 
@@ -332,6 +415,10 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         <span className="inline-flex items-center gap-1.5 text-text-disabled">
           <span className="w-2 h-2 rounded-sm bg-border-default" />
           non-focus
+        </span>
+        <span className="inline-flex items-center gap-1.5 text-text-disabled normal-case">
+          <span aria-hidden>🌋</span>
+          volcano (GVP)
         </span>
       </div>
     </div>

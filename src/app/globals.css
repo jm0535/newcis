@@ -222,6 +222,13 @@ body {
   display: none;
 }
 
+/* Volcano marker — an active-eruption pin pulses to draw the eye; dormant pins
+   sit static. Neutralised by the reduced-motion block below. */
+@keyframes newcis-volcano-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.75; }
+}
+
 /* Reduce motion respect. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
