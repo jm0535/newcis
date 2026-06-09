@@ -13,6 +13,7 @@ import {
   getLastRun,
   getNationalStatus,
   getSectorRisk,
+  sitrepsDir,
 } from "@/lib/data";
 
 export const runtime = "nodejs";
@@ -27,7 +28,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   let sitrep: Sitrep;
   try {
-    const file = path.join(process.cwd(), "data", "sitreps", `${id}.json`);
+    const file = path.join(sitrepsDir(), `${id}.json`);
     sitrep = JSON.parse(await fs.readFile(file, "utf8")) as Sitrep;
   } catch {
     return NextResponse.json({ ok: false, error: "not found" }, { status: 404 });

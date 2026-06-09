@@ -2,6 +2,7 @@
 // In Phase 2, swap the fs reads for DB queries — the return types do not change.
 
 import { promises as fs } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import type {
   Indicator,
@@ -14,6 +15,23 @@ import type {
 } from "./types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
+
+// Where generated SITREPs are written/read. On Vercel the deployment dir
+// (/var/task) is READ-ONLY — only the OS temp dir is writable in a serverless
+// function — so in production we write to a temp folder. Locally we keep them in
+// the repo's data/sitreps so they persist across runs. Reports are ephemeral in
+// production (they live for the lambda's warm lifetime), which is fine for the
+// PoC demo flow: generate, then immediately open or download. Durable storage
+// returns with the database in Phase 2 (see CLAUDE.md §1).
+//
+// All four touchpoints — POST (write), GET html, GET docx, and listSitreps —
+// MUST resolve the same directory, so this helper is the single source of truth.
+export function sitrepsDir(): string {
+  const onVercel = !!process.env.VERCEL;
+  return onVercel
+    ? path.join(os.tmpdir(), "newcis-sitreps")
+    : path.join(DATA_DIR, "sitreps");
+}
 
 async function readJson<T>(file: string, fallback: T): Promise<T> {
   try {
@@ -35,7 +53,7 @@ export const getNationalStatus = () =>
 export const getLastRun = () => readJson<LastRun | null>("last_run.json", null);
 
 export async function listSitreps(): Promise<Sitrep[]> {
-  const dir = path.join(DATA_DIR, "sitreps");
+  const dir = sitrepsDir();
   try {
     const files = await fs.readdir(dir);
     const reports = await Promise.all(

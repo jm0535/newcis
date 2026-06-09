@@ -9,6 +9,7 @@ import {
   getLastRun,
   getNationalStatus,
   getSectorRisk,
+  sitrepsDir,
 } from "@/lib/data";
 import { generateSitrep } from "@/lib/sitrep";
 
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
       analystNote: body.analyst_note,
     });
 
-    const dir = path.join(process.cwd(), "data", "sitreps");
+    const dir = sitrepsDir();
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(path.join(dir, `${sitrep.id}.json`), JSON.stringify(sitrep, null, 2));
 
