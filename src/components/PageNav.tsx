@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LayoutDashboard, CloudSun, Briefcase, Radio } from "lucide-react";
 
 const PAGES = [
-  { href: "/", label: "Overview", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/climate", label: "ENSO Climate", icon: CloudSun },
   { href: "/sectors", label: "Sectoral Impact", icon: Briefcase },
   { href: "/operations", label: "Operations", icon: Radio },
