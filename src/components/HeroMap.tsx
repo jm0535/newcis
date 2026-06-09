@@ -137,7 +137,9 @@ function buildLabelHTML(l: NonNullable<Stop["label"]>): string {
   const marker = l.glyph
     ? `<span style="font-size:13px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.7));">${l.glyph}</span>`
     : `<span style="width:7px;height:7px;border-radius:9999px;background:${t.dot};"></span>`;
-  return `<div style="font-family:system-ui;font-size:12px;color:#f4f4f5;background:rgba(9,9,11,0.92);border:1px solid #3f3f46;border-radius:6px;padding:8px 11px;box-shadow:0 8px 24px rgba(0,0,0,0.5);min-width:150px;">
+  // Backdrop labels are deliberately dimmed (opacity + muted text) so they recede
+  // BEHIND the page's foreground copy — supporting texture, not competing chrome.
+  return `<div style="font-family:system-ui;font-size:12px;color:#d4d4d8;background:rgba(9,9,11,0.85);border:1px solid #3f3f46;border-radius:6px;padding:8px 11px;box-shadow:0 8px 24px rgba(0,0,0,0.5);min-width:150px;opacity:0.8;">
       <div style="display:flex;align-items:center;gap:6px;font-weight:600;">
         ${marker}${l.title}
       </div>
