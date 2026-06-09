@@ -162,9 +162,16 @@ export default async function Landing() {
       <header className="sticky top-0 z-30 border-b border-border-subtle bg-surface-0/85 backdrop-blur supports-[backdrop-filter]:bg-surface-0/70">
         <div className="mx-auto max-w-7xl px-4 md:px-6 h-14 flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <span className="grid h-7 w-7 place-items-center rounded bg-accent text-zinc-950">
-              <ShieldCheck size={15} />
-            </span>
+            {/* Brand mark = the app favicon (the gauge), so the tab icon and the
+                in-page logo are one consistent identity. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/icon-gauge.svg"
+              alt="NEWCIS"
+              width={28}
+              height={28}
+              className="h-7 w-7 rounded shrink-0"
+            />
             <span className="text-sm font-semibold tracking-tight">NEWCIS</span>
             <Badge variant="accent" className="hidden sm:inline-flex">
               Prototype
