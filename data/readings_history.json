@@ -143,5 +143,10 @@
     "key": "SOIL_MOISTURE",
     "value": 29,
     "observed_at": "2025-12-01"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 18,
+    "observed_at": "2026-06-09T01:20:56.840Z"
   }
 ]

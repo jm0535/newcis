@@ -358,24 +358,36 @@ export async function runIngest(): Promise<LastRun> {
   await writeJson("sector_risk.json", mergedSectorRisk);
   await writeJson("national_status.json", nationalStatus);
 
-  // Persist the FULL volcano catalogue (every Holocene PNG volcano, at its real
-  // coordinates) for the map to render — not just the one-worst-per-province that
-  // drives the matrix cell. This is why Madang can show Manam AND Karkar, and why
-  // a marker sits on Umboi Island rather than at the province centroid. Written
-  // to /public so the client map can fetch it like provinces.geojson.
+  // Persist the volcanoes that actually erupted in the MODERN record (last 100
+  // years) at their real coordinates, for the map to render — not the one-worst-
+  // per-province that drives the matrix cell. We deliberately EXCLUDE volcanoes
+  // with no dated eruption and centuries-old / Pleistocene cones: an undated or
+  // 1580 eruption is not a current hazard and only clutters the operating picture.
+  // This still shows every recent eruption — Manam/Langila/Ulawun/Bagana (active),
+  // Rabaul 2014, Karkar 1979 — and is why Madang shows Manam AND Karkar, with a
+  // marker on Umboi Island, not a province centroid. Written to /public so the
+  // client map can fetch it like provinces.geojson.
+  const VOLCANO_RECENCY_YEARS = 100; // modern-record window for map markers
   const currentYear = new Date().getUTCFullYear();
-  const volcanoFeatures = (gvpRes.ok && gvpRes.value ? gvpRes.value.volcanoes : []).map((v) => ({
-    name: v.name,
-    type: v.type,
-    last_eruption_year: v.lastEruptionYear,
-    lon: v.lon,
-    lat: v.lat,
-    province_code: v.provinceCode,
-    attribution: v.attribution,
-    level: recencyLevel(v.lastEruptionYear, currentYear),
-  }));
+  const volcanoFeatures = (gvpRes.ok && gvpRes.value ? gvpRes.value.volcanoes : [])
+    .filter(
+      (v) =>
+        v.lastEruptionYear !== null && currentYear - v.lastEruptionYear <= VOLCANO_RECENCY_YEARS,
+    )
+    .map((v) => ({
+      name: v.name,
+      type: v.type,
+      last_eruption_year: v.lastEruptionYear,
+      lon: v.lon,
+      lat: v.lat,
+      province_code: v.provinceCode,
+      attribution: v.attribution,
+      level: recencyLevel(v.lastEruptionYear, currentYear),
+    }));
   await writePublicJson("volcanoes.json", {
     source: "Smithsonian Global Volcanism Program (GVP) · VOTW Holocene",
+    recency_window_years: VOLCANO_RECENCY_YEARS,
+    note: `volcanoes with a dated eruption within the last ${VOLCANO_RECENCY_YEARS} years`,
     generated_at: new Date().toISOString(),
     count: volcanoFeatures.length,
     volcanoes: volcanoFeatures,

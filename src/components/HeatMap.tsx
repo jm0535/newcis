@@ -438,7 +438,7 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         </span>
         <span className="inline-flex items-center gap-1.5 text-text-disabled normal-case">
           <span aria-hidden>🌋</span>
-          volcano (GVP)
+          volcano · erupted &lt;100yr (GVP)
         </span>
       </div>
     </div>
