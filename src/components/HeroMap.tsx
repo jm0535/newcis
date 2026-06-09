@@ -59,10 +59,11 @@ const TONE_CSS: Record<NonNullable<Stop["label"]>["tone"], { fg: string; dot: st
 };
 
 // Curated tour — every coordinate/label from real data (see hazards.json &
-// sector_risk.json). Gulf is the worst focus province (critical). The three
-// hazard stops showcase each toggleable dashboard layer: an active submarine
-// VOLCANO (Titan Ridge, Manus), the historic 1998 Sissano TSUNAMI (the deadliest
-// in PNG record), and the 2024 Yambali LANDSLIDE. Hazard stops are REFERENCE.
+// sector_risk.json). Gulf + West New Britain are the worst focus provinces
+// (critical); Bougainville rounds out the risk stops at high. The three hazard
+// stops showcase each toggleable dashboard layer: an active submarine VOLCANO
+// (Titan Ridge, Manus), the historic 1998 Sissano TSUNAMI (the deadliest in PNG
+// record), and the 2024 Yambali LANDSLIDE. Hazard stops are REFERENCE.
 const TOUR: Stop[] = [
   // Establishing shot — the whole country.
   { center: [147.0, -6.3], zoom: 4.6, dwell: 3200 },
@@ -70,6 +71,18 @@ const TOUR: Stop[] = [
     center: [144.82, -7.65],
     zoom: 6.2,
     label: { title: "Gulf", sub: "Worst-risk focus province", tag: "CRITICAL", tone: "risk-critical" },
+    dwell: 4200,
+  },
+  {
+    center: [149.5, -6.32],
+    zoom: 6.4,
+    label: { title: "West New Britain", sub: "Critical sectoral risk", tag: "CRITICAL", tone: "risk-critical" },
+    dwell: 4200,
+  },
+  {
+    center: [155.2, -6.23],
+    zoom: 6.6,
+    label: { title: "Bougainville", sub: "Elevated sectoral risk", tag: "HIGH", tone: "risk-high" },
     dwell: 4200,
   },
   {
