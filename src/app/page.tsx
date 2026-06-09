@@ -239,13 +239,12 @@ export default async function Landing() {
               <br className="hidden md:block" /> &amp; Climate Intelligence
             </h1>
             <p className="mt-5 text-sm md:text-lg text-text-2 leading-relaxed max-w-xl">
-              A national operating picture for Papua New Guinea — turning live
-              climate and humanitarian feeds into a traffic-light read of ENSO risk
-              across all{" "}
+              Live ENSO risk for Papua New Guinea, across all{" "}
               <span className="text-text-1 font-medium" data-numeric>
                 {FOCUS_COUNT}
               </span>{" "}
-              provinces, with a one-click executive SITREP.
+              provinces — climate and humanitarian feeds distilled into one
+              traffic-light picture, with one-click situation reports.
             </p>
             <p className="mt-3 text-xs md:text-sm text-text-muted">{ALERT_BLURB[alert]}</p>
 
