@@ -17,6 +17,7 @@ import { fetchNasaPowerSoil } from "./sources/nasa-power-soil";
 import { fetchHdxAcled } from "./sources/hdx-acled";
 import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
+import { fetchGvpVolcanoes } from "./sources/gvp-volcanoes";
 import { fetchOpenMeteo } from "./sources/open-meteo";
 import { parseProvincePolygons, type ProvincePolygon } from "./geo";
 import type {
@@ -28,7 +29,7 @@ import type {
   RiskThreshold,
   Sector,
 } from "../src/lib/types";
-import { FOCUS_CODES } from "../src/lib/focus-provinces";
+import { FOCUS_CODES, FOCUS_PROVINCES } from "../src/lib/focus-provinces";
 import { rollUpNational, scoreSector, computeTrend as engineTrend } from "../src/lib/risk-engine";
 
 const SECTORS: Sector[] = [
@@ -145,6 +146,13 @@ export async function runIngest(): Promise<LastRun> {
     fetchUsgsEarthquakes(FOCUS_CODES, provincePolygons),
   );
   const gdacsRes = await run("gdacs", () => fetchGdacs(FOCUS_CODES));
+  // GVP volcano hazard, attributed per province via the same polygons (with a
+  // nearest-province fallback for offshore/submarine cones). Reps come from the
+  // focus-province interior points used elsewhere for climate point queries.
+  const provinceReps = FOCUS_PROVINCES.map((p) => ({ code: p.code, lon: p.lon, lat: p.lat }));
+  const gvpRes = await run("gvp_volcanoes", () =>
+    fetchGvpVolcanoes(FOCUS_CODES, provincePolygons, provinceReps),
+  );
   const openMeteoRes = await run("open_meteo", () => fetchOpenMeteo(FOCUS_CODES));
 
   const history = await readJson<HistoricalReading[]>("readings_history.json", []);
@@ -244,22 +252,33 @@ export async function runIngest(): Promise<LastRun> {
   if (soilRes.ok && soilRes.value) upstreamRows.push(...soilRes.value.sector_rows);
   if (foodRes.ok && foodRes.value) upstreamRows.push(...foodRes.value.rows);
   if (acledRes.ok && acledRes.value) upstreamRows.push(...acledRes.value.sector_rows);
-  // Disaster & Hazard: GDACS multi-hazard alert + USGS seismic, max-merged below.
+  // Disaster & Hazard: GDACS multi-hazard alert + USGS seismic + GVP volcano
+  // hazard, all per-province and max-merged below. GVP attributes each PNG
+  // volcano to its province (point-in-polygon, nearest fallback offshore), so a
+  // province with an active volcano escalates while volcano-free provinces don't.
   if (gdacsRes.ok && gdacsRes.value) upstreamRows.push(...gdacsRes.value.sector_rows);
   if (usgsRes.ok && usgsRes.value) upstreamRows.push(...usgsRes.value.sector_rows);
+  if (gvpRes.ok && gvpRes.value) upstreamRows.push(...gvpRes.value.sector_rows);
   // Open-Meteo Water Security rows only when HDX rainfall is absent (backstop).
   if (openMeteoRes.ok && openMeteoRes.value && !(rainfallRes.ok && rainfallRes.value)) {
     upstreamRows.push(...openMeteoRes.value.sector_rows);
   }
 
   // When two upstream sources target the same (province, sector) cell, collapse
-  // to the worst — explainable, no opaque weighting.
+  // to the worst — explainable, no opaque weighting. Higher level always wins;
+  // on a level tie the higher score wins, so the more specific signal keeps the
+  // cell (e.g. a named GVP volcano beats a generic GDACS green regional alert,
+  // both "low", because the volcano carries a small within-band score floor).
   const RISK_RANK = { low: 0, med: 1, high: 2, critical: 3 } as const;
   const collapsed = new Map<string, SectorRisk>();
   for (const r of upstreamRows) {
     const key = `${r.province_code}::${r.sector}`;
     const prev = collapsed.get(key);
-    if (!prev || RISK_RANK[r.level] > RISK_RANK[prev.level]) collapsed.set(key, r);
+    const better =
+      !prev ||
+      RISK_RANK[r.level] > RISK_RANK[prev.level] ||
+      (RISK_RANK[r.level] === RISK_RANK[prev.level] && r.score > prev.score);
+    if (better) collapsed.set(key, r);
   }
   const mergedUpstream = Array.from(collapsed.values());
 
@@ -335,9 +354,9 @@ export async function runIngest(): Promise<LastRun> {
   const lastRun: LastRun = {
     started_at: startedAt,
     finished_at: new Date().toISOString(),
-    status: [oniRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, openMeteoRes].every((r) => r.ok)
+    status: [oniRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
       ? "ok"
-      : [oniRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, openMeteoRes].some((r) => r.ok)
+      : [oniRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
         ? "partial"
         : "failed",
     sources_ok: {
@@ -348,6 +367,7 @@ export async function runIngest(): Promise<LastRun> {
       hdx_acled: acledRes.ok,
       usgs_earthquakes: usgsRes.ok,
       gdacs: gdacsRes.ok,
+      gvp_volcanoes: gvpRes.ok,
       open_meteo: openMeteoRes.ok,
     },
     notes: [
@@ -362,6 +382,7 @@ export async function runIngest(): Promise<LastRun> {
       acledRes.ok ? `ACLED: ${acledRes.value?.note}` : `ACLED failed: ${acledRes.error}`,
       usgsRes.ok ? `USGS: ${usgsRes.value?.note} (${usgsRes.ms}ms)` : `USGS failed: ${usgsRes.error}`,
       gdacsRes.ok ? `GDACS: ${gdacsRes.value?.note} (${gdacsRes.ms}ms)` : `GDACS failed: ${gdacsRes.error}`,
+      gvpRes.ok ? `GVP volcanoes: ${gvpRes.value?.note} (${gvpRes.ms}ms)` : `GVP volcanoes failed: ${gvpRes.error}`,
       openMeteoRes.ok ? `Open-Meteo: ${openMeteoRes.value?.note} (${openMeteoRes.ms}ms)` : `Open-Meteo failed: ${openMeteoRes.error}`,
     ].join(" | "),
   };
