@@ -100,10 +100,15 @@ function esc(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-// Build one DOM marker + popup for a curated hazard event. Volcanoes within the
-// active window (≤5yr) pulse rose; everything else is a static glyph. The popup
-// carries name/date/location/province/details and the honest REFERENCE badge.
-function buildHazardMarker(ev: HazardEvent): maplibregl.Marker {
+// Build one DOM marker for a curated hazard event. Volcanoes within the active
+// window (≤5yr) pulse rose; everything else is a static glyph. Clicking the marker
+// routes its name/date/location/province/details + REFERENCE badge through the ONE
+// shared popup (showPopup) so no two popups ever stack — and stops the click from
+// also reaching the province-fill layer beneath (the overlap bug).
+function buildHazardMarker(
+  ev: HazardEvent,
+  showPopup: (lngLat: [number, number], html: string) => void,
+): maplibregl.Marker {
   const style = HAZARD_STYLE[ev.kind];
   const active = ev.kind === "volcano" && ev.year !== null && new Date().getFullYear() - ev.year <= 5;
 
@@ -138,9 +143,12 @@ function buildHazardMarker(ev: HazardEvent): maplibregl.Marker {
        <div style="margin-top:5px;opacity:0.55;font-size:10px;">NEWCIS curated record · REFERENCE</div>
      </div>`;
 
-  return new maplibregl.Marker({ element: el, anchor: "center" })
-    .setLngLat([ev.lon, ev.lat])
-    .setPopup(new maplibregl.Popup({ closeButton: false, offset: 12, className: "newcis-popup" }).setHTML(html));
+  el.addEventListener("click", (e) => {
+    e.stopPropagation(); // don't let the province-fill click handler also fire
+    showPopup([ev.lon, ev.lat], html);
+  });
+
+  return new maplibregl.Marker({ element: el, anchor: "center" }).setLngLat([ev.lon, ev.lat]);
 }
 
 export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
@@ -153,6 +161,10 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
     disaster: [],
   });
   const eventsRef = useRef<HazardEvent[]>([]);
+  // ONE shared popup for the whole map — province clicks and hazard-marker clicks
+  // all route through it, so opening a new one closes the previous. This is what
+  // stops popups from stacking on top of each other (the overlap bug).
+  const popupRef = useRef<maplibregl.Popup | null>(null);
   const [basemap, setBasemap] = useState<Basemap>("flat");
   const [visibleLayers, setVisibleLayers] = useState<Record<HazardKind, boolean>>({
     volcano: true,
@@ -165,6 +177,20 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
   // only mounts markers onto a map whose projection is actually laid out (adding
   // them earlier strands every marker at the 0,0 corner — they get no transform).
   const [mapReady, setMapReady] = useState(0);
+
+  // Open the single shared popup at a point with given HTML, closing whatever was
+  // open first. Ref-backed so its identity is stable across renders (markers
+  // capture it at build time). Both the province handler and marker clicks use it.
+  const showPopupRef = useRef<(lngLat: [number, number], html: string) => void>(() => {});
+  showPopupRef.current = (lngLat, html) => {
+    const map = mapRef.current;
+    if (!map) return;
+    if (popupRef.current) popupRef.current.remove();
+    popupRef.current = new maplibregl.Popup({ closeButton: false, offset: 12, className: "newcis-popup" })
+      .setLngLat(lngLat)
+      .setHTML(html)
+      .addTo(map);
+  };
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -230,16 +256,14 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         const fg = light ? "#18181b" : "#f4f4f5";
         const bg = light ? "#ffffff" : "#18181b";
         const border = light ? "#d4d4d8" : "#3f3f46";
-        new maplibregl.Popup({ closeButton: false, className: "newcis-popup" })
-          .setLngLat(e.lngLat)
-          .setHTML(
-            `<div style="font-family: system-ui; font-size: 12px; color: ${fg}; background: ${bg}; border: 1px solid ${border}; padding: 6px 8px; border-radius: 4px;">
+        showPopupRef.current(
+          [e.lngLat.lng, e.lngLat.lat],
+          `<div style="font-family: system-ui; font-size: 12px; color: ${fg}; background: ${bg}; border: 1px solid ${border}; padding: 6px 8px; border-radius: 4px;">
                <div style="font-weight: 600;">${p.name}</div>
                <div style="opacity: 0.7;">${p.code}</div>
                <div style="margin-top: 4px;">${p.is_focus ? `Risk: <b>${p.risk_level.toUpperCase()}</b>` : "Non-focus (not scored in PoC)"}</div>
              </div>`,
-          )
-          .addTo(map);
+        );
       });
 
       map.on("mouseenter", "provinces-fill", () => (map.getCanvas().style.cursor = "pointer"));
@@ -250,6 +274,10 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
     });
 
     return () => {
+      if (popupRef.current) {
+        popupRef.current.remove();
+        popupRef.current = null;
+      }
       map.remove();
       mapRef.current = null;
     };
@@ -294,7 +322,7 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
       if (shouldShow && !mounted) {
         markers[kind] = eventsRef.current
           .filter((ev) => ev.kind === kind && Number.isFinite(ev.lon) && Number.isFinite(ev.lat))
-          .map((ev) => buildHazardMarker(ev).addTo(map));
+          .map((ev) => buildHazardMarker(ev, (ll, html) => showPopupRef.current(ll, html)).addTo(map));
       } else if (!shouldShow && mounted) {
         for (const m of markers[kind]) m.remove();
         markers[kind] = [];
