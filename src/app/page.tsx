@@ -9,7 +9,6 @@ import Link from "next/link";
 import { LiveClock } from "@/components/LiveClock";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { HeroMap } from "@/components/HeroMap";
-import { BandImage } from "@/components/BandImage";
 import { Card, Badge } from "@/components/ui";
 import { getLastRun, getNationalStatus, getSectorRisk } from "@/lib/data";
 import { FOCUS_COUNT } from "@/lib/focus-provinces";
@@ -387,21 +386,55 @@ export default async function Landing() {
         </div>
       </section>
 
-      {/* CREDIBILITY BAND — the LIVE/DEMO/REFERENCE model over a photo backdrop. */}
-      <section aria-label="Provenance model" className="relative border-y border-border-subtle">
-        <BandImage
-          src="disaster_png.jpg"
-          alt="Landslides, flooding and king tides across Papua New Guinea (Post-Courier, March 2024)"
-          imgClassName="opacity-30 saturate-[0.6]"
-          scrimClassName="bg-gradient-to-r from-surface-0 via-surface-0/95 to-surface-0/85"
-        />
-        {/* Photo credit — pinned bottom-right over the band, where image credits
-            conventionally sit. This is documented event imagery, so it is
-            attributed by name rather than labelled "illustrative". */}
-        <p className="pointer-events-none absolute bottom-2 right-3 z-10 text-[10px] tracking-[0.04em] text-text-disabled">
-          Photo: Post-Courier, March 2024
-        </p>
-        <div className="relative mx-auto max-w-7xl px-4 md:px-6 py-16">
+      {/* WHY IT MATTERS — a framed, contained disaster photo making the case for
+          early warning, sitting before the abstract provenance model. */}
+      <section
+        aria-label="Why early warning"
+        className="mx-auto max-w-7xl px-4 md:px-6 py-14"
+      >
+        <Card padding="none" className="overflow-hidden">
+          <div className="grid md:grid-cols-2">
+            {/* Image side — contained, framed, never behind text. */}
+            <figure className="relative m-0 min-h-[220px] md:min-h-[320px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/img/disaster_png.jpg"
+                alt="Post-Courier front page: 21 dead from landslides, flooding and king tides across Papua New Guinea, March 2024"
+                className="h-full w-full object-cover object-center select-none"
+                draggable={false}
+              />
+              <figcaption className="absolute bottom-0 inset-x-0 px-3 py-1.5 text-[10px] tracking-[0.04em] text-white/90 bg-gradient-to-t from-black/70 to-transparent">
+                Post-Courier front page, March 2024 — documented event, not a live
+                reading.
+              </figcaption>
+            </figure>
+            {/* Copy side. */}
+            <div className="p-6 md:p-8 flex flex-col justify-center">
+              <div className="flex items-center gap-2 mb-3">
+                <ShieldCheck size={14} className="text-accent" />
+                <h2 className="text-xs uppercase tracking-[0.1em] font-semibold text-text-2">
+                  Why early warning
+                </h2>
+              </div>
+              <p className="text-lg md:text-xl font-semibold tracking-tight text-text-1 leading-snug mb-3">
+                When an ENSO season turns, the cost in Papua New Guinea is measured
+                in lives.
+              </p>
+              <p className="text-sm text-text-muted leading-relaxed">
+                Landslides, flooding and king tides have repeatedly hit PNG
+                communities with little warning. NEWCIS turns the climate signals
+                that precede these events into a single, glanceable national
+                operating picture — so a watch becomes action before it becomes a
+                headline.
+              </p>
+            </div>
+          </div>
+        </Card>
+      </section>
+
+      {/* CREDIBILITY BAND — the LIVE/DEMO/REFERENCE provenance model. */}
+      <section aria-label="Provenance model" className="border-y border-border-subtle">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 py-16">
           <div className="flex items-center gap-2 mb-3">
             <ShieldCheck size={14} className="text-accent" />
             <h2 className="text-xs uppercase tracking-[0.1em] font-semibold text-text-2">
@@ -414,7 +447,7 @@ export default async function Landing() {
             feasibility review and an executive briefing.
           </p>
           <div className="grid sm:grid-cols-3 gap-3">
-            <Card padding="lg" className="bg-surface-1/80 backdrop-blur">
+            <Card padding="lg">
               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-[0.08em] border bg-status-green/15 text-status-green border-status-green/40">
                 <span className="h-1 w-1 rounded-full bg-status-green animate-pulse" />
                 LIVE
@@ -424,7 +457,7 @@ export default async function Landing() {
                 rainfall, ACLED, USGS, GDACS.
               </p>
             </Card>
-            <Card padding="lg" className="bg-surface-1/80 backdrop-blur">
+            <Card padding="lg">
               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-[0.08em] border bg-status-amber/15 text-status-amber border-status-amber/40">
                 <span className="h-1 w-1 rounded-full bg-status-amber" />
                 DEMO
@@ -434,7 +467,7 @@ export default async function Landing() {
                 health, energy, infrastructure.
               </p>
             </Card>
-            <Card padding="lg" className="bg-surface-1/80 backdrop-blur">
+            <Card padding="lg">
               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-[0.08em] border bg-surface-2 text-text-muted border-border-default">
                 <span className="h-1 w-1 rounded-full bg-text-muted" />
                 REFERENCE
@@ -445,10 +478,6 @@ export default async function Landing() {
               </p>
             </Card>
           </div>
-          <p className="mt-4 text-[10px] uppercase tracking-[0.08em] text-text-disabled">
-            Backdrop is documented event photography (Post-Courier, March 2024) —
-            not a reading from the current cycle.
-          </p>
         </div>
       </section>
 
