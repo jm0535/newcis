@@ -3,30 +3,30 @@
     "province_code": "PG08",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.462Z",
+    "as_of": "2026-06-09T00:21:46.610Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG08",
     "sector": "Water Security",
     "level": "high",
-    "score": 0.83,
-    "trend": "flat",
+    "score": 0.58,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.462Z",
+    "as_of": "2026-06-09T00:21:46.610Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
     "province_code": "PG08",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.462Z",
+    "as_of": "2026-06-09T00:21:46.610Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -36,7 +36,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.462Z",
+    "as_of": "2026-06-09T00:21:46.610Z",
     "data_source": "indicators"
   },
   {
@@ -46,7 +46,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.462Z",
+    "as_of": "2026-06-09T00:21:46.610Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -56,7 +56,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.462Z",
+    "as_of": "2026-06-09T00:21:46.610Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live upstream proxy"
   },
   {
@@ -66,47 +66,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG08",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG09",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG09",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.75,
-    "trend": "flat",
+    "score": 0.25,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · GWETROOT 25th pctile"
   },
   {
     "province_code": "PG09",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -116,7 +116,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "indicators"
   },
   {
@@ -126,7 +126,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -136,7 +136,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · Yonki reservoir inflow tracks rainfall (proxied via engine)"
   },
   {
@@ -146,37 +146,37 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG09",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG07",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG07",
     "sector": "Water Security",
     "level": "high",
-    "score": 0.83,
-    "trend": "flat",
+    "score": 0.58,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -186,7 +186,7 @@
     "score": 0.4,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · driven by rainfall deficit + temp anomaly (engine)"
   },
   {
@@ -196,7 +196,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "indicators"
   },
   {
@@ -206,7 +206,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -216,7 +216,7 @@
     "score": 0.4,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · highland hydropower exposed to rainfall deficit (engine)"
   },
   {
@@ -226,27 +226,27 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG07",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG02",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
@@ -256,17 +256,17 @@
     "score": 0.92,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · GWETROOT 8th pctile"
   },
   {
     "province_code": "PG02",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -276,7 +276,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "indicators"
   },
   {
@@ -286,7 +286,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -296,7 +296,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
   },
   {
@@ -306,47 +306,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG02",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG12",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG12",
     "sector": "Water Security",
     "level": "high",
-    "score": 0.83,
-    "trend": "flat",
+    "score": 0.58,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
     "province_code": "PG12",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -356,17 +356,17 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG12",
     "sector": "Infrastructure",
     "level": "low",
-    "score": 0.022222222222222223,
+    "score": 0.0222222222222222,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "USGS · 2 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -376,7 +376,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · Ramu grid serves Morobe; inflow tracks rainfall (engine proxy)"
   },
   {
@@ -386,27 +386,27 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG12",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG14",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
@@ -416,17 +416,17 @@
     "score": 0.92,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · GWETROOT 8th pctile"
   },
   {
     "province_code": "PG14",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -436,17 +436,17 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG14",
     "sector": "Infrastructure",
     "level": "low",
-    "score": 0.022222222222222223,
+    "score": 0.0222222222222222,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "USGS · 2 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -456,7 +456,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
   },
   {
@@ -466,47 +466,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG14",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG16",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG16",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.3333333333333333,
-    "trend": "flat",
+    "score": 0.3875,
+    "trend": "up",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
     "province_code": "PG16",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -516,7 +516,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "indicators"
   },
   {
@@ -526,7 +526,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -536,7 +536,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · island grid; diesel-dependent baseline"
   },
   {
@@ -546,47 +546,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG16",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.463Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG17",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG17",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.3333333333333333,
-    "trend": "flat",
+    "score": 0.3875,
+    "trend": "up",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
     "province_code": "PG17",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.611Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -596,7 +596,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "indicators"
   },
   {
@@ -606,7 +606,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -616,7 +616,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "DEMO · island grid; diesel-dependent baseline"
   },
   {
@@ -626,47 +626,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG17",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG18",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG18",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.3333333333333333,
-    "trend": "flat",
+    "score": 0.3875,
+    "trend": "up",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
     "province_code": "PG18",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -676,7 +676,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "indicators"
   },
   {
@@ -686,7 +686,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -696,7 +696,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "DEMO · Rabaul grid; geothermal + diesel baseline"
   },
   {
@@ -706,47 +706,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG18",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG20",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG20",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.3333333333333333,
-    "trend": "flat",
+    "score": 0.3875,
+    "trend": "up",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.612Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
     "province_code": "PG20",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.613Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -756,7 +756,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.613Z",
     "data_source": "indicators"
   },
   {
@@ -766,7 +766,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.613Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -776,7 +776,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.613Z",
     "data_source": "DEMO · island grid; diesel-dependent baseline"
   },
   {
@@ -786,47 +786,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.613Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG20",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.613Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG03",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.613Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG03",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.6699999999999999,
-    "trend": "flat",
+    "score": 0.41999999999999993,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.613Z",
     "data_source": "NASA POWER · GWETROOT 33th pctile"
   },
   {
     "province_code": "PG03",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.464Z",
+    "as_of": "2026-06-09T00:21:46.613Z",
     "data_source": "DEMO · seeded for full-province coverage"
   },
   {
@@ -836,7 +836,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.465Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "indicators"
   },
   {
@@ -846,7 +846,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.465Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -856,7 +856,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · seeded for full-province coverage"
   },
   {
@@ -866,47 +866,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG03",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG04",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG04",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.6699999999999999,
-    "trend": "flat",
+    "score": 0.41999999999999993,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · GWETROOT 33th pctile"
   },
   {
     "province_code": "PG04",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · seeded for full-province coverage"
   },
   {
@@ -916,7 +916,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "indicators"
   },
   {
@@ -926,7 +926,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -936,7 +936,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · seeded for full-province coverage"
   },
   {
@@ -946,47 +946,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG04",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG05",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG05",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.75,
-    "trend": "flat",
+    "score": 0.25,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · GWETROOT 25th pctile"
   },
   {
     "province_code": "PG05",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · seeded for full-province coverage"
   },
   {
@@ -996,7 +996,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "indicators"
   },
   {
@@ -1006,7 +1006,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1016,7 +1016,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1026,47 +1026,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG05",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG06",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG06",
     "sector": "Water Security",
     "level": "high",
-    "score": 0.83,
-    "trend": "flat",
+    "score": 0.58,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
     "province_code": "PG06",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -1076,7 +1076,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "indicators"
   },
   {
@@ -1086,7 +1086,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1096,7 +1096,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1106,47 +1106,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG06",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG01",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG01",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.3470173750000001,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
     "province_code": "PG01",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -1156,7 +1156,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "indicators"
   },
   {
@@ -1166,7 +1166,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1176,7 +1176,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1186,47 +1186,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG01",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG10",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG10",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.6699999999999999,
-    "trend": "flat",
+    "score": 0.41999999999999993,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · GWETROOT 33th pctile"
   },
   {
     "province_code": "PG10",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -1236,7 +1236,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "indicators"
   },
   {
@@ -1246,7 +1246,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1256,7 +1256,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1266,47 +1266,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG10",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG11",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG11",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.75,
-    "trend": "flat",
+    "score": 0.25,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · GWETROOT 25th pctile"
   },
   {
     "province_code": "PG11",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -1316,7 +1316,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "indicators"
   },
   {
@@ -1326,7 +1326,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1336,7 +1336,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1346,47 +1346,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG11",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG13",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG13",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.3333333333333333,
-    "trend": "flat",
+    "score": 0.3875,
+    "trend": "up",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
     "province_code": "PG13",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -1396,17 +1396,17 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG13",
     "sector": "Infrastructure",
     "level": "low",
-    "score": 0.011111111111111112,
+    "score": 0.011111111111111127,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "USGS · 1 M4.5+ epicentre in this province / 30d"
   },
   {
@@ -1416,7 +1416,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1426,47 +1426,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG13",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG15",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG15",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.3333333333333333,
-    "trend": "flat",
+    "score": 0.3875,
+    "trend": "up",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
     "province_code": "PG15",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.614Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -1476,7 +1476,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "indicators"
   },
   {
@@ -1486,7 +1486,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1496,7 +1496,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1506,47 +1506,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG15",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG19",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG19",
     "sector": "Water Security",
     "level": "critical",
-    "score": 1,
-    "trend": "flat",
+    "score": 0.75,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "NASA POWER · GWETROOT 0th pctile"
   },
   {
     "province_code": "PG19",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.466Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -1556,17 +1556,17 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "indicators"
   },
   {
     "province_code": "PG19",
     "sector": "Infrastructure",
     "level": "low",
-    "score": 0.011111111111111112,
+    "score": 0.011111111111111127,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "USGS · 1 M4.5+ epicentre in this province / 30d"
   },
   {
@@ -1576,7 +1576,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1586,47 +1586,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG19",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG21",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG21",
     "sector": "Water Security",
     "level": "high",
-    "score": 0.83,
-    "trend": "flat",
+    "score": 0.58,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
     "province_code": "PG21",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -1636,7 +1636,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "indicators"
   },
   {
@@ -1646,7 +1646,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1656,7 +1656,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1666,47 +1666,47 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG21",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   },
   {
     "province_code": "PG22",
     "sector": "Food Security",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.3875,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "NASA POWER · MERRA-2 GWETROOT"
   },
   {
     "province_code": "PG22",
     "sector": "Water Security",
     "level": "med",
-    "score": 0.6699999999999999,
-    "trend": "flat",
+    "score": 0.41999999999999993,
+    "trend": "down",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "NASA POWER · GWETROOT 33th pctile"
   },
   {
     "province_code": "PG22",
     "sector": "Public Health",
     "level": "med",
-    "score": 0.3333333333333333,
+    "score": 0.275,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "DEMO · clinic data lives in NDoH DHIS2 (no public API)"
   },
   {
@@ -1716,7 +1716,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "indicators"
   },
   {
@@ -1726,7 +1726,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1736,7 +1736,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1746,17 +1746,17 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
     "province_code": "PG22",
     "sector": "Disaster & Hazard",
     "level": "low",
-    "score": 0.1,
+    "score": 0.09999999999999998,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-09T00:13:25.467Z",
+    "as_of": "2026-06-09T00:21:46.615Z",
     "data_source": "GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km"
   }
 ]

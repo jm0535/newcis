@@ -30,7 +30,7 @@
     "provenance": "LIVE",
     "value": 29,
     "observed_at": "2025-12-01",
-    "trend": "down"
+    "trend": "flat"
   },
   {
     "key": "SEISMIC",
@@ -40,7 +40,7 @@
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
     "value": 18,
-    "observed_at": "2026-06-09T00:13:21.718Z",
+    "observed_at": "2026-06-09T00:21:40.915Z",
     "trend": "flat"
   },
   {

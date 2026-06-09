@@ -60,7 +60,9 @@ function topSectorMovers(risk: SectorRisk[]): string[] {
   const rank: Record<string, number> = { low: 0, med: 1, high: 2, critical: 3 };
   const focused = risk.filter((r) => FOCUS_NAMES[r.province_code]);
   return [...focused]
-    .sort((a, b) => rank[b.level] - rank[a.level])
+    // Graduated within-band score breaks ties so the top-6 list surfaces the
+    // deepest-hit cells among many sharing a level — band rank still dominates.
+    .sort((a, b) => rank[b.level] - rank[a.level] || b.score - a.score)
     .slice(0, 6)
     .map(
       (r) =>

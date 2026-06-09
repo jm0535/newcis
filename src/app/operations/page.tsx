@@ -80,6 +80,10 @@ export default async function OperationsPage() {
       (a, b) =>
         (b.worst ? RANK[b.worst.level] : -1) - (a.worst ? RANK[a.worst.level] : -1) ||
         b.stressedCount - a.stressedCount ||
+        // Graduated within-band score: among provinces tied on worst level and
+        // stressed-sector count, the one whose worst cell sits deeper in its band
+        // leads. The level still dominates — this only orders genuine ties.
+        (b.worst ? b.worst.score : 0) - (a.worst ? a.worst.score : 0) ||
         a.name.localeCompare(b.name),
     );
   const provincesAtRisk = provinceWatchlist.filter(

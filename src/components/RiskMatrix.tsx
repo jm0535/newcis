@@ -97,6 +97,9 @@ export function RiskMatrix({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         .sort(
           (a, b) =>
             LEVEL_WEIGHT[b.level] - LEVEL_WEIGHT[a.level] ||
+            // Graduated within-band score breaks ties between same-level cells
+            // (e.g. two RED cells) so the deeper-hit one leads. Band still wins.
+            b.score - a.score ||
             fullName(a.province_code).localeCompare(fullName(b.province_code)),
         ),
     [sectorRisk],
