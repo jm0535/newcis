@@ -37,19 +37,32 @@ function worstByProvince(sectorRisk: SectorRisk[]): Record<string, RiskLevel> {
 interface Stop {
   center: [number, number];
   zoom: number;
-  label?: { title: string; sub: string; tag: string; tone: "risk-critical" | "risk-high" | "reference" };
+  label?: {
+    title: string;
+    sub: string;
+    tag: string;
+    tone: "risk-critical" | "risk-high" | "volcano" | "tsunami" | "landslide";
+    glyph?: string;
+  };
   dwell: number; // ms to hold here before flying on
 }
 
+// Per-tone colour + glyph, kept in step with HeatMap's hazard vocabulary so a
+// 🌋/🌊/⚠️ on the landing tour reads the same as on the dashboard map. Risk tones
+// borrow the traffic-light palette; hazard tones their hazard hue.
 const TONE_CSS: Record<NonNullable<Stop["label"]>["tone"], { fg: string; dot: string }> = {
   "risk-critical": { fg: "#f87171", dot: "#334155" },
   "risk-high": { fg: "#fb7185", dot: "#f43f5e" },
-  reference: { fg: "#a1a1aa", dot: "#a1a1aa" },
+  volcano: { fg: "#fb7185", dot: "#f43f5e" },
+  tsunami: { fg: "#38bdf8", dot: "#38bdf8" },
+  landslide: { fg: "#fbbf24", dot: "#fbbf24" },
 };
 
-// Curated tour — all coordinates/labels from real data (see hazards.json &
-// sector_risk.json). Gulf is the worst focus province (critical); Ulawun is an
-// active volcano; Yambali is the 2024 catastrophic landslide.
+// Curated tour — every coordinate/label from real data (see hazards.json &
+// sector_risk.json). Gulf is the worst focus province (critical). The three
+// hazard stops showcase each toggleable dashboard layer: an active submarine
+// VOLCANO (Titan Ridge, Manus), the historic 1998 Sissano TSUNAMI (the deadliest
+// in PNG record), and the 2024 Yambali LANDSLIDE. Hazard stops are REFERENCE.
 const TOUR: Stop[] = [
   // Establishing shot — the whole country.
   { center: [147.0, -6.3], zoom: 4.6, dwell: 3200 },
@@ -60,16 +73,40 @@ const TOUR: Stop[] = [
     dwell: 4200,
   },
   {
-    center: [151.33, -5.05],
+    center: [147.78, -3.03],
+    zoom: 6.6,
+    label: {
+      title: "Titan Ridge",
+      sub: "Active submarine volcano · Manus",
+      tag: "REFERENCE",
+      tone: "volcano",
+      glyph: "🌋",
+    },
+    dwell: 4400,
+  },
+  {
+    center: [142.04, -3.02],
     zoom: 6.8,
-    label: { title: "Ulawun", sub: "Active volcano · West New Britain", tag: "REFERENCE", tone: "reference" },
-    dwell: 4200,
+    label: {
+      title: "Sissano tsunami",
+      sub: "1998 · Sandaun · ~2,200 lost",
+      tag: "REFERENCE",
+      tone: "tsunami",
+      glyph: "🌊",
+    },
+    dwell: 4400,
   },
   {
     center: [143.62, -5.28],
     zoom: 6.6,
-    label: { title: "Yambali landslide", sub: "2024 · Enga · catastrophic", tag: "REFERENCE", tone: "reference" },
-    dwell: 4200,
+    label: {
+      title: "Yambali landslide",
+      sub: "2024 · Enga · catastrophic",
+      tag: "REFERENCE",
+      tone: "landslide",
+      glyph: "⚠️",
+    },
+    dwell: 4400,
   },
 ];
 
@@ -82,9 +119,14 @@ function rightOffset(width: number): [number, number] {
 
 function buildLabelHTML(l: NonNullable<Stop["label"]>): string {
   const t = TONE_CSS[l.tone];
+  // Hazard stops show their emoji glyph (🌋/🌊/⚠️) as the badge; risk stops a
+  // coloured dot. Either way the title row carries a clear leading marker.
+  const marker = l.glyph
+    ? `<span style="font-size:13px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.7));">${l.glyph}</span>`
+    : `<span style="width:7px;height:7px;border-radius:9999px;background:${t.dot};"></span>`;
   return `<div style="font-family:system-ui;font-size:12px;color:#f4f4f5;background:rgba(9,9,11,0.92);border:1px solid #3f3f46;border-radius:6px;padding:8px 11px;box-shadow:0 8px 24px rgba(0,0,0,0.5);min-width:150px;">
       <div style="display:flex;align-items:center;gap:6px;font-weight:600;">
-        <span style="width:7px;height:7px;border-radius:9999px;background:${t.dot};"></span>${l.title}
+        ${marker}${l.title}
       </div>
       <div style="margin-top:3px;opacity:0.75;font-size:11px;">${l.sub}</div>
       <div style="margin-top:6px;font-size:9px;font-weight:700;letter-spacing:0.08em;color:${t.fg};">${l.tag}</div>
