@@ -390,8 +390,8 @@ export default async function Landing() {
       {/* CREDIBILITY BAND — the LIVE/DEMO/REFERENCE model over a photo backdrop. */}
       <section aria-label="Provenance model" className="relative border-y border-border-subtle">
         <BandImage
-          src="band-highlands.jpg"
-          alt="Drought-stressed highland valley, Papua New Guinea (illustrative)"
+          src="disaster_png.jpg"
+          alt="Landslides, flooding and king tides across Papua New Guinea (Post-Courier, March 2024)"
           scrimClassName="bg-gradient-to-br from-surface-0 via-surface-0/92 to-surface-0/80"
         />
         <div className="relative mx-auto max-w-7xl px-4 md:px-6 py-16">
