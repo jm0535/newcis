@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# generated SITREP artifacts (reports live in data/sitreps/ at runtime, not tracked)
+/data/sitreps/*.json
+/data/*.docx
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

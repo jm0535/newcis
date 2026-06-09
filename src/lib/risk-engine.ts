@@ -98,13 +98,10 @@ function bandedScore(value: number | null, threshold: RiskThreshold | undefined)
   const base = ALERT_ORDER.indexOf(level) * 0.25;
   if (value === null || !threshold) return base; // GREEN floor, 0
 
-  // Edges in escalation order: [entryToAMBER, entryToRED, entryToBLACK].
-  // For inverted metrics the comparison value is the raw value and edges descend;
-  // for symmetric metrics we use |value| and edges ascend. classifyIndicator
-  // already encodes which; here we only need a monotonic position within a band.
-  const edges = threshold.inverted
-    ? [threshold.green_max, threshold.amber_max, threshold.red_max] // descending
-    : [threshold.green_max, threshold.amber_max, threshold.red_max]; // ascending
+  // Band edges in escalation order: [green_max, amber_max, red_max]. Direction
+  // (ascending vs the inverted "worse = lower" case) is handled by the `inverted`
+  // branch below, not by the edge array — the edges are the same either way.
+  const edges = [threshold.green_max, threshold.amber_max, threshold.red_max];
   const v = threshold.inverted
     ? value
     : threshold.symmetric === false
