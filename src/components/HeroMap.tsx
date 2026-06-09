@@ -82,6 +82,11 @@ export function HeroMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
             "line-width": ["case", ["get", "is_focus"], 1, 0.4],
           },
         });
+
+        // The container may not have its final height at init (the hero's
+        // min-height resolves a tick after mount); force MapLibre to re-measure
+        // so the canvas fills the whole hero instead of locking to its default.
+        requestAnimationFrame(() => mapRef.current === map && map.resize());
       } catch {
         // A failed geojson fetch just leaves the flat background — the hero's
         // overlay copy still reads, so the page degrades gracefully.
@@ -104,12 +109,26 @@ export function HeroMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
       rafRef.current = requestAnimationFrame(spin);
     });
 
+    // Keep the backdrop filling its box across viewport/orientation changes.
+    const ro = new ResizeObserver(() => mapRef.current === map && map.resize());
+    ro.observe(containerRef.current);
+
     return () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      ro.disconnect();
       map.remove();
       mapRef.current = null;
     };
   }, [sectorRisk]);
 
-  return <div ref={containerRef} aria-hidden className="absolute inset-0 h-full w-full" />;
+  // MapLibre's own stylesheet forces `.maplibregl-map { position: relative }`,
+  // which beats a Tailwind `absolute` utility on the SAME element — so the
+  // container can't be the absolutely-positioned fill layer (it would collapse
+  // to height 0). Instead an OUTER wrapper owns the `absolute inset-0` fill, and
+  // the MapLibre container just stretches to fill that wrapper at h/w 100%.
+  return (
+    <div aria-hidden className="absolute inset-0">
+      <div ref={containerRef} className="h-full w-full" />
+    </div>
+  );
 }

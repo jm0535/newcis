@@ -203,17 +203,19 @@ export default async function Landing() {
         </div>
       </header>
 
-      {/* HERO — the live national map IS the backdrop. */}
+      {/* HERO — the live national map IS the backdrop. min-height guarantees the
+          absolutely-positioned map has a real box to fill (without it the map
+          container collapses to MapLibre's default and the tint barely shows). */}
       <section
         aria-label="Mission"
-        className="relative overflow-hidden border-b border-border-subtle"
+        className="relative overflow-hidden border-b border-border-subtle min-h-[560px] md:min-h-[640px] flex flex-col"
       >
         <HeroMap sectorRisk={sectorRisk} />
         {/* Scrim keeps the overlaid copy legible over the map. */}
         <div className="absolute inset-0 bg-gradient-to-b from-surface-0/70 via-surface-0/40 to-surface-0/90" />
         <div className="absolute inset-0 bg-gradient-to-r from-surface-0/80 to-transparent" />
 
-        <div className="relative mx-auto max-w-7xl px-4 md:px-6 py-20 md:py-28">
+        <div className="relative flex-1 w-full mx-auto max-w-7xl px-4 md:px-6 py-20 md:py-28 flex items-center">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface-0/70 backdrop-blur px-3 py-1 mb-5">
               <span
