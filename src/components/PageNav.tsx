@@ -13,8 +13,28 @@ export function PageNav({ active }: { active: string }) {
   return (
     <nav
       aria-label="Primary"
-      className="px-4 md:px-6 border-b border-border-subtle flex gap-1 text-xs overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="px-4 md:px-6 border-b border-border-subtle flex items-center gap-1 text-xs overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
+      {/* Brand mark = home link. The gauge favicon + wordmark mirror the landing
+          header, giving every dashboard page a one-click route back to "/". */}
+      <Link
+        href="/"
+        aria-label="NEWCIS home"
+        title="Back to home"
+        className="mr-2 flex items-center gap-2 shrink-0 text-text-1 hover:text-accent transition-colors"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/icon-gauge.svg"
+          alt=""
+          width={22}
+          height={22}
+          className="h-[22px] w-[22px] rounded shrink-0"
+        />
+        <span className="hidden sm:inline text-sm font-semibold tracking-tight">
+          NEWCIS
+        </span>
+      </Link>
       {PAGES.map((p) => {
         const isActive = active === p.href;
         const Icon = p.icon;
