@@ -1,13 +1,13 @@
 {
   "source": "NEWCIS curated PNG hazard record (volcanoes, tsunamis, major disasters)",
   "provenance": "REFERENCE",
-  "generated_at": "2026-06-09T06:05:34.073Z",
+  "generated_at": "2026-06-09T06:36:13.882Z",
   "by_kind": {
     "volcano": 16,
     "tsunami": 12,
-    "disaster": 7
+    "disaster": 13
   },
-  "count": 35,
+  "count": 41,
   "events": [
     {
       "kind": "volcano",
@@ -43,6 +43,39 @@
       "lat": -5.28
     },
     {
+      "kind": "disaster",
+      "name": "Highlands Flash Floods & Landslides",
+      "province": "Western Highlands, Jiwaka, Chimbu, Eastern Highlands",
+      "location": "Wahgi Valley and Highlands Highway corridor",
+      "date": "March 2024",
+      "year": 2024,
+      "details": "9,355+ displaced and over 50,000 affected. Days of torrential rain triggered simultaneous flash floods and landslides across four Highlands provinces, severing the Highlands Highway and destroying food gardens.",
+      "lon": 144.95,
+      "lat": -5.85
+    },
+    {
+      "kind": "disaster",
+      "name": "Sepik River Floods & 6.9 Earthquake",
+      "province": "East Sepik",
+      "location": "Angoram District, lower Sepik River",
+      "date": "March 2024",
+      "year": 2024,
+      "details": "Thousands affected. A magnitude 6.9 quake struck amid severe Sepik River flooding; the Yuat and Karawari tributaries burst their banks, submerging food gardens, aid posts and houses across all five Angoram LLGs.",
+      "lon": 144.07,
+      "lat": -4.06
+    },
+    {
+      "kind": "disaster",
+      "name": "Gulf Coastal King-Tide Flooding",
+      "province": "Gulf",
+      "location": "Gulf coast and estuary villages",
+      "date": "March 2024",
+      "year": 2024,
+      "details": "50,000+ affected. Unusually high king tides flooded tens of coastal and downstream estuary villages, inundating staple breadfruit and sago crops and contaminating freshwater sources.",
+      "lon": 145,
+      "lat": -7.95
+    },
+    {
       "kind": "volcano",
       "name": "Ulawun",
       "province": "West New Britain",
@@ -74,6 +107,39 @@
       "details": "Powerful paroxysm sending ash to 50,000 ft. Eruptions in 2004 forced a total island evacuation.",
       "lon": 145.037,
       "lat": -4.08
+    },
+    {
+      "kind": "disaster",
+      "name": "King-Tide Coastal Inundation",
+      "province": "New Ireland, Manus",
+      "location": "Kavieng coast and Manus atolls",
+      "date": "December 2021",
+      "year": 2021,
+      "details": "53,000+ displaced nationwide. A surge of king tides flooded coastal villages and low-lying atolls - up to 30,000 affected in New Ireland and coastal/atoll communities of ~50,000 in Manus - inundating homes, gardens, water catchments and cemeteries.",
+      "lon": 150.8,
+      "lat": -2.58
+    },
+    {
+      "kind": "disaster",
+      "name": "Mumeng Landslide",
+      "province": "Morobe",
+      "location": "Mumeng, Bulolo District",
+      "date": "January 27, 2021",
+      "year": 2021,
+      "details": "5 deaths. Heavy rain triggered a landslide that flooded the Vibo River and swept away a family of alluvial miners - three adults and two children - at their mining site.",
+      "lon": 146.62,
+      "lat": -7.1
+    },
+    {
+      "kind": "disaster",
+      "name": "Goilala Landslide",
+      "province": "Central",
+      "location": "Saki Village, Goilala District (near Tolukuma)",
+      "date": "December 28, 2020",
+      "year": 2020,
+      "details": "13+ deaths (15 feared). A pre-dawn landslide buried an alluvial gold-mining camp between rugged mountains accessible only by helicopter, burying miners asleep in their tents.",
+      "lon": 147.2,
+      "lat": -8.27
     },
     {
       "kind": "volcano",

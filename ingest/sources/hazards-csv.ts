@@ -83,6 +83,12 @@ const SITE_COORDS: Record<string, [number, number]> = {
   "popondetta and surrounding river basins": [148.24, -8.76],
   "high-altitude zones (above 2,000m)": [143.9, -5.6],
   "ok tedi & fly river systems": [141.13, -5.21],
+  "wahgi valley and highlands highway corridor": [144.95, -5.85],
+  "angoram district, lower sepik river": [144.07, -4.06],
+  "kavieng coast and manus atolls": [150.8, -2.58],
+  "gulf coast and estuary villages": [145.0, -7.95],
+  "mumeng, bulolo district": [146.62, -7.1],
+  "saki village, goilala district (near tolukuma)": [147.2, -8.27],
 };
 
 // ── Minimal CSV parser ──────────────────────────────────────────────────────

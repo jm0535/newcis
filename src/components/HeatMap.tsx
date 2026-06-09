@@ -526,8 +526,11 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
             {HAZARD_STYLE[kind].label}
           </span>
         ))}
-        <span className="inline-flex items-center gap-1.5 text-text-disabled">
-          curated · REFERENCE
+        <span
+          className="inline-flex items-center gap-1.5 text-text-disabled normal-case"
+          title="A curated record of notable PNG hazard events, not a complete history. Provinces without a marker are a data gap — not necessarily disaster-free."
+        >
+          curated sample · REFERENCE
         </span>
       </div>
     </div>
