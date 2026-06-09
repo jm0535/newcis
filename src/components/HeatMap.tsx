@@ -10,20 +10,33 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { RiskLevel, SectorRisk } from "@/lib/types";
 import { RISK_COLOUR } from "@/lib/ui";
 
-// A single catalogued volcano at its REAL coordinates (from /public/volcanoes.json,
-// written each ingest from the Smithsonian GVP Holocene catalogue). Every volcano
-// is plotted individually — so Madang shows Manam AND Karkar, and Umboi sits on
-// Umboi Island rather than at a province centroid.
-interface VolcanoFeature {
+// A curated historical-hazard event at its REAL (hand-geocoded) coordinates, from
+// /public/hazards.json (parsed each ingest from the /data CSVs). Three kinds —
+// volcanoes, tsunamis, major disasters (landslides, cyclones, quakes, drought) —
+// each rendered as its own toggleable map layer. Provenance is REFERENCE (curated
+// record), never LIVE.
+type HazardKind = "volcano" | "tsunami" | "disaster";
+
+interface HazardEvent {
+  kind: HazardKind;
   name: string;
-  type: string;
-  last_eruption_year: number | null;
+  province: string;
+  location: string;
+  date: string;
+  year: number | null;
+  details: string;
   lon: number;
   lat: number;
-  province_code: string;
-  attribution: "contains" | "nearest";
-  level: RiskLevel;
 }
+
+// Per-kind marker presentation: emoji glyph, accent colour, and human label.
+const HAZARD_STYLE: Record<HazardKind, { glyph: string; colour: string; label: string }> = {
+  volcano: { glyph: "🌋", colour: "#f43f5e", label: "Volcanoes" },
+  tsunami: { glyph: "🌊", colour: "#38bdf8", label: "Tsunamis" },
+  disaster: { glyph: "⚠️", colour: "#fbbf24", label: "Landslides / cyclones" },
+};
+
+const HAZARD_KINDS: HazardKind[] = ["volcano", "tsunami", "disaster"];
 
 const RISK_RANK: Record<RiskLevel, number> = { low: 0, med: 1, high: 2, critical: 3 };
 
@@ -78,21 +91,67 @@ function worstByProvince(sectorRisk: SectorRisk[]): Record<string, RiskLevel> {
   return out;
 }
 
-// Human caption for a volcano marker tooltip — name, type, and the recency fact.
-function volcanoCaption(v: VolcanoFeature): string {
-  const type = v.type ? v.type.toLowerCase() : "volcano";
-  const recency =
-    v.last_eruption_year === null
-      ? "no Holocene eruption dated"
-      : `last erupted ${v.last_eruption_year}`;
-  return `${v.name} ${type}, ${recency}`;
+// Escape free-text fields before they go into a popup's innerHTML.
+function esc(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// Build one DOM marker + popup for a curated hazard event. Volcanoes within the
+// active window (≤5yr) pulse rose; everything else is a static glyph. The popup
+// carries name/date/location/province/details and the honest REFERENCE badge.
+function buildHazardMarker(ev: HazardEvent): maplibregl.Marker {
+  const style = HAZARD_STYLE[ev.kind];
+  const active = ev.kind === "volcano" && ev.year !== null && new Date().getFullYear() - ev.year <= 5;
+
+  const el = document.createElement("div");
+  el.className = `newcis-hazard-marker newcis-hazard-${ev.kind}`;
+  el.setAttribute("role", "img");
+  el.setAttribute("aria-label", `${style.label}: ${ev.name} (${ev.location}, ${ev.date})`);
+  el.style.cssText =
+    "font-size:14px;line-height:1;cursor:pointer;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.7));" +
+    (active ? "animation:newcis-volcano-pulse 1.6s ease-in-out infinite;filter:drop-shadow(0 0 4px #f43f5e);" : "");
+  el.textContent = style.glyph;
+
+  const light = document.documentElement.classList.contains("light");
+  const fg = light ? "#18181b" : "#f4f4f5";
+  const bg = light ? "#ffffff" : "#18181b";
+  const border = light ? "#d4d4d8" : "#3f3f46";
+
+  const html = `<div style="font-family:system-ui;font-size:12px;color:${fg};background:${bg};border:1px solid ${border};padding:7px 9px;border-radius:4px;max-width:240px;">
+       <div style="font-weight:600;display:flex;align-items:center;gap:5px;">${style.glyph} ${esc(ev.name)}${active ? ` <span style="color:#f43f5e;font-size:10px;font-weight:700;">ACTIVE</span>` : ""}</div>
+       <div style="margin-top:3px;opacity:0.85;">${esc(ev.location)} · ${esc(ev.province)}</div>
+       <div style="margin-top:2px;opacity:0.7;">${esc(ev.date)}</div>
+       <div style="margin-top:5px;opacity:0.8;line-height:1.4;">${esc(ev.details)}</div>
+       <div style="margin-top:5px;opacity:0.55;font-size:10px;">NEWCIS curated record · REFERENCE</div>
+     </div>`;
+
+  return new maplibregl.Marker({ element: el, anchor: "center" })
+    .setLngLat([ev.lon, ev.lat])
+    .setPopup(new maplibregl.Popup({ closeButton: false, offset: 12, className: "newcis-popup" }).setHTML(html));
 }
 
 export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const volcanoMarkersRef = useRef<maplibregl.Marker[]>([]);
+  // Markers kept per-kind so a layer toggle can mount/unmount just that kind.
+  const hazardMarkersRef = useRef<Record<HazardKind, maplibregl.Marker[]>>({
+    volcano: [],
+    tsunami: [],
+    disaster: [],
+  });
+  const eventsRef = useRef<HazardEvent[]>([]);
   const [basemap, setBasemap] = useState<Basemap>("flat");
+  const [visibleLayers, setVisibleLayers] = useState<Record<HazardKind, boolean>>({
+    volcano: true,
+    tsunami: true,
+    disaster: true,
+  });
+  // Bumped once hazards.json resolves, to re-run the marker-sync effect.
+  const [hazardsLoaded, setHazardsLoaded] = useState(0);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -180,82 +239,69 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
     };
   }, [sectorRisk]);
 
-  // Volcano markers — a 🌋 pin on EVERY catalogued PNG volcano, at its real
-  // coordinates (fetched from /public/volcanoes.json, written each ingest from the
-  // Smithsonian GVP Holocene catalogue). DOM markers (not a map layer) so they
-  // survive basemap swaps and ride above the fill. Active eruptions (high band)
-  // pulse and glow rose; the tooltip names the volcano + last-eruption year — the
-  // same fact the matrix drill shows. Plotting every volcano (not one-per-province)
-  // is why Madang shows Manam AND Karkar, and why Umboi sits on Umboi Island.
+  // Hazard markers — three toggleable layers (volcanoes 🌋, tsunamis 🌊, major
+  // disasters ⚠️) plotted at their REAL hand-geocoded coordinates from
+  // /public/hazards.json (parsed each ingest from the curated /data CSVs). DOM
+  // markers (not a map layer) so they survive basemap swaps and ride above the
+  // fill. Every event is curated history → badged REFERENCE, never LIVE. Fetch
+  // once into eventsRef; a second effect mounts/unmounts per kind on toggle.
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/hazards.json");
+        if (res.ok) eventsRef.current = ((await res.json()).events ?? []) as HazardEvent[];
+      } catch {
+        eventsRef.current = [];
+      }
+      if (!cancelled) setHazardsLoaded((n) => n + 1);
+    };
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Mount/unmount markers per kind whenever the data loads, the map (re)builds,
+  // or a layer is toggled. Markers for a hidden kind are removed entirely so the
+  // toggle genuinely declutters the picture.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-    let cancelled = false;
+    const markers = hazardMarkersRef.current;
 
-    const place = async () => {
-      let volcanoes: VolcanoFeature[] = [];
-      try {
-        const res = await fetch("/volcanoes.json");
-        if (res.ok) volcanoes = ((await res.json()).volcanoes ?? []) as VolcanoFeature[];
-      } catch {
-        volcanoes = [];
-      }
-      if (cancelled || !mapRef.current) return;
-
-      for (const m of volcanoMarkersRef.current) m.remove();
-      volcanoMarkersRef.current = [];
-
-      for (const v of volcanoes) {
-        if (!Number.isFinite(v.lon) || !Number.isFinite(v.lat)) continue;
-        const caption = volcanoCaption(v);
-        const active = v.level === "high"; // erupting within the active window
-        const el = document.createElement("div");
-        el.className = "newcis-volcano-marker";
-        el.setAttribute("role", "img");
-        el.setAttribute("aria-label", `Volcano: ${caption}`);
-        el.style.cssText =
-          "font-size:14px;line-height:1;cursor:pointer;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.7));" +
-          (active
-            ? "animation:newcis-volcano-pulse 1.6s ease-in-out infinite;filter:drop-shadow(0 0 4px #f43f5e);"
-            : "");
-        el.textContent = "🌋";
-
-        const marker = new maplibregl.Marker({ element: el, anchor: "center" })
-          .setLngLat([v.lon, v.lat])
-          .setPopup(
-            new maplibregl.Popup({ closeButton: false, offset: 12, className: "newcis-popup" }).setHTML(
-              (() => {
-                const light = document.documentElement.classList.contains("light");
-                const fg = light ? "#18181b" : "#f4f4f5";
-                const bg = light ? "#ffffff" : "#18181b";
-                const border = light ? "#d4d4d8" : "#3f3f46";
-                const tag = active ? "#f43f5e" : "#a1a1aa";
-                const offshore = v.attribution === "nearest"
-                  ? `<div style="margin-top:2px;opacity:0.55;font-size:10px;">offshore · nearest province ${v.province_code}</div>`
-                  : "";
-                return `<div style="font-family:system-ui;font-size:12px;color:${fg};background:${bg};border:1px solid ${border};padding:6px 8px;border-radius:4px;max-width:210px;">
-                   <div style="font-weight:600;display:flex;align-items:center;gap:4px;">🌋 ${v.name}${active ? ` <span style="color:${tag};font-size:10px;font-weight:700;">ACTIVE</span>` : ""}</div>
-                   <div style="margin-top:3px;opacity:0.85;">${v.type ? v.type : "volcano"} · ${v.last_eruption_year === null ? "no Holocene eruption dated" : `last erupted ${v.last_eruption_year}`}</div>
-                   ${offshore}
-                   <div style="margin-top:3px;opacity:0.6;font-size:10px;">Smithsonian GVP · LIVE</div>
-                 </div>`;
-              })(),
-            ),
-          )
-          .addTo(map);
-        volcanoMarkersRef.current.push(marker);
+    const sync = () => {
+      if (!mapRef.current) return;
+      for (const kind of HAZARD_KINDS) {
+        const shouldShow = visibleLayers[kind];
+        const mounted = markers[kind].length > 0;
+        if (shouldShow && !mounted) {
+          markers[kind] = eventsRef.current
+            .filter((ev) => ev.kind === kind && Number.isFinite(ev.lon) && Number.isFinite(ev.lat))
+            .map((ev) => buildHazardMarker(ev).addTo(map));
+        } else if (!shouldShow && mounted) {
+          for (const m of markers[kind]) m.remove();
+          markers[kind] = [];
+        }
       }
     };
 
-    if (map.isStyleLoaded()) void place();
-    else map.once("load", () => void place());
+    if (map.isStyleLoaded()) sync();
+    else map.once("load", sync);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visibleLayers, hazardsLoaded, sectorRisk]);
 
+  // On unmount, drop every hazard marker so none are orphaned after the map is
+  // torn down (the map-build effect rebuilds on sectorRisk; this clears stale refs).
+  useEffect(() => {
+    const markers = hazardMarkersRef.current;
     return () => {
-      cancelled = true;
-      for (const m of volcanoMarkersRef.current) m.remove();
-      volcanoMarkersRef.current = [];
+      for (const kind of HAZARD_KINDS) {
+        for (const m of markers[kind]) m.remove();
+        markers[kind] = [];
+      }
     };
-  }, []);
+  }, [sectorRisk]);
 
   // Swap the basemap beneath the provinces without rebuilding the map. Two code
   // paths: a single raster source for XYZ basemaps, or — for the keyless ArcGIS
@@ -401,6 +447,32 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         className="w-full h-[320px] md:h-[440px] rounded-lg border border-border-subtle overflow-hidden"
       />
       <div
+        className="absolute top-3 left-3 flex flex-col gap-0.5 bg-[var(--surface-overlay)] backdrop-blur border border-border-subtle rounded-md p-0.5 shadow-[var(--elevation-2)]"
+        role="group"
+        aria-label="Hazard layers"
+      >
+        {HAZARD_KINDS.map((kind) => {
+          const on = visibleLayers[kind];
+          return (
+            <button
+              key={kind}
+              type="button"
+              role="switch"
+              aria-checked={on}
+              onClick={() => setVisibleLayers((v) => ({ ...v, [kind]: !v[kind] }))}
+              className={`px-2 py-1 text-[10px] tracking-[0.04em] font-medium rounded transition-colors inline-flex items-center gap-1.5 ${
+                on ? "bg-surface-3 text-text-1" : "text-text-muted hover:text-text-1"
+              }`}
+            >
+              <span aria-hidden style={{ opacity: on ? 1 : 0.4 }}>
+                {HAZARD_STYLE[kind].glyph}
+              </span>
+              {HAZARD_STYLE[kind].label}
+            </button>
+          );
+        })}
+      </div>
+      <div
         className="absolute top-3 right-3 flex gap-0.5 bg-[var(--surface-overlay)] backdrop-blur border border-border-subtle rounded-md p-0.5 shadow-[var(--elevation-2)]"
         role="radiogroup"
         aria-label="Basemap"
@@ -436,9 +508,14 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
           <span className="w-2 h-2 rounded-sm bg-border-default" />
           non-focus
         </span>
-        <span className="inline-flex items-center gap-1.5 text-text-disabled normal-case">
-          <span aria-hidden>🌋</span>
-          volcano · erupted &lt;100yr (GVP)
+        {HAZARD_KINDS.map((kind) => (
+          <span key={kind} className="inline-flex items-center gap-1.5 text-text-disabled normal-case">
+            <span aria-hidden>{HAZARD_STYLE[kind].glyph}</span>
+            {HAZARD_STYLE[kind].label}
+          </span>
+        ))}
+        <span className="inline-flex items-center gap-1.5 text-text-disabled">
+          curated · REFERENCE
         </span>
       </div>
     </div>

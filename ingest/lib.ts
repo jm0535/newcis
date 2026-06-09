@@ -18,6 +18,7 @@ import { fetchHdxAcled } from "./sources/hdx-acled";
 import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
 import { fetchGvpVolcanoes, recencyLevel } from "./sources/gvp-volcanoes";
+import { loadHazards } from "./sources/hazards-csv";
 import { fetchOpenMeteo } from "./sources/open-meteo";
 import { parseProvincePolygons, type ProvincePolygon } from "./geo";
 import type {
@@ -391,6 +392,20 @@ export async function runIngest(): Promise<LastRun> {
     generated_at: new Date().toISOString(),
     count: volcanoFeatures.length,
     volcanoes: volcanoFeatures,
+  });
+
+  // Curated historical-hazard layers (volcanoes / tsunamis / major disasters)
+  // parsed + geocoded from the hand-compiled CSVs in /data. These are toggleable
+  // reference layers on the map — provenance REFERENCE, never LIVE. Written to
+  // /public so the client map can fetch them like the other map artefacts.
+  const hazards = await loadHazards();
+  await writePublicJson("hazards.json", {
+    source: "NEWCIS curated PNG hazard record (volcanoes, tsunamis, major disasters)",
+    provenance: "REFERENCE",
+    generated_at: new Date().toISOString(),
+    by_kind: hazards.by_kind,
+    count: hazards.events.length,
+    events: hazards.events,
   });
 
   const lastRun: LastRun = {
