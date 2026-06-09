@@ -394,6 +394,12 @@ export default async function Landing() {
           alt="Landslides, flooding and king tides across Papua New Guinea (Post-Courier, March 2024)"
           scrimClassName="bg-gradient-to-br from-surface-0 via-surface-0/92 to-surface-0/80"
         />
+        {/* Photo credit — pinned bottom-right over the band, where image credits
+            conventionally sit. This is documented event imagery, so it is
+            attributed by name rather than labelled "illustrative". */}
+        <p className="pointer-events-none absolute bottom-2 right-3 z-10 text-[10px] tracking-[0.04em] text-text-disabled">
+          Photo: Post-Courier, March 2024
+        </p>
         <div className="relative mx-auto max-w-7xl px-4 md:px-6 py-16">
           <div className="flex items-center gap-2 mb-3">
             <ShieldCheck size={14} className="text-accent" />
@@ -439,7 +445,8 @@ export default async function Landing() {
             </Card>
           </div>
           <p className="mt-4 text-[10px] uppercase tracking-[0.08em] text-text-disabled">
-            Backdrop imagery is illustrative — not live event photography.
+            Backdrop is documented event photography (Post-Courier, March 2024) —
+            not a reading from the current cycle.
           </p>
         </div>
       </section>
