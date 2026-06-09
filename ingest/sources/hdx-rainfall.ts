@@ -30,6 +30,10 @@ export interface RainfallResult {
   // Per-province sector rows for the rainfall hazard panel (also feeds water security)
   sector_rows: SectorRisk[];
   raw_count: number;
+  /** Focus provinces with a recent dekad this cycle (denominator of the mean). */
+  reporting_count: number;
+  /** Total focus provinces requested (the disclosure denominator). */
+  focus_count: number;
 }
 
 export async function fetchHdxRainfall(
@@ -78,9 +82,15 @@ export async function fetchHdxRainfall(
     b.reference_period_end.localeCompare(a.reference_period_end),
   )[0];
 
+  // Sample-size disclosure: the national figure is a mean over the provinces
+  // that actually reported a recent dekad — not all of them always do. Surfacing
+  // "N of M reporting" in the label keeps the gauge honest about its coverage.
+  const reportingCount = focusRows.length;
+  const focusCount = focusCodes.length;
+
   const indicator: Indicator = {
     key: "RAINFALL_ANOM",
-    label: "Rainfall anomaly (focus provinces, latest dekad)",
+    label: `Rainfall anomaly (${reportingCount} of ${focusCount} provinces reporting, latest dekad)`,
     unit: "% deviation from long-term mean",
     source: "HDX HAPI · CHIRPS",
     update_frequency: "dekadal (10-day)",
@@ -107,7 +117,13 @@ export async function fetchHdxRainfall(
     };
   });
 
-  return { indicator, sector_rows, raw_count: body.data.length };
+  return {
+    indicator,
+    sector_rows,
+    raw_count: body.data.length,
+    reporting_count: reportingCount,
+    focus_count: focusCount,
+  };
 }
 
 if (process.argv[1] && process.argv[1].endsWith("hdx-rainfall.ts")) {

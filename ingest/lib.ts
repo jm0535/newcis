@@ -353,11 +353,11 @@ export async function runIngest(): Promise<LastRun> {
     notes: [
       oniRes.ok ? `ONI ${oniRes.value?.indicator.value} (${oniRes.ms}ms)` : `ONI failed: ${oniRes.error}`,
       rainfallRes.ok
-        ? `Rainfall mean anom ${rainfallRes.value?.indicator.value}% (${rainfallRes.value?.raw_count} raw rows, ${rainfallRes.ms}ms)`
+        ? `Rainfall mean anom ${rainfallRes.value?.indicator.value}% (${rainfallRes.value?.reporting_count}/${rainfallRes.value?.focus_count} provinces reporting, ${rainfallRes.value?.raw_count} raw rows, ${rainfallRes.ms}ms)`
         : `Rainfall failed: ${rainfallRes.error}`,
       foodRes.ok ? `Food security: ${foodRes.value?.note}` : `Food security failed: ${foodRes.error}`,
       soilRes.ok
-        ? `Soil moisture mean ${soilRes.value?.indicator.value}th pctile (${soilRes.ms}ms)`
+        ? `Soil moisture median ${soilRes.value?.indicator.value}th pctile (${soilRes.value?.per_province.length} provinces, ${soilRes.ms}ms)`
         : `Soil moisture failed: ${soilRes.error}`,
       acledRes.ok ? `ACLED: ${acledRes.value?.note}` : `ACLED failed: ${acledRes.error}`,
       usgsRes.ok ? `USGS: ${usgsRes.value?.note} (${usgsRes.ms}ms)` : `USGS failed: ${usgsRes.error}`,

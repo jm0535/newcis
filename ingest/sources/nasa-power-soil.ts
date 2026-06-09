@@ -70,6 +70,20 @@ async function fetchPoint(code: string, name: string, lon: number, lat: number):
   };
 }
 
+/**
+ * Median of a numeric list. Used to summarise per-province percentiles into one
+ * national figure. The median (not the mean) is the correct summary statistic
+ * here: a percentile is a bounded ordinal measure, and averaging percentiles
+ * across provinces distorts under skew (one saturated province would drag the
+ * mean up even if most provinces are dry). The median is the typical province.
+ */
+function median(values: number[]): number {
+  if (values.length === 0) return 50;
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
+}
+
 function classifyPercentile(p: number): SectorRisk["level"] {
   // Aligned with risk_thresholds.json SOIL_MOISTURE bands (inverted).
   if (p <= 10) return "critical";
@@ -91,21 +105,20 @@ export interface NasaPowerSoilResult {
 export async function fetchNasaPowerSoil(): Promise<NasaPowerSoilResult> {
   const results = await Promise.all(POINTS.map((p) => fetchPoint(p.code, p.name, p.lon, p.lat)));
 
-  // National indicator = mean focus-province percentile. Single number for the
-  // gauge on Page 2; the per-province cells carry the granular signal.
-  const meanPercentile = Math.round(
-    results.reduce((s, r) => s + r.percentile, 0) / results.length,
-  );
+  // National indicator = MEDIAN focus-province percentile (the typical province).
+  // Percentiles are bounded ordinal measures, so the median is the statistically
+  // sound summary; the per-province cells carry the granular signal for the gauge.
+  const medianPercentile = Math.round(median(results.map((r) => r.percentile)));
   const observedAt = isoFromYYYYMM(results[0].latestKey);
 
   const indicator: Indicator = {
     key: "SOIL_MOISTURE",
-    label: "Root-zone soil moisture (focus provinces)",
+    label: `Root-zone soil moisture (median of ${results.length} of ${POINTS.length} provinces reporting)`,
     unit: "percentile vs 12-mo climatology",
     source: "NASA POWER · MERRA-2 GWETROOT",
     update_frequency: "monthly",
     provenance: "LIVE",
-    value: meanPercentile,
+    value: medianPercentile,
     observed_at: observedAt,
     trend: "flat", // computed by the orchestrator against readings_history
   };
