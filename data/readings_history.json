@@ -95,6 +95,16 @@
     "observed_at": "2026-06-08T23:56:03.063Z"
   },
   {
+    "key": "SEISMIC",
+    "value": 18,
+    "observed_at": "2026-06-08T23:56:42.588Z"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 18,
+    "observed_at": "2026-06-09T00:07:03.864Z"
+  },
+  {
     "key": "ONI",
     "value": 0.48,
     "observed_at": "2026-04-15"
@@ -112,6 +122,6 @@
   {
     "key": "SEISMIC",
     "value": 18,
-    "observed_at": "2026-06-08T23:56:42.588Z"
+    "observed_at": "2026-06-09T00:08:45.750Z"
   }
 ]

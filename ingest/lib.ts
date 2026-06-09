@@ -18,6 +18,7 @@ import { fetchHdxAcled } from "./sources/hdx-acled";
 import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
 import { fetchOpenMeteo } from "./sources/open-meteo";
+import { parseProvincePolygons, type ProvincePolygon } from "./geo";
 import type {
   Indicator,
   HistoricalReading,
@@ -82,6 +83,24 @@ async function loadProvincePopulations(): Promise<Record<string, number>> {
   }
 }
 
+/**
+ * Province boundary polygons from the static provinces.geojson, for spatial
+ * attribution (point-in-polygon). Used to map earthquake epicentres to the
+ * province that actually contains them. Returns [] if the file is missing or
+ * malformed — callers degrade to a national signal rather than crash.
+ */
+async function loadProvincePolygons(): Promise<ProvincePolygon[]> {
+  try {
+    const raw = await fs.readFile(
+      path.join(process.cwd(), "public", "provinces.geojson"),
+      "utf8",
+    );
+    return parseProvincePolygons(JSON.parse(raw));
+  } catch {
+    return [];
+  }
+}
+
 interface SourceResult<T> {
   ok: boolean;
   value: T | null;
@@ -118,8 +137,13 @@ export async function runIngest(): Promise<LastRun> {
   const acledRes = appId
     ? await run("hdx_acled", () => fetchHdxAcled(appId, FOCUS_CODES))
     : { ok: false, value: null, error: "no HDX_APP_ID", ms: 0 };
-  // Keyless sources — always run.
-  const usgsRes = await run("usgs_earthquakes", () => fetchUsgsEarthquakes(FOCUS_CODES));
+  // Keyless sources — always run. Province polygons let USGS attribute each
+  // epicentre to the province that contains it (real per-province seismic
+  // counts) rather than replicating one national figure to every focus province.
+  const provincePolygons = await loadProvincePolygons();
+  const usgsRes = await run("usgs_earthquakes", () =>
+    fetchUsgsEarthquakes(FOCUS_CODES, provincePolygons),
+  );
   const gdacsRes = await run("gdacs", () => fetchGdacs(FOCUS_CODES));
   const openMeteoRes = await run("open_meteo", () => fetchOpenMeteo(FOCUS_CODES));
 

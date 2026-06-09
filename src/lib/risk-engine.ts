@@ -93,13 +93,20 @@ const SECTOR_DRIVERS: Record<Sector, string[]> = {
   "Food Security": ["RAINFALL_ANOM", "NDVI", "SOIL_MOISTURE"],
   "Public Health": ["TEMP_ANOM", "RAINFALL_ANOM"],
   "Economic Stability": ["ONI"],
-  Infrastructure: ["RAINFALL_ANOM", "SEISMIC"],
+  // Seismic is intentionally NOT a national indicator driver here. The national
+  // SEISMIC count would apply uniformly to every province (the replication the
+  // spatial join exists to avoid); instead the per-province USGS row (epicentres
+  // attributed by point-in-polygon) max-merges in via provinceSectorRow, so a
+  // province escalates only where quakes actually struck. RAINFALL_ANOM remains
+  // a province-level rainfall driver for flood/landslide infrastructure stress.
+  Infrastructure: ["RAINFALL_ANOM"],
   "Energy Security": ["RAINFALL_ANOM"],
   "Social Stability": ["ONI"],
-  // Multi-hazard sector. Indicator driver is SEISMIC (USGS quake tempo); the
-  // dominant signal is the GDACS upstream row (EQ/TC/FL/DR/VO alert level),
-  // which max-merges in via provinceSectorRow.
-  "Disaster & Hazard": ["SEISMIC"],
+  // Multi-hazard sector. No national indicator driver: both signals are already
+  // province-attributed upstream — per-province USGS seismic rows and the GDACS
+  // alert overlay — and max-merge in via provinceSectorRow. Keeping SEISMIC here
+  // would re-impose a uniform national floor on every province.
+  "Disaster & Hazard": [],
 };
 
 export interface SectorContext {
