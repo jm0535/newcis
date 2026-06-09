@@ -24,6 +24,12 @@ export interface BandImageProps {
    */
   scrimClassName?: string;
   className?: string;
+  /**
+   * Extra classes on the <img> itself — e.g. "opacity-30 saturate-[0.6]" to dim
+   * and mute a busy photo so it reads as quiet texture behind foreground text
+   * rather than competing with it.
+   */
+  imgClassName?: string;
 }
 
 export function BandImage({
@@ -31,6 +37,7 @@ export function BandImage({
   alt,
   scrimClassName = "bg-gradient-to-t from-surface-0 via-surface-0/70 to-surface-0/30",
   className = "",
+  imgClassName = "",
 }: BandImageProps) {
   const [ok, setOk] = useState(true);
 
@@ -45,7 +52,7 @@ export function BandImage({
           src={`/img/${src}`}
           alt={alt}
           onError={() => setOk(false)}
-          className="h-full w-full object-cover object-center select-none pointer-events-none"
+          className={`h-full w-full object-cover object-center select-none pointer-events-none ${imgClassName}`}
           draggable={false}
         />
       )}

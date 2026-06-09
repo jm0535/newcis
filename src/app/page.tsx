@@ -392,7 +392,8 @@ export default async function Landing() {
         <BandImage
           src="disaster_png.jpg"
           alt="Landslides, flooding and king tides across Papua New Guinea (Post-Courier, March 2024)"
-          scrimClassName="bg-gradient-to-br from-surface-0 via-surface-0/92 to-surface-0/80"
+          imgClassName="opacity-30 saturate-[0.6]"
+          scrimClassName="bg-gradient-to-r from-surface-0 via-surface-0/95 to-surface-0/85"
         />
         {/* Photo credit — pinned bottom-right over the band, where image credits
             conventionally sit. This is documented event imagery, so it is
