@@ -6,6 +6,7 @@ import { AutoRefresh } from "./AutoRefresh";
 import { LiveClock } from "./LiveClock";
 import { StatusPill } from "./ui";
 import { ThemeToggle } from "./ThemeToggle";
+import { sourceLabel } from "@/lib/sources";
 import { Clock, RefreshCw } from "lucide-react";
 
 const ENSO_LABEL: Record<NationalStatus["enso_phase"], string> = {
@@ -70,7 +71,7 @@ export function StatusBar({
             {sourceEntries.map(([k, ok]) => (
               <span
                 key={k}
-                title={k}
+                title={`${sourceLabel(k)} — ${ok ? "updated this cycle" : "no new data this cycle"}`}
                 className={`w-2 h-2 rounded-full ${ok ? "bg-status-green" : "bg-status-red"}`}
               />
             ))}

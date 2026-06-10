@@ -14,6 +14,7 @@ import {
   listSitreps,
 } from "@/lib/data";
 import { fmtDateTime } from "@/lib/ui";
+import { SOURCE_META, sourceLabel } from "@/lib/sources";
 import { FOCUS_NAMES, FOCUS_COUNT } from "@/lib/focus-provinces";
 import { FileText, ExternalLink, FileDown } from "lucide-react";
 
@@ -89,6 +90,14 @@ export default async function OperationsPage() {
   const provincesAtRisk = provinceWatchlist.filter(
     (p) => p.worst && (p.worst.level === "high" || p.worst.level === "critical"),
   ).length;
+
+  // Data-feed health for the "Data Feeds" card. Same structured source map the
+  // status bar uses — NOT the raw lastRun.notes debug string (that stays out of
+  // the executive view). Failed feeds sink to the bottom so attention lands there.
+  const feedEntries = Object.entries(lastRun?.sources_ok ?? {}).sort(
+    ([, a], [, b]) => Number(b) - Number(a),
+  );
+  const feedsOk = feedEntries.filter(([, ok]) => ok).length;
 
   return (
     <main className="min-h-screen bg-surface-0 text-text-1">
@@ -321,28 +330,61 @@ export default async function OperationsPage() {
 
           <Card padding="lg">
             <SectionHeader
-              title="Ingest Pipeline"
-              description="Health of the data feed — when it last ran and how much it pulled. The dashboard always shows the last good data, even if a source fails."
-            />
-            <div className="text-xs text-text-2 space-y-1.5">
-              <div>
-                Last{" "}
-                <span className="text-text-1" data-numeric>
-                  {fmtDateTime(lastRun?.finished_at)}
+              title="Data Feeds"
+              description="Where this picture's data comes from, and which feeds reported in this cycle. If a feed is offline we keep showing its last good reading — the dashboard never goes blank."
+              action={
+                <span className="text-[11px] text-text-muted">
+                  <span className="text-status-green font-semibold" data-numeric>
+                    {feedsOk}
+                  </span>{" "}
+                  of <span data-numeric>{feedEntries.length}</span> live
                 </span>
-              </div>
-              <div>
-                Status: <span className="text-text-1">{lastRun?.status ?? "—"}</span>
-              </div>
-              <div className="text-[11px] text-text-muted mt-2" data-numeric>
-                {indicators.length} indicators · {sectorRisk.length} sector cells.
-              </div>
-              {lastRun?.notes && (
-                <div className="text-[11px] text-text-muted mt-2 leading-snug">
-                  {lastRun.notes}
-                </div>
-              )}
-            </div>
+              }
+            />
+            <ul className="space-y-2 text-sm">
+              {feedEntries.map(([key, ok]) => {
+                const meta = SOURCE_META[key];
+                return (
+                  <li key={key} className="flex items-start gap-2.5">
+                    <span
+                      className={`mt-1.5 w-2 h-2 shrink-0 rounded-full ${
+                        ok ? "bg-status-green" : "bg-status-red"
+                      }`}
+                      aria-hidden
+                    />
+                    <span className="flex flex-col">
+                      <span className="text-text-1 leading-tight">
+                        {sourceLabel(key)}
+                        <span className="text-text-muted font-normal">
+                          {" "}
+                          — {ok ? "updated this cycle" : "no new data this cycle"}
+                        </span>
+                      </span>
+                      {meta?.what && (
+                        <span className="text-[11px] text-text-muted leading-tight">
+                          {meta.what}
+                        </span>
+                      )}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="text-[11px] text-text-muted mt-4 pt-3 border-t border-border-subtle">
+              Last refreshed{" "}
+              <span className="text-text-2" data-numeric>
+                {fmtDateTime(lastRun?.finished_at)}
+              </span>{" "}
+              · tracking{" "}
+              <span className="text-text-2" data-numeric>
+                {indicators.length}
+              </span>{" "}
+              climate indicators across all{" "}
+              <span className="text-text-2" data-numeric>
+                {FOCUS_COUNT}
+              </span>{" "}
+              provinces.
+            </p>
           </Card>
         </aside>
       </div>
