@@ -48,7 +48,7 @@ export function PartnerMarquee() {
       {/* The animated track. Pauses on hover so a viewer can read a chip, and is
           frozen entirely under prefers-reduced-motion (see globals.css). */}
       <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused] motion-reduce:animate-none motion-reduce:flex-wrap">
-        <div className="flex shrink-0" aria-label="Data partners">
+        <div className="flex shrink-0" aria-label="Data sources">
           {chips}
         </div>
         {/* Duplicate copy for the seamless loop — hidden from screen readers so

@@ -268,17 +268,19 @@ export default async function Landing() {
 
       <ScopeSection />
 
-      {/* DATA PARTNERS — an animated, edge-faded marquee of the real feeds behind
-          the picture. The chips are self-drawn (no copied agency logos). */}
+      {/* DATA SOURCES — an animated, edge-faded marquee of the real feeds behind
+          the picture. These are publicly-available open data sources, NOT formal
+          partners: no agreement or deal exists. The chips are self-drawn (no
+          copied agency logos). */}
       <section
-        aria-label="Data partners"
+        aria-label="Data sources"
         className="border-t border-border-subtle bg-surface-1"
       >
         <div className="mx-auto max-w-7xl px-4 md:px-6 py-12">
           <div className="flex items-center gap-2 mb-6">
             <Radio size={14} className="text-accent" />
             <h2 className="text-xs uppercase tracking-[0.1em] font-semibold text-text-2">
-              Powered by trusted data partners
+              Powered by trusted data sources
             </h2>
           </div>
           <PartnerMarquee />

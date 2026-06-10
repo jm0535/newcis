@@ -1,7 +1,7 @@
 // Shared footer for the five operating-picture pages (dashboard, climate,
 // forecast, sectors, operations). Single source of truth so the "last ingest /
 // auto-refresh / developed-by" row can never drift between pages. The landing
-// page at "/" has its own richer footer (data partners) and does not use this.
+// page at "/" has its own richer footer (data sources) and does not use this.
 //
 // NOTE: the verbose per-source ingest log (`lastRun.notes`) is deliberately NOT
 // shown here — it's a multi-line raw debug string. Its proper home is the
