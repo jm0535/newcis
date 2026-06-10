@@ -97,7 +97,7 @@ export const TONE_CLASS: Record<"live" | "mixed" | "neutral", string> = {
 
 // Data partners surfaced in the footer — the "trusted sources" row that signals
 // a real pipeline behind the picture.
-export const PARTNERS = ["NOAA CPC", "NASA", "BoM", "HDX HAPI", "ACLED", "USGS", "GDACS"];
+export const PARTNERS = ["NOAA CPC", "NASA", "BoM", "HDX HAPI", "ACLED", "USGS", "GDACS", "PNG NSO/UNFPA"];
 
 // KPI tiles for the live status band. Icons live here; the band wires values
 // from live national data at render time.

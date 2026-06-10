@@ -86,7 +86,9 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
     <div className="space-y-2">
       {/* These KPIs are the risk-engine rollup of the live ingest cycle —
           LIVE-derived. One strip-level badge keeps the credibility rule intact
-          without crowding six glanceable tiles. */}
+          without crowding six glanceable tiles. The Affected-Population tile
+          carries its own REFERENCE badge: the count of stressed provinces is
+          live, but the population base it sums is the static NSO/UNFPA estimate. */}
       <div className="flex items-center gap-2">
         <ProvenanceBadge value="LIVE" />
         <span className="text-[11px] md:text-[10px] text-text-muted">
@@ -120,7 +122,14 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
         label="Affected Population (est.)"
         value={affectedLabel}
         tone="sky"
-        hint="Phase 3 risk-engine extension"
+        hint={
+          <span className="inline-flex flex-wrap items-center gap-1">
+            <ProvenanceBadge value="REFERENCE" />
+            <span>
+              Σ population of high/critical provinces · NSO/UNFPA 2021 estimate
+            </span>
+          </span>
+        }
       />
       <MetricTile
         icon={<MapPin size={12} />}
