@@ -157,8 +157,8 @@ export default async function ForecastPage() {
             </Card>
           ) : (
             <EmptyState
-              title="Dynamical forecast unavailable this cycle"
-              description="The NMME (CCSR OPeNDAP) fetch did not complete. The precursor-alignment outlook below is still LIVE — it reads the present-state ENSO signals directly."
+              title="Model forecast unavailable this cycle"
+              description="The seasonal model feed (NMME) didn't report this cycle. The outlook below is still live — it reads today's ENSO signals directly."
             />
           )}
         </section>

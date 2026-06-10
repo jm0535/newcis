@@ -45,7 +45,7 @@ export default async function Dashboard() {
           <span data-numeric>
             {liveSourceCount}/{totalSources}
           </span>{" "}
-          sources LIVE this cycle
+          data feeds live now
         </span>
         <Badge variant="accent" className="ml-auto">
           <Sparkles size={10} /> Prototype
@@ -74,7 +74,7 @@ export default async function Dashboard() {
               {Array.from(new Set(sectorRisk.map((r) => r.provenance))).map((p) => (
                 <ProvenanceBadge key={p} value={p} />
               ))}
-              <span>cells carry worst risk across drivers; trend from prior ingest.</span>
+              <span>each cell shows the worst risk across its drivers; arrows compare against the previous reading.</span>
             </div>
           </Card>
         </section>

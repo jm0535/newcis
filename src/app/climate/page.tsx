@@ -57,7 +57,7 @@ export default async function ClimatePage() {
           {indicators.length === 0 ? (
             <EmptyState
               title="No indicators yet"
-              description="Ingest has not run — trigger a refresh from the Operations page."
+              description="The data feeds haven't reported yet — refresh from the Operations page to pull the latest readings."
             />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -105,7 +105,7 @@ export default async function ClimatePage() {
         <section aria-label="Historical comparison">
           <SectionHeader
             title="Historical Comparison"
-            description="ONI peak vs prior ENSO events. Reference peaks seeded (DEMO); live archive is Phase-2."
+            description="Today's ENSO strength against past El Niño / La Niña events — is this shaping up milder or worse than 1997-98 or 2015-16? Past peaks are reference figures (DEMO); a full live archive comes in a later phase."
           />
           <Card padding="md">
             <HistoricalCompare oni={oni} threshold={thresholdByKey.get("ONI")} />
@@ -114,8 +114,8 @@ export default async function ClimatePage() {
 
         <section aria-label="Threshold bands">
           <SectionHeader
-            title="Threshold Bands"
-            description="Edit data/risk_thresholds.json to retune — no code change required."
+            title="Alert Thresholds"
+            description="The cut-offs that turn each indicator GREEN, AMBER, RED or BLACK. These are the rules behind the traffic-lights — tunable by the analyst team without a rebuild."
           />
           <Card padding="md">
             <ThresholdsPanel thresholds={thresholds} />
