@@ -38,8 +38,14 @@ const HOTSPOT_LIMIT = 5;
 
 const fullName = (code: string) => ALL_NAMES[code] ?? code;
 
+// Header badge precedence: LIVE > REFERENCE > DEMO. A single real-this-cycle cell
+// makes the sector LIVE; absent that, any curated historical (REFERENCE) cell out-
+// ranks seeded DEMO. Today sector rows are only LIVE/DEMO, but expressing all three
+// keeps the badge honest if a REFERENCE-sourced sector ever lands here.
 function dominantProvenance(rows: SectorRisk[]): Provenance {
-  return rows.some((r) => r.provenance === "LIVE") ? "LIVE" : "DEMO";
+  if (rows.some((r) => r.provenance === "LIVE")) return "LIVE";
+  if (rows.some((r) => r.provenance === "REFERENCE")) return "REFERENCE";
+  return "DEMO";
 }
 
 function dominantTrend(rows: SectorRisk[]): Trend {
