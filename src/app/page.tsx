@@ -5,6 +5,7 @@
 // give the page depth. Everything reads from the SAME real data files the
 // dashboard uses — national alert, KPIs, source health — so the credibility rule
 // holds end to end: we never present DEMO/illustrative content as LIVE.
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { LiveClock } from "@/components/LiveClock";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -46,26 +47,40 @@ export default async function Landing() {
   const sourceEntries = Object.entries(sources);
   const sourcesOk = sourceEntries.filter(([, ok]) => ok).length;
 
-  const kpis = [
+  // Tone per KPI so the snapshot band reads as a vibrant signal, not a row of
+  // blank white cards: risk + province count are coloured by severity, the two
+  // informational tiles take brand sky/accent.
+  type Tone = "green" | "amber" | "red" | "black" | "sky" | "accent";
+  const riskTone: Tone = (
+    { low: "green", med: "amber", high: "red", critical: "black" } as const
+  )[national?.national_risk_rating ?? "low"];
+  const hi = national?.high_risk_province_count ?? 0;
+  const provinceTone: Tone = hi === 0 ? "green" : hi <= 3 ? "amber" : hi <= 8 ? "red" : "black";
+
+  const kpis: { icon: typeof KPI_ICONS.Activity; label: string; value: ReactNode; tone: Tone }[] = [
     {
       icon: KPI_ICONS.Activity,
       label: "National risk",
       value: (national?.national_risk_rating ?? "—").toUpperCase(),
+      tone: riskTone,
     },
     {
       icon: KPI_ICONS.MapIcon,
       label: "High-risk provinces",
       value: national?.high_risk_province_count ?? "—",
+      tone: provinceTone,
     },
     {
       icon: KPI_ICONS.Radio,
       label: "Population in scope",
       value: national ? fmtPop(national.affected_population_est) : "—",
+      tone: "sky" as const,
     },
     {
       icon: KPI_ICONS.CloudSun,
       label: "Forecast window",
       value: national?.forecast_period ?? "—",
+      tone: "accent" as const,
     },
   ];
 
@@ -237,6 +252,7 @@ export default async function Landing() {
                   icon={<Icon size={12} />}
                   label={k.label}
                   value={k.value}
+                  tone={k.tone}
                 />
               );
             })}
