@@ -20,7 +20,7 @@ export function DashboardFooter({ lastRun }: { lastRun: LastRun | null }) {
       </span>
       <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
       <span>
-        Powered by{" "}
+        Developed by{" "}
         <a
           href="https://www.in4metrix.dev"
           target="_blank"

@@ -299,7 +299,7 @@ export default async function Landing() {
               </span>
             </span>
             <span>
-              Powered by{" "}
+              Developed by{" "}
               <a
                 href="https://www.in4metrix.dev"
                 target="_blank"
