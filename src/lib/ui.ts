@@ -108,7 +108,7 @@ export const INDICATOR_META: Record<string, IndicatorMeta> = {
     dangerLabel: "Falling is dangerous — drying or failing vegetation.",
   },
   SOI: {
-    plain: "Southern Oscillation Index — atmospheric pressure see-saw that confirms ENSO phase.",
+    plain: "Southern Oscillation Index — the swing in air pressure across the Pacific that confirms the El Niño / La Niña phase.",
     danger: "low",
     dangerLabel: "Strongly negative is dangerous — reinforces El Niño.",
   },
