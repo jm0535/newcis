@@ -288,8 +288,15 @@ export function rollUpNational(
 ): NationalStatus {
   const thresholdByKey = new Map(thresholds.map((t) => [t.metric, t]));
 
+  // The national alert level reflects the CURRENT observed state. Forward-looking
+  // or seeded context indicators (forecast probability, projected ONI, the
+  // warm-water-volume precursor) are shown as their own gauges but must NOT raise
+  // today's alert — a 62% El Niño *forecast* is not a present emergency, and a
+  // DEMO seed must never drive a LIVE national alert (the credibility rule).
+  const NON_ALERT_KEYS = new Set(["ENSO_PROB", "DYN_FORECAST", "WWV"]);
   let worstAlert: AlertLevel = "GREEN";
   for (const ind of indicators) {
+    if (NON_ALERT_KEYS.has(ind.key)) continue;
     worstAlert = maxAlert(worstAlert, classifyIndicator(ind.value, thresholdByKey.get(ind.key)));
   }
 

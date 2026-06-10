@@ -135,6 +135,11 @@
     "observed_at": "2026-06-09T01:20:56.840Z"
   },
   {
+    "key": "SEISMIC",
+    "value": 17,
+    "observed_at": "2026-06-10T04:14:28.851Z"
+  },
+  {
     "key": "ONI",
     "value": 0.48,
     "observed_at": "2026-04-15"
@@ -158,10 +163,5 @@
     "key": "SOIL_MOISTURE",
     "value": 29,
     "observed_at": "2025-12-01"
-  },
-  {
-    "key": "SEISMIC",
-    "value": 17,
-    "observed_at": "2026-06-10T04:14:28.851Z"
   }
 ]

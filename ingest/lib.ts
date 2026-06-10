@@ -266,6 +266,21 @@ export async function runIngest(): Promise<LastRun> {
     if (!liveKeys.has(prev.key)) liveIndicators.push(prev);
   }
 
+  // Seeded ENSO context indicators (DEMO/REFERENCE): the forecast/precursor
+  // signals that have no clean keyless feed yet — warm-water volume (PMEL .dat
+  // is 302-gated), the NOAA/IRI ENSO-probability plume, and the CFSv2/SEAS5
+  // dynamical ONI projection. They render as their own badged gauges so the
+  // operating picture shows the forward-looking ENSO outlook, but a LIVE source
+  // of the same key always wins (so when a real feed lands later it overrides the
+  // seed) and rollUpNational excludes them from the national alert. Provenance is
+  // authored in the seed file (REFERENCE for the observed WWV, DEMO for forecasts)
+  // — never relabelled LIVE.
+  const seedIndicators = await readJson<Indicator[]>("indicators_seed.json", []);
+  const presentKeys = new Set(liveIndicators.map((i) => i.key));
+  for (const seed of seedIndicators) {
+    if (!presentKeys.has(seed.key)) liveIndicators.push(seed);
+  }
+
   const seen = new Set<string>();
   const dedupedHistory = [...history]
     .reverse()

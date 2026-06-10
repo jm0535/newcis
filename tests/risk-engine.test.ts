@@ -258,6 +258,25 @@ describe("rollUpNational", () => {
     expect(r.enso_phase).toBe("la_nina_alert");
   });
 
+  it("forecast/precursor indicators do NOT raise the national alert", () => {
+    // ONI is neutral now, but a high El Niño forecast probability, a hot
+    // projected ONI, and a recharged warm-water volume would all classify RED/
+    // BLACK on their own bands. They are forward-looking context and must not
+    // escalate today's alert — and a DEMO seed must never drive a LIVE alert.
+    const r = rollUpNational(
+      [
+        indicator("ONI", 0.1), // neutral now
+        indicator("ENSO_PROB", 90), // would be BLACK on its band
+        indicator("DYN_FORECAST", 2.0), // would be BLACK on ONI-like band
+        indicator("WWV", 2.0), // would be BLACK on its band
+      ],
+      TH,
+      [],
+      FOCUS,
+    );
+    expect(r.alert_level).toBe("GREEN");
+  });
+
   it("one focus province in high risk → med rating", () => {
     const sectors: SectorRisk[] = [
       {

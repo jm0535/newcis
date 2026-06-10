@@ -27,6 +27,34 @@
     "notes": "NOAA CPC wpac850. Negative = weakened/westerly trades = warm water pushed east = leading El Niño trigger (precedes SST by weeks–months). >-0.5 neutral; -0.5 to -1.0 watch; -1.0 to -1.5 alert; <-1.5 strong westerly burst regime."
   },
   {
+    "metric": "WWV",
+    "unit": "standardized warm-water-volume anomaly",
+    "green_max": 0.5,
+    "amber_max": 1.0,
+    "red_max": 1.5,
+    "inverted": false,
+    "notes": "SEEDED (REFERENCE) — production: NOAA PMEL TAO warm-water volume. Recharged (positive) warm water leads El Niño by months; discharged (negative) leads La Niña. Symmetric like ONI."
+  },
+  {
+    "metric": "ENSO_PROB",
+    "unit": "% El Niño probability (next season)",
+    "green_max": 35,
+    "amber_max": 50,
+    "red_max": 70,
+    "inverted": false,
+    "symmetric": false,
+    "notes": "SEEDED (DEMO) — production: dynamical forecast, NOAA CPC + IRI ENSO probability plume. ≤35% routine; 35–50 watch; 50–70 alert; >70 high-confidence El Niño. One-sided probability, never negative."
+  },
+  {
+    "metric": "DYN_FORECAST",
+    "unit": "°C projected ONI (next season)",
+    "green_max": 0.5,
+    "amber_max": 1.0,
+    "red_max": 1.5,
+    "inverted": false,
+    "notes": "SEEDED (DEMO) — production: dynamical forecast, CFSv2 + ECMWF SEAS5 projected ONI. Same bands as observed ONI; symmetric (El Niño high / La Niña low). The forward-looking complement to the observed ONI gauge."
+  },
+  {
     "metric": "SST_ANOM_NINO34",
     "unit": "°C",
     "green_max": 0.5,
