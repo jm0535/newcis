@@ -8,6 +8,15 @@ import {
   Map as MapIcon,
   Grid3x3,
   FileText,
+  Waves,
+  Satellite,
+  Wind,
+  Database,
+  ShieldAlert,
+  Mountain,
+  Siren,
+  Users,
+  type LucideIcon,
 } from "lucide-react";
 import type { AlertLevel, NationalStatus } from "@/lib/types";
 
@@ -96,9 +105,29 @@ export const TONE_CLASS: Record<"live" | "mixed" | "neutral", string> = {
   neutral: "bg-surface-2 text-text-muted border-border-default",
 };
 
-// Data partners surfaced in the footer — the "trusted sources" row that signals
-// a real pipeline behind the picture.
-export const PARTNERS = ["NOAA CPC", "NASA", "BoM", "HDX HAPI", "ACLED", "USGS", "GDACS", "PNG NSO/UNFPA"];
+// Data partners — the "trusted sources" behind the pipeline, rendered as an
+// animated marquee of branded chips (PartnerMarquee). We deliberately do NOT use
+// the agencies' real logos: that would be a trademark/licensing risk and we'd be
+// hot-linking external assets. Instead each partner is a self-drawn chip (acronym
+// + a lucide glyph for its domain + the data role it plays), which is honest,
+// on-brand, and needs no third-party asset. `glyph` is the icon; `role` is the
+// one-word feed it provides.
+export interface Partner {
+  name: string;
+  role: string;
+  glyph: LucideIcon;
+}
+
+export const PARTNERS: Partner[] = [
+  { name: "NOAA CPC", role: "ENSO · ONI", glyph: Waves },
+  { name: "NASA", role: "Soil · vegetation", glyph: Satellite },
+  { name: "BoM", role: "SOI", glyph: Wind },
+  { name: "HDX HAPI", role: "Food security", glyph: Database },
+  { name: "ACLED", role: "Conflict events", glyph: ShieldAlert },
+  { name: "USGS", role: "Earthquakes", glyph: Mountain },
+  { name: "GDACS", role: "Disaster alerts", glyph: Siren },
+  { name: "PNG NSO/UNFPA", role: "Population", glyph: Users },
+];
 
 // KPI tiles for the live status band. Icons live here; the band wires values
 // from live national data at render time.

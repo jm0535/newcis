@@ -271,6 +271,20 @@ body {
   50% { transform: scale(1.25); opacity: 0.75; }
 }
 
+/* Data-partner marquee (PartnerMarquee). The track holds two identical copies of
+   the chip set, so translating it -50% scrolls the first copy fully off while the
+   second slides into its place — a seamless infinite loop. Linear timing is
+   correct here (constant-speed conveyor, not a UI state transition). Frozen by the
+   reduced-motion block below, where the duplicated chips just wrap and sit still. */
+@keyframes newcis-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: newcis-marquee 38s linear infinite;
+  will-change: transform;
+}
+
 /* Reduce motion respect. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

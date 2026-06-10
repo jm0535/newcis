@@ -10,11 +10,12 @@ import Link from "next/link";
 import { LiveClock } from "@/components/LiveClock";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { HeroMap } from "@/components/HeroMap";
+import { PartnerMarquee } from "@/components/PartnerMarquee";
 import { Badge, MetricTile } from "@/components/ui";
 import { getLastRun, getNationalStatus, getSectorRisk } from "@/lib/data";
 import { FOCUS_COUNT } from "@/lib/focus-provinces";
 import { fmtDateTime } from "@/lib/ui";
-import { ArrowRight, CloudSun, FileText, Clock } from "lucide-react";
+import { ArrowRight, CloudSun, FileText, Clock, Radio } from "lucide-react";
 import {
   ALERT_BLURB,
   ALERT_DOT,
@@ -23,7 +24,6 @@ import {
   fmtPop,
   KPI_ICONS,
   NAV,
-  PARTNERS,
 } from "./landing/constants";
 import {
   CapabilityGallery,
@@ -268,20 +268,27 @@ export default async function Landing() {
 
       <ScopeSection />
 
-      {/* FOOTER — data-partner row + health + brand. */}
+      {/* DATA PARTNERS — an animated, edge-faded marquee of the real feeds behind
+          the picture. The chips are self-drawn (no copied agency logos). */}
+      <section
+        aria-label="Data partners"
+        className="border-t border-border-subtle bg-surface-1"
+      >
+        <div className="mx-auto max-w-7xl px-4 md:px-6 py-12">
+          <div className="flex items-center gap-2 mb-6">
+            <Radio size={14} className="text-accent" />
+            <h2 className="text-xs uppercase tracking-[0.1em] font-semibold text-text-2">
+              Powered by trusted data partners
+            </h2>
+          </div>
+          <PartnerMarquee />
+        </div>
+      </section>
+
+      {/* FOOTER — health + brand. */}
       <footer className="border-t border-border-subtle bg-surface-1">
         <div className="mx-auto max-w-7xl px-4 md:px-6 py-8">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-5">
-            <span className="text-[11px] md:text-[10px] uppercase tracking-[0.1em] text-text-disabled">
-              Data partners
-            </span>
-            {PARTNERS.map((p) => (
-              <span key={p} className="text-xs text-text-muted">
-                {p}
-              </span>
-            ))}
-          </div>
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-5 border-t border-border-subtle text-[11px] text-text-muted">
+          <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] text-text-muted">
             <span className="flex items-center gap-1.5">
               <span data-numeric>
                 {sourcesOk}/{sourceEntries.length || "—"}
