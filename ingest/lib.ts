@@ -13,6 +13,7 @@ import path from "node:path";
 import { fetchOni } from "./sources/oni";
 import { fetchNoaaSoi } from "./sources/noaa-soi";
 import { fetchNoaaTradeWind } from "./sources/noaa-trade-wind";
+import { fetchCcsrNmme } from "./sources/ccsr-nmme";
 import { fetchHdxFoodSecurity } from "./sources/hdx-food-security";
 import { fetchHdxRainfall } from "./sources/hdx-rainfall";
 import { fetchNasaPowerSoil } from "./sources/nasa-power-soil";
@@ -34,6 +35,7 @@ import type {
 } from "../src/lib/types";
 import { FOCUS_CODES, FOCUS_PROVINCES } from "../src/lib/focus-provinces";
 import { rollUpNational, scoreSector, computeTrend as engineTrend } from "../src/lib/risk-engine";
+import { deriveOutlook } from "../src/lib/outlook";
 
 const SECTORS: Sector[] = [
   "Food Security",
@@ -142,6 +144,11 @@ export async function runIngest(): Promise<LastRun> {
   // both (warm-water displacement precedes surface SST by weeks–months).
   const soiRes = await run("noaa_soi", fetchNoaaSoi);
   const tradeWindRes = await run("noaa_trade_wind", fetchNoaaTradeWind);
+  // NMME dynamical seasonal forecast (NOAA-GFDL SPEAR via IRI's open CCSR
+  // OPeNDAP). This is the genuine model-grade ENSO forecast the operational
+  // centres run — we RELAY it (display, not modelling), so the projected ONI is
+  // badged LIVE. Drives the /forecast outlook; never the live national alert.
+  const nmmeRes = await run("ccsr_nmme", fetchCcsrNmme);
   const rainfallRes = appId
     ? await run("hdx_rainfall", () => fetchHdxRainfall(appId, FOCUS_CODES))
     : { ok: false, value: null, error: "no HDX_APP_ID", ms: 0 };
@@ -207,6 +214,18 @@ export async function runIngest(): Promise<LastRun> {
     }
   }
 
+  // PROJECTED_ONI: the relayed NMME forecast. A forward-looking gauge — shown on
+  // /forecast and excluded from the live alert in rollUpNational. Trend compares
+  // successive forecast inits (is the projection trending hotter month-on-month).
+  if (nmmeRes.ok && nmmeRes.value) {
+    const ind = nmmeRes.value.indicator;
+    if (ind.value !== null) {
+      ind.trend = computeTrend(ind.key, ind.value, history);
+      liveIndicators.push(ind);
+      history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+    }
+  }
+
   if (rainfallRes.ok && rainfallRes.value) {
     const ind = rainfallRes.value.indicator;
     if (ind.value !== null) {
@@ -261,30 +280,28 @@ export async function runIngest(): Promise<LastRun> {
   // last real reading instead of vanishing. Its stale observed_at + the failed
   // source flag in last_run.json together signal the staleness honestly — we
   // never fabricate a fresh LIVE reading.
+  // EXCEPT retired keys: the old DEMO/REFERENCE forecast seeds (WWV, the
+  // ENSO-probability plume, the placeholder dynamical projection) were dropped
+  // when the LIVE NMME forecast landed. They must not carry forward from a stale
+  // indicators.json, or they'd resurrect as zombie gauges.
+  const RETIRED_KEYS = new Set(["WWV", "ENSO_PROB", "DYN_FORECAST"]);
   const liveKeys = new Set(liveIndicators.map((i) => i.key));
   for (const prev of previousIndicators) {
+    if (RETIRED_KEYS.has(prev.key)) continue;
     if (!liveKeys.has(prev.key)) liveIndicators.push(prev);
   }
 
-  // Seeded ENSO context indicators (DEMO/REFERENCE): the forecast/precursor
-  // signals that have no clean keyless feed yet — warm-water volume (PMEL .dat
-  // is 302-gated), the NOAA/IRI ENSO-probability plume, and the CFSv2/SEAS5
-  // dynamical ONI projection. They render as their own badged gauges so the
-  // operating picture shows the forward-looking ENSO outlook, but a LIVE source
-  // of the same key always wins (so when a real feed lands later it overrides the
-  // seed) and rollUpNational excludes them from the national alert. Provenance is
-  // authored in the seed file (REFERENCE for the observed WWV, DEMO for forecasts)
-  // — never relabelled LIVE.
-  const seedIndicators = await readJson<Indicator[]>("indicators_seed.json", []);
-  const presentKeys = new Set(liveIndicators.map((i) => i.key));
-  for (const seed of seedIndicators) {
-    if (!presentKeys.has(seed.key)) liveIndicators.push(seed);
-  }
+  // The forward-looking ENSO outlook is now driven by a GENUINELY LIVE feed: the
+  // NMME dynamical forecast (PROJECTED_ONI, pushed above) relayed from IRI's open
+  // CCSR OPeNDAP server. The earlier DEMO/REFERENCE seeds (warm-water volume, the
+  // ENSO-probability plume, a placeholder CFSv2/SEAS5 projection) are dropped — we
+  // no longer seed an outlook we couldn't source, per the credibility rule.
 
   const seen = new Set<string>();
   const dedupedHistory = [...history]
     .reverse()
     .filter((h) => {
+      if (RETIRED_KEYS.has(h.key)) return false; // drop retired seed history
       const k = `${h.key}:${h.observed_at}`;
       if (seen.has(k)) return false;
       seen.add(k);
@@ -402,6 +419,34 @@ export async function runIngest(): Promise<LastRun> {
   await writeJson("sector_risk.json", mergedSectorRisk);
   await writeJson("national_status.json", nationalStatus);
 
+  // Forecast bundle for the /forecast page: the NMME ensemble plume (per-member
+  // projected ONI + mean/min/max + target window) plus the precursor-alignment
+  // outlook derived from the present-state ENSO signals. Outlook is a pure read
+  // over liveIndicators — relayed model + diagnostic alignment, never a NEWCIS
+  // forecast. Written whether or not the model fetch succeeded: on failure the
+  // page degrades to the precursor panel alone (LIVE) and flags the missing model.
+  const outlook = deriveOutlook(
+    liveIndicators,
+    thresholds,
+    nmmeRes.ok && nmmeRes.value ? nmmeRes.value.target_window : null,
+  );
+  await writeJson("forecast.json", {
+    generated_at: new Date().toISOString(),
+    model: nmmeRes.ok && nmmeRes.value
+      ? {
+          provenance: "LIVE" as const,
+          source: nmmeRes.value.indicator.source,
+          init_month: nmmeRes.value.init_month,
+          target_window: nmmeRes.value.target_window,
+          ensemble_mean: nmmeRes.value.ensemble_mean,
+          ensemble_min: nmmeRes.value.ensemble_min,
+          ensemble_max: nmmeRes.value.ensemble_max,
+          members: nmmeRes.value.members,
+        }
+      : null,
+    outlook,
+  });
+
   // Persist the volcanoes that actually erupted in the MODERN record (last 100
   // years) at their real coordinates, for the map to render — not the one-worst-
   // per-province that drives the matrix cell. We deliberately EXCLUDE volcanoes
@@ -454,15 +499,16 @@ export async function runIngest(): Promise<LastRun> {
   const lastRun: LastRun = {
     started_at: startedAt,
     finished_at: new Date().toISOString(),
-    status: [oniRes, soiRes, tradeWindRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
+    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
       ? "ok"
-      : [oniRes, soiRes, tradeWindRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
+      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
         ? "partial"
         : "failed",
     sources_ok: {
       noaa_oni: oniRes.ok,
       noaa_soi: soiRes.ok,
       noaa_trade_wind: tradeWindRes.ok,
+      ccsr_nmme: nmmeRes.ok,
       hdx_rainfall: rainfallRes.ok,
       hdx_food_security: foodRes.ok,
       nasa_power_soil: soilRes.ok,
@@ -476,6 +522,7 @@ export async function runIngest(): Promise<LastRun> {
       oniRes.ok ? `ONI ${oniRes.value?.indicator.value} (${oniRes.ms}ms)` : `ONI failed: ${oniRes.error}`,
       soiRes.ok ? `SOI ${soiRes.value?.indicator.value} (${soiRes.ms}ms)` : `SOI failed: ${soiRes.error}`,
       tradeWindRes.ok ? `Trade-wind ${tradeWindRes.value?.indicator.value} (${tradeWindRes.ms}ms)` : `Trade-wind failed: ${tradeWindRes.error}`,
+      nmmeRes.ok ? `NMME projected ONI ${nmmeRes.value?.ensemble_mean} (${nmmeRes.value?.target_window}, ${nmmeRes.value?.members.length} members, ${nmmeRes.ms}ms)` : `NMME failed: ${nmmeRes.error}`,
       rainfallRes.ok
         ? `Rainfall mean anom ${rainfallRes.value?.indicator.value}% (${rainfallRes.value?.reporting_count}/${rainfallRes.value?.focus_count} provinces reporting, ${rainfallRes.value?.raw_count} raw rows, ${rainfallRes.ms}ms)`
         : `Rainfall failed: ${rainfallRes.error}`,

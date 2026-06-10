@@ -1,10 +1,11 @@
 // Page nav. Sits under the status bar so the audience always knows where they are.
 import Link from "next/link";
-import { LayoutDashboard, CloudSun, Briefcase, Radio } from "lucide-react";
+import { LayoutDashboard, CloudSun, TrendingUp, Briefcase, Radio } from "lucide-react";
 
 const PAGES = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/climate", label: "ENSO Climate", icon: CloudSun },
+  { href: "/forecast", label: "Forecast", icon: TrendingUp },
   { href: "/sectors", label: "Sectoral Impact", icon: Briefcase },
   { href: "/operations", label: "Operations", icon: Radio },
 ];

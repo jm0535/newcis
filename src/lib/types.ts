@@ -134,6 +134,29 @@ export interface Sitrep {
   model?: SitrepModel;
 }
 
+// The forecast bundle written by the ingest cycle (data/forecast.json) and read
+// by the /forecast page. `model` is the relayed NMME dynamical forecast (null if
+// that fetch failed this cycle — the page degrades to the precursor panel). The
+// `outlook` field carries the precursor-alignment read (shape in src/lib/outlook).
+export interface ForecastModel {
+  provenance: "LIVE";
+  source: string;
+  init_month: string; // ISO YYYY-MM-01 of the forecast init
+  target_window: string; // e.g. "MJJ 2026"
+  ensemble_mean: number;
+  ensemble_min: number;
+  ensemble_max: number;
+  members: number[]; // per-member projected ONI, for the plume
+}
+
+export interface ForecastBundle {
+  generated_at: string;
+  model: ForecastModel | null;
+  // Typed as unknown-ish here to avoid a types.ts → outlook.ts import cycle; the
+  // page imports the precise Outlook type from src/lib/outlook directly.
+  outlook: import("./outlook").Outlook;
+}
+
 export interface ProvinceProperties {
   code: string; // p-code (e.g. "PG-EBR")
   name: string;

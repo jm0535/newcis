@@ -118,21 +118,9 @@ export const INDICATOR_META: Record<string, IndicatorMeta> = {
     danger: "low",
     dangerLabel: "Negative is dangerous — weakened/westerly winds precede El Niño.",
   },
-  WWV: {
+  PROJECTED_ONI: {
     plain:
-      "Warm-water volume below the equatorial Pacific — heat sloshing east is an early El Niño precursor that leads the surface by months.",
-    danger: "high",
-    dangerLabel: "Rising is dangerous — recharged warm water feeds an El Niño.",
-  },
-  ENSO_PROB: {
-    plain:
-      "Forecasters' El Niño probability for the coming season — the 'ENSO plume' figure NOAA/IRI quote.",
-    danger: "high",
-    dangerLabel: "Rising probability is dangerous — El Niño more likely.",
-  },
-  DYN_FORECAST: {
-    plain:
-      "Dynamical-model projected ONI for the coming season — where coupled models (CFSv2, SEAS5) think the ocean is heading.",
+      "Where the dynamical models think the ocean is heading next season — the NMME (NOAA-GFDL SPEAR) ensemble's projected ONI, relayed live.",
     danger: "extreme",
     dangerLabel: "Far from 0 is dangerous — high = projected El Niño, very low = La Niña.",
   },
@@ -195,11 +183,7 @@ const SOURCE_CADENCE_DAYS: Record<string, number> = {
   SEISMIC: 2, // USGS near-real-time
   SOI: 10,
   TRADE_WIND_ANOM: 10, // NOAA CPC wpac850, refreshed monthly
-  // Seeded forecast/reference signals — no live feed to lag, so a generous
-  // cadence keeps them from flagging false "stale" amber.
-  WWV: 365,
-  ENSO_PROB: 365,
-  DYN_FORECAST: 365,
+  PROJECTED_ONI: 35, // NMME forecast re-issued monthly (new init each cycle)
 };
 
 export function isReadingStale(

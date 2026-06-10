@@ -12,6 +12,7 @@ import type {
   NationalStatus,
   LastRun,
   Sitrep,
+  ForecastBundle,
 } from "./types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -51,6 +52,7 @@ export const getSectorRisk = () => readJson<SectorRisk[]>("sector_risk.json", []
 export const getNationalStatus = () =>
   readJson<NationalStatus | null>("national_status.json", null);
 export const getLastRun = () => readJson<LastRun | null>("last_run.json", null);
+export const getForecast = () => readJson<ForecastBundle | null>("forecast.json", null);
 
 export async function listSitreps(): Promise<Sitrep[]> {
   const dir = sitrepsDir();

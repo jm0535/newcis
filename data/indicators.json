@@ -33,6 +33,17 @@
     "trend": "flat"
   },
   {
+    "key": "PROJECTED_ONI",
+    "label": "Projected ONI (MJJ 2026, 30-member NMME mean)",
+    "unit": "°C SST anomaly (Niño 3.4, dynamical forecast)",
+    "source": "NMME · NOAA-GFDL SPEAR (IRI CCSR)",
+    "update_frequency": "monthly",
+    "provenance": "LIVE",
+    "value": 1.05,
+    "observed_at": "2026-04-01",
+    "trend": "flat"
+  },
+  {
     "key": "RAINFALL_ANOM",
     "label": "Rainfall anomaly (22 of 22 provinces reporting, latest dekad)",
     "unit": "% deviation from long-term mean",
@@ -62,8 +73,8 @@
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
     "value": 17,
-    "observed_at": "2026-06-10T04:14:28.851Z",
-    "trend": "down"
+    "observed_at": "2026-06-10T05:31:48.801Z",
+    "trend": "flat"
   },
   {
     "key": "TEMP_ANOM",
@@ -75,38 +86,5 @@
     "value": 0.6,
     "observed_at": "2026-06-06T02:39:26.992Z",
     "trend": "flat"
-  },
-  {
-    "key": "WWV",
-    "label": "Equatorial warm-water volume anomaly",
-    "unit": "standardized anomaly (production: NOAA PMEL TAO)",
-    "source": "Seeded · production: NOAA PMEL TAO/TRITON",
-    "update_frequency": "monthly",
-    "provenance": "REFERENCE",
-    "value": 0.8,
-    "observed_at": "2026-05-15",
-    "trend": "up"
-  },
-  {
-    "key": "ENSO_PROB",
-    "label": "El Niño probability (next season)",
-    "unit": "% chance (production: NOAA CPC / IRI ENSO plume)",
-    "source": "Seeded · production: dynamical forecast (NOAA CPC + IRI)",
-    "update_frequency": "monthly",
-    "provenance": "DEMO",
-    "value": 62,
-    "observed_at": "2026-05-15",
-    "trend": "up"
-  },
-  {
-    "key": "DYN_FORECAST",
-    "label": "Projected ONI (next season)",
-    "unit": "°C (production: dynamical forecast — CFSv2, ECMWF SEAS5)",
-    "source": "Seeded · production: dynamical forecast (CFSv2, SEAS5)",
-    "update_frequency": "monthly",
-    "provenance": "DEMO",
-    "value": 0.9,
-    "observed_at": "2026-05-15",
-    "trend": "up"
   }
 ]
