@@ -123,6 +123,15 @@ describe("scoreSector", () => {
     expect(r.level).toBe("low");
     expect(r.provenance).toBe("DEMO");
   });
+
+  it("threads asOf through to as_of — engine stays pure (no wall-clock)", () => {
+    const r = scoreSector("PG08", "Food Security", {
+      indicators: [],
+      thresholds: TH,
+      asOf: "2026-03-15T00:00:00.000Z",
+    });
+    expect(r.as_of).toBe("2026-03-15T00:00:00.000Z");
+  });
 });
 
 // The score is a GRADUATED, within-band sort tiebreaker — never a level. These
@@ -303,6 +312,19 @@ describe("rollUpNational", () => {
     ];
     const r = rollUpNational([indicator("ONI", 0.1)], TH, sectors, FOCUS);
     expect(r.affected_population_est).toBe(0);
+  });
+
+  it("threads asOf through to updated_at — deterministic, no wall-clock", () => {
+    const r = rollUpNational(
+      [indicator("ONI", 0.1)],
+      TH,
+      [],
+      FOCUS,
+      "Next 3 months",
+      undefined,
+      "2026-03-15T00:00:00.000Z",
+    );
+    expect(r.updated_at).toBe("2026-03-15T00:00:00.000Z");
   });
 });
 

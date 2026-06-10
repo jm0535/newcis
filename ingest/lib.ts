@@ -310,6 +310,7 @@ export async function runIngest(): Promise<LastRun> {
           indicators: liveIndicators,
           thresholds,
           provinceSectorRow: baseline,
+          asOf: startedAt,
         }),
       );
     }
@@ -352,6 +353,7 @@ export async function runIngest(): Promise<LastRun> {
     FOCUS_CODES,
     "Next 3 months",
     populationByCode,
+    startedAt,
   );
 
   await writeJson("indicators.json", liveIndicators);

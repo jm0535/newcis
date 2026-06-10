@@ -174,6 +174,13 @@ export interface SectorContext {
   thresholds: RiskThreshold[];
   /** Pre-existing province-specific sector rows (e.g. rainfall-derived from HDX). */
   provinceSectorRow?: SectorRisk;
+  /**
+   * ISO timestamp stamped onto the result's `as_of`. Pass it in to keep the
+   * engine PURE/deterministic (the orchestrator supplies the cycle time; tests
+   * supply a fixed value). Defaults to now only as a convenience for callers
+   * that don't care.
+   */
+  asOf?: string;
 }
 
 /**
@@ -235,7 +242,7 @@ export function scoreSector(
     score,
     trend,
     provenance,
-    as_of: new Date().toISOString(),
+    as_of: ctx.asOf ?? new Date().toISOString(),
     data_source: dataSource,
   };
 }
@@ -272,6 +279,8 @@ export function rollUpNational(
    * absent (e.g. a unit test with no geojson) it stays 0 and the UI shows "—".
    */
   populationByCode?: Record<string, number>,
+  /** ISO timestamp for `updated_at`. Pass it in to keep the rollup deterministic. */
+  asOf?: string,
 ): NationalStatus {
   const thresholdByKey = new Map(thresholds.map((t) => [t.metric, t]));
 
@@ -330,7 +339,7 @@ export function rollUpNational(
     affected_population_est: affectedPopulation,
     high_risk_province_count: highRiskProvinces.size,
     forecast_period: forecastPeriod,
-    updated_at: new Date().toISOString(),
+    updated_at: asOf ?? new Date().toISOString(),
   };
 }
 
