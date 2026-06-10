@@ -1,7 +1,8 @@
 // Heat-map legend overlay. Split out of HeatMap.tsx (500-line budget): purely
-// presentational — the risk-colour swatches, the non-focus swatch, the hazard-kind
-// glyphs, and the REFERENCE-provenance note. No state; reads only the shared
-// palette + hazard styles.
+// presentational — the risk-colour swatches, the hazard-kind glyphs, and the
+// REFERENCE-provenance note. No state; reads only the shared palette + hazard
+// styles. (All 22 provinces are now scored, so there is no greyed non-focus
+// swatch — every province on the map carries a risk colour.)
 import type { RiskLevel } from "@/lib/types";
 import { RISK_COLOUR } from "@/lib/ui";
 import { HAZARD_KINDS, HAZARD_STYLE } from "./hazards";
@@ -15,10 +16,6 @@ export function MapLegend() {
           {lv}
         </span>
       ))}
-      <span className="inline-flex items-center gap-1.5 text-text-disabled">
-        <span className="w-2 h-2 rounded-sm bg-border-default" />
-        non-focus
-      </span>
       {HAZARD_KINDS.map((kind) => (
         <span key={kind} className="inline-flex items-center gap-1.5 text-text-disabled normal-case">
           <span aria-hidden>{HAZARD_STYLE[kind].glyph}</span>

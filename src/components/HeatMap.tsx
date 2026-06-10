@@ -263,6 +263,25 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
     };
   }, [sectorRisk]);
 
+  // Keep the map's flat background in sync with the app theme. The `bg` layer
+  // colour is baked at map-build time from the load-time theme; without this, a
+  // dark→light (or light→dark) flip leaves the flat-basemap backdrop showing the
+  // old surface colour at the frame edges. Observe the <html> class and repaint.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const apply = () => {
+      const isLight = document.documentElement.classList.contains("light");
+      if (map.getLayer("bg")) {
+        map.setPaintProperty("bg", "background-color", isLight ? "#fafafa" : "#09090b");
+      }
+    };
+    const obs = new MutationObserver(apply);
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    apply();
+    return () => obs.disconnect();
+  }, [mapReady]);
+
   // Swap the basemap beneath the provinces without rebuilding the map. Two code
   // paths: a single raster source for XYZ basemaps, or — for the keyless ArcGIS
   // VectorTileServer — fetch its Mapbox-style root.json and inject its sources +
