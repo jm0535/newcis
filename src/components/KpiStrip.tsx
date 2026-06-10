@@ -54,6 +54,17 @@ const RISK_TONE = {
   critical: "black",
 } as const;
 
+// ENSO phase tile is informational, not a traffic-light — but a flat white card
+// reads as "no signal". Colour it by what the phase means: El Niño (drought/frost)
+// runs warm amber→red, La Niña (flood) runs sky, neutral stays brand accent.
+const PHASE_TONE: Record<NationalStatus["enso_phase"], "accent" | "amber" | "red" | "sky"> = {
+  neutral: "accent",
+  el_nino_watch: "amber",
+  el_nino_alert: "red",
+  la_nina_watch: "sky",
+  la_nina_alert: "sky",
+};
+
 export function KpiStrip({ national }: { national: NationalStatus | null }) {
   if (!national) {
     return (
@@ -66,6 +77,10 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
 
   const affected = national.affected_population_est;
   const affectedLabel = affected > 0 ? affected.toLocaleString() : "—";
+
+  // High-risk province count: more stressed provinces = hotter tile.
+  const hi = national.high_risk_province_count;
+  const provinceTone = hi === 0 ? "green" : hi <= 3 ? "amber" : hi <= 8 ? "red" : "black";
 
   return (
     <div className="space-y-2">
@@ -83,6 +98,7 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
         icon={<Activity size={12} />}
         label="ENSO Phase"
         value={<span className="text-lg">{PHASE_SHORT[national.enso_phase]}</span>}
+        tone={PHASE_TONE[national.enso_phase]}
         hint={PHASE_HINT[national.enso_phase]}
       />
       <MetricTile
@@ -103,18 +119,21 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
         icon={<Users size={12} />}
         label="Affected Population (est.)"
         value={affectedLabel}
+        tone="sky"
         hint="Phase 3 risk-engine extension"
       />
       <MetricTile
         icon={<MapPin size={12} />}
         label="High-Risk Provinces"
         value={String(national.high_risk_province_count)}
+        tone={provinceTone}
         hint={`Of the ${FOCUS_COUNT} focus provinces in this prototype`}
       />
         <MetricTile
           icon={<CalendarRange size={12} />}
           label="Forecast Period"
           value={<span className="text-lg">{national.forecast_period}</span>}
+          tone="accent"
         />
       </div>
     </div>
