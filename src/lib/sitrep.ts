@@ -15,6 +15,7 @@ import type {
   SitrepModel,
 } from "./types";
 import { FOCUS_NAMES } from "./focus-provinces";
+import { provincialRiskCaption } from "./sitrep-shared";
 
 const ENSO_LABEL: Record<NationalStatus["enso_phase"], string> = {
   neutral: "ENSO Neutral",
@@ -286,7 +287,7 @@ export function renderSitrepHtml(m: SitrepModel): string {
 
   <section>
     <h2>Provincial risk</h2>
-    <p style="margin:4px 0 0;color:#52525b;font-size:12px">All ${m.provinceCount} provinces ranked worst-first by their single most-stressed sector. <b>${m.provincesAtRisk}</b> of ${m.provinceCount} sit at HIGH or CRITICAL. "Stressed" counts how many of a province's sectors are at HIGH or CRITICAL.</p>
+    <p style="margin:4px 0 0;color:#52525b;font-size:12px">${esc(provincialRiskCaption(m.provinceCount, m.provincesAtRisk))}</p>
     <table>
       <thead><tr><th style="text-align:right">#</th><th>Province</th><th>Worst level</th><th>Worst sector</th><th style="text-align:right">Stressed</th></tr></thead>
       <tbody>${provinceTableRows}</tbody>

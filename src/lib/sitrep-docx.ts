@@ -20,6 +20,7 @@ import {
   WidthType,
 } from "docx";
 import type { SitrepModel } from "./types";
+import { provincialRiskCaption } from "./sitrep-shared";
 
 // AlignmentType is a value object, not a type — alias its value union for params.
 type Align = (typeof AlignmentType)[keyof typeof AlignmentType];
@@ -166,7 +167,7 @@ export async function buildSitrepDocx(m: SitrepModel): Promise<Buffer> {
       spacing: { after: 80 },
       children: [
         new TextRun({
-          text: `All ${m.provinceCount} provinces ranked worst-first by their single most-stressed sector. ${m.provincesAtRisk} of ${m.provinceCount} sit at HIGH or CRITICAL. "Stressed" counts how many of a province's sectors are at HIGH or CRITICAL.`,
+          text: provincialRiskCaption(m.provinceCount, m.provincesAtRisk),
           size: 18,
           color: "52525B",
         }),
