@@ -120,7 +120,7 @@ export function SectorPanel({
       {/* Severity distribution across all provinces — the national shape. */}
       {total > 0 && (
         <div className="flex flex-col gap-1">
-          <div className="flex items-baseline justify-between text-[10px] uppercase tracking-[0.06em] text-text-disabled font-medium">
+          <div className="flex items-baseline justify-between text-[11px] md:text-[10px] uppercase tracking-[0.06em] text-text-disabled font-medium">
             <span>
               Across{" "}
               <span className="text-text-muted" data-numeric>
@@ -157,7 +157,7 @@ export function SectorPanel({
               ) : null,
             )}
           </div>
-          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-text-muted">
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] md:text-[10px] text-text-muted">
             {LEVELS.map((lvl) =>
               counts[lvl] > 0 ? (
                 <span key={lvl} className="inline-flex items-center gap-1">
@@ -175,7 +175,7 @@ export function SectorPanel({
 
       {/* Hotspots: where this sector is actually under stress. */}
       <div className="pt-2 border-t border-border-subtle">
-        <div className="text-[10px] uppercase tracking-[0.06em] text-text-disabled mb-1.5 font-medium">
+        <div className="text-[11px] md:text-[10px] uppercase tracking-[0.06em] text-text-disabled mb-1.5 font-medium">
           Worst-affected provinces
         </div>
         {hotspots.length === 0 ? (
@@ -211,7 +211,7 @@ export function SectorPanel({
               </li>
             ))}
             {extraHotspots > 0 && (
-              <li className="text-[10px] text-text-muted pl-4" data-numeric>
+              <li className="text-[11px] md:text-[10px] text-text-muted pl-4" data-numeric>
                 +{extraHotspots} more
               </li>
             )}

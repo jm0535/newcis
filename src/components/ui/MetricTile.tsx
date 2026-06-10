@@ -32,7 +32,7 @@ export interface MetricTileProps {
 export function MetricTile({ label, value, hint, tone = "default", icon }: MetricTileProps) {
   return (
     <Card padding="md" className={`flex flex-col gap-2 min-h-[6.5rem] ${TONE_CLASS[tone]}`}>
-      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.08em] text-text-muted font-medium">
+      <div className="flex items-center gap-2 text-[11px] md:text-[10px] uppercase tracking-[0.08em] text-text-muted font-medium">
         {icon}
         <span>{label}</span>
       </div>

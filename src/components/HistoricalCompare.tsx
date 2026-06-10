@@ -46,7 +46,7 @@ export function HistoricalCompare({
             className={isCurrent ? "border-accent/50 ring-1 ring-accent/30" : ""}
           >
             <div className="flex items-center justify-between gap-1">
-              <span className="text-[10px] uppercase tracking-[0.08em] text-text-muted font-semibold">
+              <span className="text-[11px] md:text-[10px] uppercase tracking-[0.08em] text-text-muted font-semibold">
                 {e.label}
               </span>
               {/* Past events are curated historical record (REFERENCE); the

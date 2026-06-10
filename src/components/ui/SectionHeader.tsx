@@ -12,7 +12,7 @@ export function SectionHeader({ title, description, action, eyebrow }: SectionHe
     <header className="flex items-end justify-between gap-4 mb-4">
       <div className="min-w-0">
         {eyebrow && (
-          <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
+          <div className="text-[11px] md:text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
             {eyebrow}
           </div>
         )}

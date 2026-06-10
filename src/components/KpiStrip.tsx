@@ -74,7 +74,7 @@ export function KpiStrip({ national }: { national: NationalStatus | null }) {
           without crowding six glanceable tiles. */}
       <div className="flex items-center gap-2">
         <ProvenanceBadge value="LIVE" />
-        <span className="text-[10px] text-text-muted">
+        <span className="text-[11px] md:text-[10px] text-text-muted">
           Derived from this cycle&apos;s national rollup
         </span>
       </div>

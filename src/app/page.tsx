@@ -274,7 +274,7 @@ export default async function Landing() {
 
         {/* Caption: the backdrop is live data, named honestly. */}
         <div className="relative mx-auto max-w-7xl px-4 md:px-6 pb-4">
-          <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.08em] text-text-muted">
+          <span className="inline-flex items-center gap-1.5 text-[11px] md:text-[10px] uppercase tracking-[0.08em] text-text-muted">
             <span className="h-1.5 w-1.5 rounded-full bg-status-green animate-pulse" />
             Live national risk map · touring real risk &amp; hazard sites
           </span>
@@ -393,7 +393,7 @@ export default async function Landing() {
                 className="h-full w-full object-cover object-center select-none"
                 draggable={false}
               />
-              <figcaption className="absolute bottom-0 inset-x-0 px-3 py-1.5 text-[10px] tracking-[0.04em] text-white/90 bg-gradient-to-t from-black/70 to-transparent">
+              <figcaption className="absolute bottom-0 inset-x-0 px-3 py-1.5 text-[11px] md:text-[10px] tracking-[0.04em] text-white/90 bg-gradient-to-t from-black/70 to-transparent">
                 Post-Courier front page, March 2024 — documented event, not a live
                 reading.
               </figcaption>
@@ -502,7 +502,7 @@ export default async function Landing() {
       <footer className="border-t border-border-subtle bg-surface-1">
         <div className="mx-auto max-w-7xl px-4 md:px-6 py-8">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-5">
-            <span className="text-[10px] uppercase tracking-[0.1em] text-text-disabled">
+            <span className="text-[11px] md:text-[10px] uppercase tracking-[0.1em] text-text-disabled">
               Data partners
             </span>
             {PARTNERS.map((p) => (
