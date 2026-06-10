@@ -130,9 +130,24 @@
     "observed_at": "2026-06-09T00:54:22.225Z"
   },
   {
+    "key": "SEISMIC",
+    "value": 18,
+    "observed_at": "2026-06-09T01:20:56.840Z"
+  },
+  {
     "key": "ONI",
     "value": 0.48,
     "observed_at": "2026-04-15"
+  },
+  {
+    "key": "SOI",
+    "value": -0.9,
+    "observed_at": "2026-05-15"
+  },
+  {
+    "key": "TRADE_WIND_ANOM",
+    "value": -0.3,
+    "observed_at": "2026-05-15"
   },
   {
     "key": "RAINFALL_ANOM",
@@ -146,7 +161,7 @@
   },
   {
     "key": "SEISMIC",
-    "value": 18,
-    "observed_at": "2026-06-09T01:20:56.840Z"
+    "value": 17,
+    "observed_at": "2026-06-10T04:14:28.851Z"
   }
 ]

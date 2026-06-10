@@ -10,12 +10,21 @@
   },
   {
     "metric": "SOI",
-    "unit": "Tahiti−Darwin pressure anomaly index",
-    "green_max": -7,
-    "amber_max": -10,
-    "red_max": -15,
+    "unit": "standardized Tahiti−Darwin pressure anomaly (NOAA scale)",
+    "green_max": -0.7,
+    "amber_max": -1.0,
+    "red_max": -1.5,
     "inverted": true,
-    "notes": "BoM SOI. Sustained negative values indicate El Niño. >-7 neutral; -7 to -10 El Niño watch; -10 to -15 alert; <-15 strong event."
+    "notes": "NOAA CPC standardized SOI (range ~-4..+4, NOT BoM's ×10 scale). Sustained negative = El Niño. >-0.7 neutral; -0.7 to -1.0 watch; -1.0 to -1.5 alert; <-1.5 strong event. NOAA -1.0 ≈ BoM -10."
+  },
+  {
+    "metric": "TRADE_WIND_ANOM",
+    "unit": "m/s 850 mb zonal wind anomaly (West Pacific)",
+    "green_max": -0.5,
+    "amber_max": -1.0,
+    "red_max": -1.5,
+    "inverted": true,
+    "notes": "NOAA CPC wpac850. Negative = weakened/westerly trades = warm water pushed east = leading El Niño trigger (precedes SST by weeks–months). >-0.5 neutral; -0.5 to -1.0 watch; -1.0 to -1.5 alert; <-1.5 strong westerly burst regime."
   },
   {
     "metric": "SST_ANOM_NINO34",

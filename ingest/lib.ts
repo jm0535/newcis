@@ -11,6 +11,8 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fetchOni } from "./sources/oni";
+import { fetchNoaaSoi } from "./sources/noaa-soi";
+import { fetchNoaaTradeWind } from "./sources/noaa-trade-wind";
 import { fetchHdxFoodSecurity } from "./sources/hdx-food-security";
 import { fetchHdxRainfall } from "./sources/hdx-rainfall";
 import { fetchNasaPowerSoil } from "./sources/nasa-power-soil";
@@ -135,6 +137,11 @@ export async function runIngest(): Promise<LastRun> {
   const appId = process.env.HDX_APP_ID;
 
   const oniRes = await run("noaa_oni", fetchOni);
+  // NOAA CPC ENSO precursors — keyless monthly grids, always run. SOI is the
+  // atmospheric confirmation of ONI's oceanic signal; trade-wind anomaly leads
+  // both (warm-water displacement precedes surface SST by weeks–months).
+  const soiRes = await run("noaa_soi", fetchNoaaSoi);
+  const tradeWindRes = await run("noaa_trade_wind", fetchNoaaTradeWind);
   const rainfallRes = appId
     ? await run("hdx_rainfall", () => fetchHdxRainfall(appId, FOCUS_CODES))
     : { ok: false, value: null, error: "no HDX_APP_ID", ms: 0 };
@@ -177,6 +184,25 @@ export async function runIngest(): Promise<LastRun> {
     ind.trend = computeTrend(ind.key, ind.value ?? 0, history);
     liveIndicators.push(ind);
     if (ind.value !== null) {
+      history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+    }
+  }
+
+  // SOI + trade-wind: national ENSO-precursor gauges (no per-province rows).
+  if (soiRes.ok && soiRes.value) {
+    const ind = soiRes.value.indicator;
+    if (ind.value !== null) {
+      ind.trend = computeTrend(ind.key, ind.value, history);
+      liveIndicators.push(ind);
+      history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+    }
+  }
+
+  if (tradeWindRes.ok && tradeWindRes.value) {
+    const ind = tradeWindRes.value.indicator;
+    if (ind.value !== null) {
+      ind.trend = computeTrend(ind.key, ind.value, history);
+      liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
   }
@@ -413,13 +439,15 @@ export async function runIngest(): Promise<LastRun> {
   const lastRun: LastRun = {
     started_at: startedAt,
     finished_at: new Date().toISOString(),
-    status: [oniRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
+    status: [oniRes, soiRes, tradeWindRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
       ? "ok"
-      : [oniRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
+      : [oniRes, soiRes, tradeWindRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
         ? "partial"
         : "failed",
     sources_ok: {
       noaa_oni: oniRes.ok,
+      noaa_soi: soiRes.ok,
+      noaa_trade_wind: tradeWindRes.ok,
       hdx_rainfall: rainfallRes.ok,
       hdx_food_security: foodRes.ok,
       nasa_power_soil: soilRes.ok,
@@ -431,6 +459,8 @@ export async function runIngest(): Promise<LastRun> {
     },
     notes: [
       oniRes.ok ? `ONI ${oniRes.value?.indicator.value} (${oniRes.ms}ms)` : `ONI failed: ${oniRes.error}`,
+      soiRes.ok ? `SOI ${soiRes.value?.indicator.value} (${soiRes.ms}ms)` : `SOI failed: ${soiRes.error}`,
+      tradeWindRes.ok ? `Trade-wind ${tradeWindRes.value?.indicator.value} (${tradeWindRes.ms}ms)` : `Trade-wind failed: ${tradeWindRes.error}`,
       rainfallRes.ok
         ? `Rainfall mean anom ${rainfallRes.value?.indicator.value}% (${rainfallRes.value?.reporting_count}/${rainfallRes.value?.focus_count} provinces reporting, ${rainfallRes.value?.raw_count} raw rows, ${rainfallRes.ms}ms)`
         : `Rainfall failed: ${rainfallRes.error}`,

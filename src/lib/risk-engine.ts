@@ -152,7 +152,11 @@ const SECTOR_DRIVERS: Record<Sector, string[]> = {
   "Water Security": ["RAINFALL_ANOM", "SOIL_MOISTURE"],
   "Food Security": ["RAINFALL_ANOM", "NDVI", "SOIL_MOISTURE"],
   "Public Health": ["TEMP_ANOM", "RAINFALL_ANOM"],
-  "Economic Stability": ["ONI"],
+  // ONI (oceanic) + SOI (atmospheric confirmation) + trade-wind (leading
+  // precursor) — the three coupled ENSO signals. Worst-of via scoreSector, so a
+  // negative SOI or weakened-trade regime can escalate economic risk before ONI
+  // crosses its band, capturing the lead time the precursors provide.
+  "Economic Stability": ["ONI", "SOI", "TRADE_WIND_ANOM"],
   // Seismic is intentionally NOT a national indicator driver here. The national
   // SEISMIC count would apply uniformly to every province (the replication the
   // spatial join exists to avoid); instead the per-province USGS row (epicentres
