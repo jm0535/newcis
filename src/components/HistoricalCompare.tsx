@@ -57,9 +57,17 @@ export function HistoricalCompare({
               <span className="text-2xl font-semibold text-text-1" data-numeric>
                 {current === null && isCurrent ? "—" : e.oni.toFixed(2)}
               </span>
-              <StatusPill status={ALERT_STATUS[level]} size="sm">
-                {ALERT_LABEL[level]}
-              </StatusPill>
+              {/* No live ONI this cycle → don't imply GREEN by classifying 0;
+                  show an explicit "no data" pill instead. */}
+              {current === null && isCurrent ? (
+                <StatusPill status="neutral" size="sm">
+                  NO DATA
+                </StatusPill>
+              ) : (
+                <StatusPill status={ALERT_STATUS[level]} size="sm">
+                  {ALERT_LABEL[level]}
+                </StatusPill>
+              )}
             </div>
             <div className="mt-2 text-[11px] text-text-muted leading-snug">{e.note}</div>
           </Card>
