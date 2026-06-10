@@ -82,9 +82,11 @@ export default async function ForecastPage() {
 
       <header className="px-4 md:px-6 py-6 border-b border-border-subtle">
         <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
-          ENSO Forecast &amp; Outlook
+          NEWCIS
         </div>
-        <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
+        <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
+          ENSO Forecast &amp; Outlook
+        </h1>
         <p className="text-xs text-text-muted mt-2 max-w-3xl leading-relaxed">
           The next-season outlook. We relay the NMME dynamical forecast (the model the
           operational centres run) and check it against the present-state ENSO precursors.

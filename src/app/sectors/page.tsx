@@ -30,9 +30,9 @@ export default async function SectorsPage() {
 
       <header className="px-4 md:px-6 py-6 border-b border-border-subtle">
         <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
-          Sectoral Impact
+          NEWCIS
         </div>
-        <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
+        <h1 className="text-xl md:text-2xl font-semibold tracking-tight">Sectoral Impact</h1>
         <p className="text-xs text-text-muted mt-2 max-w-3xl leading-relaxed">
           How the climate is stressing each part of national life. Eight sectors across all{" "}
           {FOCUS_COUNT} provinces. Each panel shows the national shape — how many provinces sit at

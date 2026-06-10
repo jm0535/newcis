@@ -98,9 +98,11 @@ export default async function OperationsPage() {
       <header className="px-4 md:px-6 py-6 border-b border-border-subtle flex flex-wrap items-end justify-between gap-3">
         <div>
           <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
-            Intelligence &amp; Operations
+            NEWCIS
           </div>
-          <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
+          <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
+            Intelligence &amp; Operations
+          </h1>
           <p className="text-xs text-text-muted mt-2 max-w-2xl leading-relaxed">
             The action view: where things stand, which provinces need attention, who is on
             standby, what is owed and by whom — and a one-click Weekly SITREP for Cabinet.

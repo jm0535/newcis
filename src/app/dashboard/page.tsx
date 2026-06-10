@@ -36,13 +36,10 @@ export default async function Dashboard() {
       <header className="px-4 md:px-6 py-6 border-b border-border-subtle flex flex-wrap items-end gap-x-6 gap-y-2">
         <div className="min-w-0">
           <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
-            Executive Strategic Overview
+            NEWCIS · Papua New Guinea
           </div>
           <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-text-1">
-            NEWCIS
-            <span className="text-text-muted font-normal text-lg ml-2">
-              · Papua New Guinea
-            </span>
+            Executive Strategic Overview
           </h1>
         </div>
         <span className="text-xs text-text-muted">

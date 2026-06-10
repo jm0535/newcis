@@ -37,9 +37,11 @@ export default async function ClimatePage() {
 
       <header className="px-4 md:px-6 py-6 border-b border-border-subtle">
         <div className="text-[10px] uppercase tracking-[0.12em] text-accent font-semibold mb-1">
-          ENSO Climate Intelligence
+          NEWCIS
         </div>
-        <h1 className="text-xl md:text-2xl font-semibold tracking-tight">NEWCIS</h1>
+        <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
+          ENSO Climate Intelligence
+        </h1>
         <p className="text-xs text-text-muted mt-2 max-w-3xl leading-relaxed">
           Live oceanic + atmospheric indicators driving the national alert level. Threshold
           bands shown on every chart — gauges, trends, and history all read from the same
