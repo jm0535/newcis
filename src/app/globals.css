@@ -50,6 +50,7 @@
   --accent: #10b981;
   --accent-hover: #34d399;
   --accent-muted: rgba(16, 185, 129, 0.15);
+  --accent-foreground: #09090b; /* near-black text/icon on the bright accent fill */
 
   /* Semantic — status (traffic-light). Vibrant, high-contrast on the dark
      surface. The top "BLACK" tier (national emergency, the rung above RED) is a
@@ -147,6 +148,7 @@
   --accent: #059669;
   --accent-hover: #10b981;
   --accent-muted: rgba(5, 150, 105, 0.12);
+  --accent-foreground: #f4f4f5; /* light text on the darker light-mode accent */
 
   /* Light-theme status: deeper, saturated variants so text/fills stay legible
      on the near-white surfaces. The "BLACK" emergency tier is a near-black slate
@@ -182,6 +184,7 @@
 
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
 
   --color-status-green: var(--status-green);
   --color-status-amber: var(--status-amber);

@@ -9,7 +9,8 @@ import Link from "next/link";
 import { LiveClock } from "@/components/LiveClock";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { HeroMap } from "@/components/HeroMap";
-import { Card, Badge } from "@/components/ui";
+import { Card, Badge, MetricTile } from "@/components/ui";
+import { ProvenanceBadge } from "@/components/Provenance";
 import { getLastRun, getNationalStatus, getSectorRisk } from "@/lib/data";
 import { FOCUS_COUNT } from "@/lib/focus-provinces";
 import { fmtDateTime } from "@/lib/ui";
@@ -140,13 +141,11 @@ export default async function Landing() {
       icon: MapIcon,
       label: "High-risk provinces",
       value: national?.high_risk_province_count ?? "—",
-      numeric: true,
     },
     {
       icon: Radio,
       label: "Population in scope",
       value: national ? fmtPop(national.affected_population_est) : "—",
-      numeric: true,
     },
     {
       icon: CloudSun,
@@ -200,7 +199,7 @@ export default async function Landing() {
             <ThemeToggle />
             <Link
               href="/dashboard"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded font-medium uppercase tracking-[0.06em] text-xs px-3 py-1.5 bg-accent text-zinc-950 hover:bg-accent-hover transition-colors"
+              className="hidden sm:inline-flex items-center gap-1.5 rounded font-medium uppercase tracking-[0.06em] text-xs px-3 py-1.5 bg-accent text-accent-foreground hover:bg-accent-hover transition-colors"
             >
               Enter
               <ArrowRight size={13} />
@@ -250,7 +249,7 @@ export default async function Landing() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/dashboard"
-                className="inline-flex items-center justify-center gap-2 rounded font-medium uppercase tracking-[0.06em] text-sm px-6 py-3 bg-accent text-zinc-950 hover:bg-accent-hover border border-accent transition-colors"
+                className="inline-flex items-center justify-center gap-2 rounded font-medium uppercase tracking-[0.06em] text-sm px-6 py-3 bg-accent text-accent-foreground hover:bg-accent-hover border border-accent transition-colors"
               >
                 Enter Operating Picture
                 <ArrowRight size={15} />
@@ -318,21 +317,12 @@ export default async function Landing() {
             {kpis.map((k) => {
               const Icon = k.icon;
               return (
-                <div
+                <MetricTile
                   key={k.label}
-                  className="rounded-lg border border-border-subtle bg-surface-0 px-4 py-5"
-                >
-                  <Icon size={14} className="text-text-muted mb-2" />
-                  <div
-                    className="text-2xl md:text-3xl font-semibold text-text-1 leading-none"
-                    data-numeric={k.numeric ? "" : undefined}
-                  >
-                    {k.value}
-                  </div>
-                  <div className="mt-2 text-[10px] uppercase tracking-[0.08em] text-text-muted">
-                    {k.label}
-                  </div>
-                </div>
+                  icon={<Icon size={12} />}
+                  label={k.label}
+                  value={k.value}
+                />
               );
             })}
           </div>
@@ -448,30 +438,21 @@ export default async function Landing() {
           </p>
           <div className="grid sm:grid-cols-3 gap-3">
             <Card padding="lg">
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-[0.08em] border bg-status-green/15 text-status-green border-status-green/40">
-                <span className="h-1 w-1 rounded-full bg-status-green animate-pulse" />
-                LIVE
-              </span>
+              <ProvenanceBadge value="LIVE" />
               <p className="mt-2.5 text-xs text-text-muted leading-relaxed">
                 Pulled from a real API this cycle — NOAA ONI, HDX food security &amp;
                 rainfall, ACLED, USGS, GDACS.
               </p>
             </Card>
             <Card padding="lg">
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-[0.08em] border bg-status-amber/15 text-status-amber border-status-amber/40">
-                <span className="h-1 w-1 rounded-full bg-status-amber" />
-                DEMO
-              </span>
+              <ProvenanceBadge value="DEMO" />
               <p className="mt-2.5 text-xs text-text-muted leading-relaxed">
                 Seeded placeholder where no clean public feed exists yet — water,
                 health, energy, infrastructure.
               </p>
             </Card>
             <Card padding="lg">
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-[0.08em] border bg-surface-2 text-text-muted border-border-default">
-                <span className="h-1 w-1 rounded-full bg-text-muted" />
-                REFERENCE
-              </span>
+              <ProvenanceBadge value="REFERENCE" />
               <p className="mt-2.5 text-xs text-text-muted leading-relaxed">
                 Curated historical record — the hand-compiled volcano, tsunami &amp;
                 disaster hazard map layers.
