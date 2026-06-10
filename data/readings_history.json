@@ -173,5 +173,15 @@
     "key": "SOIL_MOISTURE",
     "value": 29,
     "observed_at": "2025-12-01"
+  },
+  {
+    "key": "NDVI",
+    "value": -0.005,
+    "observed_at": "2026-04-01"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 17,
+    "observed_at": "2026-06-10T09:31:17.469Z"
   }
 ]

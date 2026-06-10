@@ -66,6 +66,17 @@
     "trend": "flat"
   },
   {
+    "key": "NDVI",
+    "label": "Vegetation health anomaly (mean of 22 of 22 provinces)",
+    "unit": "NDVI anomaly vs same-month 5-yr mean",
+    "source": "NASA NEO · MODIS/Terra MOD_NDVI_M",
+    "update_frequency": "monthly",
+    "provenance": "LIVE",
+    "value": -0.005,
+    "observed_at": "2026-04-01",
+    "trend": "flat"
+  },
+  {
     "key": "SEISMIC",
     "label": "Seismic tempo (M4.5+ events, PNG)",
     "unit": "count / 30d",
@@ -73,7 +84,7 @@
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
     "value": 17,
-    "observed_at": "2026-06-10T05:31:48.801Z",
+    "observed_at": "2026-06-10T09:31:17.469Z",
     "trend": "flat"
   },
   {

@@ -17,6 +17,7 @@ import { fetchCcsrNmme } from "./sources/ccsr-nmme";
 import { fetchHdxFoodSecurity } from "./sources/hdx-food-security";
 import { fetchHdxRainfall } from "./sources/hdx-rainfall";
 import { fetchNasaPowerSoil } from "./sources/nasa-power-soil";
+import { fetchNeoNdvi } from "./sources/neo-ndvi";
 import { fetchHdxAcled } from "./sources/hdx-acled";
 import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
@@ -157,6 +158,9 @@ export async function runIngest(): Promise<LastRun> {
     : { ok: false, value: null, error: "no HDX_APP_ID", ms: 0 };
   // NASA POWER is keyless and PNG-actionable — always run it.
   const soilRes = await run("nasa_power_soil", fetchNasaPowerSoil);
+  // NASA NEO monthly NDVI — keyless global CSV grid. Vegetation-health anomaly,
+  // the early canary for highland food-security stress. Always run.
+  const ndviRes = await run("neo_ndvi", fetchNeoNdvi);
   const acledRes = appId
     ? await run("hdx_acled", () => fetchHdxAcled(appId, FOCUS_CODES))
     : { ok: false, value: null, error: "no HDX_APP_ID", ms: 0 };
@@ -244,6 +248,17 @@ export async function runIngest(): Promise<LastRun> {
     }
   }
 
+  // NDVI vegetation-health anomaly (NASA NEO MODIS). Signed anomaly vs the
+  // same-month multi-year mean — negative = vegetation below normal = stress.
+  if (ndviRes.ok && ndviRes.value) {
+    const ind = ndviRes.value.indicator;
+    if (ind.value !== null) {
+      ind.trend = computeTrend(ind.key, ind.value, history);
+      liveIndicators.push(ind);
+      history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+    }
+  }
+
   // USGS seismic tempo — a standing PNG hazard indicator (Ring of Fire).
   if (usgsRes.ok && usgsRes.value) {
     const ind = usgsRes.value.indicator;
@@ -316,6 +331,8 @@ export async function runIngest(): Promise<LastRun> {
   const upstreamRows: SectorRisk[] = [];
   if (rainfallRes.ok && rainfallRes.value) upstreamRows.push(...rainfallRes.value.sector_rows);
   if (soilRes.ok && soilRes.value) upstreamRows.push(...soilRes.value.sector_rows);
+  // NDVI vegetation anomaly → per-province Food Security rows (max-merged below).
+  if (ndviRes.ok && ndviRes.value) upstreamRows.push(...ndviRes.value.sector_rows);
   if (foodRes.ok && foodRes.value) upstreamRows.push(...foodRes.value.rows);
   if (acledRes.ok && acledRes.value) upstreamRows.push(...acledRes.value.sector_rows);
   // Disaster & Hazard: GDACS multi-hazard alert + USGS seismic + GVP volcano
@@ -499,9 +516,9 @@ export async function runIngest(): Promise<LastRun> {
   const lastRun: LastRun = {
     started_at: startedAt,
     finished_at: new Date().toISOString(),
-    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
+    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
       ? "ok"
-      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
+      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
         ? "partial"
         : "failed",
     sources_ok: {
@@ -512,6 +529,7 @@ export async function runIngest(): Promise<LastRun> {
       hdx_rainfall: rainfallRes.ok,
       hdx_food_security: foodRes.ok,
       nasa_power_soil: soilRes.ok,
+      neo_ndvi: ndviRes.ok,
       hdx_acled: acledRes.ok,
       usgs_earthquakes: usgsRes.ok,
       gdacs: gdacsRes.ok,
@@ -530,6 +548,7 @@ export async function runIngest(): Promise<LastRun> {
       soilRes.ok
         ? `Soil moisture median ${soilRes.value?.indicator.value}th pctile (${soilRes.value?.per_province.length} provinces, ${soilRes.ms}ms)`
         : `Soil moisture failed: ${soilRes.error}`,
+      ndviRes.ok ? `${ndviRes.value?.note} (${ndviRes.ms}ms)` : `NDVI failed: ${ndviRes.error}`,
       acledRes.ok ? `ACLED: ${acledRes.value?.note}` : `ACLED failed: ${acledRes.error}`,
       usgsRes.ok ? `USGS: ${usgsRes.value?.note} (${usgsRes.ms}ms)` : `USGS failed: ${usgsRes.error}`,
       gdacsRes.ok ? `GDACS: ${gdacsRes.value?.note} (${gdacsRes.ms}ms)` : `GDACS failed: ${gdacsRes.error}`,

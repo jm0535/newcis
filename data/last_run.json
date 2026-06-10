@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-06-10T05:33:17.841Z",
-  "finished_at": "2026-06-10T05:33:46.761Z",
+  "started_at": "2026-06-10T09:30:03.084Z",
+  "finished_at": "2026-06-10T09:36:24.844Z",
   "status": "partial",
   "sources_ok": {
     "noaa_oni": true,
@@ -10,11 +10,12 @@
     "hdx_rainfall": true,
     "hdx_food_security": true,
     "nasa_power_soil": true,
+    "neo_ndvi": true,
     "hdx_acled": true,
-    "usgs_earthquakes": false,
+    "usgs_earthquakes": true,
     "gdacs": true,
     "gvp_volcanoes": true,
     "open_meteo": false
   },
-  "notes": "ONI 0.48 (2825ms) | SOI -0.9 (302ms) | Trade-wind -0.3 (1314ms) | NMME projected ONI 1.05 (MJJ 2026, 30 members, 4519ms) | Rainfall mean anom 6.9% (22/22 provinces reporting, 3366 raw rows, 3200ms) | Food security: HDX HAPI returned no current IPC food-security rows for PNG (PNG is not consistently in IPC publications). Sector will be DEMO-seeded. | Soil moisture median 29th pctile (22 provinces, 6985ms) | ACLED: 3 ACLED rows aggregated to 22 focus-province cells | USGS failed: TypeError: fetch failed | GDACS: 1 active PNG event(s); worst = Green (GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km) (4746ms) | GVP volcanoes: GVP: 39 PNG volcanoes across 9 focus provinces; active: PG13 (Manam); PG19 (Langila, Ulawun); PG20 (Bagana) (1635ms) | Open-Meteo failed: TypeError: fetch failed"
+  "notes": "ONI 0.48 (2940ms) | SOI -0.9 (1611ms) | Trade-wind -0.3 (2045ms) | NMME projected ONI 1.05 (MJJ 2026, 30 members, 6161ms) | Rainfall mean anom 6.9% (22/22 provinces reporting, 3366 raw rows, 4311ms) | Food security: HDX HAPI returned no current IPC food-security rows for PNG (PNG is not consistently in IPC publications). Sector will be DEMO-seeded. | Soil moisture median 29th pctile (22 provinces, 7373ms) | NDVI 2026-04: national anomaly -0.005 vs 5-yr same-month mean; 22/22 provinces sampled, 1 below normal (44423ms) | ACLED: 3 ACLED rows aggregated to 22 focus-province cells | USGS: 17 M4.5+ events (max M5.7) attributed across 22 focus provinces (2705ms) | GDACS: 1 active PNG event(s); worst = Green (GDACS · Green Earthquake — Magnitude 4.6M, Depth:154.37km) (18579ms) | GVP volcanoes: GVP: 39 PNG volcanoes across 9 focus provinces; active: PG13 (Manam); PG19 (Langila, Ulawun); PG20 (Bagana) (2609ms) | Open-Meteo failed: TimeoutError: The operation was aborted due to timeout"
 }
