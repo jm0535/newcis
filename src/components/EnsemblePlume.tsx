@@ -28,7 +28,21 @@ const TOKEN = {
   border: "var(--border-default)",
   text: "var(--text-1)",
   accent: "var(--accent)",
+  dotStroke: "var(--surface-1)", // ring around dots so they read on shaded bands
+  mean: "var(--text-1)", // high-contrast mean line, distinct from accent dots
 };
+
+// Whole-number °C ticks spanning the domain, so the axis reads "-1, 0, 1" not
+// recharts' auto-generated mangled fractions. Always includes 0 as the ENSO
+// neutral baseline.
+function makeTicks(min: number, max: number): number[] {
+  const lo = Math.ceil(min);
+  const hi = Math.floor(max);
+  const ticks: number[] = [];
+  for (let t = lo; t <= hi; t += 1) ticks.push(t);
+  if (!ticks.includes(0) && min <= 0 && max >= 0) ticks.push(0);
+  return ticks.sort((a, b) => a - b);
+}
 
 export function EnsemblePlume({
   model,
@@ -90,7 +104,7 @@ export function EnsemblePlume({
               y1={b.y1}
               y2={b.y2}
               fill={b.c}
-              fillOpacity={0.06}
+              fillOpacity={0.14}
               stroke="none"
               ifOverflow="hidden"
             />
@@ -105,9 +119,11 @@ export function EnsemblePlume({
             type="number"
             dataKey="y"
             domain={[yMin, yMax]}
+            ticks={makeTicks(yMin, yMax)}
+            tickFormatter={(v: number) => v.toFixed(1)}
             allowDataOverflow
             tick={{ fill: TOKEN.axis, fontSize: 10 }}
-            width={36}
+            width={40}
             label={{
               value: "°C",
               angle: -90,
@@ -116,7 +132,7 @@ export function EnsemblePlume({
               fontSize: 10,
             }}
           />
-          <ZAxis range={[40, 40]} />
+          <ZAxis range={[80, 80]} />
           {/* Threshold ladder (positive El Niño side labelled). */}
           {threshold &&
             [
@@ -139,17 +155,19 @@ export function EnsemblePlume({
                 }}
               />
             ))}
-          {/* Ensemble min/max span + mean line. */}
+          {/* ENSO-neutral baseline at 0 — the reference every anomaly is read against. */}
+          <ReferenceLine y={0} stroke={TOKEN.axis} strokeWidth={1} strokeOpacity={0.5} />
+          {/* Ensemble mean — the headline projection. Solid, high-contrast, on top. */}
           <ReferenceLine
             y={model.ensemble_mean}
-            stroke={TOKEN.accent}
-            strokeWidth={2}
+            stroke={TOKEN.mean}
+            strokeWidth={2.5}
             label={{
               value: `mean ${model.ensemble_mean.toFixed(2)}`,
-              position: "left",
-              fill: TOKEN.accent,
+              position: "insideTopLeft",
+              fill: TOKEN.text,
               fontSize: 10,
-              fontWeight: 600,
+              fontWeight: 700,
             }}
           />
           <Tooltip
@@ -170,17 +188,20 @@ export function EnsemblePlume({
           <Scatter
             data={points}
             fill={TOKEN.accent}
-            fillOpacity={0.55}
+            fillOpacity={0.85}
+            stroke={TOKEN.dotStroke}
+            strokeWidth={1}
             isAnimationActive={false}
           />
         </ScatterChart>
       </ResponsiveContainer>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-text-muted">
         <span className="inline-flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-accent/55" /> {n} ensemble members
+          <span className="w-2.5 h-2.5 rounded-full bg-accent ring-1 ring-surface-1" /> {n} ensemble
+          members
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="w-4 border-t-2 border-accent" /> ensemble mean
+          <span className="w-4 border-t-[2.5px] border-text-1" /> ensemble mean
         </span>
         <span data-numeric>
           spread {model.ensemble_min.toFixed(2)} → {model.ensemble_max.toFixed(2)} °C
