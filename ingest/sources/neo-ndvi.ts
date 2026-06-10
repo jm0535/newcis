@@ -129,26 +129,33 @@ export interface NeoNdviResult {
 }
 
 export async function fetchNeoNdvi(): Promise<NeoNdviResult> {
-  // 1. Find the latest published month, probing back from the previous month.
+  // 1. Find the latest published month. Build the lookback candidates (most recent
+  //    first), fetch them concurrently, and pick the most-recent one that resolved
+  //    to a grid (non-null = published). Concurrent probe replaces the old serial
+  //    step-back-until-first-hit loop; same result, no head-of-line latency.
   const now = new Date();
-  let latestMonth: string | null = null;
-  let latestGrid: Grid | null = null;
+  const lookbackCandidates: string[] = [];
   let probeYear = now.getUTCFullYear();
   let probeMonth = now.getUTCMonth(); // 0-based; this is already "last month" as a 1-based index
   for (let i = 0; i < MAX_LOOKBACK_MONTHS; i++) {
-    // step back one month each iteration
     if (probeMonth === 0) {
       probeMonth = 12;
       probeYear -= 1;
     }
-    const candidate = ym(probeYear, probeMonth);
-    const grid = await fetchGrid(candidate);
-    if (grid) {
-      latestMonth = candidate;
-      latestGrid = grid;
-      break;
-    }
+    lookbackCandidates.push(ym(probeYear, probeMonth)); // most-recent first
     probeMonth -= 1;
+  }
+  const lookbackGrids = await Promise.all(
+    lookbackCandidates.map((m) => fetchGrid(m)),
+  );
+  let latestMonth: string | null = null;
+  let latestGrid: Grid | null = null;
+  for (let i = 0; i < lookbackCandidates.length; i++) {
+    if (lookbackGrids[i]) {
+      latestMonth = lookbackCandidates[i];
+      latestGrid = lookbackGrids[i];
+      break; // candidates are most-recent first
+    }
   }
   if (!latestMonth || !latestGrid) {
     throw new Error("NEO NDVI: no published month found in lookback window");
@@ -159,13 +166,21 @@ export async function fetchNeoNdvi(): Promise<NeoNdviResult> {
   const latMon = Number(latMonStr);
 
   // 2. Same-calendar-month baseline grids for the prior BASELINE_YEARS years.
+  //    Independent fetches — pulled concurrently; 404s drop out, preserving year
+  //    order in the kept set.
+  const baselineCandidates: string[] = [];
+  for (let y = 1; y <= BASELINE_YEARS; y++) {
+    baselineCandidates.push(ym(latYear - y, latMon));
+  }
+  const baselineFetched = await Promise.all(
+    baselineCandidates.map((m) => fetchGrid(m)),
+  );
   const baselineMonths: string[] = [];
   const baselineGrids: Grid[] = [];
-  for (let y = 1; y <= BASELINE_YEARS; y++) {
-    const candidate = ym(latYear - y, latMon);
-    const grid = await fetchGrid(candidate);
+  for (let i = 0; i < baselineCandidates.length; i++) {
+    const grid = baselineFetched[i];
     if (grid) {
-      baselineMonths.push(candidate);
+      baselineMonths.push(baselineCandidates[i]);
       baselineGrids.push(grid);
     }
   }
