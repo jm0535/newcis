@@ -48,6 +48,7 @@ export const fmtPop = (n: number) =>
 export const NAV = [
   { href: "/dashboard", label: "Overview" },
   { href: "/climate", label: "ENSO Climate" },
+  { href: "/forecast", label: "Forecast" },
   { href: "/sectors", label: "Sectoral Impact" },
   { href: "/operations", label: "Operations" },
 ];

@@ -1,5 +1,5 @@
 // Page 4 — Intelligence & Operations.
-import { AUTO_REFRESH_LABEL } from "@/components/AutoRefresh";
+import { DashboardFooter } from "@/components/DashboardFooter";
 import { PageNav } from "@/components/PageNav";
 import { ProvenanceBadge } from "@/components/Provenance";
 import { RefreshButton } from "@/components/RefreshButton";
@@ -347,26 +347,7 @@ export default async function OperationsPage() {
         </aside>
       </div>
 
-      <footer className="border-t border-border-subtle px-4 md:px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
-        <span>
-          Last ingest{" "}
-          <span className="text-text-2" data-numeric>
-            {fmtDateTime(lastRun?.finished_at)}
-          </span>
-        </span>
-        <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
-        <span>
-          Powered by{" "}
-          <a
-            href="https://www.in4metrix.dev"
-            target="_blank"
-            rel="noreferrer"
-            className="text-accent hover:underline"
-          >
-            in4metrix
-          </a>
-        </span>
-      </footer>
+      <DashboardFooter lastRun={lastRun} />
     </main>
   );
 }

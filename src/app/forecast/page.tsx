@@ -12,7 +12,7 @@
 //
 // The forward-looking projection NEVER raises today's live national alert
 // (rollUpNational excludes PROJECTED_ONI) — it informs, it doesn't escalate.
-import { AUTO_REFRESH_LABEL } from "@/components/AutoRefresh";
+import { DashboardFooter } from "@/components/DashboardFooter";
 import { EnsemblePlume } from "@/components/EnsemblePlume";
 import { PageNav } from "@/components/PageNav";
 import { ProvenanceBadge } from "@/components/Provenance";
@@ -28,7 +28,6 @@ import {
   getRiskThresholds,
 } from "@/lib/data";
 import type { EnsoLean, OutlookConfidence } from "@/lib/outlook";
-import { fmtDateTime } from "@/lib/ui";
 import { ArrowDownRight, ArrowUpRight, Minus, TrendingUp } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -271,26 +270,7 @@ export default async function ForecastPage() {
         </section>
       </div>
 
-      <footer className="border-t border-border-subtle px-4 md:px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
-        <span>
-          Last ingest{" "}
-          <span className="text-text-2" data-numeric>
-            {fmtDateTime(lastRun?.finished_at)}
-          </span>
-        </span>
-        <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
-        <span>
-          Powered by{" "}
-          <a
-            href="https://www.in4metrix.dev"
-            target="_blank"
-            rel="noreferrer"
-            className="text-accent hover:underline"
-          >
-            in4metrix
-          </a>
-        </span>
-      </footer>
+      <DashboardFooter lastRun={lastRun} />
     </main>
   );
 }

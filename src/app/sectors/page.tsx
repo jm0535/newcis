@@ -1,5 +1,5 @@
 // Page 3 — Sectoral Impact.
-import { AUTO_REFRESH_LABEL } from "@/components/AutoRefresh";
+import { DashboardFooter } from "@/components/DashboardFooter";
 import { PageNav } from "@/components/PageNav";
 import { SectorPanel } from "@/components/SectorPanel";
 import { StatusBar } from "@/components/StatusBar";
@@ -12,7 +12,6 @@ import {
 } from "@/lib/data";
 import { SECTOR_META } from "@/lib/sectors";
 import { FOCUS_COUNT } from "@/lib/focus-provinces";
-import { fmtDateTime } from "@/lib/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -59,26 +58,7 @@ export default async function SectorsPage() {
         </section>
       </div>
 
-      <footer className="border-t border-border-subtle px-4 md:px-6 py-3 text-[11px] text-text-muted flex flex-wrap justify-between gap-2">
-        <span>
-          Last ingest{" "}
-          <span className="text-text-2" data-numeric>
-            {fmtDateTime(lastRun?.finished_at)}
-          </span>
-        </span>
-        <span>Auto-refreshes {AUTO_REFRESH_LABEL}</span>
-        <span>
-          Powered by{" "}
-          <a
-            href="https://www.in4metrix.dev"
-            target="_blank"
-            rel="noreferrer"
-            className="text-accent hover:underline"
-          >
-            in4metrix
-          </a>
-        </span>
-      </footer>
+      <DashboardFooter lastRun={lastRun} />
     </main>
   );
 }
