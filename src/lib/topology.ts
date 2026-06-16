@@ -99,13 +99,29 @@ function worstRisk(a: RiskLevel, b: RiskLevel): RiskLevel {
   return RISK_ORDER.indexOf(a) >= RISK_ORDER.indexOf(b) ? a : b;
 }
 
-/** Roll a national centre's AlertLevel from the worst indicator on screen. */
+/**
+ * Forward-looking indicators that must NOT raise today's alert. Mirrors
+ * rollUpNational's NON_ALERT_KEYS: PROJECTED_ONI is the NMME forecast — it drives
+ * the /forecast outlook, never the live national alert. Keeping these out of the
+ * centre rollup is what makes the topology centre AGREE with national_status.json
+ * (otherwise a forecast leaning El Niño would falsely push the centre to BLACK).
+ */
+const NON_ALERT_KEYS = new Set(["PROJECTED_ONI"]);
+
+/**
+ * Roll a national centre's AlertLevel from the worst LIVE indicator on screen.
+ * Forecast-only indicators (NON_ALERT_KEYS) are excluded so this matches the
+ * engine's rollUpNational — the centre level can never disagree with the alert
+ * the rest of the dashboard shows. The excluded indicators still render as their
+ * own nodes; they just don't escalate the centre.
+ */
 function worstAlertFromIndicators(
   indicators: Indicator[],
   thresholdByKey: Map<string, RiskThreshold>,
 ): AlertLevel {
   let worst: AlertLevel = "GREEN";
   for (const ind of indicators) {
+    if (NON_ALERT_KEYS.has(ind.key)) continue;
     const lvl = classifyIndicator(ind.value, thresholdByKey.get(ind.key));
     if (ALERT_ORDER.indexOf(lvl) > ALERT_ORDER.indexOf(worst)) worst = lvl;
   }

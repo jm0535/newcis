@@ -130,6 +130,29 @@ describe("buildTopology — national centre", () => {
   it("does not emit a SEISMIC edge when SEISMIC is absent", () => {
     expect(g.edges.some((e) => e.from === "SEISMIC")).toBe(false);
   });
+
+  it("excludes forward-looking PROJECTED_ONI from the centre alert level", () => {
+    // PROJECTED_ONI is a FORECAST (NMME projected ONI). rollUpNational excludes it
+    // from today's alert — a forecast leaning El Niño is not a present emergency.
+    // The topology centre must agree: PROJECTED_ONI=1.85 (→BLACK on its own) must
+    // NOT drive the centre past the worst LIVE indicator.
+    const g2 = buildTopology({
+      indicators: [
+        indicator("ONI", 0.4), // GREEN
+        indicator("SOI", -0.9), // AMBER
+        indicator("PROJECTED_ONI", 1.85), // BLACK on its own — but forecast-only
+      ],
+      sectorRisks: [],
+      thresholds: TH,
+      focusCodes: FOCUS,
+      center: { kind: "national" },
+    });
+    const centre = g2.nodes.find((n) => n.kind === "center")!;
+    // worst LIVE indicator is SOI (AMBER); PROJECTED_ONI must not push it to BLACK
+    expect(centre.level).toBe("AMBER");
+    // but PROJECTED_ONI is still drawn as its own indicator node
+    expect(g2.nodes.some((n) => n.id === "PROJECTED_ONI" && n.kind === "indicator")).toBe(true);
+  });
 });
 
 describe("buildTopology — province centre", () => {
