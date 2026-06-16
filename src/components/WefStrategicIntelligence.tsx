@@ -7,6 +7,7 @@
 import { ExternalLink } from "lucide-react";
 import type { WefInsight } from "@/lib/wef";
 import { Card, SectionHeader, Badge } from "./ui";
+import { WefCover } from "./WefCover";
 
 export function WefStrategicIntelligence({ insights }: { insights: WefInsight[] }) {
   if (insights.length === 0) return null;
@@ -40,6 +41,7 @@ export function WefStrategicIntelligence({ insights }: { insights: WefInsight[] 
             {headline.title}
           </h3>
           <p className="text-sm text-text-muted leading-relaxed">{headline.summary}</p>
+          <WefCover insight={headline} className="h-28" />
           <span className="inline-flex items-center gap-1 text-xs text-accent">
             Read on weforum.org <ExternalLink size={12} />
           </span>
@@ -55,7 +57,7 @@ export function WefStrategicIntelligence({ insights }: { insights: WefInsight[] 
             rel="noopener noreferrer"
             className="block group"
           >
-            <Card className="h-full space-y-2 transition-colors hover:border-border-strong">
+            <Card className="flex h-full flex-col space-y-2 transition-colors hover:border-border-strong">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] text-text-muted">
                 <span>{i.source}</span>
                 <span data-numeric>{i.published}</span>
@@ -64,6 +66,7 @@ export function WefStrategicIntelligence({ insights }: { insights: WefInsight[] 
                 {i.title}
               </h4>
               <p className="text-xs text-text-muted leading-relaxed">{i.summary}</p>
+              <WefCover insight={i} className="mt-auto h-20" />
               <span className="inline-flex items-center gap-1 text-[11px] text-accent">
                 Read on weforum.org <ExternalLink size={11} />
               </span>

@@ -23,6 +23,7 @@ import {
   type TopoNode,
 } from "@/lib/topology";
 import type { WefInsight } from "@/lib/wef";
+import { WefCover } from "./WefCover";
 import { ALERT_COLOUR, RISK_COLOUR, INDICATOR_META } from "@/lib/ui";
 import { ProvenanceBadge } from "./Provenance";
 import { Card, SectionHeader, StatusPill, EmptyState } from "./ui";
@@ -403,6 +404,7 @@ export function RiskTopology({
                     <div className="text-xs font-medium group-hover:text-accent transition-colors">
                       {selectedWef.title}
                     </div>
+                    <WefCover insight={selectedWef} className="mt-2 h-24" />
                   </a>
                 )}
               </>
