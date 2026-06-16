@@ -8,8 +8,6 @@
  * Writes the same /data JSON files in both cases. Returns the LastRun record so the
  * caller can decide what to do with it (log to stdout / return as JSON response).
  */
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import { fetchOni } from "./sources/oni";
 import { fetchNoaaSoi } from "./sources/noaa-soi";
 import { fetchNoaaTradeWind } from "./sources/noaa-trade-wind";
@@ -24,7 +22,14 @@ import { fetchGdacs } from "./sources/gdacs";
 import { fetchGvpVolcanoes, recencyLevel } from "./sources/gvp-volcanoes";
 import { loadHazards } from "./sources/hazards-csv";
 import { fetchOpenMeteo } from "./sources/open-meteo";
-import { parseProvincePolygons, type ProvincePolygon } from "./geo";
+import { run } from "./sources/run";
+import {
+  readJson,
+  writeJson,
+  writePublicJson,
+  loadProvincePopulations,
+  loadProvincePolygons,
+} from "./io";
 import type {
   Indicator,
   HistoricalReading,
@@ -47,89 +52,6 @@ const SECTORS: Sector[] = [
   "Social Stability",
   "Disaster & Hazard",
 ];
-
-const DATA = path.join(process.cwd(), "data");
-const PUBLIC = path.join(process.cwd(), "public");
-
-async function readJson<T>(file: string, fallback: T): Promise<T> {
-  try {
-    return JSON.parse(await fs.readFile(path.join(DATA, file), "utf8")) as T;
-  } catch {
-    return fallback;
-  }
-}
-
-async function writeJson(file: string, value: unknown): Promise<void> {
-  await fs.writeFile(path.join(DATA, file), JSON.stringify(value, null, 2) + "\n");
-}
-
-// Some artefacts must be fetchable by the client map at runtime (like the static
-// GeoJSON), so they live in /public rather than /data.
-async function writePublicJson(file: string, value: unknown): Promise<void> {
-  await fs.writeFile(path.join(PUBLIC, file), JSON.stringify(value, null, 2) + "\n");
-}
-
-/**
- * Province population by p-code, read from the static provinces.geojson in
- * /public. This is the single source of truth for population, so the national
- * affected-population estimate traces to a real figure per province. Returns an
- * empty map (→ estimate 0) if the file is missing or malformed — never throws.
- */
-async function loadProvincePopulations(): Promise<Record<string, number>> {
-  try {
-    const raw = await fs.readFile(
-      path.join(process.cwd(), "public", "provinces.geojson"),
-      "utf8",
-    );
-    const geo = JSON.parse(raw) as {
-      features: { properties: { code?: string; population?: number } }[];
-    };
-    const out: Record<string, number> = {};
-    for (const f of geo.features ?? []) {
-      const code = f.properties?.code;
-      const pop = f.properties?.population;
-      if (code && typeof pop === "number" && pop > 0) out[code] = pop;
-    }
-    return out;
-  } catch {
-    return {};
-  }
-}
-
-/**
- * Province boundary polygons from the static provinces.geojson, for spatial
- * attribution (point-in-polygon). Used to map earthquake epicentres to the
- * province that actually contains them. Returns [] if the file is missing or
- * malformed — callers degrade to a national signal rather than crash.
- */
-async function loadProvincePolygons(): Promise<ProvincePolygon[]> {
-  try {
-    const raw = await fs.readFile(
-      path.join(process.cwd(), "public", "provinces.geojson"),
-      "utf8",
-    );
-    return parseProvincePolygons(JSON.parse(raw));
-  } catch {
-    return [];
-  }
-}
-
-interface SourceResult<T> {
-  ok: boolean;
-  value: T | null;
-  error?: string;
-  ms: number;
-}
-
-async function run<T>(name: string, fn: () => Promise<T>): Promise<SourceResult<T>> {
-  const t0 = Date.now();
-  try {
-    const value = await fn();
-    return { ok: true, value, ms: Date.now() - t0 };
-  } catch (e) {
-    return { ok: false, value: null, error: String(e), ms: Date.now() - t0 };
-  }
-}
 
 const computeTrend = engineTrend;
 
