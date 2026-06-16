@@ -108,45 +108,82 @@ export function RiskTopology({
     <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
       {/* ---- graph ---- */}
       <Card className="relative overflow-hidden p-0">
-        {/* centre toggle */}
-        <div className="flex flex-wrap items-center gap-1.5 p-3 border-b border-border-subtle">
-          <span className="text-[10px] uppercase tracking-[0.1em] text-text-muted font-semibold mr-1">
-            Centre
-          </span>
-          <button
-            type="button"
-            onClick={() => {
-              setCenter({ kind: "national" });
-              setSelected(null);
-            }}
-            className={`px-2 py-1 rounded text-[11px] font-medium border transition-colors ${
-              center.kind === "national"
-                ? "bg-accent/15 text-accent border-accent/40"
-                : "text-text-muted border-border-default hover:text-text-1"
-            }`}
+        {/* centre scope — segmented National/Province toggle + a province picker.
+            23 flat chips don't scale; enterprise pattern is a primary segmented
+            control with a combobox for the long province list. */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 p-3 border-b border-border-subtle">
+          <span
+            id="topo-scope-label"
+            className="text-[10px] uppercase tracking-[0.1em] text-text-muted font-semibold"
           >
-            National
-          </button>
-          {provinces.map((p) => {
-            const active = center.kind === "province" && center.code === p.code;
-            return (
-              <button
-                key={p.code}
-                type="button"
-                onClick={() => {
+            Scope
+          </span>
+
+          {/* segmented National / Province */}
+          <div
+            role="group"
+            aria-labelledby="topo-scope-label"
+            className="inline-flex rounded-md border border-border-default overflow-hidden"
+          >
+            <button
+              type="button"
+              aria-pressed={center.kind === "national"}
+              onClick={() => {
+                setCenter({ kind: "national" });
+                setSelected(null);
+              }}
+              className={`px-3 py-1.5 text-[11px] font-medium transition-colors ${
+                center.kind === "national"
+                  ? "bg-accent text-accent-foreground"
+                  : "text-text-muted hover:text-text-1 hover:bg-surface-2"
+              }`}
+            >
+              National
+            </button>
+            <button
+              type="button"
+              aria-pressed={center.kind === "province"}
+              onClick={() => {
+                // entering Province mode defaults to the first province
+                const first = provinces[0];
+                if (first) {
+                  setCenter({ kind: "province", code: first.code, name: first.name });
+                  setSelected(null);
+                }
+              }}
+              className={`px-3 py-1.5 text-[11px] font-medium border-l border-border-default transition-colors ${
+                center.kind === "province"
+                  ? "bg-accent text-accent-foreground"
+                  : "text-text-muted hover:text-text-1 hover:bg-surface-2"
+              }`}
+            >
+              Province
+            </button>
+          </div>
+
+          {/* province picker — enabled only in Province mode */}
+          <label className="inline-flex items-center gap-2 text-[11px] text-text-muted">
+            <span className="sr-only">Select province</span>
+            <select
+              value={center.kind === "province" ? center.code : ""}
+              disabled={center.kind !== "province"}
+              onChange={(e) => {
+                const p = provinces.find((x) => x.code === e.target.value);
+                if (p) {
                   setCenter({ kind: "province", code: p.code, name: p.name });
                   setSelected(null);
-                }}
-                className={`px-2 py-1 rounded text-[11px] font-medium border transition-colors ${
-                  active
-                    ? "bg-accent/15 text-accent border-accent/40"
-                    : "text-text-muted border-border-default hover:text-text-1"
-                }`}
-              >
-                {p.name}
-              </button>
-            );
-          })}
+                }
+              }}
+              className="px-2.5 py-1.5 rounded-md border border-border-default bg-surface-1 text-text-1 text-[11px] font-medium transition-colors hover:border-border-strong focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {center.kind !== "province" && <option value="">— choose province —</option>}
+              {provinces.map((p) => (
+                <option key={p.code} value={p.code}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
         {/* ring + edge legend */}
