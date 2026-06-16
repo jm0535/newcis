@@ -1,16 +1,5 @@
 [
   {
-    "key": "ONI",
-    "label": "Oceanic Niño Index",
-    "unit": "°C SST anomaly (Niño 3.4, 3-mo mean)",
-    "source": "NOAA CPC",
-    "update_frequency": "monthly",
-    "provenance": "LIVE",
-    "value": 0.48,
-    "observed_at": "2026-04-15",
-    "trend": "flat"
-  },
-  {
     "key": "SOI",
     "label": "Southern Oscillation Index",
     "unit": "standardized Tahiti−Darwin pressure anomaly (NOAA scale)",
@@ -34,14 +23,14 @@
   },
   {
     "key": "PROJECTED_ONI",
-    "label": "Projected ONI (MJJ 2026, 30-member NMME mean)",
+    "label": "Projected ONI (SON 1962, 30-member NMME mean)",
     "unit": "°C SST anomaly (Niño 3.4, dynamical forecast)",
     "source": "NMME · NOAA-GFDL SPEAR (IRI CCSR)",
     "update_frequency": "monthly",
     "provenance": "LIVE",
-    "value": 1.05,
-    "observed_at": "2026-04-01",
-    "trend": "flat"
+    "value": 1.85,
+    "observed_at": "1962-10-01",
+    "trend": "up"
   },
   {
     "key": "RAINFALL_ANOM",
@@ -53,6 +42,17 @@
     "value": 6.9,
     "observed_at": "2026-03-31",
     "trend": "up"
+  },
+  {
+    "key": "ONI",
+    "label": "Oceanic Niño Index",
+    "unit": "°C SST anomaly (Niño 3.4, 3-mo mean)",
+    "source": "NOAA CPC",
+    "update_frequency": "monthly",
+    "provenance": "LIVE",
+    "value": 0.48,
+    "observed_at": "2026-04-15",
+    "trend": "flat"
   },
   {
     "key": "SOIL_MOISTURE",
