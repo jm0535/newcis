@@ -284,9 +284,10 @@ export function RiskTopology({
             // travelling spark only renders for these — quiet pathways stay dark.
             const fires =
               !reduce && related && (hotIds.has(e.from) || hotIds.has(e.to));
-            // Cascades carry the signal sector→sector, so flow target→source on
-            // those reads as "this risk pressures that one"; driver/rollup spokes
-            // flow source→target (indicator→sector→centre), the direction of cause.
+            // Every edge is stored cause-first: from → to (indicator → sector,
+            // sector → centre, upstream sector → pressured sector). The spark must
+            // travel that same direction, so it reads as the signal of cause
+            // propagating. Cascades pulse slower than the driver/rollup spokes.
             const sparkDur = cascade ? 2.4 : 1.6;
             return (
               <g key={`${e.from}->${e.to}-${i}`}>
@@ -313,16 +314,21 @@ export function RiskTopology({
                     strokeWidth={cascade ? 3 : 2.5}
                     strokeLinecap="round"
                     pathLength={1}
-                    strokeDasharray="0.14 0.86"
+                    // One short lead dash (0.12) then a gap LONGER than the whole
+                    // path (1.5), so only ever ONE spark is on the edge — no second
+                    // dash wrapping in from the far end to read as reverse motion.
+                    // Sweeping the offset from +period down to 0 carries that single
+                    // dash strictly from → to, the cause direction.
+                    strokeDasharray="0.12 1.5"
                     style={{ filter: `drop-shadow(0 0 3px ${colour})` }}
-                    initial={{ strokeDashoffset: 1, opacity: 0 }}
-                    animate={{ strokeDashoffset: [1, 0], opacity: [0, 0.95, 0.95, 0] }}
+                    initial={{ strokeDashoffset: 1.62, opacity: 0 }}
+                    animate={{ strokeDashoffset: [1.62, 0], opacity: [0, 1, 1, 0] }}
                     transition={{
                       duration: sparkDur,
                       repeat: Infinity,
                       ease: "linear",
                       delay: (i % 7) * 0.28,
-                      times: [0, 0.1, 0.85, 1],
+                      times: [0, 0.08, 0.62, 0.74],
                     }}
                   />
                 )}
