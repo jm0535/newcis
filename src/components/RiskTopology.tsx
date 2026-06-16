@@ -149,15 +149,40 @@ export function RiskTopology({
           })}
         </div>
 
+        {/* ring + edge legend */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-3 pt-3 text-[10px] text-text-muted">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full border border-border-default bg-surface-1" />
+            Inner ring · <span className="text-text-1 font-medium">indicators</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full border border-border-default bg-accent/[0.08]" />
+            Outer ring · <span className="text-text-1 font-medium">sectors</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="inline-block w-5 border-t border-text-muted" />
+            driver edge
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="inline-block w-5 border-t border-dashed border-text-muted" />
+            province-attributed (e.g. SEISMIC)
+          </span>
+        </div>
+
         <svg
           viewBox={`0 0 ${W} ${H}`}
           className="w-full h-auto"
           role="img"
           aria-label="Risk topology graph: indicators driving sectors driving the national alert"
         >
-          {/* ring guides */}
-          <circle cx={CX} cy={CY} r={R_INNER} className="fill-none stroke-border-subtle" strokeDasharray="2 6" />
-          <circle cx={CX} cy={CY} r={R_OUTER} className="fill-none stroke-border-subtle" strokeDasharray="2 6" />
+          {/* ring guides — filled bands so the three tiers read at a glance */}
+          {/* outer band (sectors) */}
+          <circle cx={CX} cy={CY} r={R_OUTER + 22} className="fill-accent/[0.03] stroke-border-default" strokeWidth={1} />
+          {/* inner band (indicators) */}
+          <circle cx={CX} cy={CY} r={R_INNER + 22} className="fill-surface-1/40 stroke-border-default" strokeWidth={1} />
+          {/* the two node circles, dashed, sitting on each tier */}
+          <circle cx={CX} cy={CY} r={R_INNER} className="fill-none stroke-border-default" strokeDasharray="3 5" strokeWidth={1} />
+          <circle cx={CX} cy={CY} r={R_OUTER} className="fill-none stroke-border-default" strokeDasharray="3 5" strokeWidth={1} />
 
           {/* edges */}
           {topo.edges.map((e, i) => {
@@ -173,6 +198,10 @@ export function RiskTopology({
             // gentle quadratic curve, bowed toward centre
             const mx = (a.x + b.x) / 2 + (CX - (a.x + b.x) / 2) * 0.18;
             const my = (a.y + b.y) / 2 + (CY - (a.y + b.y) / 2) * 0.18;
+            // Attributed edges (e.g. SEISMIC → Disaster & Hazard) are dashed: the
+            // link is real but reaches the sector by per-province attribution, not
+            // the national driver map.
+            const attributed = e.kind === "attributed";
             return (
               <motion.path
                 key={`${e.from}->${e.to}-${i}`}
@@ -180,6 +209,7 @@ export function RiskTopology({
                 fill="none"
                 stroke={colour}
                 strokeWidth={1.25}
+                strokeDasharray={attributed ? "4 4" : undefined}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: dim }}
                 transition={{ duration: reduce ? 0 : 0.4, delay: t(i) }}

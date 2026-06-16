@@ -103,6 +103,33 @@ describe("buildTopology — national centre", () => {
     // SOIL_MOISTURE absent from indicators → no edge from it
     expect(g.edges.some((e) => e.from === "SOIL_MOISTURE")).toBe(false);
   });
+
+  it("tags edges by wiring kind (driver / rollup)", () => {
+    const driver = g.edges.find((e) => e.from === "RAINFALL_ANOM" && e.to === "Food Security");
+    expect(driver?.kind).toBe("driver");
+    const rollup = g.edges.find((e) => e.to === "__center__");
+    expect(rollup?.kind).toBe("rollup");
+  });
+
+  it("draws SEISMIC → Disaster & Hazard as an ATTRIBUTED edge when SEISMIC is supplied", () => {
+    // SEISMIC is NOT in SECTOR_DRIVERS (per-province spatial attribution), but the
+    // graph still shows the link so the node is not an orphan — dashed/attributed.
+    const withSeismic = buildTopology({
+      indicators: [...indicators, indicator("SEISMIC", 30)],
+      sectorRisks,
+      thresholds: TH,
+      focusCodes: FOCUS,
+      center: { kind: "national" },
+    });
+    const e = withSeismic.edges.find(
+      (x) => x.from === "SEISMIC" && x.to === "Disaster & Hazard",
+    );
+    expect(e?.kind).toBe("attributed");
+  });
+
+  it("does not emit a SEISMIC edge when SEISMIC is absent", () => {
+    expect(g.edges.some((e) => e.from === "SEISMIC")).toBe(false);
+  });
 });
 
 describe("buildTopology — province centre", () => {

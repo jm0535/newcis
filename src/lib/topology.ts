@@ -51,7 +51,28 @@ export interface TopoEdge {
   to: string;
   /** Severity of the downstream node, so the view can weight edge opacity. */
   level: AlertLevel | RiskLevel;
+  /**
+   * How the edge is wired:
+   *  - "driver"     — national indicator → sector (from SECTOR_DRIVERS)
+   *  - "rollup"     — sector → centre
+   *  - "attributed" — indicator that drives a sector by PER-PROVINCE spatial
+   *                   attribution, not the national SECTOR_DRIVERS map (e.g.
+   *                   SEISMIC epicentres → Disaster & Hazard). Drawn dashed so
+   *                   the view can show the link without implying a national driver.
+   */
+  kind: "driver" | "rollup" | "attributed";
 }
+
+/**
+ * Indicators that drive a sector by PER-PROVINCE spatial attribution rather than
+ * the national SECTOR_DRIVERS map. The engine deliberately omits these from
+ * SECTOR_DRIVERS (a national count would apply uniformly to every province — the
+ * replication the spatial join exists to avoid); they max-merge in via the
+ * per-province sector rows instead. The topology still SHOWS the link, dashed.
+ */
+const ATTRIBUTED_DRIVERS: Record<string, Sector> = {
+  SEISMIC: "Disaster & Hazard",
+};
 
 export interface Topology {
   nodes: TopoNode[];
@@ -164,7 +185,7 @@ export function buildTopology(input: BuildTopologyInput): Topology {
     });
 
     // sector → centre
-    edges.push({ from: sector, to: CENTER_ID, level });
+    edges.push({ from: sector, to: CENTER_ID, level, kind: "rollup" });
 
     // driver indicator → sector (only for indicators actually on screen)
     for (const driverKey of SECTOR_DRIVERS[sector]) {
@@ -174,8 +195,23 @@ export function buildTopology(input: BuildTopologyInput): Topology {
         from: driverKey,
         to: sector,
         level: drv ? (drv.level as AlertLevel) : "GREEN",
+        kind: "driver",
       });
     }
+  }
+
+  // Province-attributed drivers (e.g. SEISMIC → Disaster & Hazard). These are NOT
+  // in SECTOR_DRIVERS — they reach the sector by per-province spatial attribution
+  // — but the graph still shows the link, dashed, so the node is not an orphan.
+  for (const [driverKey, sector] of Object.entries(ATTRIBUTED_DRIVERS)) {
+    if (!haveIndicator.has(driverKey)) continue;
+    const drv = nodes.find((n) => n.id === driverKey && n.kind === "indicator");
+    edges.push({
+      from: driverKey,
+      to: sector,
+      level: drv ? (drv.level as AlertLevel) : "GREEN",
+      kind: "attributed",
+    });
   }
 
   return { nodes, edges, center };
