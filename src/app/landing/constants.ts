@@ -59,6 +59,7 @@ export const NAV = [
   { href: "/climate", label: "ENSO Climate" },
   { href: "/forecast", label: "Forecast" },
   { href: "/sectors", label: "Sectoral Impact" },
+  { href: "/topology", label: "Risk Topology" },
   { href: "/operations", label: "Operations" },
 ];
 
