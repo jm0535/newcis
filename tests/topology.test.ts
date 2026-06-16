@@ -131,6 +131,21 @@ describe("buildTopology — national centre", () => {
     expect(g.edges.some((e) => e.from === "SEISMIC")).toBe(false);
   });
 
+  it("centre provenance tracks the worst-contributing indicator, never faking LIVE", () => {
+    // Credibility rule: never present DEMO as LIVE. If the indicator that drives
+    // the centre alert is DEMO, the centre badge must read DEMO.
+    const demoInd: Indicator = { ...indicator("TEMP_ANOM", 99), provenance: "DEMO" };
+    const g3 = buildTopology({
+      indicators: [indicator("ONI", 0.2), demoInd], // TEMP_ANOM=99 → worst, DEMO
+      sectorRisks: [],
+      thresholds: TH,
+      focusCodes: FOCUS,
+      center: { kind: "national" },
+    });
+    const centre = g3.nodes.find((n) => n.kind === "center")!;
+    expect(centre.provenance).toBe("DEMO");
+  });
+
   it("excludes forward-looking PROJECTED_ONI from the centre alert level", () => {
     // PROJECTED_ONI is a FORECAST (NMME projected ONI). rollUpNational excludes it
     // from today's alert — a forecast leaning El Niño is not a present emergency.

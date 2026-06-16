@@ -118,14 +118,23 @@ const NON_ALERT_KEYS = new Set(["PROJECTED_ONI"]);
 function worstAlertFromIndicators(
   indicators: Indicator[],
   thresholdByKey: Map<string, RiskThreshold>,
-): AlertLevel {
+): { level: AlertLevel; provenance: Provenance } {
   let worst: AlertLevel = "GREEN";
+  // Provenance of the indicator that OWNS the worst level — so the centre badge
+  // is honest (never LIVE when a DEMO indicator drove the alert). Seeded from the
+  // first eligible indicator so an all-GREEN centre still reflects real data
+  // provenance rather than a hardcoded value.
+  let provenance: Provenance | undefined;
   for (const ind of indicators) {
     if (NON_ALERT_KEYS.has(ind.key)) continue;
     const lvl = classifyIndicator(ind.value, thresholdByKey.get(ind.key));
-    if (ALERT_ORDER.indexOf(lvl) > ALERT_ORDER.indexOf(worst)) worst = lvl;
+    if (provenance === undefined) provenance = ind.provenance;
+    if (ALERT_ORDER.indexOf(lvl) > ALERT_ORDER.indexOf(worst)) {
+      worst = lvl;
+      provenance = ind.provenance;
+    }
   }
-  return worst;
+  return { level: worst, provenance: provenance ?? "DEMO" };
 }
 
 const ALL_SECTORS = Object.keys(SECTOR_DRIVERS) as Sector[];
@@ -144,7 +153,7 @@ export function buildTopology(input: BuildTopologyInput): Topology {
       : new Set(focusCodes);
   const scopedRows = sectorRisks.filter((r) => inScope.has(r.province_code));
 
-  const centerLevel: AlertLevel = worstAlertFromIndicators(indicators, thresholdByKey);
+  const centre = worstAlertFromIndicators(indicators, thresholdByKey);
   const centerLabel =
     center.kind === "province"
       ? center.name
@@ -155,9 +164,9 @@ export function buildTopology(input: BuildTopologyInput): Topology {
     id: CENTER_ID,
     kind: "center",
     label: centerLabel,
-    level: centerLevel,
+    level: centre.level,
     ring: 0,
-    provenance: "LIVE",
+    provenance: centre.provenance,
   });
 
   // ----- ring 1: indicators -----
