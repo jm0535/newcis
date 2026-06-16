@@ -7,7 +7,7 @@ const PAGES = [
   { href: "/climate", label: "ENSO Climate", icon: CloudSun },
   { href: "/forecast", label: "Forecast", icon: TrendingUp },
   { href: "/sectors", label: "Sectoral Impact", icon: Briefcase },
-  { href: "/topology", label: "Risk Topology", icon: Workflow },
+  { href: "/topology", label: "Risk Network", icon: Workflow },
   { href: "/operations", label: "Operations", icon: Radio },
 ];
 

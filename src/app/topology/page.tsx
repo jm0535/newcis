@@ -42,7 +42,7 @@ export default async function TopologyPage() {
           NEWCIS
         </div>
         <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
-          Risk Topology
+          Risk Network
         </h1>
         <p className="text-xs text-text-muted mt-2 max-w-3xl leading-relaxed">
           The engine&apos;s own wiring as a picture. The centre is the chosen scope (national
