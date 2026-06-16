@@ -5,6 +5,7 @@ import { DashboardFooter } from "@/components/DashboardFooter";
 import { PageNav } from "@/components/PageNav";
 import { RiskTopology } from "@/components/RiskTopology";
 import { StatusBar } from "@/components/StatusBar";
+import { WefStrategicIntelligence } from "@/components/WefStrategicIntelligence";
 import { EmptyState } from "@/components/ui";
 import { FOCUS_PROVINCES, FOCUS_CODES } from "@/lib/focus-provinces";
 import {
@@ -14,17 +15,20 @@ import {
   getRiskThresholds,
   getSectorRisk,
 } from "@/lib/data";
+import { getWefInsights } from "@/lib/wef";
 
 export const dynamic = "force-dynamic";
 
 export default async function TopologyPage() {
-  const [national, indicators, sectorRisks, thresholds, lastRun] = await Promise.all([
-    getNationalStatus(),
-    getIndicators(),
-    getSectorRisk(),
-    getRiskThresholds(),
-    getLastRun(),
-  ]);
+  const [national, indicators, sectorRisks, thresholds, lastRun, wefInsights] =
+    await Promise.all([
+      getNationalStatus(),
+      getIndicators(),
+      getSectorRisk(),
+      getRiskThresholds(),
+      getLastRun(),
+      getWefInsights(),
+    ]);
 
   const provinces = FOCUS_PROVINCES.map((p) => ({ code: p.code, name: p.shortLabel }));
 
@@ -62,8 +66,13 @@ export default async function TopologyPage() {
             thresholds={thresholds}
             focusCodes={FOCUS_CODES}
             provinces={provinces}
+            wefInsights={wefInsights}
           />
         )}
+      </div>
+
+      <div className="px-4 md:px-6 pb-8">
+        <WefStrategicIntelligence insights={wefInsights} />
       </div>
 
       <DashboardFooter lastRun={lastRun} />
