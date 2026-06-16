@@ -17,7 +17,6 @@
  * numbers. Missing inputs degrade to "unknown"/neutral, never throw.
  */
 import type { Indicator, RiskThreshold } from "./types";
-import { classifyIndicator } from "./risk-engine";
 
 export type EnsoLean = "el_nino" | "la_nina" | "neutral";
 export type OutlookConfidence = "low" | "moderate" | "high";

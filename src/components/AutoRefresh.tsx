@@ -35,12 +35,16 @@ export function AutoRefresh({ intervalMs = AUTO_REFRESH_MS }: { intervalMs?: num
   // Keep the latest refresh fn in a ref so the interval closure never goes stale.
   const refreshRef = useRef<() => void>(() => {});
 
-  refreshRef.current = () => {
-    startTransition(() => {
-      router.refresh();
-      setLastChecked(CHECK_FMT.format(new Date()));
-    });
-  };
+  // Sync the ref after render (not during) so the timer/visibility closures always
+  // call the freshest fn without re-subscribing the interval.
+  useEffect(() => {
+    refreshRef.current = () => {
+      startTransition(() => {
+        router.refresh();
+        setLastChecked(CHECK_FMT.format(new Date()));
+      });
+    };
+  });
 
   useEffect(() => {
     const id = setInterval(() => {

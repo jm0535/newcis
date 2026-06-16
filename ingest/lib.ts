@@ -30,7 +30,6 @@ import type {
   HistoricalReading,
   SectorRisk,
   LastRun,
-  NationalStatus,
   RiskThreshold,
   Sector,
 } from "../src/lib/types";

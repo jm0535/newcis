@@ -1,17 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
 type Theme = "dark" | "light";
 
-export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark");
+// Read the theme the no-flash inline script (layout.tsx) already applied to
+// <html> before paint, so first render matches the DOM with no setState-in-effect
+// cascade. SSR has no document → default "dark"; the script reconciles on hydrate.
+function initialTheme(): Theme {
+  if (typeof document === "undefined") return "dark";
+  return document.documentElement.classList.contains("light") ? "light" : "dark";
+}
 
-  useEffect(() => {
-    const stored = (localStorage.getItem("newcis-theme") as Theme | null) ?? "dark";
-    setTheme(stored);
-  }, []);
+export function ThemeToggle() {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
 
   function toggle() {
     const next: Theme = theme === "dark" ? "light" : "dark";

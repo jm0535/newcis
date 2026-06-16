@@ -88,7 +88,7 @@ function roundCoords(coords: unknown, dp = 4): unknown {
 }
 
 async function main() {
-  let source = "GADM";
+  const source = "GADM";
   let fc: FC;
   try {
     fc = await fetchJson(GADM_FALLBACK);

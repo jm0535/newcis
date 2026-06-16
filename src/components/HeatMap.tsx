@@ -102,15 +102,19 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
   // open first. Ref-backed so its identity is stable across renders (markers
   // capture it at build time). Both the province handler and marker clicks use it.
   const showPopupRef = useRef<(lngLat: [number, number], html: string) => void>(() => {});
-  showPopupRef.current = (lngLat, html) => {
-    const map = mapRef.current;
-    if (!map) return;
-    if (popupRef.current) popupRef.current.remove();
-    popupRef.current = new maplibregl.Popup({ closeButton: false, offset: 12, className: "newcis-popup" })
-      .setLngLat(lngLat)
-      .setHTML(html)
-      .addTo(map);
-  };
+  // Sync after render (not during) — the closure only reads stable refs, so a
+  // single mount-time assignment keeps every marker/province handler pointed at it.
+  useEffect(() => {
+    showPopupRef.current = (lngLat, html) => {
+      const map = mapRef.current;
+      if (!map) return;
+      if (popupRef.current) popupRef.current.remove();
+      popupRef.current = new maplibregl.Popup({ closeButton: false, offset: 12, className: "newcis-popup" })
+        .setLngLat(lngLat)
+        .setHTML(html)
+        .addTo(map);
+    };
+  });
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -248,7 +252,6 @@ export function HeatMap({ sectorRisk }: { sectorRisk: SectorRisk[] }) {
         markers[kind] = [];
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visibleLayers, hazardsLoaded, mapReady]);
 
   // On unmount, drop every hazard marker so none are orphaned after the map is

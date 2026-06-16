@@ -223,7 +223,7 @@ export function scoreSector(
   let score = bandedScore(worstValue, worstThreshold);
   let trend: Trend = "flat";
   let provenance = ctx.provinceSectorRow?.provenance ?? "DEMO";
-  let dataSource = ctx.provinceSectorRow?.data_source ?? worstSource;
+  const dataSource = ctx.provinceSectorRow?.data_source ?? worstSource;
 
   if (ctx.provinceSectorRow) {
     level = maxRisk(level, ctx.provinceSectorRow.level);
