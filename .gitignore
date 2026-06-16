@@ -44,6 +44,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .claude/settings.local.json
+.claude/scheduled_tasks.lock
 
 # presentation — local pitch deck assets, not part of the product build
 /presentation
