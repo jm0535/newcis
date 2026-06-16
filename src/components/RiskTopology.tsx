@@ -22,6 +22,7 @@ import {
   type TopoCenter,
   type TopoNode,
 } from "@/lib/topology";
+import type { WefInsight } from "@/lib/wef";
 import { ALERT_COLOUR, RISK_COLOUR, INDICATOR_META } from "@/lib/ui";
 import { ProvenanceBadge } from "./Provenance";
 import { Card, SectionHeader, StatusPill, EmptyState } from "./ui";
@@ -41,6 +42,8 @@ interface Props {
   thresholds: RiskThreshold[];
   focusCodes: string[];
   provinces: ProvinceOpt[];
+  /** WEF insights for the per-sector drill context (placement C). */
+  wefInsights?: WefInsight[];
   /** Optional deep-link: open with a province pre-selected. */
   initialCenter?: TopoCenter;
 }
@@ -65,6 +68,7 @@ export function RiskTopology({
   thresholds,
   focusCodes,
   provinces,
+  wefInsights = [],
   initialCenter,
 }: Props) {
   const reduce = useReducedMotion();
@@ -92,6 +96,15 @@ export function RiskTopology({
     [topo],
   );
   const selectedNode = selected ? byId.get(selected) : undefined;
+  const wefBySector = useMemo(() => {
+    const m = new Map<string, WefInsight>();
+    for (const w of wefInsights) {
+      if (w.sector && !m.has(w.sector)) m.set(w.sector, w);
+    }
+    return m;
+  }, [wefInsights]);
+  const selectedWef =
+    selectedNode?.kind === "sector" ? wefBySector.get(selectedNode.id) : undefined;
 
   if (topo.nodes.length <= 1) {
     return (
@@ -204,6 +217,10 @@ export function RiskTopology({
             <span className="inline-block w-5 border-t-2 border-dashed border-text-1" />
             province-attributed (e.g. SEISMIC)
           </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="inline-block w-5 border-t-2 border-dotted border-text-1" />
+            risk cascade <span className="font-semibold">(REFERENCE)</span>
+          </span>
         </div>
 
         <svg
@@ -237,21 +254,26 @@ export function RiskTopology({
             // hex colours read on white as well as dark. Unrelated edges dim but
             // stay faintly visible (not invisible) for context.
             const dim = related ? (selected ? 0.95 : 0.75) : 0.12;
-            // gentle quadratic curve, bowed toward centre
-            const mx = (a.x + b.x) / 2 + (CX - (a.x + b.x) / 2) * 0.18;
-            const my = (a.y + b.y) / 2 + (CY - (a.y + b.y) / 2) * 0.18;
             // Attributed edges (e.g. SEISMIC → Disaster & Hazard) are dashed: the
             // link is real but reaches the sector by per-province attribution, not
             // the national driver map.
             const attributed = e.kind === "attributed";
+            const cascade = e.kind === "cascade";
+            // Cascade edges (sector→sector) bow harder and ride a distinct dotted
+            // stroke so the "risks drive each other" web reads separately from the
+            // radial driver/rollup spokes. They are REFERENCE, never a rescore.
+            const bow = cascade ? 0.42 : 0.18;
+            const mx = (a.x + b.x) / 2 + (CX - (a.x + b.x) / 2) * bow;
+            const my = (a.y + b.y) / 2 + (CY - (a.y + b.y) / 2) * bow;
             return (
               <motion.path
                 key={`${e.from}->${e.to}-${i}`}
                 d={`M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`}
                 fill="none"
                 stroke={colour}
-                strokeWidth={related && selected ? 2.5 : attributed ? 1.75 : 1.5}
-                strokeDasharray={attributed ? "5 4" : undefined}
+                strokeWidth={related && selected ? 2.5 : cascade ? 2 : attributed ? 1.75 : 1.5}
+                strokeDasharray={cascade ? "2 5" : attributed ? "5 4" : undefined}
+                strokeLinecap={cascade ? "round" : undefined}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: dim }}
                 transition={{ duration: reduce ? 0 : 0.4, delay: t(i) }}
@@ -362,10 +384,28 @@ export function RiskTopology({
             )}
 
             {selectedNode.kind === "sector" && (
-              <p className="text-xs text-text-muted leading-relaxed">
-                Worst risk across the centre&apos;s scope. Trace the lit edges back to
-                the indicators driving it — that is the &quot;why&quot;.
-              </p>
+              <>
+                <p className="text-xs text-text-muted leading-relaxed">
+                  Worst risk across the centre&apos;s scope. Trace the lit edges back to
+                  the indicators driving it, and the dotted cascades to the sectors it
+                  pressures — that is the &quot;why&quot;.
+                </p>
+                {selectedWef && (
+                  <a
+                    href={selectedWef.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-md border border-border-default p-2.5 hover:border-border-strong transition-colors group"
+                  >
+                    <div className="text-[10px] uppercase tracking-[0.1em] text-text-muted mb-1">
+                      WEF context
+                    </div>
+                    <div className="text-xs font-medium group-hover:text-accent transition-colors">
+                      {selectedWef.title}
+                    </div>
+                  </a>
+                )}
+              </>
             )}
 
             {selectedNode.kind === "center" && (
