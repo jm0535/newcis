@@ -148,7 +148,7 @@ function saturate(overflow: number, bandWidth: number): number {
  * Keep this map small and explainable. "Why is Enga red?" should reduce to one
  * climate driver + one local datum.
  */
-const SECTOR_DRIVERS: Record<Sector, string[]> = {
+export const SECTOR_DRIVERS: Record<Sector, string[]> = {
   "Water Security": ["RAINFALL_ANOM", "SOIL_MOISTURE"],
   "Food Security": ["RAINFALL_ANOM", "NDVI", "SOIL_MOISTURE"],
   "Public Health": ["TEMP_ANOM", "RAINFALL_ANOM"],
