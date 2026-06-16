@@ -97,6 +97,18 @@ export function RiskTopology({
     [topo],
   );
   const selectedNode = selected ? byId.get(selected) : undefined;
+
+  // Nodes carrying real stress. Edges that touch one of these "fire" a travelling
+  // spark — the neuron metaphor: the live risk pathways light up and pulse, the
+  // quiet ones stay dark. RED/BLACK on the alert scale, high/critical on risk.
+  const hotIds = useMemo(() => {
+    const s = new Set<string>();
+    for (const n of topo.nodes) {
+      const l = String(n.level);
+      if (l === "RED" || l === "BLACK" || l === "high" || l === "critical") s.add(n.id);
+    }
+    return s;
+  }, [topo]);
   const wefBySector = useMemo(() => {
     const m = new Map<string, WefInsight>();
     for (const w of wefInsights) {
@@ -266,19 +278,55 @@ export function RiskTopology({
             const bow = cascade ? 0.42 : 0.18;
             const mx = (a.x + b.x) / 2 + (CX - (a.x + b.x) / 2) * bow;
             const my = (a.y + b.y) / 2 + (CY - (a.y + b.y) / 2) * bow;
+            const d = `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`;
+            // An edge "fires" when it touches a stressed node AND is in view
+            // (either nothing selected, or it's related to the selection). The
+            // travelling spark only renders for these — quiet pathways stay dark.
+            const fires =
+              !reduce && related && (hotIds.has(e.from) || hotIds.has(e.to));
+            // Cascades carry the signal sector→sector, so flow target→source on
+            // those reads as "this risk pressures that one"; driver/rollup spokes
+            // flow source→target (indicator→sector→centre), the direction of cause.
+            const sparkDur = cascade ? 2.4 : 1.6;
             return (
-              <motion.path
-                key={`${e.from}->${e.to}-${i}`}
-                d={`M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`}
-                fill="none"
-                stroke={colour}
-                strokeWidth={related && selected ? 2.5 : cascade ? 2 : attributed ? 1.75 : 1.5}
-                strokeDasharray={cascade ? "2 5" : attributed ? "5 4" : undefined}
-                strokeLinecap={cascade ? "round" : undefined}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: dim }}
-                transition={{ duration: reduce ? 0 : 0.4, delay: t(i) }}
-              />
+              <g key={`${e.from}->${e.to}-${i}`}>
+                <motion.path
+                  d={d}
+                  fill="none"
+                  stroke={colour}
+                  strokeWidth={related && selected ? 2.5 : cascade ? 2 : attributed ? 1.75 : 1.5}
+                  strokeDasharray={cascade ? "2 5" : attributed ? "5 4" : undefined}
+                  strokeLinecap={cascade ? "round" : undefined}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: dim }}
+                  transition={{ duration: reduce ? 0 : 0.4, delay: t(i) }}
+                />
+                {fires && (
+                  // The neuron spark: a short bright segment that travels the path
+                  // by sweeping stroke-dashoffset, looping. pathLength={1}
+                  // normalises every edge to a 0–1 length so one dash config fits
+                  // all. Staggered start (delay) so pathways fire out of sync.
+                  <motion.path
+                    d={d}
+                    fill="none"
+                    stroke={colour}
+                    strokeWidth={cascade ? 3 : 2.5}
+                    strokeLinecap="round"
+                    pathLength={1}
+                    strokeDasharray="0.14 0.86"
+                    style={{ filter: `drop-shadow(0 0 3px ${colour})` }}
+                    initial={{ strokeDashoffset: 1, opacity: 0 }}
+                    animate={{ strokeDashoffset: [1, 0], opacity: [0, 0.95, 0.95, 0] }}
+                    transition={{
+                      duration: sparkDur,
+                      repeat: Infinity,
+                      ease: "linear",
+                      delay: (i % 7) * 0.28,
+                      times: [0, 0.1, 0.85, 1],
+                    }}
+                  />
+                )}
+              </g>
             );
           })}
 
