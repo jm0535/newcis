@@ -20,20 +20,28 @@ import {
   buildTopology,
   CENTER_ID,
   type TopoCenter,
-  type TopoNode,
 } from "@/lib/topology";
 import type { WefInsight } from "@/lib/wef";
 import { WefCover } from "./WefCover";
-import { ALERT_COLOUR, RISK_COLOUR, INDICATOR_META } from "@/lib/ui";
+import { INDICATOR_META } from "@/lib/ui";
 import { ProvenanceBadge } from "./Provenance";
 import { Card, SectionHeader, StatusPill, EmptyState } from "./ui";
-
-const W = 760;
-const H = 620;
-const CX = W / 2;
-const CY = H / 2;
-const R_INNER = 150; // indicator ring radius
-const R_OUTER = 270; // sector ring radius
+import {
+  CX,
+  CY,
+  R_INNER,
+  R_OUTER,
+  W,
+  H,
+  edgeSeverity,
+  edgeColour,
+  SPARK_PROFILE,
+  nodeColour,
+  ringPosition,
+  labelPlacement,
+  shortLabel,
+  statusOf,
+} from "./RiskTopology.helpers";
 
 type ProvinceOpt = { code: string; name: string };
 
@@ -47,52 +55,6 @@ interface Props {
   wefInsights?: WefInsight[];
   /** Optional deep-link: open with a province pre-selected. */
   initialCenter?: TopoCenter;
-}
-
-/**
- * Severity rank of an edge's level on a single 0–3 scale, spanning BOTH the alert
- * vocabulary (GREEN/AMBER/RED/BLACK, on driver & rollup spokes) and the risk
- * vocabulary (low/med/high/critical, on sector edges). 0 = routine, 3 = emergency.
- * Drives how a lit edge fires: green/low (0) stay dark, amber/med up fire faster
- * and brighter with severity.
- */
-function edgeSeverity(level: string): 0 | 1 | 2 | 3 {
-  switch (level) {
-    case "BLACK":
-    case "critical":
-      return 3;
-    case "RED":
-    case "high":
-      return 2;
-    case "AMBER":
-    case "med":
-      return 1;
-    default:
-      return 0; // GREEN / low / unknown
-  }
-}
-
-// Per-severity firing profile. Higher severity = faster sweep (shorter duration),
-// fatter spark, stronger glow — so tempo and brightness read as urgency. Severity
-// 0 never fires (green = all-clear, kept dark to preserve traffic-light signal).
-const SPARK_PROFILE: Record<1 | 2 | 3, { dur: number; width: number; glow: number }> = {
-  1: { dur: 2.6, width: 2, glow: 2.5 }, // AMBER / med — slow, gentle
-  2: { dur: 1.6, width: 2.5, glow: 3.5 }, // RED / high — brisk
-  3: { dur: 1.0, width: 3, glow: 5 }, // BLACK / critical — rapid, hot
-};
-
-/** Colour for any node: indicators/centre use AlertLevel, sectors use RiskLevel. */
-function nodeColour(n: TopoNode): string {
-  if (n.kind === "sector") {
-    return RISK_COLOUR[n.level as keyof typeof RISK_COLOUR] ?? RISK_COLOUR.low;
-  }
-  return ALERT_COLOUR[n.level as keyof typeof ALERT_COLOUR] ?? ALERT_COLOUR.GREEN;
-}
-
-/** Place ring nodes evenly around the circle, first node at the top (−90°). */
-function ringPosition(i: number, count: number, radius: number) {
-  const angle = (i / Math.max(count, 1)) * 2 * Math.PI - Math.PI / 2;
-  return { x: CX + radius * Math.cos(angle), y: CY + radius * Math.sin(angle) };
 }
 
 export function RiskTopology({
@@ -278,10 +240,13 @@ export function RiskTopology({
             const a = pos.get(e.from);
             const b = pos.get(e.to);
             if (!a || !b) return null;
-            const colour =
-              byId.get(e.from)?.kind === "sector"
-                ? RISK_COLOUR[(byId.get(e.from)!.level as keyof typeof RISK_COLOUR)] ?? RISK_COLOUR.low
-                : ALERT_COLOUR[(e.level as keyof typeof ALERT_COLOUR)] ?? ALERT_COLOUR.GREEN;
+            const fromNode = byId.get(e.from);
+            const fromIsSector = fromNode?.kind === "sector";
+            const colour = edgeColour(
+              fromIsSector,
+              String(fromNode?.level),
+              String(e.level),
+            );
             const related = !selected || e.from === selected || e.to === selected;
             // Vibrant in BOTH themes: lit edges ride high opacity so the saturated
             // hex colours read on white as well as dark. Unrelated edges dim but
@@ -303,10 +268,9 @@ export function RiskTopology({
             // the source sector's risk level; spokes carry e.level (the indicator's
             // alert). This is the SAME value `colour` is derived from above, so the
             // spark's tempo matches the edge's colour.
-            const edgeLevel =
-              byId.get(e.from)?.kind === "sector"
-                ? String(byId.get(e.from)!.level)
-                : String(e.level);
+            const edgeLevel = fromIsSector
+              ? String(fromNode!.level)
+              : String(e.level);
             const severity = edgeSeverity(edgeLevel);
             // An edge fires when it carries real signal (amber/med and above) AND
             // is in view (nothing selected, or it's related to the selection).
@@ -510,45 +474,4 @@ export function RiskTopology({
       </div>
     </div>
   );
-}
-
-/**
- * Place a node's label radially OUTWARD from the centre, so text fans away from
- * the hub instead of piling on top of it. The anchor/baseline follow the angle:
- * labels on the right anchor left, on the left anchor right, top/bottom centre.
- */
-function labelPlacement(
-  n: TopoNode,
-  p: { x: number; y: number },
-  r: number,
-  isCentre: boolean,
-): { x: number; y: number; anchor: "start" | "middle" | "end"; baseline: "auto" | "middle" | "hanging" } {
-  if (isCentre) {
-    return { x: p.x, y: p.y, anchor: "middle", baseline: "middle" };
-  }
-  const dx = p.x - CX;
-  const dy = p.y - CY;
-  const len = Math.hypot(dx, dy) || 1;
-  const gap = r + 8;
-  const x = p.x + (dx / len) * gap;
-  const y = p.y + (dy / len) * gap;
-  // Horizontal anchor from the x-direction; vertical baseline from the y-direction.
-  const anchor = dx > 30 ? "start" : dx < -30 ? "end" : "middle";
-  const baseline = dy > 30 ? "hanging" : dy < -30 ? "auto" : "middle";
-  return { x, y, anchor, baseline };
-}
-
-/** Trim long labels for the SVG; full label stays in the drill panel. */
-function shortLabel(label: string): string {
-  if (label.length <= 18) return label;
-  return label.slice(0, 16) + "…";
-}
-
-/** Map a node level onto the StatusPill status vocabulary. */
-function statusOf(n: TopoNode): "green" | "amber" | "red" | "black" {
-  const l = String(n.level);
-  if (l === "BLACK" || l === "critical") return "black";
-  if (l === "RED" || l === "high") return "red";
-  if (l === "AMBER" || l === "med") return "amber";
-  return "green";
 }
