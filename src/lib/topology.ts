@@ -15,6 +15,7 @@
  *   ring 2 — sectors (coloured by RiskLevel)
  * Edges: driver indicator → sector (from SECTOR_DRIVERS), and sector → centre.
  */
+import { SECTOR_CASCADES } from "./cascades";
 import { classifyIndicator, SECTOR_DRIVERS } from "./risk-engine";
 import type {
   AlertLevel,
@@ -59,8 +60,11 @@ export interface TopoEdge {
    *                   attribution, not the national SECTOR_DRIVERS map (e.g.
    *                   SEISMIC epicentres → Disaster & Hazard). Drawn dashed so
    *                   the view can show the link without implying a national driver.
+   *  - "cascade"    — sector → sector causal link (from SECTOR_CASCADES). A
+   *                   view-only REFERENCE overlay: it shows that one sector
+   *                   drives another, it does NOT re-score the downstream sector.
    */
-  kind: "driver" | "rollup" | "attributed";
+  kind: "driver" | "rollup" | "attributed" | "cascade";
 }
 
 /**
@@ -236,6 +240,25 @@ export function buildTopology(input: BuildTopologyInput): Topology {
       to: sector,
       level: drv ? (drv.level as AlertLevel) : "GREEN",
       kind: "attributed",
+    });
+  }
+
+  // ----- sector → sector cascades (REFERENCE overlay) -----
+  // The WEF "neural map" payoff: how sector risks drive EACH OTHER. These are
+  // curated causal links, not engine output — drawn so the picture shows the
+  // cascade web. View-only: the downstream sector's node level is UNCHANGED; the
+  // edge merely carries that level so a cascade into a hot sector reads hot.
+  const sectorLevel = new Map<Sector, RiskLevel>();
+  for (const n of nodes) {
+    if (n.kind === "sector") sectorLevel.set(n.id as Sector, n.level as RiskLevel);
+  }
+  for (const c of SECTOR_CASCADES) {
+    if (!sectorLevel.has(c.from) || !sectorLevel.has(c.to)) continue;
+    edges.push({
+      from: c.from,
+      to: c.to,
+      level: sectorLevel.get(c.to)!,
+      kind: "cascade",
     });
   }
 

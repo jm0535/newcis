@@ -219,3 +219,41 @@ describe("buildTopology — degrades, never throws", () => {
     ).not.toThrow();
   });
 });
+
+describe("buildTopology — sector cascades (REFERENCE overlay)", () => {
+  const indicators = [indicator("ONI", 1.2), indicator("RAINFALL_ANOM", -50)];
+  const sectorRisks = [
+    sectorRow("PG08", "Water Security", "critical"),
+    sectorRow("PG08", "Public Health", "med"),
+    sectorRow("PG08", "Food Security", "high"),
+    sectorRow("PG08", "Social Stability", "low"),
+  ];
+  const g = buildTopology({
+    indicators, sectorRisks, thresholds: TH, focusCodes: FOCUS,
+    center: { kind: "national" },
+  });
+
+  it("emits a cascade edge between two sector nodes (Water → Public Health)", () => {
+    const e = g.edges.find(
+      (x) => x.from === "Water Security" && x.to === "Public Health",
+    );
+    expect(e?.kind).toBe("cascade");
+  });
+
+  it("cascade edge level tracks the DOWNSTREAM sector", () => {
+    const e = g.edges.find(
+      (x) => x.from === "Water Security" && x.to === "Public Health",
+    )!;
+    expect(e.level).toBe("med");
+  });
+
+  it("does NOT rescore: sector node levels are unchanged by cascades", () => {
+    const ph = g.nodes.find((n) => n.kind === "sector" && n.id === "Public Health")!;
+    expect(ph.level).toBe("med");
+  });
+
+  it("all sectors always present, so every defined cascade is emitted", () => {
+    const cascades = g.edges.filter((x) => x.kind === "cascade");
+    expect(cascades.length).toBe(6);
+  });
+});
