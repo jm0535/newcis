@@ -49,6 +49,38 @@ interface Props {
   initialCenter?: TopoCenter;
 }
 
+/**
+ * Severity rank of an edge's level on a single 0–3 scale, spanning BOTH the alert
+ * vocabulary (GREEN/AMBER/RED/BLACK, on driver & rollup spokes) and the risk
+ * vocabulary (low/med/high/critical, on sector edges). 0 = routine, 3 = emergency.
+ * Drives how a lit edge fires: green/low (0) stay dark, amber/med up fire faster
+ * and brighter with severity.
+ */
+function edgeSeverity(level: string): 0 | 1 | 2 | 3 {
+  switch (level) {
+    case "BLACK":
+    case "critical":
+      return 3;
+    case "RED":
+    case "high":
+      return 2;
+    case "AMBER":
+    case "med":
+      return 1;
+    default:
+      return 0; // GREEN / low / unknown
+  }
+}
+
+// Per-severity firing profile. Higher severity = faster sweep (shorter duration),
+// fatter spark, stronger glow — so tempo and brightness read as urgency. Severity
+// 0 never fires (green = all-clear, kept dark to preserve traffic-light signal).
+const SPARK_PROFILE: Record<1 | 2 | 3, { dur: number; width: number; glow: number }> = {
+  1: { dur: 2.6, width: 2, glow: 2.5 }, // AMBER / med — slow, gentle
+  2: { dur: 1.6, width: 2.5, glow: 3.5 }, // RED / high — brisk
+  3: { dur: 1.0, width: 3, glow: 5 }, // BLACK / critical — rapid, hot
+};
+
 /** Colour for any node: indicators/centre use AlertLevel, sectors use RiskLevel. */
 function nodeColour(n: TopoNode): string {
   if (n.kind === "sector") {
@@ -97,18 +129,6 @@ export function RiskTopology({
     [topo],
   );
   const selectedNode = selected ? byId.get(selected) : undefined;
-
-  // Nodes carrying real stress. Edges that touch one of these "fire" a travelling
-  // spark — the neuron metaphor: the live risk pathways light up and pulse, the
-  // quiet ones stay dark. RED/BLACK on the alert scale, high/critical on risk.
-  const hotIds = useMemo(() => {
-    const s = new Set<string>();
-    for (const n of topo.nodes) {
-      const l = String(n.level);
-      if (l === "RED" || l === "BLACK" || l === "high" || l === "critical") s.add(n.id);
-    }
-    return s;
-  }, [topo]);
   const wefBySector = useMemo(() => {
     const m = new Map<string, WefInsight>();
     for (const w of wefInsights) {
@@ -279,16 +299,25 @@ export function RiskTopology({
             const mx = (a.x + b.x) / 2 + (CX - (a.x + b.x) / 2) * bow;
             const my = (a.y + b.y) / 2 + (CY - (a.y + b.y) / 2) * bow;
             const d = `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`;
-            // An edge "fires" when it touches a stressed node AND is in view
-            // (either nothing selected, or it's related to the selection). The
-            // travelling spark only renders for these — quiet pathways stay dark.
-            const fires =
-              !reduce && related && (hotIds.has(e.from) || hotIds.has(e.to));
-            // Every edge is stored cause-first: from → to (indicator → sector,
-            // sector → centre, upstream sector → pressured sector). The spark must
-            // travel that same direction, so it reads as the signal of cause
-            // propagating. Cascades pulse slower than the driver/rollup spokes.
-            const sparkDur = cascade ? 2.4 : 1.6;
+            // The edge's own severity: sector-source edges (rollup, cascade) carry
+            // the source sector's risk level; spokes carry e.level (the indicator's
+            // alert). This is the SAME value `colour` is derived from above, so the
+            // spark's tempo matches the edge's colour.
+            const edgeLevel =
+              byId.get(e.from)?.kind === "sector"
+                ? String(byId.get(e.from)!.level)
+                : String(e.level);
+            const severity = edgeSeverity(edgeLevel);
+            // An edge fires when it carries real signal (amber/med and above) AND
+            // is in view (nothing selected, or it's related to the selection).
+            // Green/low stays dark — all-clear pathways carry no pulse, so the
+            // firing map reads as exactly where concern is building. Every edge is
+            // stored cause-first (from → to), so the spark travels the cause path.
+            const fires = !reduce && related && severity > 0;
+            const profile = severity > 0 ? SPARK_PROFILE[severity as 1 | 2 | 3] : null;
+            // Cascades pulse a touch slower than the radial spokes at the same
+            // severity, so the sector↔sector web reads as a secondary rhythm.
+            const sparkDur = profile ? profile.dur * (cascade ? 1.4 : 1) : 0;
             return (
               <g key={`${e.from}->${e.to}-${i}`}>
                 <motion.path
@@ -302,16 +331,17 @@ export function RiskTopology({
                   animate={{ opacity: dim }}
                   transition={{ duration: reduce ? 0 : 0.4, delay: t(i) }}
                 />
-                {fires && (
+                {fires && profile && (
                   // The neuron spark: a short bright segment that travels the path
                   // by sweeping stroke-dashoffset, looping. pathLength={1}
                   // normalises every edge to a 0–1 length so one dash config fits
-                  // all. Staggered start (delay) so pathways fire out of sync.
+                  // all. Width + glow scale with severity (see SPARK_PROFILE);
+                  // staggered start (delay) so pathways fire out of sync.
                   <motion.path
                     d={d}
                     fill="none"
                     stroke={colour}
-                    strokeWidth={cascade ? 3 : 2.5}
+                    strokeWidth={profile.width}
                     strokeLinecap="round"
                     pathLength={1}
                     // One short lead dash (0.12) then a gap LONGER than the whole
@@ -320,7 +350,7 @@ export function RiskTopology({
                     // Sweeping the offset from +period down to 0 carries that single
                     // dash strictly from → to, the cause direction.
                     strokeDasharray="0.12 1.5"
-                    style={{ filter: `drop-shadow(0 0 3px ${colour})` }}
+                    style={{ filter: `drop-shadow(0 0 ${profile.glow}px ${colour})` }}
                     initial={{ strokeDashoffset: 1.62, opacity: 0 }}
                     animate={{ strokeDashoffset: [1.62, 0], opacity: [0, 1, 1, 0] }}
                     transition={{
