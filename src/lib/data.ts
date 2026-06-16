@@ -34,7 +34,7 @@ export function sitrepsDir(): string {
     : path.join(DATA_DIR, "sitreps");
 }
 
-async function readJson<T>(file: string, fallback: T): Promise<T> {
+export async function readJson<T>(file: string, fallback: T): Promise<T> {
   try {
     const buf = await fs.readFile(path.join(DATA_DIR, file), "utf8");
     return JSON.parse(buf) as T;

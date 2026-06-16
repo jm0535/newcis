@@ -1,0 +1,69 @@
+[
+  {
+    "id": "wef-el-nino-systemic-shock-2026",
+    "title": "The coming El Niño is more than a climate event — it is a systemic shock",
+    "summary": "WEF frames the next El Niño as a cross-sector systemic shock spanning food, water, health, and economic stability — not a standalone weather event.",
+    "url": "https://www.weforum.org/stories/2026/06/the-coming-el-nino-is-more-than-a-climate-event-it-is-a-systemic-shock/",
+    "source": "WEF Agenda",
+    "published": "2026-06",
+    "provenance": "DEMO"
+  },
+  {
+    "id": "wef-el-nino-food-production",
+    "title": "El Niño weather patterns could impact global food production",
+    "summary": "WEF notes El Niño-driven drought hits food production, naming Papua New Guinea highlands droughts as a recurring food- and water-insecurity driver.",
+    "url": "https://www.weforum.org/stories/2023/06/el-nino-weather-impact-food-production/",
+    "sector": "Food Security",
+    "source": "WEF Agenda",
+    "published": "2023-06",
+    "provenance": "DEMO"
+  },
+  {
+    "id": "wef-global-risks-2025-digest",
+    "title": "Global Risks Report 2025",
+    "summary": "Extreme weather ranks the top ten-year global risk for the second year running, with environmental risks dominating the long-term outlook.",
+    "url": "https://www.weforum.org/publications/global-risks-report-2025/digest/",
+    "source": "WEF Global Risks Report 2025",
+    "published": "2025-01",
+    "provenance": "DEMO"
+  },
+  {
+    "id": "wef-global-risks-2025-top-threats",
+    "title": "Global Risks Report 2025: conflict, environment and disinformation top threats",
+    "summary": "WEF's expert survey ranks environmental and societal risks among the most severe near- and long-term global threats.",
+    "url": "https://www.weforum.org/press/2025/01/global-risks-report-2025-conflict-environment-and-disinformation-top-threats/",
+    "sector": "Social Stability",
+    "source": "WEF Global Risks Report 2025",
+    "published": "2025-01",
+    "provenance": "DEMO"
+  },
+  {
+    "id": "wef-securing-water",
+    "title": "Securing water through the power of multi-stakeholder action",
+    "summary": "WEF positions water security as a shared risk requiring coordinated multi-stakeholder action as climate pressure intensifies.",
+    "url": "https://www.weforum.org/stories/2025/02/securing-water-through-the-power-of-multi-stakeholder-action/",
+    "sector": "Water Security",
+    "source": "WEF Agenda",
+    "published": "2025-02",
+    "provenance": "DEMO"
+  },
+  {
+    "id": "wef-food-security-polycrisis",
+    "title": "How to maintain global food security during a 'polycrisis'",
+    "summary": "WEF examines food security under overlapping climate, economic, and conflict shocks — a polycrisis straining import-dependent economies.",
+    "url": "https://www.weforum.org/stories/2023/06/global-food-security-during-a-polycrisis/",
+    "sector": "Economic Stability",
+    "source": "WEF Agenda",
+    "published": "2023-06",
+    "provenance": "DEMO"
+  },
+  {
+    "id": "wef-asia-pacific-sdgs",
+    "title": "Why Asia-Pacific must accelerate action on meeting SDGs",
+    "summary": "WEF urges accelerated Asia-Pacific action on climate, poverty, and hunger to keep Sustainable Development Goals within reach.",
+    "url": "https://www.weforum.org/stories/2024/08/asia-pacific-sdgs-climate-poverty-hunger-action/",
+    "source": "WEF Agenda",
+    "published": "2024-08",
+    "provenance": "DEMO"
+  }
+]
