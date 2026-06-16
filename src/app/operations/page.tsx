@@ -34,25 +34,107 @@ const RISK_STATUS = {
   critical: "black",
 } as const;
 
-const CLUSTERS: { name: string; lead: string; status: "STANDBY" | "ACTIVE" | "STANDDOWN" }[] = [
-  { name: "Food Security", lead: "DAL · WFP", status: "STANDBY" },
-  { name: "Water, Sanitation & Hygiene", lead: "Water PNG · UNICEF", status: "STANDBY" },
-  { name: "Health", lead: "NDoH · WHO", status: "STANDBY" },
-  { name: "Logistics", lead: "DoW · WFP", status: "STANDBY" },
-  { name: "Protection", lead: "DCDR · IOM", status: "STANDDOWN" },
+// Response clusters — each a sector of the national disaster response, with the
+// PNG lead agency and its international partner spelled out in full (the acronyms
+// alone mean nothing to a non-specialist). `readiness` is a plain-English line an
+// executive can read without knowing the cluster system.
+type ClusterStage = "ACTIVE" | "STANDBY" | "STANDDOWN";
+const CLUSTERS: {
+  name: string;
+  lead: string;
+  leadFull: string;
+  stage: ClusterStage;
+  readiness: string;
+}[] = [
+  {
+    name: "Food Security",
+    lead: "DAL · WFP",
+    leadFull: "Dept. of Agriculture & Livestock, with the UN World Food Programme",
+    stage: "STANDBY",
+    readiness: "Teams ready; monitoring crop and food-price stress, not yet deployed.",
+  },
+  {
+    name: "Water, Sanitation & Hygiene",
+    lead: "Water PNG · UNICEF",
+    leadFull: "Water PNG, with UNICEF",
+    stage: "STANDBY",
+    readiness: "Ready to respond if drought cuts safe-water access.",
+  },
+  {
+    name: "Health",
+    lead: "NDoH · WHO",
+    leadFull: "National Dept. of Health, with the World Health Organization",
+    stage: "STANDBY",
+    readiness: "Watching for disease and nutrition impacts; no outbreak response active.",
+  },
+  {
+    name: "Logistics",
+    lead: "DoW · WFP",
+    leadFull: "Dept. of Works, with the UN World Food Programme",
+    stage: "STANDBY",
+    readiness: "Transport and supply lines on call to move relief if activated.",
+  },
+  {
+    name: "Protection",
+    lead: "DCDR · IOM",
+    leadFull: "Dept. of Community Development & Religion, with the UN Migration Agency",
+    stage: "STANDDOWN",
+    readiness: "No current role; will re-engage if displacement risk rises.",
+  },
 ];
 
-const CLUSTER_STATUS_MAP = {
-  ACTIVE: "red",
-  STANDBY: "amber",
-  STANDDOWN: "neutral",
-} as const;
+// Plain-language meaning for each readiness stage, shown both as the chip label
+// and in the legend so the board needs no glossary.
+const CLUSTER_STAGE: Record<
+  ClusterStage,
+  { label: string; tone: "red" | "amber" | "neutral"; meaning: string }
+> = {
+  ACTIVE: { label: "Responding", tone: "red", meaning: "mobilised and responding now" },
+  STANDBY: { label: "On standby", tone: "amber", meaning: "ready but not yet activated" },
+  STANDDOWN: { label: "Stood down", tone: "neutral", meaning: "no current role" },
+};
 
-const ACTIONS: { owner: string; task: string; due: string; status: "OPEN" | "DONE" }[] = [
-  { owner: "NSA Sec", task: "Brief Cabinet on current ENSO posture", due: "2026-06-10", status: "OPEN" },
-  { owner: "NDC", task: "Verify focus-province contact lists", due: "2026-06-12", status: "OPEN" },
-  { owner: "DAL", task: "Issue planting-window advisory (Highlands)", due: "2026-06-15", status: "OPEN" },
+// Action items owed by national bodies. `ownerFull` expands each acronym; `why`
+// gives the one-line reason the task matters, so the tracker reads as decisions,
+// not codes.
+const ACTIONS: {
+  owner: string;
+  ownerFull: string;
+  task: string;
+  why: string;
+  due: string;
+  status: "OPEN" | "DONE";
+}[] = [
+  {
+    owner: "NSA Sec",
+    ownerFull: "National Security Adviser's Secretariat",
+    task: "Brief Cabinet on the current ENSO posture",
+    why: "Keeps national leadership aligned on the climate alert level.",
+    due: "2026-06-10",
+    status: "OPEN",
+  },
+  {
+    owner: "NDC",
+    ownerFull: "National Disaster Centre",
+    task: "Verify focus-province contact lists",
+    why: "Ensures warnings reach the right people fast if the alert escalates.",
+    due: "2026-06-12",
+    status: "OPEN",
+  },
+  {
+    owner: "DAL",
+    ownerFull: "Dept. of Agriculture & Livestock",
+    task: "Issue planting-window advisory (Highlands)",
+    why: "Helps farmers time planting around the forecast dry spell.",
+    due: "2026-06-15",
+    status: "OPEN",
+  },
 ];
+
+const ACTION_STATUS: Record<"OPEN" | "DONE", { label: string; tone: "amber" | "neutral" }> = {
+  OPEN: { label: "To do", tone: "amber" },
+  DONE: { label: "Done", tone: "neutral" },
+};
 
 export default async function OperationsPage() {
   const [national, indicators, sectorRisk, lastRun, sitreps] = await Promise.all([
@@ -223,56 +305,78 @@ export default async function OperationsPage() {
 
           <Card padding="lg">
             <SectionHeader
-              title="Cluster Status Board"
-              description="Response teams by sector. STANDBY = ready but not activated · ACTIVE = mobilised and responding · STAND-DOWN = no current role. Seeded for the demo."
+              title="Response Readiness"
+              description="The national disaster-response teams, grouped by area of work. Each team has a Papua New Guinea lead agency and an international partner. This board shows how ready each team is right now."
               action={<ProvenanceBadge value="DEMO" />}
             />
-            <div className="overflow-x-auto"><table className="w-full text-sm min-w-[420px]">
-              <thead className="text-[10px] uppercase tracking-[0.08em] text-text-muted">
-                <tr>
-                  <th className="text-left pl-2 py-1 font-medium">Cluster</th>
-                  <th className="text-left py-1 font-medium">Lead</th>
-                  <th className="text-right pr-2 py-1 font-medium">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {CLUSTERS.map((c) => (
-                  <tr key={c.name} className="border-t border-border-subtle">
-                    <td className="pl-2 py-2 text-text-1">{c.name}</td>
-                    <td className="py-2 text-text-muted text-xs">{c.lead}</td>
-                    <td className="pr-2 py-2 text-right">
-                      <StatusPill status={CLUSTER_STATUS_MAP[c.status]} size="sm">
-                        {c.status}
-                      </StatusPill>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table></div>
+
+            <ul className="divide-y divide-border-subtle">
+              {CLUSTERS.map((c) => {
+                const stage = CLUSTER_STAGE[c.stage];
+                return (
+                  <li
+                    key={c.name}
+                    className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 py-3 first:pt-0 last:pb-0"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-text-1 font-medium">{c.name}</span>
+                        <Badge variant="subtle">{c.lead}</Badge>
+                      </div>
+                      <p className="text-[11px] text-text-muted mt-0.5">{c.leadFull}</p>
+                      <p className="text-xs text-text-2 mt-1 leading-relaxed">{c.readiness}</p>
+                    </div>
+                    <StatusPill status={stage.tone} size="sm">
+                      {stage.label}
+                    </StatusPill>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="mt-4 pt-3 border-t border-border-subtle flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] text-text-muted">
+              {(["ACTIVE", "STANDBY", "STANDDOWN"] as const).map((k) => (
+                <span key={k} className="inline-flex items-center gap-1.5">
+                  <StatusPill status={CLUSTER_STAGE[k].tone} size="sm">
+                    {CLUSTER_STAGE[k].label}
+                  </StatusPill>
+                  <span>= {CLUSTER_STAGE[k].meaning}</span>
+                </span>
+              ))}
+            </div>
           </Card>
 
           <Card padding="lg">
             <SectionHeader
-              title="Action Tracker"
-              description="Who owes what, by when. OPEN = still to do · DONE = complete. Seeded for the demo."
+              title="Decisions & Actions"
+              description="The actions national bodies have committed to this period — what each is doing, why it matters, and the date it is due."
               action={<ProvenanceBadge value="DEMO" />}
             />
-            <ul className="space-y-1.5 text-sm">
-              {ACTIONS.map((a, i) => (
-                <li
-                  key={i}
-                  className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border-subtle pb-1.5"
-                >
-                  <span className="text-[10px] uppercase tracking-[0.08em] text-text-muted w-16 shrink-0">
-                    {a.owner}
-                  </span>
-                  <span className="flex-1 text-text-1">{a.task}</span>
-                  <span className="text-[11px] text-text-muted shrink-0" data-numeric>
-                    {a.due}
-                  </span>
-                  <Badge variant={a.status === "DONE" ? "accent" : "subtle"}>{a.status}</Badge>
-                </li>
-              ))}
+            <ul className="divide-y divide-border-subtle">
+              {ACTIONS.map((a, i) => {
+                const st = ACTION_STATUS[a.status];
+                return (
+                  <li key={i} className="py-3 first:pt-0 last:pb-0">
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="text-sm text-text-1 font-medium leading-snug">{a.task}</p>
+                      <StatusPill status={st.tone} size="sm">
+                        {st.label}
+                      </StatusPill>
+                    </div>
+                    <p className="text-xs text-text-muted mt-1 leading-relaxed">{a.why}</p>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-[11px] text-text-muted">
+                      <span className="text-text-2">{a.ownerFull}</span>
+                      <span aria-hidden>·</span>
+                      <span>
+                        due{" "}
+                        <span className="text-text-2" data-numeric>
+                          {a.due}
+                        </span>
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </Card>
         </section>
