@@ -1,24 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Sun, Moon } from "lucide-react";
 
 type Theme = "dark" | "light";
 
-// Read the theme the no-flash inline script (layout.tsx) already applied to
-// <html> before paint, so first render matches the DOM with no setState-in-effect
-// cascade. SSR has no document → default "dark"; the script reconciles on hydrate.
-function initialTheme(): Theme {
-  if (typeof document === "undefined") return "dark";
+// Subscribe to the <html> class the no-flash script (layout.tsx) and `toggle`
+// below mutate. useSyncExternalStore gives a DETERMINISTIC server snapshot
+// ("dark") that matches the client's hydration snapshot, so there is no
+// hydration mismatch and no setState-in-effect. After hydration the client
+// snapshot reads the real applied class; the store notifies on every toggle.
+function subscribe(onChange: () => void): () => void {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+}
+
+function getClientTheme(): Theme {
   return document.documentElement.classList.contains("light") ? "light" : "dark";
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(initialTheme);
+  // Server snapshot is fixed "dark" → first client render matches → no mismatch.
+  const theme = useSyncExternalStore<Theme>(subscribe, getClientTheme, () => "dark");
 
   function toggle() {
     const next: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(next);
     localStorage.setItem("newcis-theme", next);
     document.documentElement.classList.toggle("light", next === "light");
     document.documentElement.classList.toggle("dark", next === "dark");
