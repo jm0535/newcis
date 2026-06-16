@@ -150,21 +150,21 @@ export function RiskTopology({
         </div>
 
         {/* ring + edge legend */}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-3 pt-3 text-[10px] text-text-muted">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-3 pt-3 text-[11px] text-text-1">
           <span className="inline-flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full border border-border-default bg-surface-1" />
-            Inner ring · <span className="text-text-1 font-medium">indicators</span>
+            <span className="w-3 h-3 rounded-full border border-border-strong bg-surface-3" />
+            Inner ring · <span className="font-semibold">indicators</span>
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full border border-border-default bg-accent/[0.08]" />
-            Outer ring · <span className="text-text-1 font-medium">sectors</span>
+            <span className="w-3 h-3 rounded-full border border-border-strong bg-surface-2" />
+            Outer ring · <span className="font-semibold">sectors</span>
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span className="inline-block w-5 border-t border-text-muted" />
+            <span className="inline-block w-5 border-t-2 border-text-1" />
             driver edge
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span className="inline-block w-5 border-t border-dashed border-text-muted" />
+            <span className="inline-block w-5 border-t-2 border-dashed border-text-1" />
             province-attributed (e.g. SEISMIC)
           </span>
         </div>
@@ -175,14 +175,16 @@ export function RiskTopology({
           role="img"
           aria-label="Risk topology graph: indicators driving sectors driving the national alert"
         >
-          {/* ring guides — filled bands so the three tiers read at a glance */}
+          {/* ring guides — solid filled bands so the tiers read in BOTH themes.
+              Tokens flip per theme (surface-2/3, border-strong) so the contrast
+              holds in light and dark alike. */}
           {/* outer band (sectors) */}
-          <circle cx={CX} cy={CY} r={R_OUTER + 22} className="fill-accent/[0.03] stroke-border-default" strokeWidth={1} />
-          {/* inner band (indicators) */}
-          <circle cx={CX} cy={CY} r={R_INNER + 22} className="fill-surface-1/40 stroke-border-default" strokeWidth={1} />
+          <circle cx={CX} cy={CY} r={R_OUTER + 22} className="fill-surface-2 stroke-border-strong" strokeWidth={1.5} />
+          {/* inner band (indicators) — nested, a shade deeper */}
+          <circle cx={CX} cy={CY} r={R_INNER + 22} className="fill-surface-3 stroke-border-strong" strokeWidth={1.5} />
           {/* the two node circles, dashed, sitting on each tier */}
-          <circle cx={CX} cy={CY} r={R_INNER} className="fill-none stroke-border-default" strokeDasharray="3 5" strokeWidth={1} />
-          <circle cx={CX} cy={CY} r={R_OUTER} className="fill-none stroke-border-default" strokeDasharray="3 5" strokeWidth={1} />
+          <circle cx={CX} cy={CY} r={R_INNER} className="fill-none stroke-border-strong" strokeDasharray="4 5" strokeWidth={1.5} />
+          <circle cx={CX} cy={CY} r={R_OUTER} className="fill-none stroke-border-strong" strokeDasharray="4 5" strokeWidth={1.5} />
 
           {/* edges */}
           {topo.edges.map((e, i) => {
@@ -193,8 +195,11 @@ export function RiskTopology({
               byId.get(e.from)?.kind === "sector"
                 ? RISK_COLOUR[(byId.get(e.from)!.level as keyof typeof RISK_COLOUR)] ?? RISK_COLOUR.low
                 : ALERT_COLOUR[(e.level as keyof typeof ALERT_COLOUR)] ?? ALERT_COLOUR.GREEN;
-            const dim =
-              selected && e.from !== selected && e.to !== selected ? 0.08 : 0.5;
+            const related = !selected || e.from === selected || e.to === selected;
+            // Vibrant in BOTH themes: lit edges ride high opacity so the saturated
+            // hex colours read on white as well as dark. Unrelated edges dim but
+            // stay faintly visible (not invisible) for context.
+            const dim = related ? (selected ? 0.95 : 0.75) : 0.12;
             // gentle quadratic curve, bowed toward centre
             const mx = (a.x + b.x) / 2 + (CX - (a.x + b.x) / 2) * 0.18;
             const my = (a.y + b.y) / 2 + (CY - (a.y + b.y) / 2) * 0.18;
@@ -208,8 +213,8 @@ export function RiskTopology({
                 d={`M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`}
                 fill="none"
                 stroke={colour}
-                strokeWidth={1.25}
-                strokeDasharray={attributed ? "4 4" : undefined}
+                strokeWidth={related && selected ? 2.5 : attributed ? 1.75 : 1.5}
+                strokeDasharray={attributed ? "5 4" : undefined}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: dim }}
                 transition={{ duration: reduce ? 0 : 0.4, delay: t(i) }}
