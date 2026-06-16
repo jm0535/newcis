@@ -65,5 +65,45 @@
     "source": "WEF Agenda",
     "published": "2024-08",
     "provenance": "DEMO"
+  },
+  {
+    "id": "wef-climate-resilient-infrastructure",
+    "title": "Climate-resilient infrastructure: lessons from a disaster",
+    "summary": "WEF argues resilience must be designed into infrastructure from the outset so roads, power and water systems can withstand future climate and disaster shocks rather than fail under them.",
+    "url": "https://www.weforum.org/stories/2023/09/designing-climate-resilient-infrastructure-lessons-from-disaster/",
+    "sector": "Infrastructure",
+    "source": "WEF Agenda",
+    "published": "2023-09",
+    "provenance": "DEMO"
+  },
+  {
+    "id": "wef-energy-security-transition",
+    "title": "Balancing the energy transition with energy security",
+    "summary": "WEF reframes energy security beyond supply to include grid resilience, warning that import reliance and inflexible power systems leave energy access exposed to climate and geopolitical shocks.",
+    "url": "https://www.weforum.org/stories/2025/09/new-age-of-energy-security-navigating-the-energy-transition-amid-geopolitical-shifts/",
+    "sector": "Energy Security",
+    "source": "WEF Agenda",
+    "published": "2025-09",
+    "provenance": "DEMO"
+  },
+  {
+    "id": "wef-climate-disease-outbreaks",
+    "title": "How climate change is fuelling disease outbreaks",
+    "summary": "WEF reports climate change is widening the reach of waterborne and vector-borne disease, with shifting rainfall spreading cholera and malaria — the direct public-health channel of water and food insecurity.",
+    "url": "https://www.weforum.org/stories/2024/06/climate-change-rise-new-diseases/",
+    "sector": "Public Health",
+    "source": "WEF Agenda",
+    "published": "2024-06",
+    "provenance": "DEMO"
+  },
+  {
+    "id": "wef-fund-disaster-resilience",
+    "title": "5 ways to fund disaster resilience for a safer future",
+    "summary": "WEF notes 24 hours of early warning can cut disaster damage by 30%, yet disaster resilience and early-warning systems remain underfunded — the mission space NEWCIS itself targets.",
+    "url": "https://www.weforum.org/stories/2025/10/fund-disaster-resilience-safer-future/",
+    "sector": "Disaster & Hazard",
+    "source": "WEF Agenda",
+    "published": "2025-10",
+    "provenance": "DEMO"
   }
 ]
