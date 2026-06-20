@@ -172,18 +172,30 @@ export function EnsemblePlume({
           />
           <Tooltip
             cursor={{ stroke: TOKEN.border }}
-            contentStyle={{
-              background: TOKEN.surface,
-              border: `1px solid ${TOKEN.border}`,
-              borderRadius: 6,
-              fontSize: 12,
-              color: TOKEN.text,
+            // recharts emits one payload entry per axis dataKey (x AND y), so the
+            // default tooltip would print the same member twice. Render our own
+            // single-row content from the first entry's payload instead.
+            content={({ active, payload }) => {
+              if (!active || !payload || payload.length === 0) return null;
+              const p = payload[0].payload as { member?: number; y?: number };
+              return (
+                <div
+                  style={{
+                    background: TOKEN.surface,
+                    border: `1px solid ${TOKEN.border}`,
+                    borderRadius: 6,
+                    fontSize: 12,
+                    color: TOKEN.text,
+                    padding: "6px 10px",
+                  }}
+                >
+                  <div style={{ color: TOKEN.axis, marginBottom: 2 }}>Projected ONI</div>
+                  <div data-numeric>
+                    Member {p.member} : {Number(p.y).toFixed(2)} °C
+                  </div>
+                </div>
+              );
             }}
-            formatter={(_value, _name, item) => {
-              const p = item?.payload as { member?: number; y?: number } | undefined;
-              return [`${Number(p?.y).toFixed(2)} °C`, `Member ${p?.member}`];
-            }}
-            labelFormatter={() => "Projected ONI"}
           />
           <Scatter
             data={points}
