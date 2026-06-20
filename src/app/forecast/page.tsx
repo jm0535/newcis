@@ -74,6 +74,22 @@ export default async function ForecastPage() {
   const model = forecast?.model ?? null;
   const outlook = forecast?.outlook ?? null;
 
+  // "vs last init" delta — the single most valuable forecast signal: is the model
+  // trending hotter or cooler than the prior cycle? readings_history is appended in
+  // INGEST ORDER, so the last two PROJECTED_ONI rows are this init and the prior
+  // one. We deliberately do NOT sort by observed_at: the NMME target date can be
+  // mis-decoded upstream, and a corrupt timestamp would scramble a date-sort and
+  // fabricate a wrong delta. Append order is the trustworthy chronology here.
+  // Null until two inits exist, and suppressed if the prior reading equals the
+  // current value (no real movement to report). Never fabricated.
+  const projHistory = history.filter((r) => r.key === "PROJECTED_ONI");
+  const priorProjected =
+    projHistory.length >= 2 ? projHistory[projHistory.length - 2].value : null;
+  const projectedDelta =
+    model && priorProjected !== null && priorProjected !== model.ensemble_mean
+      ? model.ensemble_mean - priorProjected
+      : null;
+
   return (
     <main className="min-h-screen bg-surface-0 text-text-1">
       <StatusBar national={national} lastRun={lastRun} />
@@ -111,7 +127,24 @@ export default async function ForecastPage() {
                     {model.source} · init {model.init_month.slice(0, 7)}
                   </div>
                 </div>
-                <ProvenanceBadge value="LIVE" />
+                <div className="flex items-center gap-2">
+                  {projectedDelta !== null && (
+                    <span
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold tabular-nums px-2 py-0.5 rounded-full border border-border-subtle text-text-2"
+                      data-numeric
+                      title="Change in ensemble mean since the previous forecast init"
+                    >
+                      {projectedDelta >= 0 ? (
+                        <ArrowUpRight size={12} className="text-status-amber" />
+                      ) : (
+                        <ArrowDownRight size={12} className="text-status-sky" />
+                      )}
+                      {projectedDelta >= 0 ? "+" : ""}
+                      {projectedDelta.toFixed(2)} vs last init
+                    </span>
+                  )}
+                  <ProvenanceBadge value="LIVE" />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
@@ -152,6 +185,34 @@ export default async function ForecastPage() {
                   hint="NMME ensemble"
                 />
               </div>
+
+              {/* Reconcile the live alert with the forecast: today's national alert
+                  is set by OBSERVED conditions (often neutral), but the projected
+                  mean can sit deep in an alert band. Naming the band the mean falls
+                  in resolves the "why amber when ENSO-neutral?" confusion. */}
+              {projThreshold &&
+                (() => {
+                  const m = Math.abs(model.ensemble_mean);
+                  const band =
+                    m >= projThreshold.red_max
+                      ? { label: "BLACK", cls: "text-status-black", word: "very strong" }
+                      : m >= projThreshold.amber_max
+                        ? { label: "RED", cls: "text-status-red", word: "strong" }
+                        : m >= projThreshold.green_max
+                          ? { label: "AMBER", cls: "text-status-amber", word: "watch-level" }
+                          : null;
+                  if (!band) return null;
+                  const phase = model.ensemble_mean >= 0 ? "El Niño" : "La Niña";
+                  return (
+                    <p className="text-xs text-text-2 leading-relaxed mb-4 -mt-1">
+                      The projected mean of {model.ensemble_mean.toFixed(2)} °C sits in the{" "}
+                      <span className={`font-semibold ${band.cls}`}>{band.label}</span> band — a{" "}
+                      {band.word} {phase} signal for {model.target_window}. Today&apos;s national
+                      alert tracks <em>observed</em> conditions, which can still read neutral; this
+                      is what next season is <em>projected</em> to bring.
+                    </p>
+                  );
+                })()}
 
               <EnsemblePlume model={model} threshold={projThreshold} />
             </Card>
@@ -194,14 +255,36 @@ export default async function ForecastPage() {
                 {outlook.precursorsWithData > 0 && (
                   <>
                     {" "}
-                    · {outlook.agreement} of {outlook.precursorsWithData} agree with the model
+                    · {outlook.agreement} of {outlook.precursorsWithData} confirm the model lean
                   </>
                 )}
               </div>
+              {/* The agreement rule, stated plainly so a viewer can see WHY a signal
+                  confirms, sits neutral, or contradicts — not an opaque badge. */}
+              <p className="text-[11px] text-text-muted leading-relaxed mb-3">
+                A precursor <span className="text-status-green font-semibold">confirms</span> when it
+                leans the same ENSO phase as the model,{" "}
+                <span className="text-status-amber font-semibold">contradicts</span> when it pulls the
+                other way, and is <span className="text-text-2 font-semibold">neutral</span> when it
+                sits inside the watch band (±0.5 °C-equivalent) — present, but not yet taking a side.
+              </p>
               <ul className="divide-y divide-border-subtle">
                 {outlook.precursors.map((p) => {
-                  const agrees =
-                    outlook.projectedLean !== "neutral" && p.lean === outlook.projectedLean;
+                  // Three-state alignment against the model lean. Only meaningful
+                  // when the model itself leans; a neutral model means no side to
+                  // confirm, so every precursor reads "neutral" by construction.
+                  const align: "confirms" | "contradicts" | "neutral" =
+                    outlook.projectedLean === "neutral" || p.lean === "neutral"
+                      ? "neutral"
+                      : p.lean === outlook.projectedLean
+                        ? "confirms"
+                        : "contradicts";
+                  const alignClass =
+                    align === "confirms"
+                      ? "text-status-green"
+                      : align === "contradicts"
+                        ? "text-status-amber"
+                        : "text-text-muted";
                   return (
                     <li key={p.key} className="py-2.5 flex items-start gap-3">
                       <LeanIcon lean={p.lean} />
@@ -214,15 +297,11 @@ export default async function ForecastPage() {
                               {p.unit ? ` ${p.unit.split(" ")[0]}` : ""}
                             </span>
                           )}
-                          {outlook.projectedLean !== "neutral" && p.lean !== "neutral" && (
-                            <span
-                              className={`text-[10px] uppercase tracking-[0.06em] font-semibold ${
-                                agrees ? "text-status-green" : "text-status-amber"
-                              }`}
-                            >
-                              {agrees ? "agrees" : "diverges"}
-                            </span>
-                          )}
+                          <span
+                            className={`text-[10px] uppercase tracking-[0.06em] font-semibold ${alignClass}`}
+                          >
+                            {align}
+                          </span>
                         </div>
                         <p className="text-xs text-text-muted leading-relaxed mt-0.5">{p.note}</p>
                       </div>
