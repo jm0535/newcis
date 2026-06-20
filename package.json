@@ -13,6 +13,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "docx": "^9.7.1",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.17.0",
