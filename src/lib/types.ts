@@ -118,6 +118,14 @@ export interface SitrepModel {
   provincesAtRisk: number;
   movers: string[];
   actions: string[];
+  // Exec-first additions. The structured inputs the visuals need are NOT stored
+  // here (the SVGs are built at render time) — only the plain-text exec fields.
+  bottomLine: string; // the one-sentence executive read; "" when national is null
+  confidence: {
+    level: string; // GOOD | PARTIAL | LOW
+    line: string; // plain-English data-feed confidence
+    feeds: { name: string; ok: boolean }[]; // raw OK/FAIL — appendix only
+  };
   // World Economic Forum strategic-intelligence context, relevance-ranked for the
   // current picture and written plainly for non-technical executives. Each row is
   // a paraphrase of an OPENLY published WEF output (DEMO provenance), linked back

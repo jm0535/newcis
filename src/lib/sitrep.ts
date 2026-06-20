@@ -16,6 +16,8 @@ import type {
 } from "./types";
 import type { WefInsight } from "./wef";
 import { FOCUS_NAMES } from "./focus-provinces";
+import { bottomLineSentence } from "./national-language";
+import { dataConfidence } from "./data-confidence";
 import {
   provincialRiskCaption,
   selectStrategicContext,
@@ -187,6 +189,9 @@ export function buildSitrepModel(inputs: SitrepInputs): SitrepModel {
     ok,
   }));
 
+  const bottomLine = national ? bottomLineSentence(national) : "";
+  const confidence = dataConfidence(inputs.lastRun);
+
   const summary =
     `${alert} · ${enso} · national risk ${rating}. ` +
     (movers[0] ?? "No focus-province movers.") +
@@ -209,6 +214,8 @@ export function buildSitrepModel(inputs: SitrepInputs): SitrepModel {
     provincesAtRisk,
     movers,
     actions,
+    bottomLine,
+    confidence,
     strategic,
     sources,
     analystNote: inputs.analystNote,

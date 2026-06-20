@@ -6,6 +6,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { buildSitrepModel, renderSitrepHtml, type SitrepInputs } from "../src/lib/sitrep";
+
 import { selectStrategicContext } from "../src/lib/sitrep-shared";
 import type { NationalStatus, SectorRisk } from "../src/lib/types";
 import type { WefInsight } from "../src/lib/wef";
@@ -151,6 +152,40 @@ describe("selectStrategicContext", () => {
     const out = selectStrategicContext([wef({ id: "nat-1" })], []);
     expect(out[0].provenance).toBe("DEMO");
     expect(out[0].relevance.length).toBeGreaterThan(0);
+  });
+});
+
+describe("buildSitrepModel exec fields", () => {
+  it("populates bottomLine and confidence", () => {
+    const model = buildSitrepModel({
+      national: {
+        enso_phase: "el_nino_alert",
+        alert_level: "RED",
+        national_risk_rating: "high",
+        affected_population_est: 1000,
+        high_risk_province_count: 3,
+        forecast_period: "Next 3 months",
+        updated_at: "2026-06-20T00:00:00.000Z",
+      },
+      indicators: [],
+      sectorRisk: [],
+      lastRun: {
+        started_at: "2026-06-20T00:00:00.000Z",
+        finished_at: "2026-06-20T00:05:00.000Z",
+        status: "partial",
+        sources_ok: { a: true, b: true, c: false },
+        notes: "",
+      },
+    });
+    expect(model.bottomLine).toContain("national alert is RED");
+    expect(model.confidence.level).toBe("PARTIAL");
+    expect(model.confidence.feeds).toHaveLength(3);
+  });
+
+  it("leaves bottomLine empty when national is null", () => {
+    const model = buildSitrepModel({ national: null, indicators: [], sectorRisk: [], lastRun: null });
+    expect(model.bottomLine).toBe("");
+    expect(model.confidence.level).toBe("LOW");
   });
 });
 
