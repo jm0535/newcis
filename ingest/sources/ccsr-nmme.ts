@@ -108,11 +108,14 @@ export interface CcsrNmmeResult {
 }
 
 /**
- * Decode hours-since-1960 (the CCSR target units) to an ISO YYYY-MM-01 string.
+ * Decode the CCSR `target` coordinate to an ISO YYYY-MM-01 string. The variable's
+ * CF units are "days since 1960-01-01" (confirmed via the server's .das) — NOT
+ * hours. Using hours here mis-scaled every date by 24× (a 2026 target decoded as
+ * ~1962), so the conversion is days → milliseconds.
  */
-function targetToIso(hoursSince1960: number): string {
+function targetToIso(daysSince1960: number): string {
   const base = Date.UTC(1960, 0, 1);
-  const d = new Date(base + hoursSince1960 * 3_600_000);
+  const d = new Date(base + daysSince1960 * 86_400_000);
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-01`;
 }
 

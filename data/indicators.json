@@ -34,14 +34,14 @@
   },
   {
     "key": "PROJECTED_ONI",
-    "label": "Projected ONI (SON 1962, 30-member NMME mean)",
+    "label": "Projected ONI (MJJ 2026, 30-member NMME mean)",
     "unit": "°C SST anomaly (Niño 3.4, dynamical forecast)",
     "source": "NMME · NOAA-GFDL SPEAR (IRI CCSR)",
     "update_frequency": "monthly",
     "provenance": "LIVE",
-    "value": 1.85,
-    "observed_at": "1962-10-01",
-    "trend": "up"
+    "value": 1.05,
+    "observed_at": "2026-04-01",
+    "trend": "flat"
   },
   {
     "key": "RAINFALL_ANOM",
@@ -95,7 +95,7 @@
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
     "value": 20,
-    "observed_at": "2026-06-20T22:21:09.060Z",
+    "observed_at": "2026-06-20T23:07:44.144Z",
     "trend": "flat"
   },
   {
@@ -128,7 +128,7 @@
     "update_frequency": "daily",
     "provenance": "LIVE",
     "value": 0.4,
-    "observed_at": "2026-06-20T22:26:04.831Z",
+    "observed_at": "2026-06-20T23:12:58.995Z",
     "trend": "flat"
   }
 ]
