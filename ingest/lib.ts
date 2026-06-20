@@ -18,6 +18,8 @@ import { fetchNasaPowerSoil } from "./sources/nasa-power-soil";
 import { fetchNeoNdvi } from "./sources/neo-ndvi";
 import { fetchFaoAsi } from "./sources/fao-asi";
 import { fetchHdxAcled } from "./sources/hdx-acled";
+import { fetchWhoGho } from "./sources/who-gho";
+import { fetchWorldBank } from "./sources/world-bank";
 import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
 import { fetchGvpVolcanoes, recencyLevel } from "./sources/gvp-volcanoes";
@@ -89,6 +91,11 @@ export async function runIngest(): Promise<LastRun> {
   const acledRes = appId
     ? await run("hdx_acled", () => fetchHdxAcled(appId, FOCUS_CODES))
     : { ok: false, value: null, error: "no HDX_APP_ID", ms: 0 };
+  // WHO GHO (Public Health, malaria-driven) and World Bank (Economic Stability,
+  // inflation-driven) are keyless national feeds — always run. Each replicates
+  // its national figure to the focus provinces, captioned as national-derived.
+  const whoRes = await run("who_gho", () => fetchWhoGho(FOCUS_CODES));
+  const wbRes = await run("world_bank", () => fetchWorldBank(FOCUS_CODES));
   // Keyless sources — always run. Province polygons let USGS attribute each
   // epicentre to the province that contains it (real per-province seismic
   // counts) rather than replicating one national figure to every focus province.
@@ -205,6 +212,26 @@ export async function runIngest(): Promise<LastRun> {
     }
   }
 
+  // WHO GHO malaria incidence — the Public Health gauge (annual, national).
+  if (whoRes.ok && whoRes.value) {
+    const ind = whoRes.value.indicator;
+    if (ind.value !== null) {
+      ind.trend = computeTrend(ind.key, ind.value, history);
+      liveIndicators.push(ind);
+      history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+    }
+  }
+
+  // World Bank CPI inflation — the Economic Stability gauge (annual, national).
+  if (wbRes.ok && wbRes.value) {
+    const ind = wbRes.value.indicator;
+    if (ind.value !== null) {
+      ind.trend = computeTrend(ind.key, ind.value, history);
+      liveIndicators.push(ind);
+      history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+    }
+  }
+
   // Open-Meteo backstop: PROMOTE its rainfall/temp anomalies only when the
   // primary feed is absent, so we never double-count. HDX is the primary for
   // RAINFALL_ANOM; TEMP_ANOM has no primary feed, so Open-Meteo always supplies it.
@@ -273,6 +300,10 @@ export async function runIngest(): Promise<LastRun> {
   if (asiRes.ok && asiRes.value) upstreamRows.push(...asiRes.value.sector_rows);
   if (foodRes.ok && foodRes.value) upstreamRows.push(...foodRes.value.rows);
   if (acledRes.ok && acledRes.value) upstreamRows.push(...acledRes.value.sector_rows);
+  // WHO GHO → per-province Public Health rows; World Bank → Economic Stability
+  // rows. Both national-derived (replicated to focus provinces, captioned so).
+  if (whoRes.ok && whoRes.value) upstreamRows.push(...whoRes.value.sector_rows);
+  if (wbRes.ok && wbRes.value) upstreamRows.push(...wbRes.value.sector_rows);
   // Disaster & Hazard: GDACS multi-hazard alert + USGS seismic + GVP volcano
   // hazard, all per-province and max-merged below. GVP attributes each PNG
   // volcano to its province (point-in-polygon, nearest fallback offshore), so a
@@ -454,9 +485,9 @@ export async function runIngest(): Promise<LastRun> {
   const lastRun: LastRun = {
     started_at: startedAt,
     finished_at: new Date().toISOString(),
-    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
+    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, whoRes, wbRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
       ? "ok"
-      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
+      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, whoRes, wbRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
         ? "partial"
         : "failed",
     sources_ok: {
@@ -470,6 +501,8 @@ export async function runIngest(): Promise<LastRun> {
       neo_ndvi: ndviRes.ok,
       fao_asi: asiRes.ok,
       hdx_acled: acledRes.ok,
+      who_gho: whoRes.ok,
+      world_bank: wbRes.ok,
       usgs_earthquakes: usgsRes.ok,
       gdacs: gdacsRes.ok,
       gvp_volcanoes: gvpRes.ok,
@@ -490,6 +523,8 @@ export async function runIngest(): Promise<LastRun> {
       ndviRes.ok ? `${ndviRes.value?.note} (${ndviRes.ms}ms)` : `NDVI failed: ${ndviRes.error}`,
       asiRes.ok ? `${asiRes.value?.note} (${asiRes.ms}ms)` : `FAO ASI failed: ${asiRes.error}`,
       acledRes.ok ? `ACLED: ${acledRes.value?.note}` : `ACLED failed: ${acledRes.error}`,
+      whoRes.ok ? `WHO GHO: ${whoRes.value?.note} (${whoRes.ms}ms)` : `WHO GHO failed: ${whoRes.error}`,
+      wbRes.ok ? `World Bank: ${wbRes.value?.note} (${wbRes.ms}ms)` : `World Bank failed: ${wbRes.error}`,
       usgsRes.ok ? `USGS: ${usgsRes.value?.note} (${usgsRes.ms}ms)` : `USGS failed: ${usgsRes.error}`,
       gdacsRes.ok ? `GDACS: ${gdacsRes.value?.note} (${gdacsRes.ms}ms)` : `GDACS failed: ${gdacsRes.error}`,
       gvpRes.ok ? `GVP volcanoes: ${gvpRes.value?.note} (${gvpRes.ms}ms)` : `GVP volcanoes failed: ${gvpRes.error}`,

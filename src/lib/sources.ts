@@ -23,6 +23,8 @@ export const SOURCE_META: Record<string, SourceMeta> = {
   neo_ndvi: { label: "Vegetation health", what: "Satellite greenness (NDVI) · NASA" },
   fao_asi: { label: "Agricultural stress", what: "Cropland drought index (ASI) · FAO GIEWS" },
   hdx_acled: { label: "Conflict events", what: "Social-stability signal · ACLED" },
+  who_gho: { label: "Public health", what: "Malaria incidence · WHO GHO" },
+  world_bank: { label: "Economy", what: "Inflation & growth · World Bank" },
   usgs_earthquakes: { label: "Earthquakes", what: "Seismic activity · USGS" },
   gdacs: { label: "Disaster alerts", what: "Active disaster events · GDACS" },
   gvp_volcanoes: { label: "Volcanoes", what: "Eruption status · Smithsonian GVP" },

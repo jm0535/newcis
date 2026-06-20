@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T16:37:50.950Z",
+  "generated_at": "2026-06-20T17:26:58.633Z",
   "model": {
     "provenance": "LIVE",
     "source": "NMME · NOAA-GFDL SPEAR (IRI CCSR)",
@@ -50,8 +50,8 @@
         "key": "ONI",
         "label": "Observed ONI",
         "lean": "neutral",
-        "value": 0.48,
-        "unit": "°C SST anomaly (Niño 3.4, 3-mo mean)",
+        "value": -0.06,
+        "unit": "°C relative SST anomaly (Niño 3.4 − tropics, 3-mo mean)",
         "note": "Niño-3.4 SST in the neutral band"
       },
       {

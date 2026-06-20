@@ -1,12 +1,12 @@
 [
   {
     "key": "ONI",
-    "label": "Oceanic Niño Index",
-    "unit": "°C SST anomaly (Niño 3.4, 3-mo mean)",
-    "source": "NOAA CPC",
+    "label": "Relative Oceanic Niño Index (RONI)",
+    "unit": "°C relative SST anomaly (Niño 3.4 − tropics, 3-mo mean)",
+    "source": "NOAA CPC · RONI (relative ONI, operational since Feb 2026)",
     "update_frequency": "monthly",
     "provenance": "LIVE",
-    "value": 0.48,
+    "value": -0.06,
     "observed_at": "2026-04-15",
     "trend": "flat"
   },
@@ -95,8 +95,30 @@
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
     "value": 20,
-    "observed_at": "2026-06-20T16:32:39.167Z",
-    "trend": "up"
+    "observed_at": "2026-06-20T17:22:27.817Z",
+    "trend": "flat"
+  },
+  {
+    "key": "MALARIA_INCIDENCE",
+    "label": "Malaria incidence (estimated)",
+    "unit": "cases per 1,000 at risk",
+    "source": "WHO Global Health Observatory (GHO)",
+    "update_frequency": "annual",
+    "provenance": "LIVE",
+    "value": 151.7625725,
+    "observed_at": "2024-12-31T00:00:00.000Z",
+    "trend": "flat"
+  },
+  {
+    "key": "CPI_INFLATION",
+    "label": "Consumer-price inflation",
+    "unit": "annual %",
+    "source": "World Bank Open Data",
+    "update_frequency": "annual",
+    "provenance": "LIVE",
+    "value": 0.602403921107917,
+    "observed_at": "2024-12-31T00:00:00.000Z",
+    "trend": "flat"
   },
   {
     "key": "TEMP_ANOM",
@@ -106,7 +128,7 @@
     "update_frequency": "daily",
     "provenance": "LIVE",
     "value": 0.4,
-    "observed_at": "2026-06-20T16:37:50.921Z",
-    "trend": "down"
+    "observed_at": "2026-06-20T17:26:58.614Z",
+    "trend": "flat"
   }
 ]

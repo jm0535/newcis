@@ -130,6 +130,18 @@ export const INDICATOR_META: Record<string, IndicatorMeta> = {
     danger: "extreme",
     dangerLabel: "Far from 0 is dangerous: high = projected El Niño, very low = La Niña.",
   },
+  MALARIA_INCIDENCE: {
+    plain:
+      "WHO's estimated malaria cases per 1,000 people at risk: PNG's heaviest endemic disease, and one that shifts with drought and flood.",
+    danger: "high",
+    dangerLabel: "Rising is dangerous: more malaria pressure on an already heavy burden.",
+  },
+  CPI_INFLATION: {
+    plain:
+      "How fast the cost of living is rising (World Bank): the channel a drought reaches the economy through — food and fuel prices.",
+    danger: "high",
+    dangerLabel: "Rising is dangerous: higher prices squeeze households and food access.",
+  },
 };
 
 // PNG runs on Port Moresby time (UTC+10, no daylight saving). Stored timestamps
@@ -191,6 +203,8 @@ const SOURCE_CADENCE_DAYS: Record<string, number> = {
   SOI: 10,
   TRADE_WIND_ANOM: 10, // NOAA CPC wpac850, refreshed monthly
   PROJECTED_ONI: 35, // NMME forecast re-issued monthly (new init each cycle)
+  MALARIA_INCIDENCE: 400, // WHO GHO annual series — lags 1–2 years, generous grace
+  CPI_INFLATION: 400, // World Bank annual series — lags 1–2 years, generous grace
 };
 
 export function isReadingStale(

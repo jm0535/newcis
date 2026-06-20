@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-06-20T16:31:36.928Z",
-  "finished_at": "2026-06-20T16:37:50.957Z",
+  "started_at": "2026-06-20T17:21:13.975Z",
+  "finished_at": "2026-06-20T17:26:58.637Z",
   "status": "ok",
   "sources_ok": {
     "noaa_oni": true,
@@ -13,10 +13,12 @@
     "neo_ndvi": true,
     "fao_asi": true,
     "hdx_acled": true,
+    "who_gho": true,
+    "world_bank": true,
     "usgs_earthquakes": true,
     "gdacs": true,
     "gvp_volcanoes": true,
     "open_meteo": true
   },
-  "notes": "ONI 0.48 (4923ms) | SOI -0.9 (797ms) | Trade-wind -0.3 (1634ms) | NMME projected ONI 1.85 (SON 1962, 30 members, 5544ms) | Rainfall mean anom 6.9% (22/22 provinces reporting, 3366 raw rows, 5152ms) | Food security: HDX HAPI returned no current IPC food-security rows for PNG (PNG is not consistently in IPC publications). Sector will be DEMO-seeded. | Soil moisture median 29th pctile (22 provinces, 1879ms) | NDVI 2026-05: national anomaly +0.005 vs 5-yr same-month mean; 22/22 provinces sampled, 1 below normal (32188ms) | FAO ASI 2026-06-01: national mean 2.4% stressed cropland; 22/22 provinces mapped, 1 elevated (3882ms) | ACLED: 3 ACLED rows aggregated to 22 focus-province cells | USGS: 20 M4.5+ events (max M5.7) attributed across 22 focus provinces (3128ms) | GDACS: 2 active PNG event(s); worst = Green (GDACS · Green Earthquake — Magnitude 4.7M, Depth:76.074km) (4953ms) | GVP volcanoes: GVP: 39 PNG volcanoes across 9 focus provinces; active: PG13 (Manam); PG19 (Langila, Ulawun); PG20 (Bagana) (3439ms) | Open-Meteo: Open-Meteo: rainfall -26.1% of normal, temp +0.4°C (mean of 22 provinces) (303295ms)"
+  "notes": "ONI -0.06 (4244ms) | SOI -0.9 (799ms) | Trade-wind -0.3 (3880ms) | NMME projected ONI 1.85 (SON 1962, 30 members, 5940ms) | Rainfall mean anom 6.9% (22/22 provinces reporting, 3366 raw rows, 6814ms) | Food security: HDX HAPI returned no current IPC food-security rows for PNG (PNG is not consistently in IPC publications). Sector will be DEMO-seeded. | Soil moisture median 29th pctile (22 provinces, 10306ms) | NDVI 2026-05: national anomaly +0.005 vs 5-yr same-month mean; 22/22 provinces sampled, 1 below normal (28542ms) | FAO ASI 2026-06-01: national mean 2.4% stressed cropland; 22/22 provinces mapped, 1 elevated (3582ms) | ACLED: 3 ACLED rows aggregated to 22 focus-province cells | WHO GHO: WHO GHO 2024: malaria 151.8/1,000 → med Public Health (national, applied to 22 focus provinces); under-5 stunting 47.6% (2024) (2035ms) | World Bank: World Bank 2024: inflation 0.6% → low Economic Stability (national, applied to 22 focus provinces); GDP growth 3.8% (2024); undernourishment 28.7% (2023) (2265ms) | USGS: 20 M4.5+ events (max M5.7) attributed across 22 focus provinces (2551ms) | GDACS: 2 active PNG event(s); worst = Green (GDACS · Green Earthquake — Magnitude 4.7M, Depth:76.074km) (6228ms) | GVP volcanoes: GVP: 39 PNG volcanoes across 9 focus provinces; active: PG13 (Manam); PG19 (Langila, Ulawun); PG20 (Bagana) (2963ms) | Open-Meteo: Open-Meteo: rainfall -26.1% of normal, temp +0.4°C (mean of 22 provinces) (261483ms)"
 }

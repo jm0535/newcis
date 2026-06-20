@@ -99,5 +99,25 @@
     "inverted": false,
     "symmetric": false,
     "notes": "USGS FDSNWS earthquake tempo for the PNG bbox. PNG sits on the Ring of Fire; a typical month sees ~10–25 M4.5+ events. Elevated tempo (>25) flags a seismically active period; a major shock or swarm pushes >45. Non-inverted, one-sided: higher count = worse, never negative."
+  },
+  {
+    "metric": "MALARIA_INCIDENCE",
+    "unit": "estimated malaria cases per 1,000 population at risk",
+    "green_max": 120,
+    "amber_max": 200,
+    "red_max": 300,
+    "inverted": false,
+    "symmetric": false,
+    "notes": "WHO GHO modelled malaria incidence (MALARIA_EST_INCIDENCE), national, annual. PNG carries one of the Western Pacific's heaviest malaria burdens — recent years run ~140–180/1,000, so that range is PNG's NORMAL, not a crisis. Bands are calibrated against that endemic baseline so a chronic heavy burden reads AMBER (watch), NOT RED: <120 low for PNG; 120–200 the standing endemic load (watch); 200–300 a genuine surge (alert); >300 epidemic-scale. Climate-sensitive (ENSO drought/flood shift breeding). Non-inverted, one-sided: higher = worse. Excluded from the national ENSO alert rollup (a structural baseline must not pin the alert); drives the Public Health sector + its own gauge."
+  },
+  {
+    "metric": "CPI_INFLATION",
+    "unit": "consumer-price inflation, annual %",
+    "green_max": 5,
+    "amber_max": 10,
+    "red_max": 20,
+    "inverted": false,
+    "symmetric": false,
+    "notes": "World Bank Open Data CPI inflation (FP.CPI.TOTL.ZG), national, annual. ENSO drought reaches the economy through food and fuel prices. <5% routine; 5–10% elevated cost-of-living pressure; 10–20% high; >20% crisis inflation. Non-inverted, one-sided: higher = worse. Annual series lags 1–2 years (gauge age surfaces this)."
   }
 ]

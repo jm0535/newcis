@@ -288,11 +288,16 @@ export function rollUpNational(
 ): NationalStatus {
   const thresholdByKey = new Map(thresholds.map((t) => [t.metric, t]));
 
-  // The national alert level reflects the CURRENT observed state. Forward-looking
-  // indicators (the NMME projected ONI) are shown as their own gauge but must NOT
-  // raise today's alert — a forecast leaning El Niño next season is not a present
-  // emergency. PROJECTED_ONI drives the /forecast outlook, never the live alert.
-  const NON_ALERT_KEYS = new Set(["PROJECTED_ONI"]);
+  // The national alert level reflects the CURRENT observed ENSO/hazard state.
+  // Some LIVE gauges are shown for context but must NOT raise today's ENSO alert:
+  //   - PROJECTED_ONI: the NMME forecast (next season, not the present emergency);
+  //     drives the /forecast outlook only.
+  //   - MALARIA_INCIDENCE, CPI_INFLATION: chronic STRUCTURAL baselines (a heavy
+  //     endemic malaria burden, slow-moving inflation). They drive their own
+  //     sectors (Public Health, Economic Stability) and render as gauges, but a
+  //     standing baseline must not masquerade as an acute ENSO escalation — that
+  //     would falsely pin the national alert RED in a quiet ENSO year.
+  const NON_ALERT_KEYS = new Set(["PROJECTED_ONI", "MALARIA_INCIDENCE", "CPI_INFLATION"]);
   let worstAlert: AlertLevel = "GREEN";
   for (const ind of indicators) {
     if (NON_ALERT_KEYS.has(ind.key)) continue;

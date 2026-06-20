@@ -104,13 +104,13 @@ function worstRisk(a: RiskLevel, b: RiskLevel): RiskLevel {
 }
 
 /**
- * Forward-looking indicators that must NOT raise today's alert. Mirrors
- * rollUpNational's NON_ALERT_KEYS: PROJECTED_ONI is the NMME forecast — it drives
- * the /forecast outlook, never the live national alert. Keeping these out of the
- * centre rollup is what makes the topology centre AGREE with national_status.json
- * (otherwise a forecast leaning El Niño would falsely push the centre to BLACK).
+ * Indicators shown as gauges but kept OUT of the alert rollup. Mirrors
+ * rollUpNational's NON_ALERT_KEYS exactly, so the topology centre AGREES with
+ * national_status.json. PROJECTED_ONI is the NMME forecast; MALARIA_INCIDENCE and
+ * CPI_INFLATION are chronic structural baselines (endemic malaria, slow inflation)
+ * that drive their own sectors but must not falsely push the centre to RED/BLACK.
  */
-const NON_ALERT_KEYS = new Set(["PROJECTED_ONI"]);
+const NON_ALERT_KEYS = new Set(["PROJECTED_ONI", "MALARIA_INCIDENCE", "CPI_INFLATION"]);
 
 /**
  * Roll a national centre's AlertLevel from the worst LIVE indicator on screen.
