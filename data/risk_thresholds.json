@@ -119,5 +119,15 @@
     "inverted": false,
     "symmetric": false,
     "notes": "World Bank Open Data CPI inflation (FP.CPI.TOTL.ZG), national, annual. ENSO drought reaches the economy through food and fuel prices. <5% routine; 5–10% elevated cost-of-living pressure; 10–20% high; >20% crisis inflation. Non-inverted, one-sided: higher = worse. Annual series lags 1–2 years (gauge age surfaces this)."
+  },
+  {
+    "metric": "FOOD_UNDERNOURISH",
+    "unit": "prevalence of undernourishment, % of population",
+    "green_max": 10,
+    "amber_max": 25,
+    "red_max": 40,
+    "inverted": false,
+    "symmetric": false,
+    "notes": "FAOSTAT prevalence of undernourishment (item 21004), national, 3-year rolling mean. The standing food-insecurity floor an ENSO drought shock lands on. PNG runs persistently elevated, so bands are calibrated against that baseline: <10% low; 10–25% the standing floor (watch); 25–40% high; >40% acute structural hunger. Non-inverted, one-sided: higher = worse. A slow structural baseline — excluded from the national ENSO alert rollup (see risk-engine NON_ALERT_KEYS); drives the Food Security floor + its own gauge. Annual 3-yr mean lags ~2 years (gauge age surfaces this)."
   }
 ]

@@ -95,7 +95,7 @@
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
     "value": 20,
-    "observed_at": "2026-06-20T17:22:27.817Z",
+    "observed_at": "2026-06-20T22:21:09.060Z",
     "trend": "flat"
   },
   {
@@ -128,7 +128,7 @@
     "update_frequency": "daily",
     "provenance": "LIVE",
     "value": 0.4,
-    "observed_at": "2026-06-20T17:26:58.614Z",
+    "observed_at": "2026-06-20T22:26:04.831Z",
     "trend": "flat"
   }
 ]

@@ -20,6 +20,9 @@ import { fetchFaoAsi } from "./sources/fao-asi";
 import { fetchHdxAcled } from "./sources/hdx-acled";
 import { fetchWhoGho } from "./sources/who-gho";
 import { fetchWorldBank } from "./sources/world-bank";
+import { fetchFaostat } from "./sources/faostat";
+import { fetchOchaFts } from "./sources/ocha-fts";
+import { fetchNasaEonet } from "./sources/nasa-eonet";
 import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
 import { fetchGvpVolcanoes, recencyLevel } from "./sources/gvp-volcanoes";
@@ -96,6 +99,11 @@ export async function runIngest(): Promise<LastRun> {
   // its national figure to the focus provinces, captioned as national-derived.
   const whoRes = await run("who_gho", () => fetchWhoGho(FOCUS_CODES));
   const wbRes = await run("world_bank", () => fetchWorldBank(FOCUS_CODES));
+  // FAOSTAT undernourishment (Food Security floor) + OCHA FTS humanitarian
+  // funding (Disaster & Hazard ops signal) — keyless national feeds, same
+  // national-derived replication pattern. Both degrade gracefully if down.
+  const faostatRes = await run("faostat", () => fetchFaostat(FOCUS_CODES));
+  const ftsRes = await run("ocha_fts", () => fetchOchaFts(FOCUS_CODES));
   // Keyless sources — always run. Province polygons let USGS attribute each
   // epicentre to the province that contains it (real per-province seismic
   // counts) rather than replicating one national figure to every focus province.
@@ -110,6 +118,11 @@ export async function runIngest(): Promise<LastRun> {
   const provinceReps = FOCUS_PROVINCES.map((p) => ({ code: p.code, lon: p.lon, lat: p.lat }));
   const gvpRes = await run("gvp_volcanoes", () =>
     fetchGvpVolcanoes(FOCUS_CODES, provincePolygons, provinceReps),
+  );
+  // NASA EONET — unified active-hazard feed (volcanoes, storms, floods, drought,
+  // wildfires, landslides), attributed per province by the same polygons + reps.
+  const eonetRes = await run("nasa_eonet", () =>
+    fetchNasaEonet(FOCUS_CODES, provincePolygons, provinceReps),
   );
   const openMeteoRes = await run("open_meteo", () => fetchOpenMeteo(FOCUS_CODES));
 
@@ -222,6 +235,17 @@ export async function runIngest(): Promise<LastRun> {
     }
   }
 
+  // FAOSTAT undernourishment — the Food Security structural-floor gauge (annual,
+  // national 3-yr mean). A slow baseline, excluded from the ENSO alert rollup.
+  if (faostatRes.ok && faostatRes.value) {
+    const ind = faostatRes.value.indicator;
+    if (ind.value !== null) {
+      ind.trend = computeTrend(ind.key, ind.value, history);
+      liveIndicators.push(ind);
+      history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+    }
+  }
+
   // World Bank CPI inflation — the Economic Stability gauge (annual, national).
   if (wbRes.ok && wbRes.value) {
     const ind = wbRes.value.indicator;
@@ -304,6 +328,8 @@ export async function runIngest(): Promise<LastRun> {
   // rows. Both national-derived (replicated to focus provinces, captioned so).
   if (whoRes.ok && whoRes.value) upstreamRows.push(...whoRes.value.sector_rows);
   if (wbRes.ok && wbRes.value) upstreamRows.push(...wbRes.value.sector_rows);
+  if (faostatRes.ok && faostatRes.value) upstreamRows.push(...faostatRes.value.sector_rows);
+  if (ftsRes.ok && ftsRes.value) upstreamRows.push(...ftsRes.value.sector_rows);
   // Disaster & Hazard: GDACS multi-hazard alert + USGS seismic + GVP volcano
   // hazard, all per-province and max-merged below. GVP attributes each PNG
   // volcano to its province (point-in-polygon, nearest fallback offshore), so a
@@ -311,6 +337,7 @@ export async function runIngest(): Promise<LastRun> {
   if (gdacsRes.ok && gdacsRes.value) upstreamRows.push(...gdacsRes.value.sector_rows);
   if (usgsRes.ok && usgsRes.value) upstreamRows.push(...usgsRes.value.sector_rows);
   if (gvpRes.ok && gvpRes.value) upstreamRows.push(...gvpRes.value.sector_rows);
+  if (eonetRes.ok && eonetRes.value) upstreamRows.push(...eonetRes.value.sector_rows);
   // Open-Meteo Water Security rows only when HDX rainfall is absent (backstop).
   if (openMeteoRes.ok && openMeteoRes.value && !(rainfallRes.ok && rainfallRes.value)) {
     upstreamRows.push(...openMeteoRes.value.sector_rows);
@@ -485,9 +512,9 @@ export async function runIngest(): Promise<LastRun> {
   const lastRun: LastRun = {
     started_at: startedAt,
     finished_at: new Date().toISOString(),
-    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, whoRes, wbRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
+    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, whoRes, wbRes, faostatRes, ftsRes, usgsRes, gdacsRes, gvpRes, eonetRes, openMeteoRes].every((r) => r.ok)
       ? "ok"
-      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, whoRes, wbRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
+      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, whoRes, wbRes, faostatRes, ftsRes, usgsRes, gdacsRes, gvpRes, eonetRes, openMeteoRes].some((r) => r.ok)
         ? "partial"
         : "failed",
     sources_ok: {
@@ -503,9 +530,12 @@ export async function runIngest(): Promise<LastRun> {
       hdx_acled: acledRes.ok,
       who_gho: whoRes.ok,
       world_bank: wbRes.ok,
+      faostat: faostatRes.ok,
+      ocha_fts: ftsRes.ok,
       usgs_earthquakes: usgsRes.ok,
       gdacs: gdacsRes.ok,
       gvp_volcanoes: gvpRes.ok,
+      nasa_eonet: eonetRes.ok,
       open_meteo: openMeteoRes.ok,
     },
     notes: [
@@ -525,9 +555,12 @@ export async function runIngest(): Promise<LastRun> {
       acledRes.ok ? `ACLED: ${acledRes.value?.note}` : `ACLED failed: ${acledRes.error}`,
       whoRes.ok ? `WHO GHO: ${whoRes.value?.note} (${whoRes.ms}ms)` : `WHO GHO failed: ${whoRes.error}`,
       wbRes.ok ? `World Bank: ${wbRes.value?.note} (${wbRes.ms}ms)` : `World Bank failed: ${wbRes.error}`,
+      faostatRes.ok ? `FAOSTAT: ${faostatRes.value?.note} (${faostatRes.ms}ms)` : `FAOSTAT failed: ${faostatRes.error}`,
+      ftsRes.ok ? `OCHA FTS: ${ftsRes.value?.note} (${ftsRes.ms}ms)` : `OCHA FTS failed: ${ftsRes.error}`,
       usgsRes.ok ? `USGS: ${usgsRes.value?.note} (${usgsRes.ms}ms)` : `USGS failed: ${usgsRes.error}`,
       gdacsRes.ok ? `GDACS: ${gdacsRes.value?.note} (${gdacsRes.ms}ms)` : `GDACS failed: ${gdacsRes.error}`,
       gvpRes.ok ? `GVP volcanoes: ${gvpRes.value?.note} (${gvpRes.ms}ms)` : `GVP volcanoes failed: ${gvpRes.error}`,
+      eonetRes.ok ? `NASA EONET: ${eonetRes.value?.note} (${eonetRes.ms}ms)` : `NASA EONET failed: ${eonetRes.error}`,
       openMeteoRes.ok ? `Open-Meteo: ${openMeteoRes.value?.note} (${openMeteoRes.ms}ms)` : `Open-Meteo failed: ${openMeteoRes.error}`,
     ].join(" | "),
   };

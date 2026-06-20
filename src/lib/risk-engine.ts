@@ -292,12 +292,13 @@ export function rollUpNational(
   // Some LIVE gauges are shown for context but must NOT raise today's ENSO alert:
   //   - PROJECTED_ONI: the NMME forecast (next season, not the present emergency);
   //     drives the /forecast outlook only.
-  //   - MALARIA_INCIDENCE, CPI_INFLATION: chronic STRUCTURAL baselines (a heavy
-  //     endemic malaria burden, slow-moving inflation). They drive their own
-  //     sectors (Public Health, Economic Stability) and render as gauges, but a
+  //   - MALARIA_INCIDENCE, CPI_INFLATION, FOOD_UNDERNOURISH: chronic STRUCTURAL
+  //     baselines (a heavy endemic malaria burden, slow-moving inflation, a
+  //     standing undernourishment floor). They drive their own sectors (Public
+  //     Health, Economic Stability, Food Security) and render as gauges, but a
   //     standing baseline must not masquerade as an acute ENSO escalation — that
   //     would falsely pin the national alert RED in a quiet ENSO year.
-  const NON_ALERT_KEYS = new Set(["PROJECTED_ONI", "MALARIA_INCIDENCE", "CPI_INFLATION"]);
+  const NON_ALERT_KEYS = new Set(["PROJECTED_ONI", "MALARIA_INCIDENCE", "CPI_INFLATION", "FOOD_UNDERNOURISH"]);
   let worstAlert: AlertLevel = "GREEN";
   for (const ind of indicators) {
     if (NON_ALERT_KEYS.has(ind.key)) continue;

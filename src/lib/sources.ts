@@ -25,9 +25,12 @@ export const SOURCE_META: Record<string, SourceMeta> = {
   hdx_acled: { label: "Conflict events", what: "Social-stability signal · ACLED" },
   who_gho: { label: "Public health", what: "Malaria incidence · WHO GHO" },
   world_bank: { label: "Economy", what: "Inflation & growth · World Bank" },
+  faostat: { label: "Undernourishment", what: "Food-security floor · FAOSTAT" },
+  ocha_fts: { label: "Humanitarian funding", what: "Response funding flows · OCHA FTS" },
   usgs_earthquakes: { label: "Earthquakes", what: "Seismic activity · USGS" },
   gdacs: { label: "Disaster alerts", what: "Active disaster events · GDACS" },
   gvp_volcanoes: { label: "Volcanoes", what: "Eruption status · Smithsonian GVP" },
+  nasa_eonet: { label: "Active hazards", what: "Unified natural-event feed · NASA EONET" },
   open_meteo: { label: "Weather", what: "Temperature & forecast · Open-Meteo" },
 };
 

@@ -190,6 +190,26 @@
     "observed_at": "2026-06-20T17:18:41.147Z"
   },
   {
+    "key": "SEISMIC",
+    "value": 20,
+    "observed_at": "2026-06-20T17:22:27.817Z"
+  },
+  {
+    "key": "TEMP_ANOM",
+    "value": 0.4,
+    "observed_at": "2026-06-20T17:26:58.614Z"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 20,
+    "observed_at": "2026-06-20T18:17:06.056Z"
+  },
+  {
+    "key": "TEMP_ANOM",
+    "value": 0.4,
+    "observed_at": "2026-06-20T18:22:08.377Z"
+  },
+  {
     "key": "ONI",
     "value": -0.06,
     "observed_at": "2026-04-15"
@@ -232,7 +252,7 @@
   {
     "key": "SEISMIC",
     "value": 20,
-    "observed_at": "2026-06-20T17:22:27.817Z"
+    "observed_at": "2026-06-20T22:21:09.060Z"
   },
   {
     "key": "MALARIA_INCIDENCE",
@@ -247,6 +267,6 @@
   {
     "key": "TEMP_ANOM",
     "value": 0.4,
-    "observed_at": "2026-06-20T17:26:58.614Z"
+    "observed_at": "2026-06-20T22:26:04.831Z"
   }
 ]

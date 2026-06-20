@@ -155,6 +155,12 @@ export const INDICATOR_META: Record<string, IndicatorMeta> = {
     danger: "high",
     dangerLabel: "Rising is dangerous: higher prices squeeze households and food access.",
   },
+  FOOD_UNDERNOURISH: {
+    plain:
+      "FAO's estimate of the share of people without enough food energy: the standing hunger floor a drought shock lands on top of.",
+    danger: "high",
+    dangerLabel: "Rising is dangerous: a higher baseline leaves less slack to absorb a failed season.",
+  },
 };
 
 // PNG runs on Port Moresby time (UTC+10, no daylight saving). Stored timestamps
@@ -218,6 +224,7 @@ const SOURCE_CADENCE_DAYS: Record<string, number> = {
   PROJECTED_ONI: 35, // NMME forecast re-issued monthly (new init each cycle)
   MALARIA_INCIDENCE: 400, // WHO GHO annual series — lags 1–2 years, generous grace
   CPI_INFLATION: 400, // World Bank annual series — lags 1–2 years, generous grace
+  FOOD_UNDERNOURISH: 800, // FAOSTAT 3-yr rolling mean — lags ~2 years, very generous grace
 };
 
 export function isReadingStale(
