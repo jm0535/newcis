@@ -25,9 +25,14 @@ import type { SitrepVisuals } from "./sitrep";
 import { kpiBandSvg, riskMatrixSvg, trendChartSvg, provincialMapSvg } from "./sitrep-visuals";
 import { svgToPng } from "./sitrep-raster";
 import {
+  FEED_TABLE_CAPTION,
+  INDICATOR_TABLE_CAPTION,
+  KPI_BAND_CAPTION,
+  MAP_FIGURE_CAPTION,
   provincialRiskCaption,
   RISK_MATRIX_CAPTION,
   STRATEGIC_INTRO,
+  TREND_FIGURE_CAPTION,
 } from "./sitrep-shared";
 import {
   CLASSIFICATION,
@@ -237,10 +242,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
     sectionHeading("2 · Situation overview"),
     ...situationOverviewParas(m).map(bodyPara),
     kpiFig,
-    caption(
-      figLabel(),
-      "National key indicators — ENSO phase, alert level, risk rating, affected population, high-risk provinces and forecast period.",
-    ),
+    caption(figLabel(), KPI_BAND_CAPTION),
   );
 
   // 3 · Climate & ENSO assessment — trends figure then indicator table.
@@ -248,11 +250,8 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
     sectionHeading("3 · Climate & ENSO assessment"),
     ...climateAssessmentParas(m).map(bodyPara),
     trendsFig,
-    caption(figLabel(), "Recent trend per climate indicator, with the latest value and unit on each chart."),
-    caption(
-      tblLabel(),
-      "Climate indicators this cycle, with value, unit, provenance (LIVE/DEMO) and observation date.",
-    ),
+    caption(figLabel(), TREND_FIGURE_CAPTION),
+    caption(tblLabel(), INDICATOR_TABLE_CAPTION),
   );
   if (m.indicators.length) {
     const head = new TableRow({
@@ -289,7 +288,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
     sectionHeading("4 · Provincial risk assessment"),
     ...provincialAssessmentParas(m).map(bodyPara),
     mapFig,
-    caption(figLabel(), "Provincial risk map — each province coloured by its single worst-hit sector."),
+    caption(figLabel(), MAP_FIGURE_CAPTION),
     matrixFig,
     caption(
       figLabel(),
@@ -411,7 +410,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
       spacing: { after: 80 },
       children: [new TextRun({ text: `For data and operations staff. ${m.confidence.line}`, size: 16, color: "71717A" })],
     }),
-    caption(tblLabel(), "Status of each data feed for this ingest cycle."),
+    caption(tblLabel(), FEED_TABLE_CAPTION),
   );
   const feedHead = new TableRow({
     tableHeader: true,

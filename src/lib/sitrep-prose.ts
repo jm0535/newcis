@@ -87,7 +87,10 @@ export function situationOverviewParas(m: SitrepModel): string[] {
 }
 
 // Climate assessment — frames the trend small-multiples + indicator table, and
-// explains what the indicators are and how to read them. Multi-paragraph.
+// explains every indicator in plain terms: what the acronym means, what the
+// number measures, the unit, how to read the chart, and what it implies for PNG.
+// Written so a reader with no climate-science background can follow it. The five
+// indicator paragraphs mirror the five charts in Figure 2, in the same order.
 export function climateAssessmentParas(m: SitrepModel): string[] {
   const live = m.indicators.filter((i) => i.provenance === "LIVE").length;
   const total = m.indicators.length;
@@ -95,22 +98,58 @@ export function climateAssessmentParas(m: SitrepModel): string[] {
     ? `${live} of ${total} climate indicators are sourced live this cycle`
     : "no climate indicators were available this cycle";
   return [
-    `The following indicators track the state of the Pacific and its effect on PNG. ` +
-      `${capFirst(coverage)}; the remainder are seeded reference values clearly ` +
-      `marked DEMO, pending a public feed. Trends are shown over the most recent ` +
-      `readings, with the latest value and unit on each chart, and the full set is ` +
-      `tabulated beneath.`,
-    `The Oceanic Niño Index (ONI) and the Southern Oscillation Index (SOI) are the ` +
-      `primary ENSO drivers: ONI measures sea-surface temperature anomaly in the ` +
-      `central Pacific, and SOI the atmospheric pressure see-saw that accompanies it. ` +
-      `Sea-surface temperature, rainfall and temperature anomalies, soil moisture and ` +
-      `vegetation health (NDVI) then translate that basin-wide signal into conditions ` +
-      `felt on the ground in PNG.`,
-    `Each reading is compared against the documented alert thresholds rather than ` +
-      `judged by eye, so the same number always yields the same alert level. Where an ` +
-      `indicator is trending toward a threshold, that movement is the early-warning ` +
-      `signal this report exists to surface, and is reflected in the recommended ` +
-      `actions later in the document.`,
+    `This section reads the climate signals that drive PNG's risk. Each chart in ` +
+      `Figure 2 shows one indicator's recent trend, with its latest value and unit ` +
+      `printed above the line; a rising or falling line is the early-warning signal ` +
+      `this report exists to surface. ${capFirst(coverage)}; the remainder are ` +
+      `seeded reference values clearly marked DEMO, pending a public feed. Every ` +
+      `reading is compared against fixed, documented thresholds — not judged by eye — ` +
+      `so the same number always yields the same alert level. The five indicators ` +
+      `below are explained in turn, in the order they appear in Figure 2.`,
+    `Projected ONI (Oceanic Niño Index, forecast). The ONI is the world's standard ` +
+      `measure of El Niño and La Niña. It is the sea-surface temperature anomaly — how ` +
+      `far above or below normal the ocean is, in degrees Celsius — averaged over the ` +
+      `central Pacific "Niño 3.4" region. The projected value is a forecast of where ` +
+      `the ONI is heading, taken from a multi-model ensemble (many climate models run ` +
+      `together). Read it simply: above +0.5 °C signals El Niño (drought risk for PNG, ` +
+      `worst in the highlands); below −0.5 °C signals La Niña (excess-rain, flood and ` +
+      `landslide risk); in between is neutral. A rising projected ONI is the single ` +
+      `most important early warning of a drought-driving El Niño building ahead.`,
+    `Rainfall anomaly. This is how far rainfall across the assessed provinces sits ` +
+      `from the long-term average, expressed as a percentage deviation. Zero means ` +
+      `normal; a negative figure means drier than usual, a positive figure wetter. For ` +
+      `PNG the negative side is the dangerous one: a sustained rainfall deficit dries ` +
+      `soils, stresses subsistence gardens and shrinks the water supply, which is the ` +
+      `chain that turns an ocean signal into a food- and water-security emergency. A ` +
+      `falling line here is the on-the-ground confirmation that an El Niño forecast is ` +
+      `already biting.`,
+    `Oceanic Niño Index (current). Where the projected ONI looks ahead, this is the ` +
+      `latest observed ONI — the same Niño 3.4 sea-surface temperature anomaly in °C, ` +
+      `but measured rather than forecast, as a three-month running mean. Reading it is ` +
+      `identical: above +0.5 °C is El Niño territory, below −0.5 °C is La Niña, the ` +
+      `band between is neutral. Comparing the current value against the projection ` +
+      `shows whether conditions are tracking, exceeding or falling short of the ` +
+      `forecast, which is what tells leadership whether to hold, escalate or stand down.`,
+    `Seismic tempo. This indicator counts magnitude-4.5-and-above earthquakes in PNG ` +
+      `over the last 30 days. It is not an ENSO measure — PNG sits on an active plate ` +
+      `boundary — but it is carried here because seismic events compound a climate ` +
+      `shock: they damage roads, water lines and health posts exactly when a drought ` +
+      `or flood response needs them, and can trigger landslides on rain-saturated ` +
+      `slopes. A rising count is a standing reminder that the disaster-and-hazard ` +
+      `sector can be hit independently of, or on top of, the ENSO picture.`,
+    `Temperature anomaly. This is how far air temperature across the focus provinces ` +
+      `sits above or below the recent normal, in degrees Celsius. A persistent positive ` +
+      `anomaly accelerates evaporation and heat stress, deepening any rainfall deficit ` +
+      `and adding a direct public-health load through heat and disease. Read alongside ` +
+      `the rainfall anomaly, it separates a hot-and-dry pattern — the classic El Niño ` +
+      `drought signature for PNG — from a merely dry or merely warm one, which matters ` +
+      `for how hard and how fast the highland provinces will be hit.`,
+    `Taken together, these readings are summarised in Table 1, which lists every ` +
+      `indicator with its exact value, unit, source and observation date, so any chart ` +
+      `in Figure 2 can be checked against its underlying number. Where an indicator is ` +
+      `trending toward a threshold, that movement flows directly into the provincial ` +
+      `and sectoral assessment that follows and into the recommended actions at the end ` +
+      `of this report.`,
   ];
 }
 
@@ -129,13 +168,28 @@ export function provincialAssessmentParas(m: SitrepModel): string[] {
     : `No province is currently at HIGH or CRITICAL in any sector, so the provincial ` +
       `picture supports a readiness rather than a response posture.`;
   return [
-    `Risk is assessed for every province and mapped to the four-tier scale, with each ` +
-      `province coloured by its single worst-hit sector — the principle being that a ` +
-      `province is only as safe as its most-stressed sector. ${lead}`,
-    `${spread} The risk matrix that follows sets out every sector against every ` +
-      `province, so a reader can see not just which provinces are stressed but which ` +
-      `sectors are driving that stress, and the ranked table beneath orders provinces ` +
-      `worst-first to focus attention where it is most needed.`,
+    `Risk is assessed for every province and graded on the four-tier traffic-light ` +
+      `scale — green Low, amber Medium, red High, black Critical. The map in Figure 3 ` +
+      `colours each province by its single worst-hit sector, on the principle that a ` +
+      `province is only as safe as its most-stressed sector: one red sector turns the ` +
+      `whole province red, even if its other sectors are green. Read the map for the ` +
+      `geography of risk — where on the map of PNG the pressure is concentrated. ` +
+      `${lead}`,
+    `Figure 4, the national risk matrix, is the detail behind the map. It is a grid ` +
+      `with one row per sector and one column per province, plus a leading "National" ` +
+      `column that rolls each sector up to its worst level nationwide and the number of ` +
+      `provinces at that level. Each cell is coloured on the same green-to-black scale ` +
+      `and carries a small trend glyph — ▲ worsening, ▼ improving, — no change since ` +
+      `last cycle. Read a row across to see which provinces are dragging a sector down; ` +
+      `read a column down to see which sectors are stressing a province. The LIVE or ` +
+      `DEMO pill beside each sector name states whether that row rests on a real feed ` +
+      `or a seeded placeholder, so confidence can be weighed cell by cell.`,
+    `${spread} Table 2 then ranks all ${m.provinceCount} provinces worst-first, naming ` +
+      `each province's worst sector, its level, and a "stressed" count of how many of ` +
+      `its sectors sit at HIGH or CRITICAL. Where the map shows where risk is and the ` +
+      `matrix shows what is driving it, the table gives leadership a single ordered ` +
+      `priority list — the provinces at the top are where effort, stocks and attention ` +
+      `should go first.`,
   ];
 }
 

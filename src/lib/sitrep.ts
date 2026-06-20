@@ -27,10 +27,15 @@ import { FOCUS_NAMES } from "./focus-provinces";
 import { bottomLineSentence } from "./national-language";
 import { dataConfidence } from "./data-confidence";
 import {
+  FEED_TABLE_CAPTION,
+  INDICATOR_TABLE_CAPTION,
+  KPI_BAND_CAPTION,
+  MAP_FIGURE_CAPTION,
   provincialRiskCaption,
   RISK_MATRIX_CAPTION,
   selectStrategicContext,
   STRATEGIC_INTRO,
+  TREND_FIGURE_CAPTION,
 } from "./sitrep-shared";
 import {
   CLASSIFICATION,
@@ -397,14 +402,14 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   <section>
     <h2>2 · Situation overview</h2>
     ${paras(situationOverviewParas(m))}
-    ${figure(kpiSvg, "National key indicators — ENSO phase, alert level, risk rating, affected population, high-risk provinces and forecast period.")}
+    ${figure(kpiSvg, KPI_BAND_CAPTION)}
   </section>
 
   <section>
     <h2>3 · Climate &amp; ENSO assessment</h2>
     ${paras(climateAssessmentParas(m))}
-    ${figure(trendsSvg, "Recent trend per climate indicator, with the latest value and unit on each chart.")}
-    ${tableCaption("Climate indicators this cycle, with value, unit, provenance (LIVE/DEMO) and observation date.")}
+    ${figure(trendsSvg, TREND_FIGURE_CAPTION)}
+    ${tableCaption(INDICATOR_TABLE_CAPTION)}
     <table>
       <thead><tr><th>Key</th><th>Label</th><th style="text-align:right">Value</th><th>Unit</th><th>Source</th><th>Observed</th></tr></thead>
       <tbody>${indicatorRows || '<tr><td colspan="6">No indicators available.</td></tr>'}</tbody>
@@ -414,7 +419,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   <section>
     <h2>4 · Provincial risk assessment</h2>
     ${paras(provincialAssessmentParas(m))}
-    ${figure(mapSvg, "Provincial risk map — each province coloured by its single worst-hit sector.")}
+    ${figure(mapSvg, MAP_FIGURE_CAPTION)}
     ${figure(matrixSvg, RISK_MATRIX_CAPTION)}
     ${tableCaption(provincialRiskCaption(m.provinceCount, m.provincesAtRisk))}
     <table>
@@ -447,7 +452,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   <section class="appendix">
     <h2>Annex A · Technical appendix</h2>
     <p class="muted">For data and operations staff. ${esc(m.confidence.line)}</p>
-    ${tableCaption("Status of each data feed for this ingest cycle.")}
+    ${tableCaption(FEED_TABLE_CAPTION)}
     <table>
       <thead><tr><th>Data feed</th><th>Status this cycle</th></tr></thead>
       <tbody>${appendixFeedRows}</tbody>
