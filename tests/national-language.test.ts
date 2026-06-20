@@ -45,7 +45,7 @@ describe("national-language", () => {
   it("bottom line appends the stressed-province clause", () => {
     const s = bottomLineSentence(ns({ enso_phase: "el_nino_alert", alert_level: "RED", national_risk_rating: "high", high_risk_province_count: 3 }));
     expect(s).toBe(
-      `An El Niño is underway (highland drought & frost likely), but the national alert is RED and overall risk is HIGH — 3 of the ${FOCUS_COUNT} focus provinces are stressed across multiple sectors.`,
+      `An El Niño is underway (highland drought & frost likely), but the national alert is RED and overall risk is HIGH: 3 of the ${FOCUS_COUNT} focus provinces are stressed across multiple sectors.`,
     );
   });
 });

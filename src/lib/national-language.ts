@@ -33,7 +33,7 @@ export function bottomLineSentence(national: NationalStatus): string {
     `${PHASE_PLAIN[national.enso_phase]}, but the national alert is ` +
     `${level} and overall risk is ${risk}` +
     (provinces > 0
-      ? ` — ${provinces} of the ${FOCUS_COUNT} focus provinces are stressed across multiple sectors.`
+      ? `: ${provinces} of the ${FOCUS_COUNT} focus provinces are stressed across multiple sectors.`
       : ".")
   );
 }
@@ -41,25 +41,25 @@ export function bottomLineSentence(national: NationalStatus): string {
 // Short plain hint shown under each KPI card. Sourced from KpiStrip so the SITREP
 // KPI band and the dashboard tiles explain each metric identically.
 export const PHASE_HINT: Record<NationalStatus["enso_phase"], string> = {
-  neutral: "Pacific in a normal state — no El Niño or La Niña forcing.",
-  el_nino_watch: "Conditions building toward El Niño — drought/frost risk rising.",
-  el_nino_alert: "El Niño underway — highland drought & frost likely.",
-  la_nina_watch: "Conditions building toward La Niña — flood risk rising.",
-  la_nina_alert: "La Niña underway — heavy rain & flooding likely.",
+  neutral: "Pacific in a normal state: no El Niño or La Niña forcing.",
+  el_nino_watch: "Conditions building toward El Niño: drought/frost risk rising.",
+  el_nino_alert: "El Niño underway: highland drought & frost likely.",
+  la_nina_watch: "Conditions building toward La Niña: flood risk rising.",
+  la_nina_alert: "La Niña underway: heavy rain & flooding likely.",
 };
 
 export const ALERT_HINT: Record<AlertLevel, string> = {
-  GREEN: "Routine — normal monitoring.",
-  AMBER: "Watch — brief sector leads, verify readiness.",
-  RED: "Alert — pre-position supplies, advise focus provinces.",
-  BLACK: "Emergency — activate national operations centre.",
+  GREEN: "Routine: normal monitoring.",
+  AMBER: "Watch: brief sector leads, verify readiness.",
+  RED: "Alert: pre-position supplies, advise focus provinces.",
+  BLACK: "Emergency: activate national operations centre.",
 };
 
 export const RISK_HINT: Record<NationalStatus["national_risk_rating"], string> = {
   low: "Few sectors stressed across focus provinces.",
-  med: "Several sectors stressed — monitor closely.",
-  high: "Many sectors stressed — action needed now.",
-  critical: "Widespread severe stress — crisis footing.",
+  med: "Several sectors stressed: monitor closely.",
+  high: "Many sectors stressed: action needed now.",
+  critical: "Widespread severe stress: crisis footing.",
 };
 
 // Short phase label for the KPI band cell (not the full sentence).

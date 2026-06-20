@@ -72,57 +72,57 @@ export interface IndicatorMeta {
 export const INDICATOR_META: Record<string, IndicatorMeta> = {
   ONI: {
     plain:
-      "The master El Niño / La Niña dial — Pacific Ocean temperature that drives PNG's drought and flood seasons.",
+      "The master El Niño / La Niña dial: Pacific Ocean temperature that drives PNG's drought and flood seasons.",
     danger: "extreme",
-    dangerLabel: "Far from 0 is dangerous — high = El Niño (drought), very low = La Niña (floods).",
+    dangerLabel: "Far from 0 is dangerous: high = El Niño (drought), very low = La Niña (floods).",
   },
   SST_ANOM_NINO34: {
-    plain: "Sea-surface temperature anomaly in the Niño-3.4 region — the raw ENSO ocean signal.",
+    plain: "Sea-surface temperature anomaly in the Niño-3.4 region: the raw ENSO ocean signal.",
     danger: "extreme",
     dangerLabel: "Far from 0 is dangerous in either direction.",
   },
   RAINFALL_ANOM: {
     plain: "How far rainfall is above or below normal across the focus provinces.",
     danger: "low",
-    dangerLabel: "Falling / negative is dangerous — a drought signal.",
+    dangerLabel: "Falling / negative is dangerous: a drought signal.",
   },
   SOIL_MOISTURE: {
-    plain: "How wet the root-zone soil is versus a normal year — feeds crops and water supply.",
+    plain: "How wet the root-zone soil is versus a normal year: feeds crops and water supply.",
     danger: "low",
-    dangerLabel: "Falling is dangerous — crops and water under stress.",
+    dangerLabel: "Falling is dangerous: crops and water under stress.",
   },
   TEMP_ANOM: {
     plain: "How many degrees hotter or cooler than the seasonal normal it has been.",
     danger: "high",
-    dangerLabel: "Rising heat is dangerous — health stress, evaporation, fire risk.",
+    dangerLabel: "Rising heat is dangerous: health stress, evaporation, fire risk.",
   },
   SEISMIC: {
     plain:
-      "Count of magnitude-4.5+ earthquakes in PNG over 30 days — PNG sits on the Ring of Fire.",
+      "Count of magnitude-4.5+ earthquakes in PNG over 30 days: PNG sits on the Ring of Fire.",
     danger: "high",
-    dangerLabel: "Rising count is dangerous — more shaking, higher disaster risk.",
+    dangerLabel: "Rising count is dangerous: more shaking, higher disaster risk.",
   },
   NDVI: {
-    plain: "Satellite vegetation health — greener crops and forest read higher.",
+    plain: "Satellite vegetation health: greener crops and forest read higher.",
     danger: "low",
-    dangerLabel: "Falling is dangerous — drying or failing vegetation.",
+    dangerLabel: "Falling is dangerous: drying or failing vegetation.",
   },
   SOI: {
-    plain: "Southern Oscillation Index — the swing in air pressure across the Pacific that confirms the El Niño / La Niña phase.",
+    plain: "Southern Oscillation Index: the swing in air pressure across the Pacific that confirms the El Niño / La Niña phase.",
     danger: "low",
-    dangerLabel: "Strongly negative is dangerous — reinforces El Niño.",
+    dangerLabel: "Strongly negative is dangerous: reinforces El Niño.",
   },
   TRADE_WIND_ANOM: {
     plain:
-      "West-Pacific trade-wind strength — weakening or reversing winds push warm water east, a leading El Niño trigger.",
+      "West-Pacific trade-wind strength: weakening or reversing winds push warm water east, a leading El Niño trigger.",
     danger: "low",
-    dangerLabel: "Negative is dangerous — weakened/westerly winds precede El Niño.",
+    dangerLabel: "Negative is dangerous: weakened/westerly winds precede El Niño.",
   },
   PROJECTED_ONI: {
     plain:
-      "Where the dynamical models think the ocean is heading next season — the NMME (NOAA-GFDL SPEAR) ensemble's projected ONI, relayed live.",
+      "Where the dynamical models think the ocean is heading next season: the NMME (NOAA-GFDL SPEAR) ensemble's projected ONI, relayed live.",
     danger: "extreme",
-    dangerLabel: "Far from 0 is dangerous — high = projected El Niño, very low = La Niña.",
+    dangerLabel: "Far from 0 is dangerous: high = projected El Niño, very low = La Niña.",
   },
 };
 

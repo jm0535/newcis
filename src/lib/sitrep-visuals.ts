@@ -412,7 +412,7 @@ export function provincialMapSvg(geojson: ProvinceFC, sectorRisk: SectorRisk[]):
     if (!cur || LEVEL_RANK[r.level] > LEVEL_RANK[cur]) worstByCode.set(r.province_code, r.level);
   }
 
-  let body = `<text x="${M}" y="${M + 14}" font-size="14" font-weight="600" fill="${INK}">Provincial risk — worst sector per province</text>`;
+  let body = `<text x="${M}" y="${M + 14}" font-size="14" font-weight="600" fill="${INK}">Provincial risk: worst sector per province</text>`;
 
   for (const f of geojson.features) {
     const level = worstByCode.get(f.properties.code) ?? null;
@@ -428,5 +428,66 @@ export function provincialMapSvg(geojson: ProvinceFC, sectorRisk: SectorRisk[]):
   }
 
   body += legendStrip(M, H - legendH + 4);
+  return svgRoot(W, H, body);
+}
+
+// --- decision-pipeline schematic -------------------------------------------
+
+// A five-stage left-to-right flow that shows, at a glance, how this report
+// reasons: from the state of the Pacific, through the climate indicators it
+// drives, into the documented risk engine, out to the provinces and sectors
+// that feel it, and finally to the actions each part of government should take.
+// It exists so a non-technical executive can see the whole chain on one line
+// before reading any section in detail. Pure inline SVG so it embeds in the
+// print HTML and rasterizes cleanly into the .docx.
+export function pipelineSchematicSvg(): string {
+  const stages: { title: string; sub: string }[] = [
+    { title: "1. Pacific state", sub: "El Niño / La Niña / Neutral" },
+    { title: "2. Climate indicators", sub: "ONI, rainfall, temperature…" },
+    { title: "3. Risk engine", sub: "fixed, documented thresholds" },
+    { title: "4. Provinces & sectors", sub: "who is stressed, and where" },
+    { title: "5. Recommended actions", sub: "who acts, and by when" },
+  ];
+  const W = 960;
+  const H = 150;
+  const M = 16;
+  const gap = 28; // space for the connecting arrow between boxes
+  const n = stages.length;
+  const boxW = (W - M * 2 - gap * (n - 1)) / n;
+  const boxH = 78;
+  const boxY = 44;
+  const ACCENT = "#0f172a";
+
+  let body =
+    `<text x="${M}" y="${M + 14}" font-size="14" font-weight="600" fill="${INK}">` +
+    `How this report reasons: from the Pacific to a decision</text>`;
+
+  stages.forEach((s, i) => {
+    const x = M + i * (boxW + gap);
+    const cx = x + boxW / 2;
+    body +=
+      `<rect x="${x}" y="${boxY}" width="${boxW.toFixed(1)}" height="${boxH}" rx="8" ` +
+      `fill="#fafafa" stroke="${LINE}"/>` +
+      `<rect x="${x}" y="${boxY}" width="4" height="${boxH}" rx="2" fill="${ACCENT}"/>` +
+      `<text x="${cx}" y="${boxY + 32}" text-anchor="middle" font-size="13" ` +
+      `font-weight="600" fill="${INK}">${svgEsc(s.title)}</text>` +
+      `<text x="${cx}" y="${boxY + 52}" text-anchor="middle" font-size="11" ` +
+      `fill="${MUTED}">${svgEsc(truncate(s.sub, Math.floor(boxW / 6))) }</text>`;
+
+    if (i < n - 1) {
+      const ax = x + boxW + 4;
+      const ay = boxY + boxH / 2;
+      body +=
+        `<line x1="${ax}" y1="${ay}" x2="${ax + gap - 9}" y2="${ay}" ` +
+        `stroke="${MUTED}" stroke-width="2"/>` +
+        `<path d="M${ax + gap - 9},${ay} l-6,-4 v8 z" fill="${MUTED}"/>`;
+    }
+  });
+
+  body +=
+    `<text x="${M}" y="${H - 10}" font-size="11" fill="${MUTED}">` +
+    `Every section of this report sits at one of these five stages; ` +
+    `each stage is traceable back to the evidence behind it.</text>`;
+
   return svgRoot(W, H, body);
 }

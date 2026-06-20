@@ -146,10 +146,10 @@ export function deriveOutlook(
       unit: soi.unit,
       note:
         lean === "el_nino"
-          ? "Sustained negative SOI — atmosphere coupled toward El Niño"
+          ? "Sustained negative SOI: atmosphere coupled toward El Niño"
           : lean === "la_nina"
-            ? "Sustained positive SOI — atmosphere coupled toward La Niña"
-            : "SOI near neutral — no clear atmospheric coupling",
+            ? "Sustained positive SOI: atmosphere coupled toward La Niña"
+            : "SOI near neutral: no clear atmospheric coupling",
     });
   }
 
@@ -165,9 +165,9 @@ export function deriveOutlook(
       unit: wind.unit,
       note:
         lean === "el_nino"
-          ? "Weakened/westerly trades push warm water east — leading El Niño trigger"
+          ? "Weakened/westerly trades push warm water east: leading El Niño trigger"
           : lean === "la_nina"
-            ? "Strengthened easterly trades pile warm water west — leading La Niña sign"
+            ? "Strengthened easterly trades pile warm water west: leading La Niña sign"
             : "Trade-wind anomaly near neutral",
     });
   }

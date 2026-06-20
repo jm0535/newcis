@@ -21,16 +21,17 @@ import {
   riskMatrixSvg,
   trendChartSvg,
   provincialMapSvg,
+  pipelineSchematicSvg,
 } from "./sitrep-visuals";
 import type { WefInsight } from "./wef";
 import { FOCUS_NAMES } from "./focus-provinces";
 import { bottomLineSentence } from "./national-language";
 import { dataConfidence } from "./data-confidence";
 import {
-  FEED_TABLE_CAPTION,
   INDICATOR_TABLE_CAPTION,
   KPI_BAND_CAPTION,
   MAP_FIGURE_CAPTION,
+  PIPELINE_SCHEMATIC_CAPTION,
   provincialRiskCaption,
   RISK_MATRIX_CAPTION,
   selectStrategicContext,
@@ -69,38 +70,35 @@ function periodLabel(date: Date): string {
 function recommendedActions(national: NationalStatus): string[] {
   if (national.alert_level === "BLACK") {
     return [
-      "Command and coordination: activate the National Emergency Operations Centre (NEOC) and convene the NSA standing committee within 24 hours, with a fixed daily situation brief to the Prime Minister's office until the alert is downgraded.",
-      "Clusters: stand up the Food Security, Water and Public Health clusters at full capacity, each under its lead agency, and confirm cluster coordinators and 24-hour duty rosters are in place.",
-      "Logistics and procurement: authorise emergency procurement and pre-positioning of relief stocks for the highland provinces, and secure air and road corridors to Enga, Southern Highlands and Western Highlands before access degrades.",
-      "Resourcing: release contingency funds to provincial disaster offices and request a national supplementary appropriation if the event is assessed to exceed standing reserves.",
-      "Public communication: issue a national public advisory through PNGNWS and provincial radio, with clear guidance on water rationing, food conservation and health-seeking behaviour.",
-      "International support: notify and, where appropriate, formally request assistance from regional partners and humanitarian agencies, ensuring all incoming support is logged against the cluster system.",
+      "National leadership (NSA): activate the National Emergency Operations Centre (NEOC) and convene the NSA standing committee within 24 hours, with a fixed daily situation brief to the Prime Minister's office until the alert is downgraded. This is the emergency footing the WEF Global Risks Report identifies as the most expensive point at which to begin acting, so the priority is to compress decision time, not to gather more evidence.",
+      "National leadership (Treasury): release contingency funds to provincial disaster offices immediately, and request a national supplementary appropriation if the event is assessed to exceed standing reserves. Funding decisions taken now, ahead of confirmed losses, are the early action the strategic-context findings make the economic case for.",
+      "Sector lead agencies: stand up the Food Security, Water and Public Health clusters at full capacity, each under its named lead agency, and confirm cluster coordinators and 24-hour duty rosters are in place. These are the same sectors flagged in the strategic-context section as the front line of a compounding climate shock.",
+      "Sector lead agencies (Logistics): authorise emergency procurement and pre-positioning of relief stocks for the highland provinces, and secure air and road corridors before access degrades. PNG's terrain means infrastructure fails early under a shock, so corridors must be held open now rather than reopened later.",
+      "Provincial coordinators: take direction of relief distribution in Enga, Southern Highlands and Western Highlands, confirm local duty rosters, and report any access or staffing gaps to the NEOC daily. The provincial assessment above names where the pressure is concentrated; these are the provinces to resource first.",
+      "Public communication and international support: issue a national public advisory through PNGNWS and provincial radio with clear guidance on water rationing, food conservation and health-seeking behaviour, and formally request assistance from regional partners and humanitarian agencies, logging all incoming support against the cluster system.",
     ];
   }
   if (national.alert_level === "RED") {
     return [
-      "Early action: issue province-level early-action advisories to all focus provinces, naming the specific sectors at risk and the triggers that would force escalation to emergency footing.",
-      "Pre-positioning: move water-treatment and essential health supplies into Enga and Southern Highlands now, while access and budget headroom remain, rather than after a shortfall is confirmed.",
-      "Coordination: schedule a weekly inter-agency synchronisation chaired by the NSA, with each sector lead reporting readiness against its contingency plan, and hold it until the national status downgrades.",
-      "Provincial readiness: direct provincial disaster coordinators to verify storage, transport and staffing for a sustained dry spell, and to report gaps within seven days.",
-      "Monitoring: tighten the ONI, rainfall-anomaly and soil-moisture watch to a twice-weekly cadence so any crossing into emergency thresholds is caught early.",
-      "Vulnerable groups: task the Health and Food Security clusters with confirming reach into the most remote and food-insecure communities, where impact arrives first and recovery is slowest.",
+      "National leadership (NSA): issue province-level early-action advisories to all focus provinces, naming the specific sectors at risk and the triggers that would force escalation to emergency footing, and chair a weekly inter-agency synchronisation until the national status downgrades. This is the pre-emptive window the WEF strategic-context findings identify as where intervention is cheapest and most effective.",
+      "Sector lead agencies: each sector lead reports readiness against its contingency plan at the weekly sync, and the Water and Health leads move treatment and essential supplies into Enga and Southern Highlands now, while access and budget headroom remain, rather than after a shortfall is confirmed.",
+      "Sector lead agencies (Food Security and Health): confirm reach into the most remote and food-insecure communities, where impact arrives first and recovery is slowest. The strategic-context section ties PNG's import exposure and subsistence-garden dependence directly to these sectors.",
+      "Provincial coordinators: verify storage, transport and staffing for a sustained dry spell and report gaps within seven days. The provincial assessment above ranks where to direct this effort first.",
+      "Monitoring (NEWCIS data team): tighten the ONI, rainfall-anomaly and soil-moisture watch to a twice-weekly cadence so any crossing into emergency thresholds is caught early and the report can be reissued ahead of the weekly schedule if needed.",
     ];
   }
   if (national.alert_level === "AMBER") {
     return [
-      "Monitoring: track ONI, rainfall anomaly and soil moisture on a weekly cadence and flag any further escalation against the documented alert thresholds the moment it occurs.",
-      "Contingency planning: brief sector leads on the contingency triggers for their domain and confirm each has a current, costed early-action plan ready to execute if the status moves to RED.",
-      "Readiness checks: verify that cluster contact lists, duty rosters and provincial coordinator details are current, so activation is not delayed by stale records.",
-      "Stock review: have lead agencies review the state and location of pre-positioned water, health and food stocks and identify any replenishment needed before the dry season deepens.",
-      "Communication: prepare, but do not yet issue, province-level public advisories so they can be released without delay if conditions worsen.",
+      "National leadership (NSA): treat this as a watch, not yet a response. Brief sector leads on the contingency triggers for their domain and confirm each has a current, costed early-action plan ready to execute if the status moves to RED. The WEF strategic-context findings are the case for using this quiet period to prepare rather than wait.",
+      "Sector lead agencies: review the state and location of pre-positioned water, health and food stocks and identify any replenishment needed before the dry season deepens, prioritising the sectors and provinces flagged in the assessment above.",
+      "Provincial coordinators: verify that cluster contact lists, duty rosters and provincial coordinator details are current, so activation is not delayed by stale records, and prepare (but do not yet issue) province-level public advisories.",
+      "Monitoring (NEWCIS data team): track ONI, rainfall anomaly and soil moisture on a weekly cadence and flag any further escalation against the documented alert thresholds the moment it occurs.",
     ];
   }
   return [
-    "Routine monitoring: track the climate indicators on the standing cadence; no operational triggers have been met this cycle.",
-    "Sustain the readiness posture: keep cluster contact lists, provincial coordinator details and pre-positioned stocks current so the system can escalate without a standing start.",
-    "Maintain the data-ingestion cadence so the next assessment rests on complete, current feeds, and review any indicator that has lapsed to DEMO for a path back to a live source.",
-    "Use this quiet period for preparedness — exercises, plan reviews and stock replenishment — while the cost and disruption of doing so are lowest.",
+    "Routine monitoring (NEWCIS data team): track the climate indicators on the standing cadence; no operational triggers have been met this cycle. Maintain the data-ingestion cadence so the next assessment rests on complete, current feeds, and review any indicator that has lapsed to DEMO for a path back to a live source.",
+    "National leadership and sector lead agencies: sustain the readiness posture. Keep cluster contact lists, provincial coordinator details and pre-positioned stocks current so the system can escalate without a standing start.",
+    "Provincial coordinators: use this quiet period for preparedness, running exercises, plan reviews and stock replenishment while the cost and disruption of doing so are lowest. The strategic-context section is the standing reminder that early, cheap action is the entire purpose of this system.",
   ];
 }
 
@@ -287,6 +285,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   const matrixSvg = riskMatrixSvg(v.sectorRisk);
   const trendsSvg = trendChartSvg(v.history, v.indicators ?? []);
   const mapSvg = provincialMapSvg(v.geojson, v.sectorRisk);
+  const pipelineSvg = pipelineSchematicSvg();
 
   const indicatorRows = m.indicators
     .map(
@@ -344,6 +343,10 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   let tblNo = 0;
   const figure = (svg: string, caption: string): string =>
     `<figure>${svg}<figcaption><b>Figure ${++figNo}.</b> ${esc(caption)}</figcaption></figure>`;
+  // An unnumbered schematic: a conceptual aid, not a cross-referenced exhibit, so
+  // it does not consume a Figure number and the prose's "Figure 1…4" stay correct.
+  const schematic = (svg: string, caption: string): string =>
+    `<figure>${svg}<figcaption>${esc(caption)}</figcaption></figure>`;
   const tableCaption = (caption: string): string =>
     `<p class="tcaption"><b>Table ${++tblNo}.</b> ${esc(caption)}</p>`;
   // Render a list of prose paragraphs as a run of <p> blocks.
@@ -354,12 +357,6 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
     m.confidence.level === "GOOD" ? "#166534" : m.confidence.level === "PARTIAL" ? "#92400e" : "#991b1b";
   const confBadgeBg =
     m.confidence.level === "GOOD" ? "#dcfce7" : m.confidence.level === "PARTIAL" ? "#fef3c7" : "#fee2e2";
-
-  const appendixFeedRows = m.confidence.feeds.length
-    ? m.confidence.feeds
-        .map((f) => `<tr><td>${esc(f.name)}</td><td><b>${f.ok ? "OK" : "FAIL"}</b></td></tr>`)
-        .join("")
-    : '<tr><td colspan="2">No ingest run reported this cycle.</td></tr>';
 
   const analystSection = m.analystNote
     ? `<section><h2>9 · Analyst note</h2><p>${esc(m.analystNote)}</p></section>`
@@ -397,6 +394,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   <section>
     <h2>1 · Introduction</h2>
     ${paras(introductionParas(m))}
+    ${schematic(pipelineSvg, PIPELINE_SCHEMATIC_CAPTION)}
   </section>
 
   <section>
@@ -449,16 +447,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
 
   ${analystSection}
 
-  <section class="appendix">
-    <h2>Annex A · Technical appendix</h2>
-    <p class="muted">For data and operations staff. ${esc(m.confidence.line)}</p>
-    ${tableCaption(FEED_TABLE_CAPTION)}
-    <table>
-      <thead><tr><th>Data feed</th><th>Status this cycle</th></tr></thead>
-      <tbody>${appendixFeedRows}</tbody>
-    </table>
-    <p class="muted">NEWCIS proof-of-concept · newcis.in4metrix.dev · Generated from a point-in-time data snapshot. Figures marked DEMO are seeded references, not live feeds.</p>
-  </section>
+  <p class="muted">NEWCIS proof-of-concept · newcis.in4metrix.dev · Generated from a point-in-time data snapshot. Figures marked DEMO are seeded references, not live feeds.</p>
 
   <div class="classification">${esc(CLASSIFICATION)}</div>
 </body>

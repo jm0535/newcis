@@ -17,19 +17,31 @@ import { FOCUS_NAMES } from "./focus-provinces";
 // isolation, the way a figure caption in a formal report must be. Shared so the
 // HTML and .docx captions are identical.
 export const RISK_MATRIX_CAPTION =
-  "National risk matrix — sectors (rows) against the National roll-up and all " +
+  "National risk matrix: sectors (rows) against the National roll-up and all " +
   "provinces (columns), sorted worst-first. Cell colour encodes risk level: " +
   "green = Low, amber = Medium, red = High, black = Critical. The National cell " +
   "states each sector's worst level nationwide and ×N, the number of provinces at " +
-  "that level. The pill beside each sector marks its data provenance — LIVE (real " +
+  "that level. The pill beside each sector marks its data provenance: LIVE (real " +
   "feed this cycle) or DEMO (seeded placeholder). Trend glyphs show movement since " +
   "the last cycle: ▲ rising (worsening), ▼ falling (improving), — flat (no change).";
+
+// Schematic — the decision-pipeline diagram in the Introduction. States the five
+// stages and that every section maps onto one, so a non-technical reader sees the
+// whole chain of reasoning before reading any section. Shared so the HTML and the
+// .docx caption it identically.
+export const PIPELINE_SCHEMATIC_CAPTION =
+  "How the report reasons, in five stages: the state of the Pacific (El Niño, La " +
+  "Niña or Neutral) drives the climate indicators; the indicators are graded by a " +
+  "fixed, documented risk engine; the grades identify which provinces and sectors " +
+  "are stressed; and that picture sets the recommended actions, naming who acts and " +
+  "by when. Every section of this report sits at one of these five stages, so a " +
+  "reader can place any figure or table in the chain from cause to decision.";
 
 // Figure 1 — the KPI band. Spells out every tile and the two vocabularies on it
 // (the four-tier alert words and the risk rating) so the band reads in isolation.
 export const KPI_BAND_CAPTION =
-  "National key-indicator band — the six headline readings that summarise the cycle: " +
-  "ENSO phase (El Niño, La Niña or Neutral — the state of the Pacific); national alert " +
+  "National key-indicator band: the six headline readings that summarise the cycle: " +
+  "ENSO phase (El Niño, La Niña or Neutral, the state of the Pacific); national alert " +
   "level on the four-tier scale (GREEN routine, AMBER watch, RED alert, BLACK " +
   "emergency); overall national risk rating; estimated affected population; the count " +
   "of high-risk provinces; and the forecast period the assessment covers. Together " +
@@ -38,7 +50,7 @@ export const KPI_BAND_CAPTION =
 // Figure 2 — the trend small-multiples. Explains what a single chart shows and how
 // to read the line, since the per-indicator meaning is detailed in the prose above.
 export const TREND_FIGURE_CAPTION =
-  "Recent trend per climate indicator — one small chart each, in the order the text " +
+  "Recent trend per climate indicator: one small chart each, in the order the text " +
   "explains them. Each chart's title names the indicator and its title line shows the " +
   "latest value with its unit (°C for temperature anomalies, % for rainfall deviation, " +
   "a count for seismic events). The line traces the most recent readings left-to-right, " +
@@ -48,7 +60,7 @@ export const TREND_FIGURE_CAPTION =
 // Figure 3 — the provincial risk map. Spells out the colour key and the worst-hit
 // rule so the map's geography of risk is unambiguous.
 export const MAP_FIGURE_CAPTION =
-  "Provincial risk map — each province shaded by its single worst-hit sector on the " +
+  "Provincial risk map: each province shaded by its single worst-hit sector on the " +
   "four-tier scale (green = Low, amber = Medium, red = High, black = Critical). A " +
   "province takes the colour of its most-stressed sector alone, so one High sector " +
   "shades the whole province red even where its other sectors are calm. Read the map " +
@@ -58,17 +70,17 @@ export const MAP_FIGURE_CAPTION =
 // Table 1 — the climate-indicator table. States exactly what each column means and
 // why the table sits beside Figure 2 (it is the auditable number behind each chart).
 export const INDICATOR_TABLE_CAPTION =
-  "Climate indicators this cycle — the exact figure behind every chart in Figure 2. " +
+  "Climate indicators this cycle: the exact figure behind every chart in Figure 2. " +
   "Columns give each indicator's key and plain-language label, its current value and " +
   "unit, the data source, and the observation date, plus a provenance mark: LIVE " +
   "(pulled from a real feed this cycle) or DEMO (a seeded reference value standing in " +
-  "for a feed with no public interface yet). This table is the audit trail — it lets a " +
+  "for a feed with no public interface yet). This table is the audit trail; it lets a " +
   "reader confirm any chart against its underlying number and judge how much of the " +
   "assessment rests on live data.";
 
 // Table 3 — the data-feed status table in the technical annex.
 export const FEED_TABLE_CAPTION =
-  "Data-feed status this ingest cycle — one row per source the system attempted to " +
+  "Data-feed status this ingest cycle: one row per source the system attempted to " +
   "pull, with OK where the feed returned current data and FAIL where it did not. A " +
   "failed feed does not blank the report: the affected indicator falls back to its " +
   "last-good or seeded value and is marked accordingly, so leadership can see precisely " +
@@ -97,12 +109,12 @@ export const STRATEGIC_INTRO =
   "executive will rightly ask: is PNG's situation a local anomaly, or part of a " +
   "pattern the rest of the world is also acting on? Each item below is a WEF finding, " +
   "paired with a \"why it matters here\" line that ties it directly to a specific " +
-  "NEWCIS indicator or sector — so the global framing is not abstract commentary but " +
+  "NEWCIS indicator or sector, so the global framing is not abstract commentary but " +
   "an external check on the same risks this report tracks. The tiles are selected to " +
   "match this cycle: national-outlook items always appear to set the backdrop, and a " +
   "sector item appears only when that sector is actually stressed (HIGH or CRITICAL) " +
-  "in a focus province now. Every item is marked DEMO — a seeded reference drawn from " +
-  "an openly published WEF report, not a live feed — and is linked to its public " +
+  "in a focus province now. Every item is marked DEMO (a seeded reference drawn from " +
+  "an openly published WEF report, not a live feed) and is linked to its public " +
   "source so any reader can verify it.";
 
 // A "why it matters here" line per scope, tying each WEF item back to the specific
@@ -137,8 +149,8 @@ const RELEVANCE: Record<string, string> = {
   "Infrastructure":
     "Links to the Infrastructure sector and the seismic-tempo indicator: it argues " +
     "resilience must be built into roads, power and water before the next shock, which " +
-    "is exactly the infrastructure that a drought response — or a compounding earthquake " +
-    "— depends on in PNG's terrain.",
+    "is exactly the infrastructure that a drought response, or a compounding earthquake, " +
+    "depends on in PNG's terrain.",
   "Energy Security":
     "Links to the Energy Security sector: it ties energy reliability to the same " +
     "climate-transition pressures driving this alert, a reminder that power supply " +
@@ -150,7 +162,7 @@ const RELEVANCE: Record<string, string> = {
   "Disaster & Hazard":
     "Links to the Disaster & Hazard sector and the seismic-tempo indicator: WEF's " +
     "finding that early warning can sharply cut disaster damage is the direct case for " +
-    "NEWCIS itself — funding resilience and early action ahead of the event, while it " +
+    "NEWCIS itself: funding resilience and early action ahead of the event, while it " +
     "is cheapest, is the mission this report serves.",
 };
 

@@ -237,21 +237,21 @@ describe("renderSitrepHtml exec-first government report", () => {
     ],
   };
 
-  it("leads exec-first, embeds the four visuals, and appendices the feed health", () => {
+  it("leads exec-first, embeds the visuals incl. the pipeline schematic, no tech appendix", () => {
     const model = buildSitrepModel({ national, indicators, sectorRisk, lastRun: { started_at: "", finished_at: "", status: "partial", sources_ok: { noaa_oni: false, hdx_food: true }, notes: "" } });
     const html = renderSitrepHtml(model, { national, sectorRisk, history, geojson });
 
-    // Visuals present.
+    // Visuals present: KPI band, trends, map, matrix + the Introduction schematic.
     const svgCount = (html.match(/<svg /g) ?? []).length;
-    expect(svgCount).toBeGreaterThanOrEqual(4);
+    expect(svgCount).toBeGreaterThanOrEqual(5);
+    // The decision-pipeline schematic sits in the Introduction.
+    expect(html).toContain("How this report reasons");
     // Bottom line present.
     expect(html).toContain("national alert is RED");
-    // Confidence line present, NOT the raw dump in the body.
+    // Confidence line present in the Introduction, NOT a raw feed dump.
     expect(html).toContain("data feeds reported this cycle");
-    // Technical appendix heading present and holds the raw feed status.
-    expect(html).toContain("Technical appendix");
-    expect(html).toContain("noaa_oni");
-    // Exec sections come before the appendix.
-    expect(html.indexOf("Bottom line")).toBeLessThan(html.indexOf("Technical appendix"));
+    // Annex A / technical appendix removed: no feed-status table in the report.
+    expect(html).not.toContain("Technical appendix");
+    expect(html).not.toContain("noaa_oni");
   });
 });

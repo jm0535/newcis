@@ -22,13 +22,13 @@ import {
 } from "docx";
 import type { SitrepModel } from "./types";
 import type { SitrepVisuals } from "./sitrep";
-import { kpiBandSvg, riskMatrixSvg, trendChartSvg, provincialMapSvg } from "./sitrep-visuals";
+import { kpiBandSvg, riskMatrixSvg, trendChartSvg, provincialMapSvg, pipelineSchematicSvg } from "./sitrep-visuals";
 import { svgToPng } from "./sitrep-raster";
 import {
-  FEED_TABLE_CAPTION,
   INDICATOR_TABLE_CAPTION,
   KPI_BAND_CAPTION,
   MAP_FIGURE_CAPTION,
+  PIPELINE_SCHEMATIC_CAPTION,
   provincialRiskCaption,
   RISK_MATRIX_CAPTION,
   STRATEGIC_INTRO,
@@ -152,6 +152,16 @@ function caption(label: string, text: string): Paragraph {
   });
 }
 
+// An unnumbered caption for a conceptual schematic: same muted styling as a
+// figure caption but no "Figure N." label, so it does not disturb the numbered
+// exhibit sequence the prose cross-references.
+function plainCaption(text: string): Paragraph {
+  return new Paragraph({
+    spacing: { after: 120 },
+    children: [new TextRun({ text, size: 16, color: "52525B" })],
+  });
+}
+
 // The centred classification banner top and bottom of the document.
 function classificationBanner(): Paragraph {
   return new Paragraph({
@@ -190,6 +200,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
   const matrixFig = await svgFigure(riskMatrixSvg(v.sectorRisk), 600, 280);
   const mapFig = await svgFigure(provincialMapSvg(v.geojson, v.sectorRisk), 470, 380);
   const trendsFig = await svgFigure(trendChartSvg(v.history, v.indicators ?? []), 600, 200);
+  const pipelineFig = await svgFigure(pipelineSchematicSvg(), 600, 94);
 
   // Figure/table numbering. A government report cross-references its exhibits, so
   // each visual and data table carries a sequential, captioned label in document
@@ -236,6 +247,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
   // 1 · Introduction.
   children.push(sectionHeading("1 · Introduction"));
   for (const p of introductionParas(m)) children.push(bodyPara(p));
+  children.push(pipelineFig, plainCaption(PIPELINE_SCHEMATIC_CAPTION));
 
   // 2 · Situation overview — KPI band.
   children.push(
@@ -398,31 +410,11 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
     );
   }
 
-  // Annex A · Technical appendix — replaces the old "Data sources this cycle" footer.
+  // Document footer: the standing provenance disclaimer, then the closing banner.
   children.push(
     new Paragraph({
       spacing: { before: 320 },
       border: { top: BORDER },
-      heading: HeadingLevel.HEADING_2,
-      children: [new TextRun({ text: "ANNEX A · TECHNICAL APPENDIX", bold: true, size: 20 })],
-    }),
-    new Paragraph({
-      spacing: { after: 80 },
-      children: [new TextRun({ text: `For data and operations staff. ${m.confidence.line}`, size: 16, color: "71717A" })],
-    }),
-    caption(tblLabel(), FEED_TABLE_CAPTION),
-  );
-  const feedHead = new TableRow({
-    tableHeader: true,
-    children: [headerCell("Data feed"), headerCell("Status this cycle")],
-  });
-  const feedRows = m.confidence.feeds.length
-    ? m.confidence.feeds.map((f) => new TableRow({ children: [cell(f.name), cell(f.ok ? "OK" : "FAIL", { bold: true })] }))
-    : [new TableRow({ children: [cell("No ingest run reported this cycle.")] })];
-  children.push(fullWidthTable([feedHead, ...feedRows]));
-  children.push(
-    new Paragraph({
-      spacing: { before: 80 },
       children: [
         new TextRun({
           text: "NEWCIS proof-of-concept · newcis.in4metrix.dev · Generated from a point-in-time data snapshot. Figures marked DEMO are seeded references, not live feeds.",
