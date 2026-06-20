@@ -108,7 +108,7 @@ describe("national-language", () => {
   it("bottom line appends the stressed-province clause", () => {
     const s = bottomLineSentence(ns({ enso_phase: "el_nino_alert", alert_level: "RED", national_risk_rating: "high", high_risk_province_count: 3 }));
     expect(s).toBe(
-      "An El Niño is underway (highland drought & frost likely), but the national alert is RED and overall risk is HIGH — 3 of the 4 focus provinces are stressed across multiple sectors.",
+      "An El Niño is underway (highland drought & frost likely), but the national alert is RED and overall risk is HIGH — 3 of the 22 focus provinces are stressed across multiple sectors.",
     );
   });
 });
@@ -703,9 +703,10 @@ Append to `tests/sitrep-visuals.test.ts`:
 import { riskMatrixSvg } from "../src/lib/sitrep-visuals";
 import type { SectorRisk } from "../src/lib/types";
 
+// PG08 = Enga, a real focus province p-code (codes are PG01–PG22, not PG-XX).
 function sr(over: Partial<SectorRisk> = {}): SectorRisk {
   return {
-    province_code: "PG-EN",
+    province_code: "PG08",
     sector: "Food Security",
     level: "critical",
     score: 0.9,
@@ -746,6 +747,8 @@ Append to `src/lib/sitrep-visuals.ts` (before the final `export { … }` line, t
 
 import type { Sector } from "./types";
 
+// All 8 sectors, in dashboard RiskMatrix.tsx order (mirror it exactly —
+// "Disaster & Hazard" is the 8th and must not be dropped).
 const SECTORS: Sector[] = [
   "Food Security",
   "Water Security",
@@ -754,6 +757,7 @@ const SECTORS: Sector[] = [
   "Infrastructure",
   "Energy Security",
   "Social Stability",
+  "Disaster & Hazard",
 ];
 
 const LEVEL_RANK: Record<RiskLevel, number> = { low: 0, med: 1, high: 2, critical: 3 };
@@ -766,10 +770,14 @@ function worstLevel(rows: SectorRisk[]): RiskLevel | null {
   );
 }
 
-// Rows = the 7 sectors. Columns = a leading National column (the sector's worst
-// level across the focus provinces) then one column per focus province. Each
-// cell is a traffic-light square; the National cell also shows a count of focus
-// provinces at HIGH/CRITICAL for that sector. Legend strip beneath.
+// Rows = the 8 sectors. Columns = a leading National column (the sector's worst
+// level across the provinces present in data) then one column per province,
+// sorted worst-first to mirror the dashboard RiskMatrix.tsx (total level-weight
+// desc, then peak, then name). Count-agnostic: render whatever province codes
+// appear in `sectorRisk` (the live set is 22). Each cell is a traffic-light
+// square; the National cell shows a count of provinces at HIGH/CRITICAL for that
+// sector. Cells are narrow (28px) so all 22 columns fit an A4 print width.
+// Legend strip beneath.
 export function riskMatrixSvg(sectorRisk: SectorRisk[]): string {
   const focusRisk = sectorRisk.filter((r) => FOCUS_CODES.includes(r.province_code));
   if (!focusRisk.length) {
@@ -780,9 +788,24 @@ export function riskMatrixSvg(sectorRisk: SectorRisk[]): string {
     );
   }
 
-  const cols = ["National", ...FOCUS_CODES];
+  // Province codes present in data, sorted worst-first (mirror RiskMatrix.tsx).
+  const codesPresent = [...new Set(focusRisk.map((r) => r.province_code))];
+  const provTotal = (code: string) =>
+    focusRisk
+      .filter((r) => r.province_code === code)
+      .reduce((sum, r) => sum + LEVEL_RANK[r.level], 0);
+  const provPeak = (code: string) =>
+    Math.max(0, ...focusRisk.filter((r) => r.province_code === code).map((r) => LEVEL_RANK[r.level]));
+  const sortedCodes = codesPresent.sort(
+    (a, b) =>
+      provTotal(b) - provTotal(a) ||
+      provPeak(b) - provPeak(a) ||
+      (FOCUS_SHORT_LABELS[a] ?? a).localeCompare(FOCUS_SHORT_LABELS[b] ?? b),
+  );
+
+  const cols = ["National", ...sortedCodes];
   const labelW = 150;
-  const cellW = 84;
+  const cellW = 28;
   const cellH = 30;
   const headH = 40;
   const W = labelW + cols.length * cellW + 16;
@@ -1017,12 +1040,12 @@ const fc: ProvinceFC = {
   features: [
     {
       type: "Feature",
-      properties: { code: "PG-EN", name: "Enga", is_focus: true, population: 432000 },
+      properties: { code: "PG08", name: "Enga", is_focus: true, population: 432000 },
       geometry: { type: "MultiPolygon", coordinates: [[[[143, -5], [144, -5], [144, -6], [143, -6], [143, -5]]]] },
     },
     {
       type: "Feature",
-      properties: { code: "PG-WHM", name: "Western Highlands", is_focus: true, population: 362000 },
+      properties: { code: "PG09", name: "Western Highlands", is_focus: true, population: 362000 },
       geometry: { type: "MultiPolygon", coordinates: [[[[144, -5], [145, -5], [145, -6], [144, -6], [144, -5]]]] },
     },
   ],
@@ -1031,7 +1054,7 @@ const fc: ProvinceFC = {
 describe("provincialMapSvg", () => {
   it("draws one path per province, coloured by worst sector level", () => {
     const svg = provincialMapSvg(fc, [
-      { province_code: "PG-EN", sector: "Food Security", level: "critical", score: 0.9, trend: "up", provenance: "LIVE", as_of: "2026-06-20" },
+      { province_code: "PG08", sector: "Food Security", level: "critical", score: 0.9, trend: "up", provenance: "LIVE", as_of: "2026-06-20" },
     ]);
     expect(svg.startsWith("<svg")).toBe(true);
     expect((svg.match(/<path /g) ?? []).length).toBeGreaterThanOrEqual(2);
@@ -1351,7 +1374,7 @@ describe("renderSitrepHtml exec-first government report", () => {
     updated_at: "2026-06-20T00:00:00.000Z",
   };
   const sectorRisk = [
-    { province_code: "PG-EN", sector: "Food Security" as const, level: "critical" as const, score: 0.9, trend: "up" as const, provenance: "LIVE" as const, as_of: "2026-06-20" },
+    { province_code: "PG08", sector: "Food Security" as const, level: "critical" as const, score: 0.9, trend: "up" as const, provenance: "LIVE" as const, as_of: "2026-06-20" },
   ];
   const history = [
     { key: "ONI", value: 0.2, observed_at: "2026-01-01" },
@@ -1363,7 +1386,7 @@ describe("renderSitrepHtml exec-first government report", () => {
   const geojson = {
     type: "FeatureCollection" as const,
     features: [
-      { type: "Feature" as const, properties: { code: "PG-EN", name: "Enga", is_focus: true, population: 432000 }, geometry: { type: "MultiPolygon" as const, coordinates: [[[[143, -5], [144, -5], [144, -6], [143, -5]]]] } },
+      { type: "Feature" as const, properties: { code: "PG08", name: "Enga", is_focus: true, population: 432000 }, geometry: { type: "MultiPolygon" as const, coordinates: [[[[143, -5], [144, -5], [144, -6], [143, -5]]]] } },
     ],
   };
 
@@ -1628,7 +1651,7 @@ describe("buildSitrepDocx", () => {
         { key: "ONI", label: "Oceanic Niño Index", unit: "", source: "NOAA", update_frequency: "monthly", provenance: "LIVE", value: 0.9, observed_at: "2026-02-01", trend: "up" },
       ],
       sectorRisk: [
-        { province_code: "PG-EN", sector: "Food Security", level: "critical", score: 0.9, trend: "up", provenance: "LIVE", as_of: "2026-06-20" },
+        { province_code: "PG08", sector: "Food Security", level: "critical", score: 0.9, trend: "up", provenance: "LIVE", as_of: "2026-06-20" },
       ],
       lastRun: { started_at: "", finished_at: "", status: "partial", sources_ok: { noaa_oni: false, hdx_food: true }, notes: "" },
     });
@@ -1643,7 +1666,7 @@ describe("buildSitrepDocx", () => {
         { key: "ONI", label: "Oceanic Niño Index", unit: "", source: "NOAA", update_frequency: "monthly", provenance: "LIVE", value: 0.9, observed_at: "2026-02-01", trend: "up" },
       ],
       sectorRisk: [
-        { province_code: "PG-EN", sector: "Food Security", level: "critical", score: 0.9, trend: "up", provenance: "LIVE", as_of: "2026-06-20" },
+        { province_code: "PG08", sector: "Food Security", level: "critical", score: 0.9, trend: "up", provenance: "LIVE", as_of: "2026-06-20" },
       ],
       history: [
         { key: "ONI", value: 0.2, observed_at: "2026-01-01" },
