@@ -136,6 +136,22 @@ const SECTORS: Sector[] = [
 
 const LEVEL_RANK: Record<RiskLevel, number> = { low: 0, med: 1, high: 2, critical: 3 };
 
+// Short level labels and on-cell text colour, mirroring the dashboard
+// RiskMatrix.tsx so the printed matrix reads with the same vocabulary.
+const LEVEL_LABEL: Record<RiskLevel, string> = {
+  low: "LOW",
+  med: "MED",
+  high: "HIGH",
+  critical: "CRITICAL",
+};
+// Vivid low/med cells read best with dark text; dark high/critical need light.
+const LEVEL_TEXT: Record<RiskLevel, string> = {
+  low: "#18181b",
+  med: "#18181b",
+  high: "#ffffff",
+  critical: "#ffffff",
+};
+
 function worstLevel(rows: SectorRisk[]): RiskLevel | null {
   if (!rows.length) return null;
   return rows.reduce<RiskLevel>(
@@ -177,55 +193,90 @@ export function riskMatrixSvg(sectorRisk: SectorRisk[]): string {
       (FOCUS_SHORT_LABELS[a] ?? a).localeCompare(FOCUS_SHORT_LABELS[b] ?? b),
   );
 
-  const cols = ["National", ...sortedCodes];
-  const labelW = 150;
+  const provinceCodes = sortedCodes;
+  const labelW = 160; // sector name + provenance pill
+  const natW = 58; // wide enough for "CRITICAL ×22" on two short lines
   const cellW = 28;
   const cellH = 30;
-  // 23 columns of full province labels won't fit horizontally over 28px cells —
-  // they overlap into an unreadable smear. Rotate the headers -45° and reserve a
-  // taller header band so each label rises clear of its neighbour.
+  // 22 province labels won't fit horizontally over 28px cells — they overlap into
+  // an unreadable smear. Rotate the headers -45° and reserve a taller header band
+  // so each label rises clear of its neighbour.
   const headH = 96;
-  const W = labelW + cols.length * cellW + 16;
-  const H = headH + SECTORS.length * cellH + 48;
+  const W = labelW + natW + provinceCodes.length * cellW + 16;
+  const H = headH + SECTORS.length * cellH + 64;
+
+  // Per-sector roll-up: worst level, how many provinces sit at that worst level,
+  // and whether any cell in the sector is LIVE — mirrors RiskMatrix.tsx so the
+  // National column and the LIVE/DEMO pills match the dashboard exactly.
+  const rollup = (sector: Sector) => {
+    const rows = focusRisk.filter((r) => r.sector === sector);
+    const level = worstLevel(rows);
+    const count = level ? rows.filter((r) => r.level === level).length : 0;
+    const live = rows.some((r) => r.provenance === "LIVE");
+    return { level, count, live };
+  };
 
   let body = "";
 
-  // Column headers (rotated -45° so 23 labels stay legible above narrow cells).
-  cols.forEach((c, ci) => {
-    const x = labelW + ci * cellW + cellW / 2;
-    const label = c === "National" ? "National" : FOCUS_SHORT_LABELS[c] ?? c;
+  // Column headers. National label sits over its wide column; province labels are
+  // rotated -45° so 22 of them stay legible above narrow cells.
+  body += `<text x="${labelW + natW / 2}" y="${headH - 10}" text-anchor="middle" font-size="11" font-weight="700" fill="${INK}">National</text>`;
+  provinceCodes.forEach((c, ci) => {
+    const x = labelW + natW + ci * cellW + cellW / 2;
+    const label = FOCUS_SHORT_LABELS[c] ?? c;
     body += `<text x="${x}" y="${headH - 8}" text-anchor="start" font-size="11" font-weight="600" fill="${INK}" transform="rotate(-45 ${x} ${headH - 8})">${svgEsc(label)}</text>`;
   });
 
   // Rows.
   SECTORS.forEach((sector, ri) => {
     const y = headH + ri * cellH;
+    const roll = rollup(sector);
+    // Sector name + provenance pill (LIVE green, DEMO violet — the credibility rule).
     body += `<text x="8" y="${y + cellH / 2 + 4}" font-size="12" fill="${INK}">${svgEsc(sector)}</text>`;
+    const pill = roll.live
+      ? { bg: "#dcfce7", fg: "#166534", txt: "LIVE" }
+      : { bg: "#ede9fe", fg: "#5b21b6", txt: "DEMO" };
+    body +=
+      `<rect x="${labelW - 38}" y="${y + cellH / 2 - 7}" width="34" height="14" rx="3" fill="${pill.bg}"/>` +
+      `<text x="${labelW - 21}" y="${y + cellH / 2 + 3}" text-anchor="middle" font-size="9" font-weight="700" fill="${pill.fg}">${pill.txt}</text>`;
 
-    cols.forEach((c, ci) => {
-      const x = labelW + ci * cellW;
-      let level: RiskLevel | null;
-      let badge = "";
-      if (c === "National") {
-        const rows = focusRisk.filter((r) => r.sector === sector);
-        level = worstLevel(rows);
-        const hi = rows.filter((r) => r.level === "high" || r.level === "critical").length;
-        if (hi > 0) badge = `<text x="${x + cellW - 8}" y="${y + cellH / 2 + 4}" text-anchor="end" font-size="11" font-weight="700" fill="#ffffff">${hi}</text>`;
-      } else {
-        const cell = focusRisk.find((r) => r.province_code === c && r.sector === sector);
-        level = cell?.level ?? null;
-        const tr = cell?.trend;
-        const glyph = tr === "up" ? "▲" : tr === "down" ? "▼" : "";
-        if (glyph) badge = `<text x="${x + cellW - 8}" y="${y + cellH / 2 + 4}" text-anchor="end" font-size="10" fill="#ffffff">${glyph}</text>`;
-      }
-      const fill = level ? RISK_COLOUR[level] : "#f4f4f5";
+    // National roll-up cell: worst level label + ×count of provinces at that level.
+    const nx = labelW;
+    const nFill = roll.level ? RISK_COLOUR[roll.level] : "#f4f4f5";
+    const nText = roll.level ? LEVEL_TEXT[roll.level] : MUTED;
+    body += `<rect x="${nx + 1}" y="${y + 1}" width="${natW - 2}" height="${cellH - 2}" rx="3" fill="${nFill}" stroke="${LINE}"/>`;
+    if (roll.level) {
       body +=
-        `<rect x="${x + 1}" y="${y + 1}" width="${cellW - 2}" height="${cellH - 2}" rx="3" fill="${fill}" stroke="${LINE}"/>` +
-        badge;
+        `<text x="${nx + natW / 2}" y="${y + cellH / 2 - 1}" text-anchor="middle" font-size="9" font-weight="700" fill="${nText}">${LEVEL_LABEL[roll.level]}</text>` +
+        `<text x="${nx + natW / 2}" y="${y + cellH / 2 + 9}" text-anchor="middle" font-size="8" fill="${nText}">×${roll.count}</text>`;
+    }
+
+    // Province cells: traffic-light square + trend glyph.
+    provinceCodes.forEach((c, ci) => {
+      const x = labelW + natW + ci * cellW;
+      const cell = focusRisk.find((r) => r.province_code === c && r.sector === sector);
+      const level = cell?.level ?? null;
+      const glyph = cell?.trend === "up" ? "▲" : cell?.trend === "down" ? "▼" : "";
+      const fill = level ? RISK_COLOUR[level] : "#f4f4f5";
+      const gColor = level ? LEVEL_TEXT[level] : MUTED;
+      body += `<rect x="${x + 1}" y="${y + 1}" width="${cellW - 2}" height="${cellH - 2}" rx="3" fill="${fill}" stroke="${LINE}"/>`;
+      if (glyph) body += `<text x="${x + cellW / 2}" y="${y + cellH / 2 + 4}" text-anchor="middle" font-size="10" fill="${gColor}">${glyph}</text>`;
     });
   });
 
-  body += legendStrip(8, H - 26);
+  // Legends: severity swatches (row 1), then trend + source keys (row 2).
+  const legY = H - 38;
+  body += legendStrip(8, legY);
+  body +=
+    `<text x="8" y="${legY + 26}" font-size="10" fill="${MUTED}">` +
+    `Trend ▲ rising · ▼ falling · — flat` +
+    `</text>` +
+    `<rect x="220" y="${legY + 16}" width="32" height="13" rx="3" fill="#dcfce7"/>` +
+    `<text x="236" y="${legY + 26}" text-anchor="middle" font-size="9" font-weight="700" fill="#166534">LIVE</text>` +
+    `<text x="258" y="${legY + 26}" font-size="10" fill="${MUTED}">real feed</text>` +
+    `<rect x="318" y="${legY + 16}" width="36" height="13" rx="3" fill="#ede9fe"/>` +
+    `<text x="336" y="${legY + 26}" text-anchor="middle" font-size="9" font-weight="700" fill="#5b21b6">DEMO</text>` +
+    `<text x="360" y="${legY + 26}" font-size="10" fill="${MUTED}">seeded placeholder</text>`;
   return svgRoot(W, H, body);
 }
 
