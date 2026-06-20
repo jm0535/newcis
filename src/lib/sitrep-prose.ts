@@ -151,9 +151,11 @@ export function climateAssessmentParas(m: SitrepModel): string[] {
       `chain that turns an ocean signal into a food- and water-security emergency. A ` +
       `falling line here is the on-the-ground confirmation that an El Niño forecast is ` +
       `already biting.`,
-    `Oceanic Niño Index (current). Where the projected ONI looks ahead, this is the ` +
-      `latest observed ONI: the same Niño 3.4 sea-surface temperature anomaly in °C, ` +
-      `but measured rather than forecast, as a three-month running mean. Reading it is ` +
+    `Relative Oceanic Niño Index (current). Where the projected ONI looks ahead, this is ` +
+      `the latest observed value, now reported as NOAA's RONI (Relative ONI) — the ` +
+      `Niño 3.4 sea-surface temperature anomaly with the global tropical warming ` +
+      `background removed, the operational standard since February 2026 — measured ` +
+      `rather than forecast, as a three-month running mean. Reading it is ` +
       `identical: above +0.5 °C is El Niño territory, below −0.5 °C is La Niña, the ` +
       `band between is neutral. Comparing the current value against the projection ` +
       `shows whether conditions are tracking, exceeding or falling short of the ` +

@@ -72,7 +72,7 @@ export interface IndicatorMeta {
 export const INDICATOR_META: Record<string, IndicatorMeta> = {
   ONI: {
     plain:
-      "The master El Niño / La Niña dial: Pacific Ocean temperature that drives PNG's drought and flood seasons.",
+      "The master El Niño / La Niña dial (NOAA's RONI standard since Feb 2026): Pacific Ocean temperature, adjusted for global warming, that drives PNG's drought and flood seasons.",
     danger: "extreme",
     dangerLabel: "Far from 0 is dangerous: high = El Niño (drought), very low = La Niña (floods).",
   },

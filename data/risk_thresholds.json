@@ -1,12 +1,12 @@
 [
   {
     "metric": "ONI",
-    "unit": "°C SST anomaly (Niño 3.4)",
+    "unit": "°C relative SST anomaly (Niño 3.4 − tropics)",
     "green_max": 0.5,
     "amber_max": 1.0,
     "red_max": 1.5,
     "inverted": false,
-    "notes": "NOAA CPC operational bands. ≤0.5 neutral; 0.5–1.0 weak El Niño (watch); 1.0–1.5 moderate (alert); >1.5 strong/very strong (emergency-class). Symmetric La Niña handled by absolute value upstream."
+    "notes": "NOAA CPC operational bands, now fed by the RONI (Relative ONI) — Niño-3.4 anomaly minus the all-tropics mean, NOAA's monitoring standard since 1 Feb 2026. El Niño still declared at >+0.5°C for five consecutive seasons, so bands are unchanged. ≤0.5 neutral; 0.5–1.0 weak El Niño (watch); 1.0–1.5 moderate (alert); >1.5 strong/very strong (emergency-class). Symmetric La Niña handled by absolute value upstream."
   },
   {
     "metric": "SOI",
