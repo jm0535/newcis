@@ -1,5 +1,16 @@
 [
   {
+    "key": "ONI",
+    "label": "Oceanic Niño Index",
+    "unit": "°C SST anomaly (Niño 3.4, 3-mo mean)",
+    "source": "NOAA CPC",
+    "update_frequency": "monthly",
+    "provenance": "LIVE",
+    "value": 0.48,
+    "observed_at": "2026-04-15",
+    "trend": "flat"
+  },
+  {
     "key": "SOI",
     "label": "Southern Oscillation Index",
     "unit": "standardized Tahiti−Darwin pressure anomaly (NOAA scale)",
@@ -44,17 +55,6 @@
     "trend": "up"
   },
   {
-    "key": "ONI",
-    "label": "Oceanic Niño Index",
-    "unit": "°C SST anomaly (Niño 3.4, 3-mo mean)",
-    "source": "NOAA CPC",
-    "update_frequency": "monthly",
-    "provenance": "LIVE",
-    "value": 0.48,
-    "observed_at": "2026-04-15",
-    "trend": "flat"
-  },
-  {
     "key": "SOIL_MOISTURE",
     "label": "Root-zone soil moisture (median of 22 of 22 provinces reporting)",
     "unit": "percentile vs 12-mo climatology",
@@ -72,8 +72,19 @@
     "source": "NASA NEO · MODIS/Terra MOD_NDVI_M",
     "update_frequency": "monthly",
     "provenance": "LIVE",
-    "value": -0.005,
-    "observed_at": "2026-04-01",
+    "value": 0.005,
+    "observed_at": "2026-05-01",
+    "trend": "flat"
+  },
+  {
+    "key": "ASI",
+    "label": "Agricultural stress (mean of 22 of 22 provinces)",
+    "unit": "% of cropland with Mean VHI below 35",
+    "source": "FAO GIEWS · ASIS (Agricultural Stress Index)",
+    "update_frequency": "dekadal (10-day)",
+    "provenance": "LIVE",
+    "value": 2.4,
+    "observed_at": "2026-06-01",
     "trend": "flat"
   },
   {
@@ -83,9 +94,9 @@
     "source": "USGS FDSNWS earthquake catalogue",
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
-    "value": 17,
-    "observed_at": "2026-06-10T09:31:17.469Z",
-    "trend": "flat"
+    "value": 20,
+    "observed_at": "2026-06-20T16:32:39.167Z",
+    "trend": "up"
   },
   {
     "key": "TEMP_ANOM",
@@ -94,8 +105,8 @@
     "source": "Open-Meteo archive (ERA5-derived)",
     "update_frequency": "daily",
     "provenance": "LIVE",
-    "value": 0.6,
-    "observed_at": "2026-06-06T02:39:26.992Z",
-    "trend": "flat"
+    "value": 0.4,
+    "observed_at": "2026-06-20T16:37:50.921Z",
+    "trend": "down"
   }
 ]

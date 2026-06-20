@@ -145,19 +145,9 @@
     "observed_at": "2026-06-10T05:31:48.801Z"
   },
   {
-    "key": "ONI",
-    "value": 0.48,
-    "observed_at": "2026-04-15"
-  },
-  {
     "key": "PROJECTED_ONI",
     "value": 1.05,
     "observed_at": "2026-04-01"
-  },
-  {
-    "key": "SOIL_MOISTURE",
-    "value": 29,
-    "observed_at": "2025-12-01"
   },
   {
     "key": "NDVI",
@@ -168,6 +158,11 @@
     "key": "SEISMIC",
     "value": 17,
     "observed_at": "2026-06-10T09:31:17.469Z"
+  },
+  {
+    "key": "ONI",
+    "value": 0.48,
+    "observed_at": "2026-04-15"
   },
   {
     "key": "SOI",
@@ -188,5 +183,30 @@
     "key": "RAINFALL_ANOM",
     "value": 6.9,
     "observed_at": "2026-03-31"
+  },
+  {
+    "key": "SOIL_MOISTURE",
+    "value": 29,
+    "observed_at": "2025-12-01"
+  },
+  {
+    "key": "NDVI",
+    "value": 0.005,
+    "observed_at": "2026-05-01"
+  },
+  {
+    "key": "ASI",
+    "value": 2.4,
+    "observed_at": "2026-06-01"
+  },
+  {
+    "key": "SEISMIC",
+    "value": 20,
+    "observed_at": "2026-06-20T16:32:39.167Z"
+  },
+  {
+    "key": "TEMP_ANOM",
+    "value": 0.4,
+    "observed_at": "2026-06-20T16:37:50.921Z"
   }
 ]

@@ -21,6 +21,7 @@ export const SOURCE_META: Record<string, SourceMeta> = {
   hdx_food_security: { label: "Food security", what: "IPC food-security phase · HDX" },
   nasa_power_soil: { label: "Soil moisture", what: "Land-surface moisture · NASA" },
   neo_ndvi: { label: "Vegetation health", what: "Satellite greenness (NDVI) · NASA" },
+  fao_asi: { label: "Agricultural stress", what: "Cropland drought index (ASI) · FAO GIEWS" },
   hdx_acled: { label: "Conflict events", what: "Social-stability signal · ACLED" },
   usgs_earthquakes: { label: "Earthquakes", what: "Seismic activity · USGS" },
   gdacs: { label: "Disaster alerts", what: "Active disaster events · GDACS" },

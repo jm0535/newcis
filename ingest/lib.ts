@@ -16,6 +16,7 @@ import { fetchHdxFoodSecurity } from "./sources/hdx-food-security";
 import { fetchHdxRainfall } from "./sources/hdx-rainfall";
 import { fetchNasaPowerSoil } from "./sources/nasa-power-soil";
 import { fetchNeoNdvi } from "./sources/neo-ndvi";
+import { fetchFaoAsi } from "./sources/fao-asi";
 import { fetchHdxAcled } from "./sources/hdx-acled";
 import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
@@ -82,6 +83,9 @@ export async function runIngest(): Promise<LastRun> {
   // NASA NEO monthly NDVI — keyless global CSV grid. Vegetation-health anomaly,
   // the early canary for highland food-security stress. Always run.
   const ndviRes = await run("neo_ndvi", fetchNeoNdvi);
+  // FAO GIEWS Agricultural Stress Index — keyless per-province CSV, the only
+  // source giving PNG admin-1 drought data. Always run.
+  const asiRes = await run("fao_asi", fetchFaoAsi);
   const acledRes = appId
     ? await run("hdx_acled", () => fetchHdxAcled(appId, FOCUS_CODES))
     : { ok: false, value: null, error: "no HDX_APP_ID", ms: 0 };
@@ -180,6 +184,17 @@ export async function runIngest(): Promise<LastRun> {
     }
   }
 
+  // FAO ASI — provincial agricultural-stress index (% cropland in drought). The
+  // agronomic complement to NDVI: how much of the actual CROP area is stressed.
+  if (asiRes.ok && asiRes.value) {
+    const ind = asiRes.value.indicator;
+    if (ind.value !== null) {
+      ind.trend = computeTrend(ind.key, ind.value, history);
+      liveIndicators.push(ind);
+      history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
+    }
+  }
+
   // USGS seismic tempo — a standing PNG hazard indicator (Ring of Fire).
   if (usgsRes.ok && usgsRes.value) {
     const ind = usgsRes.value.indicator;
@@ -254,6 +269,8 @@ export async function runIngest(): Promise<LastRun> {
   if (soilRes.ok && soilRes.value) upstreamRows.push(...soilRes.value.sector_rows);
   // NDVI vegetation anomaly → per-province Food Security rows (max-merged below).
   if (ndviRes.ok && ndviRes.value) upstreamRows.push(...ndviRes.value.sector_rows);
+  // FAO ASI → per-province Food Security rows (max-merged with NDVI/rainfall).
+  if (asiRes.ok && asiRes.value) upstreamRows.push(...asiRes.value.sector_rows);
   if (foodRes.ok && foodRes.value) upstreamRows.push(...foodRes.value.rows);
   if (acledRes.ok && acledRes.value) upstreamRows.push(...acledRes.value.sector_rows);
   // Disaster & Hazard: GDACS multi-hazard alert + USGS seismic + GVP volcano
@@ -437,9 +454,9 @@ export async function runIngest(): Promise<LastRun> {
   const lastRun: LastRun = {
     started_at: startedAt,
     finished_at: new Date().toISOString(),
-    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
+    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].every((r) => r.ok)
       ? "ok"
-      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
+      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, usgsRes, gdacsRes, gvpRes, openMeteoRes].some((r) => r.ok)
         ? "partial"
         : "failed",
     sources_ok: {
@@ -451,6 +468,7 @@ export async function runIngest(): Promise<LastRun> {
       hdx_food_security: foodRes.ok,
       nasa_power_soil: soilRes.ok,
       neo_ndvi: ndviRes.ok,
+      fao_asi: asiRes.ok,
       hdx_acled: acledRes.ok,
       usgs_earthquakes: usgsRes.ok,
       gdacs: gdacsRes.ok,
@@ -470,6 +488,7 @@ export async function runIngest(): Promise<LastRun> {
         ? `Soil moisture median ${soilRes.value?.indicator.value}th pctile (${soilRes.value?.per_province.length} provinces, ${soilRes.ms}ms)`
         : `Soil moisture failed: ${soilRes.error}`,
       ndviRes.ok ? `${ndviRes.value?.note} (${ndviRes.ms}ms)` : `NDVI failed: ${ndviRes.error}`,
+      asiRes.ok ? `${asiRes.value?.note} (${asiRes.ms}ms)` : `FAO ASI failed: ${asiRes.error}`,
       acledRes.ok ? `ACLED: ${acledRes.value?.note}` : `ACLED failed: ${acledRes.error}`,
       usgsRes.ok ? `USGS: ${usgsRes.value?.note} (${usgsRes.ms}ms)` : `USGS failed: ${usgsRes.error}`,
       gdacsRes.ok ? `GDACS: ${gdacsRes.value?.note} (${gdacsRes.ms}ms)` : `GDACS failed: ${gdacsRes.error}`,

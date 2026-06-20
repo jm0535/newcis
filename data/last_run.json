@@ -1,21 +1,22 @@
 {
-  "started_at": "2026-06-16T07:19:08.018Z",
-  "finished_at": "2026-06-16T07:20:36.730Z",
-  "status": "partial",
+  "started_at": "2026-06-20T16:31:36.928Z",
+  "finished_at": "2026-06-20T16:37:50.957Z",
+  "status": "ok",
   "sources_ok": {
-    "noaa_oni": false,
+    "noaa_oni": true,
     "noaa_soi": true,
     "noaa_trade_wind": true,
     "ccsr_nmme": true,
     "hdx_rainfall": true,
     "hdx_food_security": true,
-    "nasa_power_soil": false,
-    "neo_ndvi": false,
+    "nasa_power_soil": true,
+    "neo_ndvi": true,
+    "fao_asi": true,
     "hdx_acled": true,
-    "usgs_earthquakes": false,
+    "usgs_earthquakes": true,
     "gdacs": true,
     "gvp_volcanoes": true,
-    "open_meteo": false
+    "open_meteo": true
   },
-  "notes": "ONI failed: TypeError: fetch failed | SOI -0.9 (5295ms) | Trade-wind -0.3 (1807ms) | NMME projected ONI 1.85 (SON 1962, 30 members, 9210ms) | Rainfall mean anom 6.9% (22/22 provinces reporting, 3366 raw rows, 11885ms) | Food security: HDX HAPI returned no current IPC food-security rows for PNG (PNG is not consistently in IPC publications). Sector will be DEMO-seeded. | Soil moisture failed: TimeoutError: The operation was aborted due to timeout | NDVI failed: TypeError: fetch failed | ACLED: 3 ACLED rows aggregated to 22 focus-province cells | USGS failed: TypeError: fetch failed | GDACS: GDACS: no active PNG hazard events this cycle. (11079ms) | GVP volcanoes: GVP: 39 PNG volcanoes across 9 focus provinces; active: PG13 (Manam); PG19 (Langila, Ulawun); PG20 (Bagana) (5877ms) | Open-Meteo failed: TypeError: fetch failed"
+  "notes": "ONI 0.48 (4923ms) | SOI -0.9 (797ms) | Trade-wind -0.3 (1634ms) | NMME projected ONI 1.85 (SON 1962, 30 members, 5544ms) | Rainfall mean anom 6.9% (22/22 provinces reporting, 3366 raw rows, 5152ms) | Food security: HDX HAPI returned no current IPC food-security rows for PNG (PNG is not consistently in IPC publications). Sector will be DEMO-seeded. | Soil moisture median 29th pctile (22 provinces, 1879ms) | NDVI 2026-05: national anomaly +0.005 vs 5-yr same-month mean; 22/22 provinces sampled, 1 below normal (32188ms) | FAO ASI 2026-06-01: national mean 2.4% stressed cropland; 22/22 provinces mapped, 1 elevated (3882ms) | ACLED: 3 ACLED rows aggregated to 22 focus-province cells | USGS: 20 M4.5+ events (max M5.7) attributed across 22 focus provinces (3128ms) | GDACS: 2 active PNG event(s); worst = Green (GDACS · Green Earthquake — Magnitude 4.7M, Depth:76.074km) (4953ms) | GVP volcanoes: GVP: 39 PNG volcanoes across 9 focus provinces; active: PG13 (Manam); PG19 (Langila, Ulawun); PG20 (Bagana) (3439ms) | Open-Meteo: Open-Meteo: rainfall -26.1% of normal, temp +0.4°C (mean of 22 provinces) (303295ms)"
 }

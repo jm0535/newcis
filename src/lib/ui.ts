@@ -96,6 +96,12 @@ export const INDICATOR_META: Record<string, IndicatorMeta> = {
     danger: "high",
     dangerLabel: "Rising heat is dangerous: health stress, evaporation, fire risk.",
   },
+  ASI: {
+    plain:
+      "FAO's agricultural stress index: the share of provincial cropland where vegetation health has fallen into drought territory.",
+    danger: "high",
+    dangerLabel: "Rising is dangerous: more of the crop area is under drought stress.",
+  },
   SEISMIC: {
     plain:
       "Count of magnitude-4.5+ earthquakes in PNG over 30 days: PNG sits on the Ring of Fire.",
@@ -180,6 +186,7 @@ const SOURCE_CADENCE_DAYS: Record<string, number> = {
   SOIL_MOISTURE: 45, // NASA POWER monthly assimilation
   TEMP_ANOM: 5, // Open-Meteo archive, near-real-time
   NDVI: 21,
+  ASI: 25, // FAO GIEWS dekadal (~10d) + publication lag
   SEISMIC: 2, // USGS near-real-time
   SOI: 10,
   TRADE_WIND_ANOM: 10, // NOAA CPC wpac850, refreshed monthly

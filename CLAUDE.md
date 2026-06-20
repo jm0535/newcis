@@ -98,6 +98,7 @@ Keep it small and explicit. Storage is a set of JSON files the ingestion Action 
 - **ONI, ENSO outlook, SST** — NOAA Climate Prediction Center (CPC) text/JSON products + NOAA Coral Reef Watch.
 - **SOI** — Australian BoM.
 - **NDVI, soil moisture** — NASA (MODIS / SMAP). For PoC, a national/regional aggregate is fine; full raster tiling is production.
+- **Agricultural stress (ASI)** — **FAO GIEWS Earth Observation / ASIS** `asis/data/country/PNG/.../ASI_Dekad_Season1_data.csv`. Keyless per-country CSV, the only global source giving PNG at **admin-1 (province)** level. Dekadal (10-day). Feeds the `ASI` indicator + per-province Food Security rows. `LIVE`. (Pre-2012 borders: Hela/Jiwaka inherit their parent highland's ASI, stated in the row.)
 - **Rainfall / temperature anomalies** — start from NOAA/global products; PNGNWS has no public API, so label PNGNWS-specific feeds `DEMO` until a feed exists.
 
 > Pull what is genuinely automatable now; for any indicator without a clean free endpoint, seed a realistic value and mark it `DEMO`. **Do not fake a `LIVE` badge.**

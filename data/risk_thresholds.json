@@ -81,6 +81,16 @@
     "notes": "MODIS NDVI anomaly. Vegetation stress lags rainfall by ~4–8 weeks; an early canary for food-security collapse."
   },
   {
+    "metric": "ASI",
+    "unit": "% of cropland with Mean VHI below 35",
+    "green_max": 15,
+    "amber_max": 30,
+    "red_max": 50,
+    "inverted": false,
+    "symmetric": false,
+    "notes": "FAO GIEWS Agricultural Stress Index: share of provincial cropland where the season's Mean Vegetation Health Index fell below 35. Non-inverted, one-sided: higher = more crops under drought stress. <15% routine; 15-30% watch; 30-50% serious agricultural drought; >50% widespread crop failure. Province-level, dekadal."
+  },
+  {
     "metric": "SEISMIC",
     "unit": "count of M4.5+ events in PNG (30-day window)",
     "green_max": 10,

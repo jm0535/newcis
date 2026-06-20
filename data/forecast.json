@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T07:20:36.696Z",
+  "generated_at": "2026-06-20T16:37:50.950Z",
   "model": {
     "provenance": "LIVE",
     "source": "NMME · NOAA-GFDL SPEAR (IRI CCSR)",
@@ -60,7 +60,7 @@
         "lean": "el_nino",
         "value": -0.9,
         "unit": "standardized Tahiti−Darwin pressure anomaly (NOAA scale)",
-        "note": "Sustained negative SOI — atmosphere coupled toward El Niño"
+        "note": "Sustained negative SOI: atmosphere coupled toward El Niño"
       },
       {
         "key": "TRADE_WIND_ANOM",
