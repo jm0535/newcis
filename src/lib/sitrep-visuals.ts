@@ -36,10 +36,13 @@ function truncate(s: string, maxChars: number): string {
 
 // Open/close an SVG root at a fixed viewBox; width/height let the HTML/raster
 // caller scale uniformly.
+// The font-family lists "Liberation Sans" first (the TTF the .docx rasterizer
+// bundles, so PNG text always renders) then system stacks for the inline-HTML
+// path, which uses whatever the viewer has. Both paths read the same markup.
 function svgRoot(w: number, h: number, body: string): string {
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" ` +
-    `width="${w}" height="${h}" font-family="-apple-system, system-ui, sans-serif">` +
+    `width="${w}" height="${h}" font-family="'Liberation Sans', Arial, -apple-system, system-ui, sans-serif">` +
     `<rect width="${w}" height="${h}" fill="${PRINT_BG}"/>${body}</svg>`
   );
 }
