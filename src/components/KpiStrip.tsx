@@ -3,42 +3,15 @@
 // Glanceable from across an ops centre — large numerals, single colour cue per card.
 import type { NationalStatus } from "@/lib/types";
 import { FOCUS_COUNT } from "@/lib/focus-provinces";
+import {
+  PHASE_SHORT,
+  PHASE_HINT,
+  ALERT_HINT,
+  RISK_HINT,
+} from "@/lib/national-language";
 import { MetricTile, EmptyState } from "./ui";
 import { ProvenanceBadge } from "./Provenance";
 import { Activity, AlertTriangle, Gauge, Users, MapPin, CalendarRange } from "lucide-react";
-
-const PHASE_SHORT: Record<NationalStatus["enso_phase"], string> = {
-  neutral: "Neutral",
-  el_nino_watch: "El Niño Watch",
-  el_nino_alert: "El Niño Alert",
-  la_nina_watch: "La Niña Watch",
-  la_nina_alert: "La Niña Alert",
-};
-
-// One-line plain-English hint per phase — what it means for PNG, so a non-technical
-// reader gets the "so what" without knowing the science.
-const PHASE_HINT: Record<NationalStatus["enso_phase"], string> = {
-  neutral: "Pacific in a normal state — no El Niño or La Niña forcing.",
-  el_nino_watch: "Conditions building toward El Niño — drought/frost risk rising.",
-  el_nino_alert: "El Niño underway — highland drought & frost likely.",
-  la_nina_watch: "Conditions building toward La Niña — flood risk rising.",
-  la_nina_alert: "La Niña underway — heavy rain & flooding likely.",
-};
-
-// What each alert level means as an instruction to leadership.
-const ALERT_HINT: Record<NationalStatus["alert_level"], string> = {
-  GREEN: "Routine — normal monitoring.",
-  AMBER: "Watch — brief sector leads, verify readiness.",
-  RED: "Alert — pre-position supplies, advise focus provinces.",
-  BLACK: "Emergency — activate national operations centre.",
-};
-
-const RISK_HINT: Record<NationalStatus["national_risk_rating"], string> = {
-  low: "Few sectors stressed across focus provinces.",
-  med: "Several sectors stressed — monitor closely.",
-  high: "Many sectors stressed — action needed now.",
-  critical: "Widespread severe stress — crisis footing.",
-};
 
 const ALERT_TONE = {
   GREEN: "green",
