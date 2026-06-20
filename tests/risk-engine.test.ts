@@ -274,6 +274,22 @@ describe("rollUpNational", () => {
     expect(r.alert_level).toBe("GREEN");
   });
 
+  it("seismic tempo does NOT raise the national ENSO alert", () => {
+    // Earthquakes are a non-ENSO geophysical hazard. A routine seismic month
+    // (AMBER on its own band) must not pin the national ENSO traffic-light while
+    // the ocean reads neutral — it escalates the per-province Disaster cell only.
+    const r = rollUpNational(
+      [
+        indicator("ONI", 0.1), // neutral ENSO
+        indicator("SEISMIC", 20), // AMBER on its band (10–25)
+      ],
+      TH,
+      [],
+      FOCUS,
+    );
+    expect(r.alert_level).toBe("GREEN");
+  });
+
   it("one focus province in high risk → med rating", () => {
     const sectors: SectorRisk[] = [
       {
@@ -364,5 +380,13 @@ describe("computeTrend", () => {
 
   it("no prior reading → flat", () => {
     expect(computeTrend("NEW_METRIC", 1.0, hist)).toBe("flat");
+  });
+
+  it("skips the current reading's own date so a monthly re-emit still trends", () => {
+    // A monthly indicator re-emits the same observed_at every cycle; that row is
+    // already in history. Without the skip, the latest row (0.8 @ 2025-12-01) is
+    // compared to itself → flat. Passing the current observed_at makes it compare
+    // against the genuinely earlier reading (0.6 @ 2025-11-01) → up.
+    expect(computeTrend("ONI", 0.8, hist, 0.05, 0.05, "2025-12-01")).toBe("up");
   });
 });

@@ -137,7 +137,7 @@ export async function runIngest(): Promise<LastRun> {
 
   if (oniRes.ok && oniRes.value) {
     const ind = oniRes.value.indicator;
-    ind.trend = computeTrend(ind.key, ind.value ?? 0, history);
+    ind.trend = computeTrend(ind.key, ind.value ?? 0, history, 0.05, 0.05, ind.observed_at);
     liveIndicators.push(ind);
     if (ind.value !== null) {
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
@@ -148,7 +148,7 @@ export async function runIngest(): Promise<LastRun> {
   if (soiRes.ok && soiRes.value) {
     const ind = soiRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -157,7 +157,7 @@ export async function runIngest(): Promise<LastRun> {
   if (tradeWindRes.ok && tradeWindRes.value) {
     const ind = tradeWindRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -169,7 +169,7 @@ export async function runIngest(): Promise<LastRun> {
   if (nmmeRes.ok && nmmeRes.value) {
     const ind = nmmeRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -178,7 +178,7 @@ export async function runIngest(): Promise<LastRun> {
   if (rainfallRes.ok && rainfallRes.value) {
     const ind = rainfallRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -187,7 +187,7 @@ export async function runIngest(): Promise<LastRun> {
   if (soilRes.ok && soilRes.value) {
     const ind = soilRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -198,7 +198,7 @@ export async function runIngest(): Promise<LastRun> {
   if (ndviRes.ok && ndviRes.value) {
     const ind = ndviRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -209,7 +209,7 @@ export async function runIngest(): Promise<LastRun> {
   if (asiRes.ok && asiRes.value) {
     const ind = asiRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -219,7 +219,7 @@ export async function runIngest(): Promise<LastRun> {
   if (usgsRes.ok && usgsRes.value) {
     const ind = usgsRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -229,7 +229,7 @@ export async function runIngest(): Promise<LastRun> {
   if (whoRes.ok && whoRes.value) {
     const ind = whoRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -240,7 +240,7 @@ export async function runIngest(): Promise<LastRun> {
   if (faostatRes.ok && faostatRes.value) {
     const ind = faostatRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -250,7 +250,7 @@ export async function runIngest(): Promise<LastRun> {
   if (wbRes.ok && wbRes.value) {
     const ind = wbRes.value.indicator;
     if (ind.value !== null) {
-      ind.trend = computeTrend(ind.key, ind.value, history);
+      ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
       liveIndicators.push(ind);
       history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
     }
@@ -264,7 +264,7 @@ export async function runIngest(): Promise<LastRun> {
     if (!haveRainfall) {
       const ind = openMeteoRes.value.rainfall_indicator;
       if (ind.value !== null) {
-        ind.trend = computeTrend(ind.key, ind.value, history);
+        ind.trend = computeTrend(ind.key, ind.value, history, 0.05, 0.05, ind.observed_at);
         liveIndicators.push(ind);
         history.push({ key: ind.key, value: ind.value, observed_at: ind.observed_at });
       }

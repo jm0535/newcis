@@ -298,7 +298,17 @@ export function rollUpNational(
   //     Health, Economic Stability, Food Security) and render as gauges, but a
   //     standing baseline must not masquerade as an acute ENSO escalation — that
   //     would falsely pin the national alert RED in a quiet ENSO year.
-  const NON_ALERT_KEYS = new Set(["PROJECTED_ONI", "MALARIA_INCIDENCE", "CPI_INFLATION", "FOOD_UNDERNOURISH"]);
+  //   - SEISMIC: earthquake tempo is a non-ENSO geophysical hazard (Ring of Fire),
+  //     not a climate signal. It escalates the per-province Disaster & Hazard cell
+  //     via the USGS/GDACS sector rows, but a routine seismic month must not pin
+  //     the national ENSO traffic-light AMBER while the ocean reads neutral.
+  const NON_ALERT_KEYS = new Set([
+    "PROJECTED_ONI",
+    "MALARIA_INCIDENCE",
+    "CPI_INFLATION",
+    "FOOD_UNDERNOURISH",
+    "SEISMIC",
+  ]);
   let worstAlert: AlertLevel = "GREEN";
   for (const ind of indicators) {
     if (NON_ALERT_KEYS.has(ind.key)) continue;
@@ -367,9 +377,16 @@ export function computeTrend(
   history: HistoricalReading[],
   relativeDelta = 0.05,
   absoluteDelta = 0.05,
+  currentObservedAt?: string,
 ): Trend {
+  // The prior reading is the most recent history row for this key — but NOT the
+  // current reading itself. Monthly indicators (ONI, soil moisture) re-emit the
+  // SAME observed_at every cycle, so that reading is already in history; comparing
+  // it to itself yields delta 0 and freezes the trend "flat" until the month rolls.
+  // Skip any row sharing the current observed_at so we compare to a genuinely
+  // earlier reading.
   const prior = history
-    .filter((h) => h.key === key)
+    .filter((h) => h.key === key && h.observed_at !== currentObservedAt)
     .sort((a, b) => b.observed_at.localeCompare(a.observed_at))[0];
   if (!prior) return "flat";
   const delta = newValue - prior.value;
