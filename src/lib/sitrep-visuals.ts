@@ -28,6 +28,12 @@ function groupThousands(n: number): string {
   return n.toLocaleString("en-US");
 }
 
+// Clip a label to a pixel budget assuming ~px-per-char for the given font size,
+// appending an ellipsis when cut. Keeps SVG titles from overrunning their cell.
+function truncate(s: string, maxChars: number): string {
+  return s.length > maxChars ? `${s.slice(0, maxChars - 1).trimEnd()}…` : s;
+}
+
 // Open/close an SVG root at a fixed viewBox; width/height let the HTML/raster
 // caller scale uniformly.
 function svgRoot(w: number, h: number, body: string): string {
@@ -253,8 +259,9 @@ export function trendChartSvg(
 
   const cols = 3;
   const cw = 300;
-  const ch = 130;
-  const pad = 12;
+  const ch = 150;
+  const pad = 14;
+  const headH = 46; // title + value/unit subline above the plot
   const rows = Math.ceil(series.length / cols);
   const W = cols * cw + 16;
   const H = rows * ch + 16;
@@ -266,9 +273,9 @@ export function trendChartSvg(
     const ox = 8 + col * cw;
     const oy = 8 + row * ch;
     const plotW = cw - 2 * pad;
-    const plotH = ch - 44;
+    const plotH = ch - headH - pad;
     const px = ox + pad;
-    const py = oy + 28;
+    const py = oy + headH;
 
     const vals = s.pts.map((p) => p.value);
     let min = Math.min(0, ...vals);
@@ -279,9 +286,12 @@ export function trendChartSvg(
     }
     const sx = (idx: number) => px + (idx / (s.pts.length - 1)) * plotW;
     const sy = (v: number) => py + plotH - ((v - min) / (max - min)) * plotH;
+    const last = s.pts[s.pts.length - 1];
 
-    // Title.
-    body += `<text x="${ox + pad}" y="${oy + 16}" font-size="12" font-weight="600" fill="${INK}">${svgEsc(s.ind.label)}</text>`;
+    // Header: title on its own line (truncated to the cell width), then a subline
+    // with the latest value and unit. Nothing shares a baseline, so no overlap.
+    body += `<text x="${px}" y="${oy + 16}" font-size="12" font-weight="600" fill="${INK}">${svgEsc(truncate(s.ind.label, 40))}</text>`;
+    body += `<text x="${px}" y="${oy + 36}" font-size="13" font-weight="700" fill="#2563eb">${last.value}<tspan font-size="11" font-weight="400" fill="${MUTED}"> ${svgEsc(s.ind.unit)}</tspan></text>`;
     // Frame + zero baseline.
     body += `<rect x="${px}" y="${py}" width="${plotW}" height="${plotH}" fill="#fafafa" stroke="${LINE}"/>`;
     if (min < 0 && max > 0) {
@@ -291,10 +301,8 @@ export function trendChartSvg(
     // Line.
     const d = s.pts.map((p, idx) => `${idx === 0 ? "M" : "L"}${sx(idx).toFixed(1)},${sy(p.value).toFixed(1)}`).join(" ");
     body += `<path d="${d}" fill="none" stroke="#2563eb" stroke-width="2"/>`;
-    // Latest value label.
-    const last = s.pts[s.pts.length - 1];
+    // Latest-point marker.
     body += `<circle cx="${sx(s.pts.length - 1).toFixed(1)}" cy="${sy(last.value).toFixed(1)}" r="3" fill="#2563eb"/>`;
-    body += `<text x="${ox + cw - pad}" y="${oy + 16}" text-anchor="end" font-size="12" font-weight="700" fill="#2563eb">${last.value}</text>`;
   });
 
   return svgRoot(W, H, body);
