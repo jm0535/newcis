@@ -19,7 +19,7 @@ import {
 } from "recharts";
 import type { HistoricalReading, Indicator, RiskThreshold } from "@/lib/types";
 import { classifyIndicator } from "@/lib/risk-engine";
-import { ALERT_COLOUR, ALERT_LABEL, INDICATOR_META } from "@/lib/ui";
+import { ALERT_COLOUR, ALERT_LABEL, INDICATOR_META, indicatorDisplayKey } from "@/lib/ui";
 import { StatusPill } from "./ui";
 
 const ALERT_STATUS = { GREEN: "green", AMBER: "amber", RED: "red", BLACK: "black" } as const;
@@ -111,7 +111,7 @@ export function TrendChart({
         <div className="min-w-0">
           <div className="text-sm font-medium text-text-1 leading-snug">{indicator.label}</div>
           <div className="text-[10px] uppercase tracking-[0.08em] text-text-muted mt-0.5">
-            {indicator.key} · {indicator.unit}
+            {indicatorDisplayKey(indicator.key)} · {indicator.unit}
           </div>
         </div>
         {threshold && (

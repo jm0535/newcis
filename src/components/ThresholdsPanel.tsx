@@ -2,6 +2,7 @@
 // Editable in data/risk_thresholds.json; shown here so the technical
 // audience can see exactly why "Enga is red" without reading code.
 import type { RiskThreshold } from "@/lib/types";
+import { indicatorDisplayKey } from "@/lib/ui";
 
 export function ThresholdsPanel({ thresholds }: { thresholds: RiskThreshold[] }) {
   return (
@@ -21,7 +22,7 @@ export function ThresholdsPanel({ thresholds }: { thresholds: RiskThreshold[] })
           {thresholds.map((t) => (
             <tr key={t.metric} className="border-t border-border-subtle">
               <td className="pl-2 py-2 text-text-1 font-medium" data-numeric>
-                {t.metric}
+                {indicatorDisplayKey(t.metric)}
               </td>
               <td className="py-2 text-text-muted text-xs">{t.unit ?? "—"}</td>
               <td className="py-2 text-right text-text-2" data-numeric>

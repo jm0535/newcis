@@ -57,6 +57,19 @@ export const TREND_GLYPH: Record<Trend, string> = {
   flat: "▬",
 };
 
+// Display override for an indicator's short code (the eyebrow shown above the
+// label). The internal metric KEY stays stable — "ONI" is threaded through the
+// risk engine, thresholds, history and tests — but NOAA replaced the ONI with
+// the RONI (relative ONI) methodology on 1 Feb 2026, so the UI should read
+// "RONI". Keyed by indicator key; anything absent falls back to the key itself.
+const INDICATOR_DISPLAY_KEY: Record<string, string> = {
+  ONI: "RONI",
+};
+
+export function indicatorDisplayKey(key: string): string {
+  return INDICATOR_DISPLAY_KEY[key] ?? key;
+}
+
 // Plain-language explainer for each climate/hazard indicator. Written for a dual
 // audience: an executive should grasp "what is this and which way is bad" in one
 // line; a technical reader gets the same vocabulary the risk engine uses.

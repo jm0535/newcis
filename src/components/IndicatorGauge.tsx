@@ -5,7 +5,7 @@
 // executive question "are we in trouble yet?" reduces to one glance.
 import { motion } from "framer-motion";
 import type { AlertLevel, Indicator, RiskThreshold } from "@/lib/types";
-import { ALERT_COLOUR, ALERT_LABEL, INDICATOR_META, TREND_GLYPH, fmtAge, isReadingStale } from "@/lib/ui";
+import { ALERT_COLOUR, ALERT_LABEL, INDICATOR_META, TREND_GLYPH, fmtAge, indicatorDisplayKey, isReadingStale } from "@/lib/ui";
 import { ProvenanceBadge } from "./Provenance";
 import { Card, StatusPill } from "./ui";
 import { classifyIndicator } from "@/lib/risk-engine";
@@ -87,7 +87,7 @@ export function IndicatorGauge({
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="text-[10px] uppercase tracking-[0.08em] text-text-muted font-semibold">
-            {indicator.key}
+            {indicatorDisplayKey(indicator.key)}
           </div>
           <div className="text-sm text-text-1 font-medium truncate mt-0.5">
             {indicator.label}
