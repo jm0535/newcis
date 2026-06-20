@@ -177,3 +177,21 @@ export interface ProvinceProperties {
   is_focus: boolean;
   population: number;
 }
+
+// Minimal GeoJSON shape for the provincial map — a FeatureCollection of
+// MultiPolygon features carrying ProvinceProperties. Coordinates are
+// [lon, lat] rings. Kept local (no geojson dependency) — the SITREP map
+// builder only needs to project these rings to SVG paths.
+export interface ProvinceFeature {
+  type: "Feature";
+  properties: ProvinceProperties;
+  geometry: {
+    type: "MultiPolygon";
+    coordinates: number[][][][]; // [polygon][ring][point][lon,lat]
+  };
+}
+
+export interface ProvinceFC {
+  type: "FeatureCollection";
+  features: ProvinceFeature[];
+}

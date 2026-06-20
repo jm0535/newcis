@@ -13,6 +13,7 @@ import type {
   LastRun,
   Sitrep,
   ForecastBundle,
+  ProvinceFC,
 } from "./types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -53,6 +54,21 @@ export const getNationalStatus = () =>
   readJson<NationalStatus | null>("national_status.json", null);
 export const getLastRun = () => readJson<LastRun | null>("last_run.json", null);
 export const getForecast = () => readJson<ForecastBundle | null>("forecast.json", null);
+
+// Province geometry lives in /public (served statically to the browser map), not
+// /data — so it needs its own reader. Read once server-side for the SITREP
+// provincial map. Empty FeatureCollection on failure so the map degrades to a
+// "no geometry" note rather than crashing the report.
+const PUBLIC_DIR = path.join(process.cwd(), "public");
+
+export async function getProvincesGeojson(): Promise<ProvinceFC> {
+  try {
+    const buf = await fs.readFile(path.join(PUBLIC_DIR, "provinces.geojson"), "utf8");
+    return JSON.parse(buf) as ProvinceFC;
+  } catch {
+    return { type: "FeatureCollection", features: [] };
+  }
+}
 
 export async function listSitreps(): Promise<Sitrep[]> {
   const dir = sitrepsDir();
