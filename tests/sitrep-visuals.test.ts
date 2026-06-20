@@ -63,3 +63,41 @@ describe("riskMatrixSvg", () => {
     expect(svg).toContain("No sector cells");
   });
 });
+
+import { trendChartSvg } from "../src/lib/sitrep-visuals";
+import type { Indicator, HistoricalReading } from "../src/lib/types";
+
+function ind(key: string, label: string): Indicator {
+  return {
+    key,
+    label,
+    unit: "",
+    source: "NOAA",
+    update_frequency: "monthly",
+    provenance: "LIVE",
+    value: 1,
+    observed_at: "2026-06-01",
+    trend: "up",
+  };
+}
+
+describe("trendChartSvg", () => {
+  it("draws a mini chart for an indicator with >=2 readings and skips one with <2", () => {
+    const indicators = [ind("ONI", "Oceanic Niño Index"), ind("SOI", "Southern Oscillation")];
+    const history: HistoricalReading[] = [
+      { key: "ONI", value: 0.1, observed_at: "2026-01-01" },
+      { key: "ONI", value: 0.4, observed_at: "2026-02-01" },
+      { key: "ONI", value: 0.8, observed_at: "2026-03-01" },
+      { key: "SOI", value: -1, observed_at: "2026-03-01" }, // only 1 point → skipped
+    ];
+    const svg = trendChartSvg(history, indicators);
+    expect(svg.startsWith("<svg")).toBe(true);
+    expect(svg).toContain("Oceanic Niño Index");
+    expect(svg).not.toContain("Southern Oscillation");
+  });
+
+  it("renders a note when no indicator has enough history", () => {
+    const svg = trendChartSvg([], [ind("ONI", "Oceanic Niño Index")]);
+    expect(svg).toContain("No trend history");
+  });
+});

@@ -4,7 +4,7 @@
 // every report visual is rebuilt here as a plain SVG string: data in, SVG out.
 // Inline attributes only (no external CSS) so the markup survives BOTH inline
 // embedding in the print HTML and rasterization to PNG for the .docx.
-import type { NationalStatus, RiskLevel, SectorRisk, Sector } from "./types";
+import type { NationalStatus, RiskLevel, SectorRisk, Sector, Indicator, HistoricalReading } from "./types";
 import { RISK_COLOUR, ALERT_COLOUR } from "./ui";
 import { PHASE_SHORT } from "./national-language";
 import { FOCUS_CODES, FOCUS_SHORT_LABELS } from "./focus-provinces";
@@ -217,6 +217,83 @@ export function riskMatrixSvg(sectorRisk: SectorRisk[]): string {
   });
 
   body += legendStrip(8, H - 26);
+  return svgRoot(W, H, body);
+}
+
+// --- Indicator trends -------------------------------------------------------
+
+// Small-multiples grid (3 across): one mini line chart per indicator that has at
+// least two historical readings. Each chart shows the last ≤12 points for that
+// key, a zero baseline, auto-scaled min/max, the latest value labelled, and the
+// indicator label as title. Indicators with <2 points are skipped.
+export function trendChartSvg(
+  history: HistoricalReading[],
+  indicators: Indicator[],
+): string {
+  const series = indicators
+    .map((ind) => {
+      const pts = history
+        .filter((h) => h.key === ind.key)
+        .sort((a, b) => a.observed_at.localeCompare(b.observed_at))
+        .slice(-12);
+      return { ind, pts };
+    })
+    .filter((s) => s.pts.length >= 2);
+
+  if (!series.length) {
+    return svgRoot(
+      600,
+      80,
+      `<text x="300" y="46" text-anchor="middle" font-size="14" fill="${MUTED}">No trend history available.</text>`,
+    );
+  }
+
+  const cols = 3;
+  const cw = 300;
+  const ch = 130;
+  const pad = 12;
+  const rows = Math.ceil(series.length / cols);
+  const W = cols * cw + 16;
+  const H = rows * ch + 16;
+
+  let body = "";
+  series.forEach((s, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const ox = 8 + col * cw;
+    const oy = 8 + row * ch;
+    const plotW = cw - 2 * pad;
+    const plotH = ch - 44;
+    const px = ox + pad;
+    const py = oy + 28;
+
+    const vals = s.pts.map((p) => p.value);
+    let min = Math.min(0, ...vals);
+    let max = Math.max(0, ...vals);
+    if (min === max) {
+      min -= 1;
+      max += 1;
+    }
+    const sx = (idx: number) => px + (idx / (s.pts.length - 1)) * plotW;
+    const sy = (v: number) => py + plotH - ((v - min) / (max - min)) * plotH;
+
+    // Title.
+    body += `<text x="${ox + pad}" y="${oy + 16}" font-size="12" font-weight="600" fill="${INK}">${svgEsc(s.ind.label)}</text>`;
+    // Frame + zero baseline.
+    body += `<rect x="${px}" y="${py}" width="${plotW}" height="${plotH}" fill="#fafafa" stroke="${LINE}"/>`;
+    if (min < 0 && max > 0) {
+      const zy = sy(0);
+      body += `<line x1="${px}" y1="${zy}" x2="${px + plotW}" y2="${zy}" stroke="#d4d4d8" stroke-dasharray="3 3"/>`;
+    }
+    // Line.
+    const d = s.pts.map((p, idx) => `${idx === 0 ? "M" : "L"}${sx(idx).toFixed(1)},${sy(p.value).toFixed(1)}`).join(" ");
+    body += `<path d="${d}" fill="none" stroke="#2563eb" stroke-width="2"/>`;
+    // Latest value label.
+    const last = s.pts[s.pts.length - 1];
+    body += `<circle cx="${sx(s.pts.length - 1).toFixed(1)}" cy="${sy(last.value).toFixed(1)}" r="3" fill="#2563eb"/>`;
+    body += `<text x="${ox + cw - pad}" y="${oy + 16}" text-anchor="end" font-size="12" font-weight="700" fill="#2563eb">${last.value}</text>`;
+  });
+
   return svgRoot(W, H, body);
 }
 
