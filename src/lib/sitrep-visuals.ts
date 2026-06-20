@@ -4,7 +4,7 @@
 // every report visual is rebuilt here as a plain SVG string: data in, SVG out.
 // Inline attributes only (no external CSS) so the markup survives BOTH inline
 // embedding in the print HTML and rasterization to PNG for the .docx.
-import type { NationalStatus, RiskLevel, SectorRisk, Sector, Indicator, HistoricalReading } from "./types";
+import type { NationalStatus, RiskLevel, SectorRisk, Sector, Indicator, HistoricalReading, ProvinceFC } from "./types";
 import { RISK_COLOUR, ALERT_COLOUR } from "./ui";
 import { PHASE_SHORT } from "./national-language";
 import { FOCUS_CODES, FOCUS_SHORT_LABELS } from "./focus-provinces";
@@ -298,3 +298,70 @@ export function trendChartSvg(
 }
 
 export { legendStrip, svgRoot, groupThousands, INK, MUTED, LINE };
+
+// --- Provincial map ---------------------------------------------------------
+
+// Project all province MultiPolygons to SVG paths via a linear lon/lat → viewBox
+// fit (bbox over every coordinate, scale to fit, flip Y for screen space). Each
+// province is filled by its worst sector level; provinces with no risk data show
+// neutral grey. A simple equirectangular fit is fine at PNG-demo scale.
+export function provincialMapSvg(geojson: ProvinceFC, sectorRisk: SectorRisk[]): string {
+  if (!geojson.features.length) {
+    return svgRoot(
+      600,
+      80,
+      `<text x="300" y="46" text-anchor="middle" font-size="14" fill="${MUTED}">No province geometry available.</text>`,
+    );
+  }
+
+  // bbox over all coordinates.
+  let minLon = Infinity, maxLon = -Infinity, minLat = Infinity, maxLat = -Infinity;
+  for (const f of geojson.features) {
+    for (const poly of f.geometry.coordinates) {
+      for (const ring of poly) {
+        for (const [lon, lat] of ring) {
+          if (lon < minLon) minLon = lon;
+          if (lon > maxLon) maxLon = lon;
+          if (lat < minLat) minLat = lat;
+          if (lat > maxLat) maxLat = lat;
+        }
+      }
+    }
+  }
+
+  const W = 760, H = 620, M = 24, titleH = 28, legendH = 30;
+  const plotW = W - 2 * M;
+  const plotH = H - 2 * M - titleH - legendH;
+  const spanLon = maxLon - minLon || 1;
+  const spanLat = maxLat - minLat || 1;
+  const scale = Math.min(plotW / spanLon, plotH / spanLat);
+  const ox = M + (plotW - spanLon * scale) / 2;
+  const oy = M + titleH;
+  const projX = (lon: number) => ox + (lon - minLon) * scale;
+  const projY = (lat: number) => oy + (maxLat - lat) * scale; // flip Y
+
+  // Worst level per province code.
+  const worstByCode = new Map<string, RiskLevel>();
+  for (const r of sectorRisk) {
+    const cur = worstByCode.get(r.province_code);
+    if (!cur || LEVEL_RANK[r.level] > LEVEL_RANK[cur]) worstByCode.set(r.province_code, r.level);
+  }
+
+  let body = `<text x="${M}" y="${M + 14}" font-size="14" font-weight="600" fill="${INK}">Provincial risk — worst sector per province</text>`;
+
+  for (const f of geojson.features) {
+    const level = worstByCode.get(f.properties.code) ?? null;
+    const fill = level ? RISK_COLOUR[level] : "#e4e4e7";
+    for (const poly of f.geometry.coordinates) {
+      for (const ring of poly) {
+        const d = ring
+          .map(([lon, lat], idx) => `${idx === 0 ? "M" : "L"}${projX(lon).toFixed(1)},${projY(lat).toFixed(1)}`)
+          .join(" ") + " Z";
+        body += `<path d="${d}" fill="${fill}" stroke="#ffffff" stroke-width="0.8"/>`;
+      }
+    }
+  }
+
+  body += legendStrip(M, H - legendH + 4);
+  return svgRoot(W, H, body);
+}

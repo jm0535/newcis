@@ -101,3 +101,38 @@ describe("trendChartSvg", () => {
     expect(svg).toContain("No trend history");
   });
 });
+
+import { provincialMapSvg } from "../src/lib/sitrep-visuals";
+import type { ProvinceFC } from "../src/lib/types";
+
+const fc: ProvinceFC = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      properties: { code: "PG08", name: "Enga", is_focus: true, population: 432000 },
+      geometry: { type: "MultiPolygon", coordinates: [[[[143, -5], [144, -5], [144, -6], [143, -6], [143, -5]]]] },
+    },
+    {
+      type: "Feature",
+      properties: { code: "PG09", name: "Western Highlands", is_focus: true, population: 362000 },
+      geometry: { type: "MultiPolygon", coordinates: [[[[144, -5], [145, -5], [145, -6], [144, -6], [144, -5]]]] },
+    },
+  ],
+};
+
+describe("provincialMapSvg", () => {
+  it("draws one path per province, coloured by worst sector level", () => {
+    const svg = provincialMapSvg(fc, [
+      { province_code: "PG08", sector: "Food Security", level: "critical", score: 0.9, trend: "up", provenance: "LIVE", as_of: "2026-06-20" },
+    ]);
+    expect(svg.startsWith("<svg")).toBe(true);
+    expect((svg.match(/<path /g) ?? []).length).toBeGreaterThanOrEqual(2);
+    expect(svg).toContain("#334155"); // Enga critical fill
+  });
+
+  it("renders a note for an empty FeatureCollection", () => {
+    const svg = provincialMapSvg({ type: "FeatureCollection", features: [] }, []);
+    expect(svg).toContain("No province geometry");
+  });
+});
