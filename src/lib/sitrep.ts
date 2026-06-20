@@ -36,14 +36,14 @@ import {
   CLASSIFICATION,
   DISTRIBUTION,
   ISSUING_AUTHORITY,
-  actionsLeadPara,
-  climateAssessmentPara,
-  conclusionPara,
+  actionsLeadParas,
+  climateAssessmentParas,
+  conclusionParas,
   executiveSummary,
   introductionParas,
-  provincialAssessmentPara,
-  sectoralImpactPara,
-  situationOverviewPara,
+  provincialAssessmentParas,
+  sectoralImpactParas,
+  situationOverviewParas,
 } from "./sitrep-prose";
 import { SITREP_CSS } from "./sitrep-styles";
 
@@ -64,28 +64,38 @@ function periodLabel(date: Date): string {
 function recommendedActions(national: NationalStatus): string[] {
   if (national.alert_level === "BLACK") {
     return [
-      "Activate NEOC; convene NSA standing committee within 24 hours.",
-      "Stand up Food, Water and Health clusters at full capacity.",
-      "Authorise emergency procurement for highland provinces.",
+      "Command and coordination: activate the National Emergency Operations Centre (NEOC) and convene the NSA standing committee within 24 hours, with a fixed daily situation brief to the Prime Minister's office until the alert is downgraded.",
+      "Clusters: stand up the Food Security, Water and Public Health clusters at full capacity, each under its lead agency, and confirm cluster coordinators and 24-hour duty rosters are in place.",
+      "Logistics and procurement: authorise emergency procurement and pre-positioning of relief stocks for the highland provinces, and secure air and road corridors to Enga, Southern Highlands and Western Highlands before access degrades.",
+      "Resourcing: release contingency funds to provincial disaster offices and request a national supplementary appropriation if the event is assessed to exceed standing reserves.",
+      "Public communication: issue a national public advisory through PNGNWS and provincial radio, with clear guidance on water rationing, food conservation and health-seeking behaviour.",
+      "International support: notify and, where appropriate, formally request assistance from regional partners and humanitarian agencies, ensuring all incoming support is logged against the cluster system.",
     ];
   }
   if (national.alert_level === "RED") {
     return [
-      "Issue province-level early-action advisories to focus provinces.",
-      "Pre-position water and health supplies in Enga and Southern Highlands.",
-      "Schedule weekly inter-agency sync until status downgrades.",
+      "Early action: issue province-level early-action advisories to all focus provinces, naming the specific sectors at risk and the triggers that would force escalation to emergency footing.",
+      "Pre-positioning: move water-treatment and essential health supplies into Enga and Southern Highlands now, while access and budget headroom remain, rather than after a shortfall is confirmed.",
+      "Coordination: schedule a weekly inter-agency synchronisation chaired by the NSA, with each sector lead reporting readiness against its contingency plan, and hold it until the national status downgrades.",
+      "Provincial readiness: direct provincial disaster coordinators to verify storage, transport and staffing for a sustained dry spell, and to report gaps within seven days.",
+      "Monitoring: tighten the ONI, rainfall-anomaly and soil-moisture watch to a twice-weekly cadence so any crossing into emergency thresholds is caught early.",
+      "Vulnerable groups: task the Health and Food Security clusters with confirming reach into the most remote and food-insecure communities, where impact arrives first and recovery is slowest.",
     ];
   }
   if (national.alert_level === "AMBER") {
     return [
-      "Monitor ONI and rainfall anomaly weekly; flag any further escalation.",
-      "Brief sector leads on contingency triggers.",
-      "Verify cluster contact lists are current.",
+      "Monitoring: track ONI, rainfall anomaly and soil moisture on a weekly cadence and flag any further escalation against the documented alert thresholds the moment it occurs.",
+      "Contingency planning: brief sector leads on the contingency triggers for their domain and confirm each has a current, costed early-action plan ready to execute if the status moves to RED.",
+      "Readiness checks: verify that cluster contact lists, duty rosters and provincial coordinator details are current, so activation is not delayed by stale records.",
+      "Stock review: have lead agencies review the state and location of pre-positioned water, health and food stocks and identify any replenishment needed before the dry season deepens.",
+      "Communication: prepare, but do not yet issue, province-level public advisories so they can be released without delay if conditions worsen.",
     ];
   }
   return [
-    "Routine monitoring; no operational triggers met.",
-    "Maintain readiness posture and data ingestion cadence.",
+    "Routine monitoring: track the climate indicators on the standing cadence; no operational triggers have been met this cycle.",
+    "Sustain the readiness posture: keep cluster contact lists, provincial coordinator details and pre-positioned stocks current so the system can escalate without a standing start.",
+    "Maintain the data-ingestion cadence so the next assessment rests on complete, current feeds, and review any indicator that has lapsed to DEMO for a path back to a live source.",
+    "Use this quiet period for preparedness — exercises, plan reviews and stock replenishment — while the cost and disruption of doing so are lowest.",
   ];
 }
 
@@ -331,6 +341,9 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
     `<figure>${svg}<figcaption><b>Figure ${++figNo}.</b> ${esc(caption)}</figcaption></figure>`;
   const tableCaption = (caption: string): string =>
     `<p class="tcaption"><b>Table ${++tblNo}.</b> ${esc(caption)}</p>`;
+  // Render a list of prose paragraphs as a run of <p> blocks.
+  const paras = (items: string[]): string =>
+    items.map((p) => `<p>${esc(p)}</p>`).join("\n    ");
 
   const confBadgeColor =
     m.confidence.level === "GOOD" ? "#166534" : m.confidence.level === "PARTIAL" ? "#92400e" : "#991b1b";
@@ -378,18 +391,18 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
 
   <section>
     <h2>1 · Introduction</h2>
-    ${introductionParas(m).map((p) => `<p>${esc(p)}</p>`).join("\n    ")}
+    ${paras(introductionParas(m))}
   </section>
 
   <section>
     <h2>2 · Situation overview</h2>
-    <p>${esc(situationOverviewPara(m))}</p>
+    ${paras(situationOverviewParas(m))}
     ${figure(kpiSvg, "National key indicators — ENSO phase, alert level, risk rating, affected population, high-risk provinces and forecast period.")}
   </section>
 
   <section>
     <h2>3 · Climate &amp; ENSO assessment</h2>
-    <p>${esc(climateAssessmentPara(m))}</p>
+    ${paras(climateAssessmentParas(m))}
     ${figure(trendsSvg, "Recent trend per climate indicator, with the latest value and unit on each chart.")}
     ${tableCaption("Climate indicators this cycle, with value, unit, provenance (LIVE/DEMO) and observation date.")}
     <table>
@@ -400,7 +413,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
 
   <section>
     <h2>4 · Provincial risk assessment</h2>
-    <p>${esc(provincialAssessmentPara(m))}</p>
+    ${paras(provincialAssessmentParas(m))}
     ${figure(mapSvg, "Provincial risk map — each province coloured by its single worst-hit sector.")}
     ${figure(matrixSvg, RISK_MATRIX_CAPTION)}
     ${tableCaption(provincialRiskCaption(m.provinceCount, m.provincesAtRisk))}
@@ -412,7 +425,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
 
   <section>
     <h2>5 · Sectoral impact</h2>
-    <p>${esc(sectoralImpactPara(m))}</p>
+    ${paras(sectoralImpactParas(m))}
     <ul>${moverList}</ul>
   </section>
 
@@ -420,13 +433,13 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
 
   <section>
     <h2>7 · Recommended actions</h2>
-    <p>${esc(actionsLeadPara(m))}</p>
+    ${paras(actionsLeadParas(m))}
     <ul>${actionList || "<li>—</li>"}</ul>
   </section>
 
   <section>
     <h2>8 · Conclusion</h2>
-    <p>${esc(conclusionPara(m))}</p>
+    ${paras(conclusionParas(m))}
   </section>
 
   ${analystSection}

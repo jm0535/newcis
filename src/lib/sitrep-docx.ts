@@ -33,14 +33,14 @@ import {
   CLASSIFICATION,
   DISTRIBUTION,
   ISSUING_AUTHORITY,
-  actionsLeadPara,
-  climateAssessmentPara,
-  conclusionPara,
+  actionsLeadParas,
+  climateAssessmentParas,
+  conclusionParas,
   executiveSummary,
   introductionParas,
-  provincialAssessmentPara,
-  sectoralImpactPara,
-  situationOverviewPara,
+  provincialAssessmentParas,
+  sectoralImpactParas,
+  situationOverviewParas,
 } from "./sitrep-prose";
 
 // AlignmentType is a value object, not a type — alias its value union for params.
@@ -235,7 +235,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
   // 2 · Situation overview — KPI band.
   children.push(
     sectionHeading("2 · Situation overview"),
-    bodyPara(situationOverviewPara(m)),
+    ...situationOverviewParas(m).map(bodyPara),
     kpiFig,
     caption(
       figLabel(),
@@ -246,7 +246,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
   // 3 · Climate & ENSO assessment — trends figure then indicator table.
   children.push(
     sectionHeading("3 · Climate & ENSO assessment"),
-    bodyPara(climateAssessmentPara(m)),
+    ...climateAssessmentParas(m).map(bodyPara),
     trendsFig,
     caption(figLabel(), "Recent trend per climate indicator, with the latest value and unit on each chart."),
     caption(
@@ -287,7 +287,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
   // 4 · Provincial risk assessment — map + matrix figures, then ranked table.
   children.push(
     sectionHeading("4 · Provincial risk assessment"),
-    bodyPara(provincialAssessmentPara(m)),
+    ...provincialAssessmentParas(m).map(bodyPara),
     mapFig,
     caption(figLabel(), "Provincial risk map — each province coloured by its single worst-hit sector."),
     matrixFig,
@@ -330,7 +330,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
   }
 
   // 5 · Sectoral impact — prose then the sector-mover bullets.
-  children.push(sectionHeading("5 · Sectoral impact"), bodyPara(sectoralImpactPara(m)));
+  children.push(sectionHeading("5 · Sectoral impact"), ...sectoralImpactParas(m).map(bodyPara));
   if (m.movers.length) {
     for (const mv of m.movers) children.push(bullet(mv));
   } else {
@@ -380,7 +380,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
   }
 
   // 7 · Recommended actions — prose lead-in then the action bullets.
-  children.push(sectionHeading("7 · Recommended actions"), bodyPara(actionsLeadPara(m)));
+  children.push(sectionHeading("7 · Recommended actions"), ...actionsLeadParas(m).map(bodyPara));
   if (m.actions.length) {
     for (const a of m.actions) children.push(bullet(a));
   } else {
@@ -388,7 +388,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
   }
 
   // 8 · Conclusion.
-  children.push(sectionHeading("8 · Conclusion"), bodyPara(conclusionPara(m)));
+  children.push(sectionHeading("8 · Conclusion"), ...conclusionParas(m).map(bodyPara));
 
   // 9 · Analyst note (free text — editable; this is the section executives most
   // want to refine in Word).
