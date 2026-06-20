@@ -179,6 +179,15 @@ const PNG_DATETIME_FMT = new Intl.DateTimeFormat("en-GB", {
   hour12: false,
 });
 
+// Display a gauge/metric value at most-3-decimal precision, stripping trailing
+// zeros so "151.7625725" reads "151.763" and "0.5" stays "0.5" (not "0.500").
+// Raw feed values often carry float noise (WHO malaria 151.7625725, World Bank
+// CPI 0.602403921…); the engine keeps full precision, the UI shows a clean number.
+export function fmtMetric(value: number | null | undefined): string {
+  if (value === null || value === undefined || Number.isNaN(value)) return "—";
+  return String(Math.round(value * 1000) / 1000);
+}
+
 export function fmtDateTime(iso: string | undefined | null): string {
   if (!iso) return "—";
   const d = new Date(iso);
