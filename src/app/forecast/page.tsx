@@ -28,6 +28,8 @@ import {
   getRiskThresholds,
 } from "@/lib/data";
 import type { EnsoLean, OutlookConfidence } from "@/lib/outlook";
+import { classifyIndicator } from "@/lib/risk-engine";
+import type { AlertLevel } from "@/lib/types";
 import { ArrowDownRight, ArrowUpRight, Minus, TrendingUp } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -36,6 +38,16 @@ const LEAN_LABEL: Record<EnsoLean, string> = {
   el_nino: "El Niño",
   la_nina: "La Niña",
   neutral: "Neutral",
+};
+
+// The projected-mean tile is coloured by the alert BAND the mean falls in (via the
+// shared risk engine), not a binary neutral/non-neutral guess — so a RED-band mean
+// reads red, never amber.
+const ALERT_TILE_TONE: Record<AlertLevel, "green" | "amber" | "red" | "black"> = {
+  GREEN: "green",
+  AMBER: "amber",
+  RED: "red",
+  BLACK: "black",
 };
 
 // A lean maps to a traffic-light status only as a VISUAL cue for the outlook
@@ -157,7 +169,7 @@ export default async function ForecastPage() {
                     </>
                   }
                   hint="projected ONI"
-                  tone={outlook?.projectedLean === "neutral" ? "green" : "amber"}
+                  tone={ALERT_TILE_TONE[classifyIndicator(model.ensemble_mean, projThreshold)]}
                 />
                 <MetricTile
                   label="Low member"
