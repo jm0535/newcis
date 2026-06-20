@@ -25,6 +25,19 @@ import type { SitrepVisuals } from "./sitrep";
 import { kpiBandSvg, riskMatrixSvg, trendChartSvg, provincialMapSvg } from "./sitrep-visuals";
 import { svgToPng } from "./sitrep-raster";
 import { provincialRiskCaption, STRATEGIC_INTRO } from "./sitrep-shared";
+import {
+  CLASSIFICATION,
+  DISTRIBUTION,
+  ISSUING_AUTHORITY,
+  actionsLeadPara,
+  climateAssessmentPara,
+  conclusionPara,
+  executiveSummary,
+  introductionParas,
+  provincialAssessmentPara,
+  sectoralImpactPara,
+  situationOverviewPara,
+} from "./sitrep-prose";
 
 // AlignmentType is a value object, not a type — alias its value union for params.
 type Align = (typeof AlignmentType)[keyof typeof AlignmentType];
@@ -100,12 +113,61 @@ function fullWidthTable(rows: TableRow[]): Table {
 async function svgFigure(svg: string, ptW: number, ptH: number): Promise<Paragraph> {
   const png = await svgToPng(svg, ptW * 2);
   return new Paragraph({
-    spacing: { before: 80, after: 80 },
+    spacing: { before: 80, after: 40 },
     children: [
       new ImageRun({
         data: png,
         transformation: { width: ptW, height: ptH },
         type: "png",
+      }),
+    ],
+  });
+}
+
+// A body prose paragraph — the narrative that wraps the exhibits.
+function bodyPara(text: string): Paragraph {
+  return new Paragraph({
+    spacing: { after: 120 },
+    children: [new TextRun({ text, size: 20 })],
+  });
+}
+
+// A numbered figure/table caption: bold "Figure N." / "Table N." then the text.
+function caption(label: string, text: string): Paragraph {
+  return new Paragraph({
+    spacing: { after: 120 },
+    children: [
+      new TextRun({ text: `${label} `, bold: true, size: 16, color: "52525B" }),
+      new TextRun({ text, size: 16, color: "52525B" }),
+    ],
+  });
+}
+
+// The centred classification banner top and bottom of the document.
+function classificationBanner(): Paragraph {
+  return new Paragraph({
+    alignment: AlignmentType.CENTER,
+    spacing: { before: 60, after: 60 },
+    border: {
+      top: { style: BorderStyle.SINGLE, size: 4, color: "D4D4D8" },
+      bottom: { style: BorderStyle.SINGLE, size: 4, color: "D4D4D8" },
+    },
+    children: [new TextRun({ text: CLASSIFICATION, bold: true, size: 16, color: "52525B" })],
+  });
+}
+
+// One row of the title-block metadata table (label | value).
+function metaRow(label: string, value: string, bold = false): TableRow {
+  return new TableRow({
+    children: [
+      new TableCell({
+        borders: CELL_BORDERS,
+        shading: { fill: HEADER_FILL },
+        children: [new Paragraph({ children: [new TextRun({ text: label, bold: true, size: 16, color: "52525B" })] })],
+      }),
+      new TableCell({
+        borders: CELL_BORDERS,
+        children: [new Paragraph({ children: [new TextRun({ text: value, bold, size: 18 })] })],
       }),
     ],
   });
@@ -120,79 +182,116 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
   const mapFig = await svgFigure(provincialMapSvg(v.geojson, v.sectorRisk), 470, 380);
   const trendsFig = await svgFigure(trendChartSvg(v.history, v.indicators ?? []), 600, 200);
 
-  // Title block.
+  // Figure/table numbering. A government report cross-references its exhibits, so
+  // each visual and data table carries a sequential, captioned label in document
+  // order.
+  let figNo = 0;
+  let tblNo = 0;
+  const figLabel = () => `Figure ${++figNo}.`;
+  const tblLabel = () => `Table ${++tblNo}.`;
+
+  // Classification banner + title block.
   children.push(
+    classificationBanner(),
     new Paragraph({
       heading: HeadingLevel.HEADING_1,
-      spacing: { after: 60 },
-      children: [
-        new TextRun({ text: "NEWCIS · Weekly ENSO Situation Report", bold: true, size: 32 }),
-      ],
-    }),
-    new Paragraph({
-      spacing: { after: 40 },
-      children: [
-        new TextRun({ text: "Period: ", size: 20 }),
-        new TextRun({ text: m.period, bold: true, size: 20 }),
-        new TextRun({ text: "  ·  Generated ", size: 20 }),
-        new TextRun({ text: m.generatedAt, bold: true, size: 20 }),
-      ],
+      spacing: { before: 120, after: 20 },
+      children: [new TextRun({ text: "Weekly ENSO Situation Report", bold: true, size: 32 })],
     }),
     new Paragraph({
       spacing: { after: 120 },
-      children: [
-        new TextRun({ text: m.alert, bold: true, size: 22 }),
-        new TextRun({ text: `   ${m.enso}   ·   National risk: `, size: 20 }),
-        new TextRun({ text: m.rating, bold: true, size: 20 }),
-      ],
-    }),
-  );
-
-  // Confidence line (exec-first: immediately after title).
-  children.push(
-    new Paragraph({
-      spacing: { after: 120 },
-      children: [
-        new TextRun({ text: `Data confidence: ${m.confidence.level}. `, bold: true, size: 18 }),
-        new TextRun({ text: m.confidence.line, size: 18, color: "52525B" }),
-      ],
-    }),
-  );
-
-  // Executive overview — KPI band visual.
-  children.push(sectionHeading("Executive overview"), kpiFig);
-
-  // Bottom line.
-  children.push(
-    sectionHeading("Bottom line"),
-    new Paragraph({ children: [new TextRun({ text: m.bottomLine || "No national status this cycle.", size: 20 })] }),
-  );
-
-  // Summary.
-  children.push(
-    sectionHeading("Summary"),
-    new Paragraph({ children: [new TextRun({ text: m.summary, size: 20 })] }),
-  );
-
-  // National risk matrix.
-  children.push(sectionHeading("National risk matrix"), matrixFig);
-
-  // Provincial risk map.
-  children.push(sectionHeading("Provincial risk map"), mapFig);
-
-  // Provincial risk table.
-  children.push(
-    sectionHeading("Provincial risk"),
-    new Paragraph({
-      spacing: { after: 80 },
       children: [
         new TextRun({
-          text: provincialRiskCaption(m.provinceCount, m.provincesAtRisk),
-          size: 18,
+          text: "National ENSO Early Warning & Climate Intelligence System (NEWCIS)",
+          size: 20,
           color: "52525B",
         }),
       ],
     }),
+  );
+  children.push(
+    fullWidthTable([
+      metaRow("Issuing authority", ISSUING_AUTHORITY),
+      metaRow("Reporting period", m.period, true),
+      metaRow("Report reference", m.id),
+      metaRow("Date generated", m.generatedAt),
+      metaRow("Alert level", `${m.alert} · ${m.enso} · national risk ${m.rating}`, true),
+      metaRow("Distribution", DISTRIBUTION),
+      metaRow("Data confidence", m.confidence.level, true),
+    ]),
+  );
+
+  // Executive summary — the BLUF.
+  children.push(sectionHeading("Executive summary"), bodyPara(executiveSummary(m)));
+
+  // 1 · Introduction.
+  children.push(sectionHeading("1 · Introduction"));
+  for (const p of introductionParas(m)) children.push(bodyPara(p));
+
+  // 2 · Situation overview — KPI band.
+  children.push(
+    sectionHeading("2 · Situation overview"),
+    bodyPara(situationOverviewPara(m)),
+    kpiFig,
+    caption(
+      figLabel(),
+      "National key indicators — ENSO phase, alert level, risk rating, affected population, high-risk provinces and forecast period.",
+    ),
+  );
+
+  // 3 · Climate & ENSO assessment — trends figure then indicator table.
+  children.push(
+    sectionHeading("3 · Climate & ENSO assessment"),
+    bodyPara(climateAssessmentPara(m)),
+    trendsFig,
+    caption(figLabel(), "Recent trend per climate indicator, with the latest value and unit on each chart."),
+    caption(
+      tblLabel(),
+      "Climate indicators this cycle, with value, unit, provenance (LIVE/DEMO) and observation date.",
+    ),
+  );
+  if (m.indicators.length) {
+    const head = new TableRow({
+      tableHeader: true,
+      children: [
+        headerCell("Key"),
+        headerCell("Label"),
+        headerCell("Value", AlignmentType.RIGHT),
+        headerCell("Unit"),
+        headerCell("Source"),
+        headerCell("Observed"),
+      ],
+    });
+    const rows = m.indicators.map(
+      (i) =>
+        new TableRow({
+          children: [
+            cell(i.key),
+            cell(i.label),
+            cell(i.value, { align: AlignmentType.RIGHT }),
+            cell(i.unit),
+            cell(i.provenance),
+            cell(i.observedAt),
+          ],
+        }),
+    );
+    children.push(fullWidthTable([head, ...rows]));
+  } else {
+    children.push(new Paragraph({ children: [new TextRun({ text: "No indicators available.", size: 20 })] }));
+  }
+
+  // 4 · Provincial risk assessment — map + matrix figures, then ranked table.
+  children.push(
+    sectionHeading("4 · Provincial risk assessment"),
+    bodyPara(provincialAssessmentPara(m)),
+    mapFig,
+    caption(figLabel(), "Provincial risk map — each province coloured by its single worst-hit sector."),
+    matrixFig,
+    caption(
+      figLabel(),
+      "National risk matrix — all sectors (rows) against all provinces (columns), traffic-light coded.",
+    ),
+    caption(tblLabel(), provincialRiskCaption(m.provinceCount, m.provincesAtRisk)),
   );
   if (m.provinces.length) {
     const head = new TableRow({
@@ -226,62 +325,21 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
     );
   }
 
-  // Indicator trends figure then key indicators table.
-  children.push(sectionHeading("Indicator trends"), trendsFig);
-  children.push(sectionHeading("Key indicators"));
-  if (m.indicators.length) {
-    const head = new TableRow({
-      tableHeader: true,
-      children: [
-        headerCell("Key"),
-        headerCell("Label"),
-        headerCell("Value", AlignmentType.RIGHT),
-        headerCell("Unit"),
-        headerCell("Source"),
-        headerCell("Observed"),
-      ],
-    });
-    const rows = m.indicators.map(
-      (i) =>
-        new TableRow({
-          children: [
-            cell(i.key),
-            cell(i.label),
-            cell(i.value, { align: AlignmentType.RIGHT }),
-            cell(i.unit),
-            cell(i.provenance),
-            cell(i.observedAt),
-          ],
-        }),
-    );
-    children.push(fullWidthTable([head, ...rows]));
-  } else {
-    children.push(new Paragraph({ children: [new TextRun({ text: "No indicators available.", size: 20 })] }));
-  }
-
-  // Focus province · sector movers.
-  children.push(sectionHeading("Focus province · sector movers"));
+  // 5 · Sectoral impact — prose then the sector-mover bullets.
+  children.push(sectionHeading("5 · Sectoral impact"), bodyPara(sectoralImpactPara(m)));
   if (m.movers.length) {
     for (const mv of m.movers) children.push(bullet(mv));
   } else {
     children.push(bullet("No focus-province sector cells available."));
   }
 
-  // Recommended actions.
-  children.push(sectionHeading("Recommended actions"));
-  if (m.actions.length) {
-    for (const a of m.actions) children.push(bullet(a));
-  } else {
-    children.push(bullet("—"));
-  }
-
-  // Strategic context (WEF). Plain-language framing first, then one block per
+  // 6 · Strategic context (WEF). Plain-language framing first, then one block per
   // insight: bold headline + scope/DEMO, the paraphrase, a "why it matters here"
   // line, and the public source. Mirrors the HTML report's Strategic context
   // cards so the Word document and the on-screen report stay in lockstep.
   if (m.strategic.length) {
     children.push(
-      sectionHeading("Strategic context · World Economic Forum"),
+      sectionHeading("6 · Strategic context · World Economic Forum"),
       new Paragraph({
         spacing: { after: 140 },
         children: [new TextRun({ text: STRATEGIC_INTRO, size: 18, color: "52525B" })],
@@ -317,27 +375,39 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
     }
   }
 
-  // Analyst note (free text — editable; this is the section executives most want
-  // to refine in Word).
+  // 7 · Recommended actions — prose lead-in then the action bullets.
+  children.push(sectionHeading("7 · Recommended actions"), bodyPara(actionsLeadPara(m)));
+  if (m.actions.length) {
+    for (const a of m.actions) children.push(bullet(a));
+  } else {
+    children.push(bullet("—"));
+  }
+
+  // 8 · Conclusion.
+  children.push(sectionHeading("8 · Conclusion"), bodyPara(conclusionPara(m)));
+
+  // 9 · Analyst note (free text — editable; this is the section executives most
+  // want to refine in Word).
   if (m.analystNote) {
     children.push(
-      sectionHeading("Analyst note"),
+      sectionHeading("9 · Analyst note"),
       new Paragraph({ children: [new TextRun({ text: m.analystNote, size: 20 })] }),
     );
   }
 
-  // Technical appendix — replaces the old "Data sources this cycle" footer.
+  // Annex A · Technical appendix — replaces the old "Data sources this cycle" footer.
   children.push(
     new Paragraph({
       spacing: { before: 320 },
       border: { top: BORDER },
       heading: HeadingLevel.HEADING_2,
-      children: [new TextRun({ text: "TECHNICAL APPENDIX", bold: true, size: 20 })],
+      children: [new TextRun({ text: "ANNEX A · TECHNICAL APPENDIX", bold: true, size: 20 })],
     }),
     new Paragraph({
       spacing: { after: 80 },
       children: [new TextRun({ text: `For data and operations staff. ${m.confidence.line}`, size: 16, color: "71717A" })],
     }),
+    caption(tblLabel(), "Status of each data feed for this ingest cycle."),
   );
   const feedHead = new TableRow({
     tableHeader: true,
@@ -358,6 +428,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
         }),
       ],
     }),
+    classificationBanner(),
   );
 
   const doc = new Document({

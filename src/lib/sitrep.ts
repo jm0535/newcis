@@ -31,6 +31,20 @@ import {
   selectStrategicContext,
   STRATEGIC_INTRO,
 } from "./sitrep-shared";
+import {
+  CLASSIFICATION,
+  DISTRIBUTION,
+  ISSUING_AUTHORITY,
+  actionsLeadPara,
+  climateAssessmentPara,
+  conclusionPara,
+  executiveSummary,
+  introductionParas,
+  provincialAssessmentPara,
+  sectoralImpactPara,
+  situationOverviewPara,
+} from "./sitrep-prose";
+import { SITREP_CSS } from "./sitrep-styles";
 
 const ENSO_LABEL: Record<NationalStatus["enso_phase"], string> = {
   neutral: "ENSO Neutral",
@@ -288,7 +302,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   // link. Written so a non-technical reader gets the point without the graph.
   const strategicSection = m.strategic.length
     ? `<section>
-    <h2>Strategic context · World Economic Forum</h2>
+    <h2>6 · Strategic context · World Economic Forum</h2>
     <p style="margin:4px 0 12px;color:#52525b;font-size:12px">${esc(STRATEGIC_INTRO)}</p>
     ${m.strategic
       .map(
@@ -306,6 +320,17 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   </section>`
     : "";
 
+  // Sequential figure/table numbering. A government report cross-references its
+  // exhibits ("see Figure 2"), so each visual and data table carries a numbered,
+  // captioned label. These counters increment in document order as the body is
+  // assembled below.
+  let figNo = 0;
+  let tblNo = 0;
+  const figure = (svg: string, caption: string): string =>
+    `<figure>${svg}<figcaption><b>Figure ${++figNo}.</b> ${esc(caption)}</figcaption></figure>`;
+  const tableCaption = (caption: string): string =>
+    `<p class="tcaption"><b>Table ${++tblNo}.</b> ${esc(caption)}</p>`;
+
   const confBadgeColor =
     m.confidence.level === "GOOD" ? "#166534" : m.confidence.level === "PARTIAL" ? "#92400e" : "#991b1b";
   const confBadgeBg =
@@ -318,7 +343,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
     : '<tr><td colspan="2">No ingest run reported this cycle.</td></tr>';
 
   const analystSection = m.analystNote
-    ? `<section><h2>Analyst note</h2><p>${esc(m.analystNote)}</p></section>`
+    ? `<section><h2>9 · Analyst note</h2><p>${esc(m.analystNote)}</p></section>`
     : "";
 
   return `<!doctype html>
@@ -326,78 +351,46 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
 <head>
   <meta charset="utf-8" />
   <title>${m.docTitle}</title>
-  <style>
-    /* A printed government report is a light document. Pin the scheme so an OS/UA
-       dark mode never paints a black canvas behind the near-black body text (which
-       would render the report invisible on screen and in print-to-PDF). */
-    html { color-scheme: light; background: #ffffff; }
-    body { font: 14px/1.5 -apple-system, system-ui, sans-serif; color: #18181b; background: #ffffff; max-width: 820px; margin: 32px auto; padding: 0 24px; }
-    h1 { font-size: 22px; margin: 0 0 4px; }
-    h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 28px; border-bottom: 1px solid #d4d4d8; padding-bottom: 4px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-    th, td { text-align: left; padding: 4px 6px; border-bottom: 1px solid #e4e4e7; font-size: 12px; }
-    .pill { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 12px; }
-    .pill.GREEN { background: #dcfce7; color: #166534; }
-    .pill.AMBER { background: #fef3c7; color: #92400e; }
-    .pill.RED { background: #fee2e2; color: #991b1b; }
-    .pill.BLACK { background: #0f172a; color: #ffffff; }
-    .pill.DEMO { background: #ede9fe; color: #5b21b6; font-size: 10px; padding: 1px 6px; }
-    ul { padding-left: 18px; }
-    .badge { display:inline-block; padding:3px 10px; border-radius:4px; font-weight:600; font-size:12px; }
-    figure { margin: 12px 0; }
-    figure svg { max-width: 100%; height: auto; }
-    .bottomline { border:1px solid #e4e4e7; border-left:4px solid #f43f5e; border-radius:6px; padding:10px 14px; background:#fafafa; margin-top:8px; }
-    .appendix { margin-top:36px; border-top:2px solid #d4d4d8; padding-top:10px; }
-    .appendix h2 { border:0; }
-    .appendix table { max-width:360px; }
-    .muted { color:#71717a; font-size:11px; }
-  </style>
+  <style>${SITREP_CSS}</style>
 </head>
 <body>
-  <h1>NEWCIS · Weekly ENSO Situation Report</h1>
-  <div>Period: <b>${m.period}</b> · Generated <b>${m.generatedAt}</b></div>
-  <div style="margin-top:8px">
-    <span class="badge" style="background:${confBadgeBg};color:${confBadgeColor}">Data confidence: ${m.confidence.level}</span>
-    &nbsp; <span class="muted">${esc(m.confidence.line)}</span>
-  </div>
+  <div class="classification">${esc(CLASSIFICATION)}</div>
 
-  <section>
-    <h2>Executive overview</h2>
-    <figure>${kpiSvg}</figure>
-  </section>
-
-  <section>
-    <h2>Bottom line</h2>
-    <div class="bottomline">${m.bottomLine ? esc(m.bottomLine) : "No national status this cycle."}</div>
-  </section>
-
-  <section>
-    <h2>Summary</h2>
-    <p>${esc(m.summary)}</p>
-  </section>
-
-  <section>
-    <h2>National risk matrix</h2>
-    <figure>${matrixSvg}</figure>
-  </section>
-
-  <section>
-    <h2>Provincial risk map</h2>
-    <figure>${mapSvg}</figure>
-  </section>
-
-  <section>
-    <h2>Provincial risk</h2>
-    <p style="margin:4px 0 0;color:#52525b;font-size:12px">${esc(provincialRiskCaption(m.provinceCount, m.provincesAtRisk))}</p>
-    <table>
-      <thead><tr><th style="text-align:right">#</th><th>Province</th><th>Worst level</th><th>Worst sector</th><th style="text-align:right">Stressed</th></tr></thead>
-      <tbody>${provinceTableRows}</tbody>
+  <header class="titleblock">
+    <h1>Weekly ENSO Situation Report</h1>
+    <div class="subtitle">National ENSO Early Warning &amp; Climate Intelligence System (NEWCIS)</div>
+    <table class="meta">
+      <tr><td>Issuing authority</td><td>${esc(ISSUING_AUTHORITY)}</td></tr>
+      <tr><td>Reporting period</td><td><b>${esc(m.period)}</b></td></tr>
+      <tr><td>Report reference</td><td>${esc(m.id)}</td></tr>
+      <tr><td>Date generated</td><td>${esc(m.generatedAt)}</td></tr>
+      <tr><td>Alert level</td><td><b>${esc(m.alert)}</b> · ${esc(m.enso)} · national risk ${esc(m.rating)}</td></tr>
+      <tr><td>Distribution</td><td>${esc(DISTRIBUTION)}</td></tr>
+      <tr><td>Data confidence</td><td><span class="badge" style="background:${confBadgeBg};color:${confBadgeColor}">${m.confidence.level}</span></td></tr>
     </table>
+  </header>
+
+  <section>
+    <h2>Executive summary</h2>
+    <div class="bottomline">${esc(executiveSummary(m))}</div>
   </section>
 
   <section>
-    <h2>Indicator trends</h2>
-    <figure>${trendsSvg}</figure>
+    <h2>1 · Introduction</h2>
+    ${introductionParas(m).map((p) => `<p>${esc(p)}</p>`).join("\n    ")}
+  </section>
+
+  <section>
+    <h2>2 · Situation overview</h2>
+    <p>${esc(situationOverviewPara(m))}</p>
+    ${figure(kpiSvg, "National key indicators — ENSO phase, alert level, risk rating, affected population, high-risk provinces and forecast period.")}
+  </section>
+
+  <section>
+    <h2>3 · Climate &amp; ENSO assessment</h2>
+    <p>${esc(climateAssessmentPara(m))}</p>
+    ${figure(trendsSvg, "Recent trend per climate indicator, with the latest value and unit on each chart.")}
+    ${tableCaption("Climate indicators this cycle, with value, unit, provenance (LIVE/DEMO) and observation date.")}
     <table>
       <thead><tr><th>Key</th><th>Label</th><th style="text-align:right">Value</th><th>Unit</th><th>Source</th><th>Observed</th></tr></thead>
       <tbody>${indicatorRows || '<tr><td colspan="6">No indicators available.</td></tr>'}</tbody>
@@ -405,28 +398,50 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   </section>
 
   <section>
-    <h2>Focus province · sector movers</h2>
-    <ul>${moverList}</ul>
+    <h2>4 · Provincial risk assessment</h2>
+    <p>${esc(provincialAssessmentPara(m))}</p>
+    ${figure(mapSvg, "Provincial risk map — each province coloured by its single worst-hit sector.")}
+    ${figure(matrixSvg, "National risk matrix — all sectors (rows) against all provinces (columns), traffic-light coded.")}
+    ${tableCaption(provincialRiskCaption(m.provinceCount, m.provincesAtRisk))}
+    <table>
+      <thead><tr><th style="text-align:right">#</th><th>Province</th><th>Worst level</th><th>Worst sector</th><th style="text-align:right">Stressed</th></tr></thead>
+      <tbody>${provinceTableRows}</tbody>
+    </table>
   </section>
 
   <section>
-    <h2>Recommended actions</h2>
-    <ul>${actionList || "<li>—</li>"}</ul>
+    <h2>5 · Sectoral impact</h2>
+    <p>${esc(sectoralImpactPara(m))}</p>
+    <ul>${moverList}</ul>
   </section>
 
   ${strategicSection}
 
+  <section>
+    <h2>7 · Recommended actions</h2>
+    <p>${esc(actionsLeadPara(m))}</p>
+    <ul>${actionList || "<li>—</li>"}</ul>
+  </section>
+
+  <section>
+    <h2>8 · Conclusion</h2>
+    <p>${esc(conclusionPara(m))}</p>
+  </section>
+
   ${analystSection}
 
   <section class="appendix">
-    <h2>Technical appendix</h2>
+    <h2>Annex A · Technical appendix</h2>
     <p class="muted">For data and operations staff. ${esc(m.confidence.line)}</p>
+    ${tableCaption("Status of each data feed for this ingest cycle.")}
     <table>
       <thead><tr><th>Data feed</th><th>Status this cycle</th></tr></thead>
       <tbody>${appendixFeedRows}</tbody>
     </table>
     <p class="muted">NEWCIS proof-of-concept · newcis.in4metrix.dev · Generated from a point-in-time data snapshot. Figures marked DEMO are seeded references, not live feeds.</p>
   </section>
+
+  <div class="classification">${esc(CLASSIFICATION)}</div>
 </body>
 </html>`;
 }
