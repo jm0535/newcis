@@ -11,6 +11,20 @@ import { FOCUS_NAMES } from "./focus-provinces";
 // keyed by the GREEN/AMBER/RED/BLACK alert vocabulary baked into the print CSS,
 // while the docx fills key off the LOW/MED/HIGH/CRITICAL level — two different
 // vocabularies, so a single map would force a rewrite of one renderer's contract.)
+// Full academic-style key for the National risk matrix (Figure 4). Spells out
+// every encoding on the figure — the colour scale, the National roll-up cell, the
+// LIVE/DEMO provenance flag and the trend glyphs — so the exhibit is readable in
+// isolation, the way a figure caption in a formal report must be. Shared so the
+// HTML and .docx captions are identical.
+export const RISK_MATRIX_CAPTION =
+  "National risk matrix — sectors (rows) against the National roll-up and all " +
+  "provinces (columns), sorted worst-first. Cell colour encodes risk level: " +
+  "green = Low, amber = Medium, red = High, black = Critical. The National cell " +
+  "states each sector's worst level nationwide and ×N, the number of provinces at " +
+  "that level. The pill beside each sector marks its data provenance — LIVE (real " +
+  "feed this cycle) or DEMO (seeded placeholder). Trend glyphs show movement since " +
+  "the last cycle: ▲ rising (worsening), ▼ falling (improving), — flat (no change).";
+
 export function provincialRiskCaption(provinceCount: number, provincesAtRisk: number): string {
   return (
     `All ${provinceCount} provinces ranked worst-first by their single most-stressed ` +

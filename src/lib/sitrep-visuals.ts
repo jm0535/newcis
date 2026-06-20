@@ -256,7 +256,10 @@ export function riskMatrixSvg(sectorRisk: SectorRisk[]): string {
       const x = labelW + natW + ci * cellW;
       const cell = focusRisk.find((r) => r.province_code === c && r.sector === sector);
       const level = cell?.level ?? null;
-      const glyph = cell?.trend === "up" ? "▲" : cell?.trend === "down" ? "▼" : "";
+      // Trend glyph in every populated cell — rising/falling, and a flat dash so
+      // "no change this cycle" reads as a deliberate state, not a missing value
+      // (mirrors the dashboard, where flat cells carry the em-dash).
+      const glyph = cell ? (cell.trend === "up" ? "▲" : cell.trend === "down" ? "▼" : "—") : "";
       const fill = level ? RISK_COLOUR[level] : "#f4f4f5";
       const gColor = level ? LEVEL_TEXT[level] : MUTED;
       body += `<rect x="${x + 1}" y="${y + 1}" width="${cellW - 2}" height="${cellH - 2}" rx="3" fill="${fill}" stroke="${LINE}"/>`;

@@ -24,7 +24,11 @@ import type { SitrepModel } from "./types";
 import type { SitrepVisuals } from "./sitrep";
 import { kpiBandSvg, riskMatrixSvg, trendChartSvg, provincialMapSvg } from "./sitrep-visuals";
 import { svgToPng } from "./sitrep-raster";
-import { provincialRiskCaption, STRATEGIC_INTRO } from "./sitrep-shared";
+import {
+  provincialRiskCaption,
+  RISK_MATRIX_CAPTION,
+  STRATEGIC_INTRO,
+} from "./sitrep-shared";
 import {
   CLASSIFICATION,
   DISTRIBUTION,
@@ -289,7 +293,7 @@ export async function buildSitrepDocx(m: SitrepModel, v: SitrepVisuals): Promise
     matrixFig,
     caption(
       figLabel(),
-      "National risk matrix — all sectors (rows) against all provinces (columns), traffic-light coded.",
+      RISK_MATRIX_CAPTION,
     ),
     caption(tblLabel(), provincialRiskCaption(m.provinceCount, m.provincesAtRisk)),
   );

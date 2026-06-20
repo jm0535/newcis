@@ -28,6 +28,7 @@ import { bottomLineSentence } from "./national-language";
 import { dataConfidence } from "./data-confidence";
 import {
   provincialRiskCaption,
+  RISK_MATRIX_CAPTION,
   selectStrategicContext,
   STRATEGIC_INTRO,
 } from "./sitrep-shared";
@@ -401,7 +402,7 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
     <h2>4 · Provincial risk assessment</h2>
     <p>${esc(provincialAssessmentPara(m))}</p>
     ${figure(mapSvg, "Provincial risk map — each province coloured by its single worst-hit sector.")}
-    ${figure(matrixSvg, "National risk matrix — all sectors (rows) against all provinces (columns), traffic-light coded.")}
+    ${figure(matrixSvg, RISK_MATRIX_CAPTION)}
     ${tableCaption(provincialRiskCaption(m.provinceCount, m.provincesAtRisk))}
     <table>
       <thead><tr><th style="text-align:right">#</th><th>Province</th><th>Worst level</th><th>Worst sector</th><th style="text-align:right">Stressed</th></tr></thead>
