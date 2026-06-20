@@ -11,6 +11,8 @@ import {
   getIndicators,
   getLastRun,
   getNationalStatus,
+  getProvincesGeojson,
+  getReadingsHistory,
   getSectorRisk,
 } from "@/lib/data";
 import { getWefInsights } from "@/lib/wef";
@@ -23,13 +25,16 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   try {
     const body = (await req.json().catch(() => ({}))) as { analyst_note?: string };
-    const [national, indicators, sectorRisk, lastRun, wefInsights] = await Promise.all([
-      getNationalStatus(),
-      getIndicators(),
-      getSectorRisk(),
-      getLastRun(),
-      getWefInsights(),
-    ]);
+    const [national, indicators, sectorRisk, lastRun, wefInsights, history, geojson] =
+      await Promise.all([
+        getNationalStatus(),
+        getIndicators(),
+        getSectorRisk(),
+        getLastRun(),
+        getWefInsights(),
+        getReadingsHistory(),
+        getProvincesGeojson(),
+      ]);
 
     const model = buildSitrepModel({
       national,
@@ -39,7 +44,13 @@ export async function POST(req: Request) {
       wefInsights,
       analystNote: body.analyst_note,
     });
-    const buffer = await buildSitrepDocx(model);
+    const buffer = await buildSitrepDocx(model, {
+      national,
+      indicators,
+      sectorRisk,
+      history,
+      geojson,
+    });
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

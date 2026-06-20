@@ -12,6 +12,8 @@ import {
   getIndicators,
   getLastRun,
   getNationalStatus,
+  getProvincesGeojson,
+  getReadingsHistory,
   getSectorRisk,
   sitrepsDir,
 } from "@/lib/data";
@@ -36,18 +38,23 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   }
 
   try {
-    // Prefer the persisted point-in-time model. Older reports predate it — rebuild
-    // from current data (a best-effort approximation, flagged by its own footer).
-    let model = sitrep.model;
-    if (!model) {
-      const [national, indicators, sectorRisk, lastRun, wefInsights] = await Promise.all([
+    // Fetch current data needed for visuals (always fresh for map / trend chart).
+    const [national, indicators, sectorRisk, lastRun, wefInsights, history, geojson] =
+      await Promise.all([
         getNationalStatus(),
         getIndicators(),
         getSectorRisk(),
         getLastRun(),
         getWefInsights(),
+        getReadingsHistory(),
+        getProvincesGeojson(),
       ]);
-      model = buildSitrepModel({
+
+    // Prefer the persisted point-in-time model. Older reports predate it — rebuild
+    // from current data (a best-effort approximation, flagged by its own footer).
+    const model =
+      sitrep.model ??
+      buildSitrepModel({
         national,
         indicators,
         sectorRisk,
@@ -55,9 +62,14 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
         wefInsights,
         analystNote: sitrep.analyst_note,
       });
-    }
 
-    const buffer = await buildSitrepDocx(model);
+    const buffer = await buildSitrepDocx(model, {
+      national,
+      indicators,
+      sectorRisk,
+      history,
+      geojson,
+    });
     const filename = `${model.docTitle}.docx`;
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
