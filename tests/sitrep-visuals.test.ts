@@ -31,3 +31,35 @@ describe("kpiBandSvg", () => {
     expect(svg).toContain("No national status");
   });
 });
+
+import { riskMatrixSvg } from "../src/lib/sitrep-visuals";
+import type { SectorRisk } from "../src/lib/types";
+
+// PG08 = Enga, a real focus province p-code (codes are PG01–PG22, not PG-XX).
+function sr(over: Partial<SectorRisk> = {}): SectorRisk {
+  return {
+    province_code: "PG08",
+    sector: "Food Security",
+    level: "critical",
+    score: 0.9,
+    trend: "up",
+    provenance: "LIVE",
+    as_of: "2026-06-20",
+    ...over,
+  };
+}
+
+describe("riskMatrixSvg", () => {
+  it("renders an svg with the critical colour and a sector label", () => {
+    const svg = riskMatrixSvg([sr()]);
+    expect(svg.startsWith("<svg")).toBe(true);
+    expect(svg).toContain("#334155"); // RISK_COLOUR.critical
+    expect(svg).toContain("Food Security");
+    expect(svg).toContain("National");
+  });
+
+  it("renders a note when there are no cells", () => {
+    const svg = riskMatrixSvg([]);
+    expect(svg).toContain("No sector cells");
+  });
+});
