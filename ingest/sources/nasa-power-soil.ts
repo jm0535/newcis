@@ -39,6 +39,16 @@ interface ProvinceWetness {
   history: { key: string; value: number }[];
 }
 
+// English ordinal suffix (1st, 2nd, 3rd, 33rd, 42nd…). 11/12/13 are the -th
+// exceptions. Used for the percentile label so it never reads "33th".
+function ordinal(n: number): string {
+  const r100 = n % 100;
+  if (r100 >= 11 && r100 <= 13) return `${n}th`;
+  const r10 = n % 10;
+  const suffix = r10 === 1 ? "st" : r10 === 2 ? "nd" : r10 === 3 ? "rd" : "th";
+  return `${n}${suffix}`;
+}
+
 async function fetchPoint(code: string, name: string, lon: number, lat: number): Promise<ProvinceWetness> {
   // NASA POWER monthly product publishes through the end of the previous full
   // calendar year. Asking for the current year returns HTTP 422.
@@ -131,7 +141,7 @@ export async function fetchNasaPowerSoil(): Promise<NasaPowerSoilResult> {
     trend: "flat",
     provenance: "LIVE",
     as_of: new Date().toISOString(),
-    data_source: `NASA POWER · GWETROOT ${r.percentile}th pctile`,
+    data_source: `NASA POWER · GWETROOT ${ordinal(r.percentile)} pctile`,
   }));
 
   return { indicator, sector_rows, per_province: results };

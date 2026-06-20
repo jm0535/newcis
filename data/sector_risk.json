@@ -657,7 +657,7 @@
     "trend": "flat",
     "provenance": "LIVE",
     "as_of": "2026-06-20T23:05:57.177Z",
-    "data_source": "NASA POWER · GWETROOT 92th pctile"
+    "data_source": "NASA POWER · GWETROOT 92nd pctile"
   },
   {
     "province_code": "PG18",
@@ -737,7 +737,7 @@
     "trend": "flat",
     "provenance": "LIVE",
     "as_of": "2026-06-20T23:05:57.177Z",
-    "data_source": "NASA POWER · GWETROOT 83th pctile"
+    "data_source": "NASA POWER · GWETROOT 83rd pctile"
   },
   {
     "province_code": "PG20",
@@ -817,7 +817,7 @@
     "trend": "flat",
     "provenance": "LIVE",
     "as_of": "2026-06-20T23:05:57.177Z",
-    "data_source": "NASA POWER · GWETROOT 33th pctile"
+    "data_source": "NASA POWER · GWETROOT 33rd pctile"
   },
   {
     "province_code": "PG03",
@@ -897,7 +897,7 @@
     "trend": "flat",
     "provenance": "LIVE",
     "as_of": "2026-06-20T23:05:57.177Z",
-    "data_source": "NASA POWER · GWETROOT 33th pctile"
+    "data_source": "NASA POWER · GWETROOT 33rd pctile"
   },
   {
     "province_code": "PG04",
@@ -1217,7 +1217,7 @@
     "trend": "flat",
     "provenance": "LIVE",
     "as_of": "2026-06-20T23:05:57.177Z",
-    "data_source": "NASA POWER · GWETROOT 33th pctile"
+    "data_source": "NASA POWER · GWETROOT 33rd pctile"
   },
   {
     "province_code": "PG10",
@@ -1377,7 +1377,7 @@
     "trend": "flat",
     "provenance": "LIVE",
     "as_of": "2026-06-20T23:05:57.177Z",
-    "data_source": "NASA POWER · GWETROOT 42th pctile"
+    "data_source": "NASA POWER · GWETROOT 42nd pctile"
   },
   {
     "province_code": "PG13",
@@ -1697,7 +1697,7 @@
     "trend": "flat",
     "provenance": "LIVE",
     "as_of": "2026-06-20T23:05:57.177Z",
-    "data_source": "NASA POWER · GWETROOT 33th pctile"
+    "data_source": "NASA POWER · GWETROOT 33rd pctile"
   },
   {
     "province_code": "PG22",

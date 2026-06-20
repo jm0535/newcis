@@ -96,7 +96,9 @@ export async function fetchHdxRainfall(
     update_frequency: "dekadal (10-day)",
     provenance: meanAnom === null ? "DEMO" : "LIVE",
     value: meanAnom === null ? null : Number(meanAnom.toFixed(1)),
-    observed_at: mostRecent ? mostRecent.reference_period_end.slice(0, 10) : new Date().toISOString().slice(0, 10),
+    // Only date the reading when a real dekad backs it. With no source row the
+    // value is null/DEMO — a fabricated "today" would falsely read as fresh.
+    observed_at: mostRecent ? mostRecent.reference_period_end.slice(0, 10) : "",
     trend: "flat",
   };
 
