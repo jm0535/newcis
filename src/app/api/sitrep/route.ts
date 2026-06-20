@@ -8,6 +8,8 @@ import {
   getIndicators,
   getLastRun,
   getNationalStatus,
+  getProvincesGeojson,
+  getReadingsHistory,
   getSectorRisk,
   sitrepsDir,
 } from "@/lib/data";
@@ -20,13 +22,16 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   try {
     const body = (await req.json().catch(() => ({}))) as { analyst_note?: string };
-    const [national, indicators, sectorRisk, lastRun, wefInsights] = await Promise.all([
-      getNationalStatus(),
-      getIndicators(),
-      getSectorRisk(),
-      getLastRun(),
-      getWefInsights(),
-    ]);
+    const [national, indicators, sectorRisk, lastRun, wefInsights, history, geojson] =
+      await Promise.all([
+        getNationalStatus(),
+        getIndicators(),
+        getSectorRisk(),
+        getLastRun(),
+        getWefInsights(),
+        getReadingsHistory(),
+        getProvincesGeojson(),
+      ]);
 
     const sitrep = generateSitrep({
       national,
@@ -34,6 +39,8 @@ export async function POST(req: Request) {
       sectorRisk,
       lastRun,
       wefInsights,
+      history,
+      geojson,
       analystNote: body.analyst_note,
     });
 
