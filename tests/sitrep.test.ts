@@ -192,7 +192,7 @@ describe("buildSitrepModel exec fields", () => {
 describe("renderSitrepHtml", () => {
   it("escapes the analyst note — no raw markup injection", () => {
     const m = buildSitrepModel(inputs({ analystNote: "<script>alert(1)</script>" }));
-    const html = renderSitrepHtml(m);
+    const html = renderSitrepHtml(m, { national: null, sectorRisk: [], history: [], geojson: { type: "FeatureCollection", features: [] } });
     expect(html).not.toContain("<script>alert(1)</script>");
     expect(html).toContain("&lt;script&gt;");
   });
@@ -203,9 +203,55 @@ describe("renderSitrepHtml", () => {
         wefInsights: [wef({ id: "nat-1", title: "Global Risks Report 2025" })],
       }),
     );
-    const html = renderSitrepHtml(m);
+    const html = renderSitrepHtml(m, { national: null, sectorRisk: [], history: [], geojson: { type: "FeatureCollection", features: [] } });
     expect(html).toContain("Strategic context");
     expect(html).toContain("World Economic Forum");
     expect(html).toContain("Global Risks Report 2025");
+  });
+});
+
+describe("renderSitrepHtml exec-first government report", () => {
+  const national = {
+    enso_phase: "el_nino_alert" as const,
+    alert_level: "RED" as const,
+    national_risk_rating: "high" as const,
+    affected_population_est: 1_795_581,
+    high_risk_province_count: 3,
+    forecast_period: "Next 3 months",
+    updated_at: "2026-06-20T00:00:00.000Z",
+  };
+  const sectorRisk = [
+    { province_code: "PG08", sector: "Food Security" as const, level: "critical" as const, score: 0.9, trend: "up" as const, provenance: "LIVE" as const, as_of: "2026-06-20" },
+  ];
+  const history = [
+    { key: "ONI", value: 0.2, observed_at: "2026-01-01" },
+    { key: "ONI", value: 0.9, observed_at: "2026-02-01" },
+  ];
+  const indicators = [
+    { key: "ONI", label: "Oceanic Niño Index", unit: "", source: "NOAA", update_frequency: "monthly", provenance: "LIVE" as const, value: 0.9, observed_at: "2026-02-01", trend: "up" as const },
+  ];
+  const geojson = {
+    type: "FeatureCollection" as const,
+    features: [
+      { type: "Feature" as const, properties: { code: "PG08", name: "Enga", is_focus: true, population: 432000 }, geometry: { type: "MultiPolygon" as const, coordinates: [[[[143, -5], [144, -5], [144, -6], [143, -5]]]] } },
+    ],
+  };
+
+  it("leads exec-first, embeds the four visuals, and appendices the feed health", () => {
+    const model = buildSitrepModel({ national, indicators, sectorRisk, lastRun: { started_at: "", finished_at: "", status: "partial", sources_ok: { noaa_oni: false, hdx_food: true }, notes: "" } });
+    const html = renderSitrepHtml(model, { national, sectorRisk, history, geojson });
+
+    // Visuals present.
+    const svgCount = (html.match(/<svg /g) ?? []).length;
+    expect(svgCount).toBeGreaterThanOrEqual(4);
+    // Bottom line present.
+    expect(html).toContain("national alert is RED");
+    // Confidence line present, NOT the raw dump in the body.
+    expect(html).toContain("data feeds reported this cycle");
+    // Technical appendix heading present and holds the raw feed status.
+    expect(html).toContain("Technical appendix");
+    expect(html).toContain("noaa_oni");
+    // Exec sections come before the appendix.
+    expect(html.indexOf("Bottom line")).toBeLessThan(html.indexOf("Technical appendix"));
   });
 });

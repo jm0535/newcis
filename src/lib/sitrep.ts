@@ -5,15 +5,23 @@
 // HTML is intentionally print-stylesheet-friendly: a B&W document is the
 // fallback artefact at PoC scale.
 import type {
+  HistoricalReading,
   Indicator,
   LastRun,
   NationalStatus,
+  ProvinceFC,
   RiskLevel,
   Sector,
   SectorRisk,
   Sitrep,
   SitrepModel,
 } from "./types";
+import {
+  kpiBandSvg,
+  riskMatrixSvg,
+  trendChartSvg,
+  provincialMapSvg,
+} from "./sitrep-visuals";
 import type { WefInsight } from "./wef";
 import { FOCUS_NAMES } from "./focus-provinces";
 import { bottomLineSentence } from "./national-language";
@@ -142,6 +150,18 @@ export interface SitrepInputs {
   /** WEF strategic-intelligence tiles (DEMO). Relevance-filtered into the report. */
   wefInsights?: WefInsight[];
   analystNote?: string;
+  /** 12-month indicator history, for the trend small-multiples. */
+  history?: HistoricalReading[];
+  /** Province geometry (public/provinces.geojson), for the provincial map. */
+  geojson?: ProvinceFC;
+}
+
+export interface SitrepVisuals {
+  national: NationalStatus | null;
+  indicators?: Indicator[];
+  sectorRisk: SectorRisk[];
+  history: HistoricalReading[];
+  geojson: ProvinceFC;
 }
 
 // Pure: current data → structured model. No I/O, no formatting decisions beyond
@@ -232,7 +252,12 @@ function esc(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-export function renderSitrepHtml(m: SitrepModel): string {
+export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
+  const kpiSvg = kpiBandSvg(v.national);
+  const matrixSvg = riskMatrixSvg(v.sectorRisk);
+  const trendsSvg = trendChartSvg(v.history, v.indicators ?? []);
+  const mapSvg = provincialMapSvg(v.geojson, v.sectorRisk);
+
   const indicatorRows = m.indicators
     .map(
       (i) =>
@@ -281,9 +306,16 @@ export function renderSitrepHtml(m: SitrepModel): string {
   </section>`
     : "";
 
-  const sourceRow = m.sources
-    .map((s) => `<span>${esc(s.name)}: <b>${s.ok ? "OK" : "FAIL"}</b></span>`)
-    .join(" · ");
+  const confBadgeColor =
+    m.confidence.level === "GOOD" ? "#166534" : m.confidence.level === "PARTIAL" ? "#92400e" : "#991b1b";
+  const confBadgeBg =
+    m.confidence.level === "GOOD" ? "#dcfce7" : m.confidence.level === "PARTIAL" ? "#fef3c7" : "#fee2e2";
+
+  const appendixFeedRows = m.confidence.feeds.length
+    ? m.confidence.feeds
+        .map((f) => `<tr><td>${esc(f.name)}</td><td><b>${f.ok ? "OK" : "FAIL"}</b></td></tr>`)
+        .join("")
+    : '<tr><td colspan="2">No ingest run reported this cycle.</td></tr>';
 
   const analystSection = m.analystNote
     ? `<section><h2>Analyst note</h2><p>${esc(m.analystNote)}</p></section>`
@@ -307,13 +339,33 @@ export function renderSitrepHtml(m: SitrepModel): string {
     .pill.BLACK { background: #0f172a; color: #ffffff; }
     .pill.DEMO { background: #ede9fe; color: #5b21b6; font-size: 10px; padding: 1px 6px; }
     ul { padding-left: 18px; }
-    footer { margin-top: 32px; font-size: 11px; color: #71717a; border-top: 1px solid #e4e4e7; padding-top: 8px; }
+    .badge { display:inline-block; padding:3px 10px; border-radius:4px; font-weight:600; font-size:12px; }
+    figure { margin: 12px 0; }
+    figure svg { max-width: 100%; height: auto; }
+    .bottomline { border:1px solid #e4e4e7; border-left:4px solid #f43f5e; border-radius:6px; padding:10px 14px; background:#fafafa; margin-top:8px; }
+    .appendix { margin-top:36px; border-top:2px solid #d4d4d8; padding-top:10px; }
+    .appendix h2 { border:0; }
+    .appendix table { max-width:360px; }
+    .muted { color:#71717a; font-size:11px; }
   </style>
 </head>
 <body>
   <h1>NEWCIS · Weekly ENSO Situation Report</h1>
   <div>Period: <b>${m.period}</b> · Generated <b>${m.generatedAt}</b></div>
-  <div style="margin-top:8px"><span class="pill ${m.alert}">${m.alert}</span> &nbsp; ${m.enso} &nbsp; · National risk: <b>${m.rating}</b></div>
+  <div style="margin-top:8px">
+    <span class="badge" style="background:${confBadgeBg};color:${confBadgeColor}">Data confidence: ${m.confidence.level}</span>
+    &nbsp; <span class="muted">${esc(m.confidence.line)}</span>
+  </div>
+
+  <section>
+    <h2>Executive overview</h2>
+    <figure>${kpiSvg}</figure>
+  </section>
+
+  <section>
+    <h2>Bottom line</h2>
+    <div class="bottomline">${m.bottomLine ? esc(m.bottomLine) : "No national status this cycle."}</div>
+  </section>
 
   <section>
     <h2>Summary</h2>
@@ -321,11 +373,13 @@ export function renderSitrepHtml(m: SitrepModel): string {
   </section>
 
   <section>
-    <h2>Key indicators</h2>
-    <table>
-      <thead><tr><th>Key</th><th>Label</th><th style="text-align:right">Value</th><th>Unit</th><th>Source</th><th>Observed</th></tr></thead>
-      <tbody>${indicatorRows || '<tr><td colspan="6">No indicators available.</td></tr>'}</tbody>
-    </table>
+    <h2>National risk matrix</h2>
+    <figure>${matrixSvg}</figure>
+  </section>
+
+  <section>
+    <h2>Provincial risk map</h2>
+    <figure>${mapSvg}</figure>
   </section>
 
   <section>
@@ -334,6 +388,15 @@ export function renderSitrepHtml(m: SitrepModel): string {
     <table>
       <thead><tr><th style="text-align:right">#</th><th>Province</th><th>Worst level</th><th>Worst sector</th><th style="text-align:right">Stressed</th></tr></thead>
       <tbody>${provinceTableRows}</tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Indicator trends</h2>
+    <figure>${trendsSvg}</figure>
+    <table>
+      <thead><tr><th>Key</th><th>Label</th><th style="text-align:right">Value</th><th>Unit</th><th>Source</th><th>Observed</th></tr></thead>
+      <tbody>${indicatorRows || '<tr><td colspan="6">No indicators available.</td></tr>'}</tbody>
     </table>
   </section>
 
@@ -351,10 +414,15 @@ export function renderSitrepHtml(m: SitrepModel): string {
 
   ${analystSection}
 
-  <footer>
-    Data sources this cycle: ${sourceRow || "—"}.<br />
-    NEWCIS proof-of-concept · newcis.in4metrix.dev · Generated automatically from current /data state.
-  </footer>
+  <section class="appendix">
+    <h2>Technical appendix</h2>
+    <p class="muted">For data and operations staff. ${esc(m.confidence.line)}</p>
+    <table>
+      <thead><tr><th>Data feed</th><th>Status this cycle</th></tr></thead>
+      <tbody>${appendixFeedRows}</tbody>
+    </table>
+    <p class="muted">NEWCIS proof-of-concept · newcis.in4metrix.dev · Generated from a point-in-time data snapshot. Figures marked DEMO are seeded references, not live feeds.</p>
+  </section>
 </body>
 </html>`;
 }
@@ -364,11 +432,18 @@ export function renderSitrepHtml(m: SitrepModel): string {
 // can reproduce the same point-in-time snapshot.
 export function generateSitrep(inputs: SitrepInputs): Sitrep {
   const model = buildSitrepModel(inputs);
+  const html = renderSitrepHtml(model, {
+    national: inputs.national,
+    indicators: inputs.indicators,
+    sectorRisk: inputs.sectorRisk,
+    history: inputs.history ?? [],
+    geojson: inputs.geojson ?? { type: "FeatureCollection", features: [] },
+  });
   return {
     id: model.id,
     period: model.period,
     generated_at: model.generatedAt,
-    html: renderSitrepHtml(model),
+    html,
     summary: model.summary,
     analyst_note: inputs.analystNote,
     model,
