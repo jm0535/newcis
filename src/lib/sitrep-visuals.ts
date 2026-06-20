@@ -175,17 +175,20 @@ export function riskMatrixSvg(sectorRisk: SectorRisk[]): string {
   const labelW = 150;
   const cellW = 28;
   const cellH = 30;
-  const headH = 40;
+  // 23 columns of full province labels won't fit horizontally over 28px cells —
+  // they overlap into an unreadable smear. Rotate the headers -45° and reserve a
+  // taller header band so each label rises clear of its neighbour.
+  const headH = 96;
   const W = labelW + cols.length * cellW + 16;
   const H = headH + SECTORS.length * cellH + 48;
 
   let body = "";
 
-  // Column headers.
+  // Column headers (rotated -45° so 23 labels stay legible above narrow cells).
   cols.forEach((c, ci) => {
     const x = labelW + ci * cellW + cellW / 2;
     const label = c === "National" ? "National" : FOCUS_SHORT_LABELS[c] ?? c;
-    body += `<text x="${x}" y="${headH - 14}" text-anchor="middle" font-size="11" font-weight="600" fill="${INK}">${svgEsc(label)}</text>`;
+    body += `<text x="${x}" y="${headH - 8}" text-anchor="start" font-size="11" font-weight="600" fill="${INK}" transform="rotate(-45 ${x} ${headH - 8})">${svgEsc(label)}</text>`;
   });
 
   // Rows.

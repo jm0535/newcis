@@ -327,7 +327,11 @@ export function renderSitrepHtml(m: SitrepModel, v: SitrepVisuals): string {
   <meta charset="utf-8" />
   <title>${m.docTitle}</title>
   <style>
-    body { font: 14px/1.5 -apple-system, system-ui, sans-serif; color: #18181b; max-width: 820px; margin: 32px auto; padding: 0 24px; }
+    /* A printed government report is a light document. Pin the scheme so an OS/UA
+       dark mode never paints a black canvas behind the near-black body text (which
+       would render the report invisible on screen and in print-to-PDF). */
+    html { color-scheme: light; background: #ffffff; }
+    body { font: 14px/1.5 -apple-system, system-ui, sans-serif; color: #18181b; background: #ffffff; max-width: 820px; margin: 32px auto; padding: 0 24px; }
     h1 { font-size: 22px; margin: 0 0 4px; }
     h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 28px; border-bottom: 1px solid #d4d4d8; padding-bottom: 4px; }
     table { width: 100%; border-collapse: collapse; margin-top: 8px; }
