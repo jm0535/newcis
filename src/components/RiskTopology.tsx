@@ -13,8 +13,9 @@
  * hand-laid SVG + framer-motion (no graph library): the layout is deterministic
  * radial maths, so a physics solver would only add weight and fight our tokens.
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { Minus, Plus, Maximize } from "lucide-react";
 import type { Indicator, RiskThreshold, SectorRisk } from "@/lib/types";
 import {
   buildTopology,
@@ -69,6 +70,65 @@ export function RiskTopology({
   const reduce = useReducedMotion();
   const [center, setCenter] = useState<TopoCenter>(initialCenter ?? { kind: "national" });
   const [selected, setSelected] = useState<string | null>(null);
+
+  // ---- in-card zoom + pan ----------------------------------------------------
+  // The graph is laid out in a fixed W×H user-space; we view it through a
+  // viewBox-sized window and transform a single <g> by (translate, scale). Zoom
+  // is wheel-driven, clamped, and anchored on the cursor so the point under the
+  // pointer stays put. Pan is pointer-drag. Crucially the wheel handler calls
+  // preventDefault so scrolling INSIDE the card zooms the graph, not the page —
+  // React's onWheel is passive, so we bind a non-passive native listener.
+  const ZOOM_MIN = 0.6;
+  const ZOOM_MAX = 4;
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const drag = useRef<{ x: number; y: number; px: number; py: number } | null>(null);
+
+  const clampZoom = (z: number) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z));
+
+  // Map a client point to the SVG's user-space (accounts for the viewBox fit).
+  const toUser = (clientX: number, clientY: number) => {
+    const svg = svgRef.current;
+    if (!svg) return { x: CX, y: CY };
+    const r = svg.getBoundingClientRect();
+    return {
+      x: ((clientX - r.left) / r.width) * W,
+      y: ((clientY - r.top) / r.height) * H,
+    };
+  };
+
+  // Zoom toward an anchor in user-space, keeping that anchor fixed on screen.
+  const zoomTo = (nextRaw: number, anchor: { x: number; y: number }) => {
+    setZoom((z) => {
+      const next = clampZoom(nextRaw);
+      const k = next / z;
+      setPan((p) => ({
+        x: anchor.x - (anchor.x - p.x) * k,
+        y: anchor.y - (anchor.y - p.y) * k,
+      }));
+      return next;
+    });
+  };
+
+  const resetView = () => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  };
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault(); // keep the gesture in the card, not the page
+      const anchor = toUser(e.clientX, e.clientY);
+      const factor = Math.exp(-e.deltaY * 0.0015);
+      zoomTo(clampZoom(zoom * factor), anchor);
+    };
+    svg.addEventListener("wheel", onWheel, { passive: false });
+    return () => svg.removeEventListener("wheel", onWheel);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [zoom]);
 
   const topo = useMemo(
     () => buildTopology({ indicators, sectorRisks, thresholds, focusCodes, center }),
@@ -218,12 +278,69 @@ export function RiskTopology({
           </span>
         </div>
 
-        <svg
-          viewBox={`0 0 ${W} ${H}`}
-          className="w-full h-auto"
-          role="img"
-          aria-label="Risk topology graph: indicators driving sectors driving the national alert"
-        >
+        <div className="relative">
+          {/* in-card zoom controls — float over the graph, top-right */}
+          <div className="absolute right-2 top-2 z-10 flex flex-col gap-1">
+            <button
+              type="button"
+              aria-label="Zoom in"
+              onClick={() => zoomTo(zoom * 1.25, { x: CX, y: CY })}
+              className="grid h-7 w-7 place-items-center rounded-md border border-border-default bg-surface-1/90 text-text-1 backdrop-blur transition-colors hover:border-border-strong hover:bg-surface-2"
+            >
+              <Plus size={14} />
+            </button>
+            <button
+              type="button"
+              aria-label="Zoom out"
+              onClick={() => zoomTo(zoom / 1.25, { x: CX, y: CY })}
+              className="grid h-7 w-7 place-items-center rounded-md border border-border-default bg-surface-1/90 text-text-1 backdrop-blur transition-colors hover:border-border-strong hover:bg-surface-2"
+            >
+              <Minus size={14} />
+            </button>
+            <button
+              type="button"
+              aria-label="Reset view"
+              onClick={resetView}
+              className="grid h-7 w-7 place-items-center rounded-md border border-border-default bg-surface-1/90 text-text-muted backdrop-blur transition-colors hover:border-border-strong hover:bg-surface-2 hover:text-text-1"
+            >
+              <Maximize size={13} />
+            </button>
+          </div>
+
+          <svg
+            ref={svgRef}
+            viewBox={`0 0 ${W} ${H}`}
+            className="block w-full max-h-[68vh] touch-none select-none"
+            style={{ cursor: drag.current ? "grabbing" : "grab" }}
+            role="img"
+            aria-label="Risk topology graph: indicators driving sectors driving the national alert. Scroll to zoom, drag to pan."
+            onPointerDown={(e) => {
+              // ignore drags that start on a node (those select); pan on background
+              if ((e.target as Element).closest("[data-node]")) return;
+              (e.currentTarget as SVGSVGElement).setPointerCapture(e.pointerId);
+              drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y };
+            }}
+            onPointerMove={(e) => {
+              const d = drag.current;
+              if (!d) return;
+              const svg = svgRef.current!;
+              const r = svg.getBoundingClientRect();
+              const sx = W / r.width;
+              const sy = H / r.height;
+              setPan({
+                x: d.px + (e.clientX - d.x) * sx,
+                y: d.py + (e.clientY - d.y) * sy,
+              });
+            }}
+            onPointerUp={(e) => {
+              drag.current = null;
+              (e.currentTarget as SVGSVGElement).releasePointerCapture(e.pointerId);
+            }}
+            onPointerLeave={() => {
+              drag.current = null;
+            }}
+          >
+            <g transform={`translate(${pan.x} ${pan.y}) scale(${zoom})`}>
           {/* ring guides — solid filled bands so the tiers read in BOTH themes.
               Tokens flip per theme (surface-2/3, border-strong) so the contrast
               holds in light and dark alike. */}
@@ -344,6 +461,7 @@ export function RiskTopology({
             return (
               <motion.g
                 key={n.id}
+                data-node
                 style={{ cursor: "pointer" }}
                 onClick={() => setSelected(isSel ? null : n.id)}
                 initial={{ opacity: 0, scale: 0.6 }}
@@ -386,7 +504,9 @@ export function RiskTopology({
               </motion.g>
             );
           })}
-        </svg>
+            </g>
+          </svg>
+        </div>
       </Card>
 
       {/* ---- drill panel ---- */}
