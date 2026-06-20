@@ -14,8 +14,13 @@ import type {
   Sitrep,
   SitrepModel,
 } from "./types";
+import type { WefInsight } from "./wef";
 import { FOCUS_NAMES } from "./focus-provinces";
-import { provincialRiskCaption } from "./sitrep-shared";
+import {
+  provincialRiskCaption,
+  selectStrategicContext,
+  STRATEGIC_INTRO,
+} from "./sitrep-shared";
 
 const ENSO_LABEL: Record<NationalStatus["enso_phase"], string> = {
   neutral: "ENSO Neutral",
@@ -132,6 +137,8 @@ export interface SitrepInputs {
   indicators: Indicator[];
   sectorRisk: SectorRisk[];
   lastRun: LastRun | null;
+  /** WEF strategic-intelligence tiles (DEMO). Relevance-filtered into the report. */
+  wefInsights?: WefInsight[];
   analystNote?: string;
 }
 
@@ -171,6 +178,10 @@ export function buildSitrepModel(inputs: SitrepInputs): SitrepModel {
 
   const movers = topSectorMovers(inputs.sectorRisk);
   const actions = national ? recommendedActions(national) : [];
+  const strategic = selectStrategicContext(
+    inputs.wefInsights ?? [],
+    inputs.sectorRisk,
+  );
   const sources = Object.entries(inputs.lastRun?.sources_ok ?? {}).map(([name, ok]) => ({
     name,
     ok,
@@ -198,6 +209,7 @@ export function buildSitrepModel(inputs: SitrepInputs): SitrepModel {
     provincesAtRisk,
     movers,
     actions,
+    strategic,
     sources,
     analystNote: inputs.analystNote,
   };
@@ -239,6 +251,29 @@ export function renderSitrepHtml(m: SitrepModel): string {
 
   const actionList = m.actions.map((a) => `<li>${esc(a)}</li>`).join("");
 
+  // Strategic context (WEF). Each item is a card: plain headline + scope + DEMO
+  // badge, the paraphrase, a "why it matters here" line, and the public source
+  // link. Written so a non-technical reader gets the point without the graph.
+  const strategicSection = m.strategic.length
+    ? `<section>
+    <h2>Strategic context · World Economic Forum</h2>
+    <p style="margin:4px 0 12px;color:#52525b;font-size:12px">${esc(STRATEGIC_INTRO)}</p>
+    ${m.strategic
+      .map(
+        (s) => `<div style="border:1px solid #e4e4e7;border-radius:6px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline">
+        <b style="font-size:13px">${esc(s.title)}</b>
+        <span style="white-space:nowrap;font-size:11px;color:#71717a">${esc(s.scope)} · <span class="pill DEMO">${esc(s.provenance)}</span></span>
+      </div>
+      <p style="margin:6px 0 4px;font-size:12px">${esc(s.summary)}</p>
+      <p style="margin:0 0 6px;font-size:12px;color:#3f3f46"><b>Why it matters here:</b> ${esc(s.relevance)}</p>
+      <div style="font-size:11px;color:#71717a">${esc(s.source)} · ${esc(s.published)} · <a href="${esc(s.url)}">${esc(s.url)}</a></div>
+    </div>`,
+      )
+      .join("\n")}
+  </section>`
+    : "";
+
   const sourceRow = m.sources
     .map((s) => `<span>${esc(s.name)}: <b>${s.ok ? "OK" : "FAIL"}</b></span>`)
     .join(" · ");
@@ -263,6 +298,7 @@ export function renderSitrepHtml(m: SitrepModel): string {
     .pill.AMBER { background: #fef3c7; color: #92400e; }
     .pill.RED { background: #fee2e2; color: #991b1b; }
     .pill.BLACK { background: #0f172a; color: #ffffff; }
+    .pill.DEMO { background: #ede9fe; color: #5b21b6; font-size: 10px; padding: 1px 6px; }
     ul { padding-left: 18px; }
     footer { margin-top: 32px; font-size: 11px; color: #71717a; border-top: 1px solid #e4e4e7; padding-top: 8px; }
   </style>
@@ -303,6 +339,8 @@ export function renderSitrepHtml(m: SitrepModel): string {
     <h2>Recommended actions</h2>
     <ul>${actionList || "<li>—</li>"}</ul>
   </section>
+
+  ${strategicSection}
 
   ${analystSection}
 

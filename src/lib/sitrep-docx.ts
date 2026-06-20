@@ -20,7 +20,7 @@ import {
   WidthType,
 } from "docx";
 import type { SitrepModel } from "./types";
-import { provincialRiskCaption } from "./sitrep-shared";
+import { provincialRiskCaption, STRATEGIC_INTRO } from "./sitrep-shared";
 
 // AlignmentType is a value object, not a type — alias its value union for params.
 type Align = (typeof AlignmentType)[keyof typeof AlignmentType];
@@ -220,6 +220,48 @@ export async function buildSitrepDocx(m: SitrepModel): Promise<Buffer> {
     for (const a of m.actions) children.push(bullet(a));
   } else {
     children.push(bullet("—"));
+  }
+
+  // Strategic context (WEF). Plain-language framing first, then one block per
+  // insight: bold headline + scope/DEMO, the paraphrase, a "why it matters here"
+  // line, and the public source. Mirrors the HTML report's Strategic context
+  // cards so the Word document and the on-screen report stay in lockstep.
+  if (m.strategic.length) {
+    children.push(
+      sectionHeading("Strategic context · World Economic Forum"),
+      new Paragraph({
+        spacing: { after: 140 },
+        children: [new TextRun({ text: STRATEGIC_INTRO, size: 18, color: "52525B" })],
+      }),
+    );
+    for (const s of m.strategic) {
+      children.push(
+        new Paragraph({
+          spacing: { before: 120, after: 20 },
+          children: [
+            new TextRun({ text: s.title, bold: true, size: 20 }),
+            new TextRun({ text: `   ${s.scope} · ${s.provenance}`, size: 16, color: "71717A" }),
+          ],
+        }),
+        new Paragraph({
+          spacing: { after: 20 },
+          children: [new TextRun({ text: s.summary, size: 20 })],
+        }),
+        new Paragraph({
+          spacing: { after: 20 },
+          children: [
+            new TextRun({ text: "Why it matters here: ", bold: true, size: 20 }),
+            new TextRun({ text: s.relevance, size: 20 }),
+          ],
+        }),
+        new Paragraph({
+          spacing: { after: 60 },
+          children: [
+            new TextRun({ text: `${s.source} · ${s.published} · ${s.url}`, size: 16, color: "71717A" }),
+          ],
+        }),
+      );
+    }
   }
 
   // Analyst note (free text — editable; this is the section executives most want

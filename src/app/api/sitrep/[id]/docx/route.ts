@@ -15,6 +15,7 @@ import {
   getSectorRisk,
   sitrepsDir,
 } from "@/lib/data";
+import { getWefInsights } from "@/lib/wef";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -39,17 +40,19 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     // from current data (a best-effort approximation, flagged by its own footer).
     let model = sitrep.model;
     if (!model) {
-      const [national, indicators, sectorRisk, lastRun] = await Promise.all([
+      const [national, indicators, sectorRisk, lastRun, wefInsights] = await Promise.all([
         getNationalStatus(),
         getIndicators(),
         getSectorRisk(),
         getLastRun(),
+        getWefInsights(),
       ]);
       model = buildSitrepModel({
         national,
         indicators,
         sectorRisk,
         lastRun,
+        wefInsights,
         analystNote: sitrep.analyst_note,
       });
     }

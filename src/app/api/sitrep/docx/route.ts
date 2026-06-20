@@ -13,6 +13,7 @@ import {
   getNationalStatus,
   getSectorRisk,
 } from "@/lib/data";
+import { getWefInsights } from "@/lib/wef";
 import { buildSitrepModel } from "@/lib/sitrep";
 import { buildSitrepDocx } from "@/lib/sitrep-docx";
 
@@ -22,11 +23,12 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   try {
     const body = (await req.json().catch(() => ({}))) as { analyst_note?: string };
-    const [national, indicators, sectorRisk, lastRun] = await Promise.all([
+    const [national, indicators, sectorRisk, lastRun, wefInsights] = await Promise.all([
       getNationalStatus(),
       getIndicators(),
       getSectorRisk(),
       getLastRun(),
+      getWefInsights(),
     ]);
 
     const model = buildSitrepModel({
@@ -34,6 +36,7 @@ export async function POST(req: Request) {
       indicators,
       sectorRisk,
       lastRun,
+      wefInsights,
       analystNote: body.analyst_note,
     });
     const buffer = await buildSitrepDocx(model);

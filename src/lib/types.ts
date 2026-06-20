@@ -118,6 +118,20 @@ export interface SitrepModel {
   provincesAtRisk: number;
   movers: string[];
   actions: string[];
+  // World Economic Forum strategic-intelligence context, relevance-ranked for the
+  // current picture and written plainly for non-technical executives. Each row is
+  // a paraphrase of an OPENLY published WEF output (DEMO provenance), linked back
+  // to its public page — never WEF body text, never badged LIVE.
+  strategic: {
+    title: string; // plain-language headline
+    summary: string; // paraphrase, not WEF body text
+    relevance: string; // "why it matters here" — ties the global framing to PNG
+    scope: string; // sector name, or "National outlook" for whole-of-country tiles
+    source: string; // e.g. "WEF Global Risks Report 2025"
+    published: string; // YYYY-MM
+    url: string;
+    provenance: string; // "DEMO" — honesty contract
+  }[];
   sources: { name: string; ok: boolean }[];
   analystNote?: string;
 }

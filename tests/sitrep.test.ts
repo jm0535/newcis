@@ -6,7 +6,19 @@
  */
 import { describe, expect, it } from "vitest";
 import { buildSitrepModel, renderSitrepHtml, type SitrepInputs } from "../src/lib/sitrep";
+import { selectStrategicContext } from "../src/lib/sitrep-shared";
 import type { NationalStatus, SectorRisk } from "../src/lib/types";
+import type { WefInsight } from "../src/lib/wef";
+
+const wef = (over: Partial<WefInsight> & Pick<WefInsight, "id">): WefInsight => ({
+  title: "t",
+  summary: "s",
+  url: "https://www.weforum.org/x",
+  source: "WEF Agenda",
+  published: "2025-01",
+  provenance: "DEMO",
+  ...over,
+});
 
 const national = (over: Partial<NationalStatus> = {}): NationalStatus => ({
   enso_phase: "neutral",
@@ -93,11 +105,72 @@ describe("buildSitrepModel", () => {
   });
 });
 
+describe("selectStrategicContext", () => {
+  const insights: WefInsight[] = [
+    wef({ id: "nat-1" }), // national (no sector) — always shows
+    wef({ id: "food", sector: "Food Security" }),
+    wef({ id: "water", sector: "Water Security" }),
+  ];
+
+  it("always surfaces national-level tiles, even with no stressed sectors", () => {
+    const out = selectStrategicContext(insights, []);
+    expect(out.map((s) => s.scope)).toEqual(["National outlook"]);
+  });
+
+  it("includes a sector tile only when that sector is stressed in a focus province", () => {
+    const out = selectStrategicContext(insights, [
+      sector({ province_code: "PG08", sector: "Food Security", level: "critical" }),
+    ]);
+    const scopes = out.map((s) => s.scope);
+    expect(scopes).toContain("National outlook");
+    expect(scopes).toContain("Food Security");
+    expect(scopes).not.toContain("Water Security"); // not stressed → excluded
+  });
+
+  it("ignores stress in a non-focus province (engine is focus-seeded)", () => {
+    const out = selectStrategicContext(insights, [
+      sector({ province_code: "PG99", sector: "Food Security", level: "critical" }),
+    ]);
+    expect(out.map((s) => s.scope)).not.toContain("Food Security");
+  });
+
+  it("national tiles lead, then stressed-sector tiles; honours the cap", () => {
+    const out = selectStrategicContext(
+      insights,
+      [
+        sector({ province_code: "PG08", sector: "Food Security", level: "high" }),
+        sector({ province_code: "PG08", sector: "Water Security", level: "high" }),
+      ],
+      2,
+    );
+    expect(out).toHaveLength(2);
+    expect(out[0].scope).toBe("National outlook");
+  });
+
+  it("keeps DEMO provenance and a plain-language relevance line", () => {
+    const out = selectStrategicContext([wef({ id: "nat-1" })], []);
+    expect(out[0].provenance).toBe("DEMO");
+    expect(out[0].relevance.length).toBeGreaterThan(0);
+  });
+});
+
 describe("renderSitrepHtml", () => {
   it("escapes the analyst note — no raw markup injection", () => {
     const m = buildSitrepModel(inputs({ analystNote: "<script>alert(1)</script>" }));
     const html = renderSitrepHtml(m);
     expect(html).not.toContain("<script>alert(1)</script>");
     expect(html).toContain("&lt;script&gt;");
+  });
+
+  it("renders the Strategic Context section when WEF insights are present", () => {
+    const m = buildSitrepModel(
+      inputs({
+        wefInsights: [wef({ id: "nat-1", title: "Global Risks Report 2025" })],
+      }),
+    );
+    const html = renderSitrepHtml(m);
+    expect(html).toContain("Strategic context");
+    expect(html).toContain("World Economic Forum");
+    expect(html).toContain("Global Risks Report 2025");
   });
 });
