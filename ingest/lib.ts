@@ -371,7 +371,7 @@ export async function runIngest(): Promise<LastRun> {
         score: Math.min(1, sd / 7),
         trend: "flat",
         provenance: "LIVE",
-        as_of: new Date().toISOString(),
+        as_of: startedAt,
         data_source: `Open-Meteo · ${sd} storm-day${sd === 1 ? "" : "s"} / 7 (≥10.8 m/s)`,
       });
     }
