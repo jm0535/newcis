@@ -95,7 +95,7 @@
     "update_frequency": "continuous (polled per cycle)",
     "provenance": "LIVE",
     "value": 20,
-    "observed_at": "2026-06-20T23:07:44.144Z",
+    "observed_at": "2026-06-21T04:44:55.891Z",
     "trend": "flat"
   },
   {
@@ -128,7 +128,29 @@
     "update_frequency": "daily",
     "provenance": "LIVE",
     "value": 0.4,
-    "observed_at": "2026-06-20T23:12:58.995Z",
+    "observed_at": "2026-06-21T04:53:41.746Z",
+    "trend": "flat"
+  },
+  {
+    "key": "RAINFALL_DAILY",
+    "label": "Rainfall (7-day, daily · 22 of 22 provinces)",
+    "unit": "% of 8-yr normal",
+    "source": "Open-Meteo archive (ERA5-derived)",
+    "update_frequency": "daily",
+    "provenance": "LIVE",
+    "value": -68.4,
+    "observed_at": "2026-06-21T04:53:41.746Z",
+    "trend": "flat"
+  },
+  {
+    "key": "WIND_ANOM",
+    "label": "Wind anomaly (7-day, daily · 7 storm-days / 7)",
+    "unit": "% of 8-yr normal",
+    "source": "Open-Meteo archive (ERA5-derived)",
+    "update_frequency": "daily",
+    "provenance": "LIVE",
+    "value": 18.6,
+    "observed_at": "2026-06-21T04:53:41.746Z",
     "trend": "flat"
   }
 ]

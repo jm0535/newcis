@@ -2,8 +2,8 @@
   "enso_phase": "neutral",
   "alert_level": "AMBER",
   "national_risk_rating": "high",
-  "affected_population_est": 6427524,
-  "high_risk_province_count": 11,
+  "affected_population_est": 11781559,
+  "high_risk_province_count": 22,
   "forecast_period": "Next 3 months",
-  "updated_at": "2026-06-20T23:05:57.177Z"
+  "updated_at": "2026-06-21T04:43:01.576Z"
 }
