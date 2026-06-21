@@ -17,7 +17,7 @@ export function PageNav({ active }: { active: string }) {
       aria-label="Primary"
       className="px-4 md:px-6 border-b border-border-subtle flex items-center gap-1 text-xs overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
-      {/* Brand mark = home link. The gauge favicon + wordmark mirror the landing
+      {/* Brand mark = home link. The NEWCIS crest + wordmark mirror the landing
           header, giving every dashboard page a one-click route back to "/". */}
       <Link
         href="/"
@@ -27,11 +27,11 @@ export function PageNav({ active }: { active: string }) {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/icon-gauge.svg"
+          src="/newcis-logo-512.png"
           alt=""
           width={22}
           height={22}
-          className="h-[22px] w-[22px] rounded shrink-0"
+          className="h-[22px] w-[22px] rounded-full shrink-0"
         />
         <span className="hidden sm:inline text-sm font-semibold tracking-tight">
           NEWCIS
