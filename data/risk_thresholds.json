@@ -129,5 +129,33 @@
     "inverted": false,
     "symmetric": false,
     "notes": "FAOSTAT prevalence of undernourishment (item 21004), national, 3-year rolling mean. The standing food-insecurity floor an ENSO drought shock lands on. PNG runs persistently elevated, so bands are calibrated against that baseline: <10% low; 10–25% the standing floor (watch); 25–40% high; >40% acute structural hunger. Non-inverted, one-sided: higher = worse. A slow structural baseline — excluded from the national ENSO alert rollup (see risk-engine NON_ALERT_KEYS); drives the Food Security floor + its own gauge. Annual 3-yr mean lags ~2 years (gauge age surfaces this)."
+  },
+  {
+    "metric": "RAINFALL_DAILY",
+    "unit": "% of 8-yr normal (focus provinces, 7-day)",
+    "green_max": -20,
+    "amber_max": -40,
+    "red_max": -60,
+    "inverted": true,
+    "notes": "Open-Meteo ERA5 7-day rainfall anomaly, refreshed daily. Same inverted drought ladder as RAINFALL_ANOM: -20% near-normal; -40% drought watch; -60% severe. A fast daily complement to the CHIRPS dekadal RAINFALL_ANOM — a non-ENSO short-window signal, excluded from the national alert (see risk-engine NON_ALERT_KEYS)."
+  },
+  {
+    "metric": "WIND_ANOM",
+    "unit": "% above 8-yr normal (focus provinces, 7-day mean daily-max)",
+    "green_max": 25,
+    "amber_max": 50,
+    "red_max": 100,
+    "inverted": false,
+    "symmetric": false,
+    "notes": "Open-Meteo ERA5 7-day mean daily-max 10 m wind, as % above the 8-yr normal. One-sided (high = worse): 25–50% above normal = watch; 50–100% = alert; >100% = strong wind regime. Short-window local hazard, excluded from the national ENSO alert (see risk-engine NON_ALERT_KEYS); escalates the per-province Disaster & Hazard cell via storm-days."
+  },
+  {
+    "metric": "WIND_STORM_DAY_MS",
+    "unit": "m/s (daily-max 10 m wind)",
+    "green_max": 10.8,
+    "amber_max": 10.8,
+    "red_max": 10.8,
+    "inverted": false,
+    "notes": "CONFIG ROW, not a classified indicator. The storm-day cutoff: a day counts as a storm day when any focus-province daily-max wind reaches this speed. 10.8 m/s = Beaufort 6. Consumed by ingest/lib.ts and passed to countStormDays; edit here to retune without a code change."
   }
 ]
