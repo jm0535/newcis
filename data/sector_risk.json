@@ -6,7 +6,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "FAO GIEWS ASI 16.667% cropland stressed"
   },
   {
@@ -16,7 +16,7 @@
     "score": 0.58,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -26,7 +26,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -36,7 +36,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -46,7 +46,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -56,7 +56,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live upstream proxy"
   },
   {
@@ -66,7 +66,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -76,7 +76,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -86,7 +86,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly -0.002"
   },
   {
@@ -96,7 +96,7 @@
     "score": 0.25,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 25th pctile"
   },
   {
@@ -106,7 +106,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -116,7 +116,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -126,7 +126,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -136,7 +136,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · Yonki reservoir inflow tracks rainfall (proxied via engine)"
   },
   {
@@ -146,7 +146,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -156,7 +156,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -166,7 +166,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.013"
   },
   {
@@ -176,7 +176,7 @@
     "score": 0.58,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -186,7 +186,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -196,7 +196,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -206,7 +206,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -216,7 +216,7 @@
     "score": 0.4,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · highland hydropower exposed to rainfall deficit (engine)"
   },
   {
@@ -226,7 +226,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -236,7 +236,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -246,7 +246,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.001"
   },
   {
@@ -256,7 +256,7 @@
     "score": 0.92,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 8th pctile"
   },
   {
@@ -266,7 +266,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -276,7 +276,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -286,7 +286,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -296,7 +296,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
   },
   {
@@ -306,7 +306,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -316,7 +316,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -326,7 +326,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "FAO GIEWS ASI 2.036% cropland stressed"
   },
   {
@@ -336,7 +336,7 @@
     "score": 0.58,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -346,7 +346,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -356,7 +356,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -366,7 +366,7 @@
     "score": 0.011111111111111127,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 1 M4.5+ epicentre in this province / 30d"
   },
   {
@@ -376,7 +376,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · Ramu grid serves Morobe; inflow tracks rainfall (engine proxy)"
   },
   {
@@ -386,7 +386,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -396,7 +396,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -406,7 +406,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "FAO GIEWS ASI 9.286% cropland stressed"
   },
   {
@@ -416,7 +416,7 @@
     "score": 0.92,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 8th pctile"
   },
   {
@@ -426,7 +426,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -436,7 +436,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -446,7 +446,7 @@
     "score": 0.0222222222222222,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 2 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -456,7 +456,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · grid-isolated; diesel-dependent baseline"
   },
   {
@@ -466,7 +466,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -476,7 +476,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -486,7 +486,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.014"
   },
   {
@@ -496,7 +496,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
@@ -506,7 +506,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -516,7 +516,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -526,7 +526,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -536,7 +536,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · island grid; diesel-dependent baseline"
   },
   {
@@ -546,7 +546,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -556,7 +556,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -566,7 +566,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.023"
   },
   {
@@ -576,7 +576,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
@@ -586,7 +586,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -596,7 +596,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -606,7 +606,7 @@
     "score": 0.011111111111111127,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 1 M4.5+ epicentre in this province / 30d"
   },
   {
@@ -616,7 +616,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · island grid; diesel-dependent baseline"
   },
   {
@@ -626,7 +626,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -636,7 +636,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -646,7 +646,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.006"
   },
   {
@@ -656,7 +656,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 92nd pctile"
   },
   {
@@ -666,7 +666,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -676,7 +676,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -686,7 +686,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -696,7 +696,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · Rabaul grid; geothermal + diesel baseline"
   },
   {
@@ -706,7 +706,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -716,7 +716,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -726,7 +726,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.011"
   },
   {
@@ -736,7 +736,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 83rd pctile"
   },
   {
@@ -746,7 +746,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -756,7 +756,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -766,7 +766,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -776,7 +776,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · island grid; diesel-dependent baseline"
   },
   {
@@ -786,7 +786,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -796,7 +796,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -806,7 +806,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly -0.044"
   },
   {
@@ -816,7 +816,7 @@
     "score": 0.41999999999999993,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 33rd pctile"
   },
   {
@@ -826,7 +826,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -836,7 +836,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -846,7 +846,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -856,7 +856,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · seeded for full-province coverage"
   },
   {
@@ -866,7 +866,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -876,7 +876,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -886,7 +886,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly -0.065"
   },
   {
@@ -896,7 +896,7 @@
     "score": 0.41999999999999993,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 33rd pctile"
   },
   {
@@ -906,7 +906,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -916,7 +916,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -926,7 +926,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -936,7 +936,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · seeded for full-province coverage"
   },
   {
@@ -946,7 +946,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -956,7 +956,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -966,7 +966,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.032"
   },
   {
@@ -976,7 +976,7 @@
     "score": 0.25,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 25th pctile"
   },
   {
@@ -986,7 +986,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -996,7 +996,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1006,7 +1006,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1016,7 +1016,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1026,7 +1026,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1036,7 +1036,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -1046,7 +1046,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.008"
   },
   {
@@ -1056,7 +1056,7 @@
     "score": 0.58,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -1066,7 +1066,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -1076,7 +1076,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1086,7 +1086,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1096,7 +1096,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1106,7 +1106,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1116,7 +1116,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -1126,7 +1126,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly -0.006"
   },
   {
@@ -1136,7 +1136,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "HDX HAPI · CHIRPS rainfall"
   },
   {
@@ -1146,7 +1146,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -1156,7 +1156,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1166,7 +1166,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1176,7 +1176,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1186,7 +1186,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1196,7 +1196,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -1206,7 +1206,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.02"
   },
   {
@@ -1216,7 +1216,7 @@
     "score": 0.41999999999999993,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 33rd pctile"
   },
   {
@@ -1226,7 +1226,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -1236,7 +1236,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1246,7 +1246,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1256,7 +1256,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1266,7 +1266,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1276,7 +1276,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -1286,7 +1286,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "FAO GIEWS ASI 3.571% cropland stressed"
   },
   {
@@ -1296,7 +1296,7 @@
     "score": 0.25,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 25th pctile"
   },
   {
@@ -1306,7 +1306,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -1316,7 +1316,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1326,7 +1326,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1336,7 +1336,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1346,7 +1346,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1356,7 +1356,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -1366,7 +1366,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "FAO GIEWS ASI 1.462% cropland stressed"
   },
   {
@@ -1376,7 +1376,7 @@
     "score": 0.33000000000000007,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 42nd pctile"
   },
   {
@@ -1386,7 +1386,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -1396,7 +1396,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1406,7 +1406,7 @@
     "score": 0.011111111111111127,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 1 M4.5+ epicentre in this province / 30d"
   },
   {
@@ -1416,7 +1416,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1426,7 +1426,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1436,7 +1436,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -1446,7 +1446,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "FAO GIEWS ASI 12.5% cropland stressed"
   },
   {
@@ -1456,7 +1456,7 @@
     "score": 0.25,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 50th pctile"
   },
   {
@@ -1466,7 +1466,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -1476,7 +1476,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1486,7 +1486,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1496,7 +1496,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1506,7 +1506,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1516,7 +1516,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -1526,7 +1526,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly -0.014"
   },
   {
@@ -1536,7 +1536,7 @@
     "score": 0.75,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 0th pctile"
   },
   {
@@ -1546,7 +1546,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -1556,7 +1556,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1566,7 +1566,7 @@
     "score": 0.011111111111111127,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 1 M4.5+ epicentre in this province / 30d"
   },
   {
@@ -1576,7 +1576,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1586,7 +1586,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1596,7 +1596,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -1606,7 +1606,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.014"
   },
   {
@@ -1616,7 +1616,7 @@
     "score": 0.58,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 17th pctile"
   },
   {
@@ -1626,7 +1626,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -1636,7 +1636,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1646,7 +1646,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1656,7 +1656,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1666,7 +1666,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1676,7 +1676,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   },
   {
@@ -1686,7 +1686,7 @@
     "score": 0.3875,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA NEO MODIS NDVI · anomaly +0.029"
   },
   {
@@ -1696,7 +1696,7 @@
     "score": 0.41999999999999993,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "NASA POWER · GWETROOT 33rd pctile"
   },
   {
@@ -1706,7 +1706,7 @@
     "score": 0.25587524166666664,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "WHO GHO · malaria 152/1,000 (2024, national); under-5 stunting 47.6% (2024)"
   },
   {
@@ -1716,7 +1716,7 @@
     "score": 0.4166666666666667,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "World Bank · inflation 0.6% (2024, national); GDP growth 3.8% (2024); undernourishment 28.7% (2023)"
   },
   {
@@ -1726,7 +1726,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "USGS · 0 M4.5+ epicentres in this province / 30d"
   },
   {
@@ -1736,7 +1736,7 @@
     "score": 0.2,
     "trend": "flat",
     "provenance": "DEMO",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "DEMO · PNG Power has no public feed; rainfall is the live proxy"
   },
   {
@@ -1746,7 +1746,7 @@
     "score": 0,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "ACLED · 0 events / 0 fatalities (90d)"
   },
   {
@@ -1756,7 +1756,7 @@
     "score": 0.5,
     "trend": "flat",
     "provenance": "LIVE",
-    "as_of": "2026-06-21T04:43:01.576Z",
+    "as_of": "2026-06-21T05:09:57.752Z",
     "data_source": "Open-Meteo · 7 storm-days / 7 (≥10.8 m/s)"
   }
 ]
