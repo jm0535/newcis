@@ -161,6 +161,18 @@ export const INDICATOR_META: Record<string, IndicatorMeta> = {
     danger: "high",
     dangerLabel: "Rising is dangerous: a higher baseline leaves less slack to absorb a failed season.",
   },
+  RAINFALL_DAILY: {
+    plain:
+      "Rainfall over the last 7 days versus normal (Open-Meteo, refreshed daily): the fast complement to the dekadal rainfall signal.",
+    danger: "low",
+    dangerLabel: "Falling / negative is dangerous: a fast-emerging dry spell.",
+  },
+  WIND_ANOM: {
+    plain:
+      "How strong the wind has run over the last 7 days versus normal (Open-Meteo, refreshed daily), with a count of storm-force days.",
+    danger: "high",
+    dangerLabel: "Rising is dangerous: stronger winds and more storm-days raise local hazard.",
+  },
 };
 
 // PNG runs on Port Moresby time (UTC+10, no daylight saving). Stored timestamps
@@ -230,6 +242,8 @@ const SOURCE_CADENCE_DAYS: Record<string, number> = {
   SEISMIC: 2, // USGS near-real-time
   SOI: 10,
   TRADE_WIND_ANOM: 10, // NOAA CPC wpac850, refreshed monthly
+  RAINFALL_DAILY: 8, // Open-Meteo daily, 5-day archive lag + grace
+  WIND_ANOM: 8, // Open-Meteo daily, 5-day archive lag + grace
   PROJECTED_ONI: 35, // NMME forecast re-issued monthly (new init each cycle)
   MALARIA_INCIDENCE: 400, // WHO GHO annual series — lags 1–2 years, generous grace
   CPI_INFLATION: 400, // World Bank annual series — lags 1–2 years, generous grace
@@ -248,3 +262,8 @@ export function isReadingStale(
   const cadence = SOURCE_CADENCE_DAYS[key] ?? 60;
   return days > cadence;
 }
+
+// Indicators shown in the Climate page "Daily Watch" sub-group — daily-cadence
+// Open-Meteo signals, visually separated from the dekadal/monthly indicators so
+// a viewer never confuses the 7-day RAINFALL_DAILY with the dekadal RAINFALL_ANOM.
+export const DAILY_WATCH_KEYS = new Set(["RAINFALL_DAILY", "WIND_ANOM"]);

@@ -7,6 +7,7 @@ import { StatusBar } from "@/components/StatusBar";
 import { ThresholdsPanel } from "@/components/ThresholdsPanel";
 import { TrendChart } from "@/components/TrendChart";
 import { Card, SectionHeader, EmptyState } from "@/components/ui";
+import { DAILY_WATCH_KEYS } from "@/lib/ui";
 import {
   getIndicators,
   getLastRun,
@@ -28,6 +29,8 @@ export default async function ClimatePage() {
 
   const thresholdByKey = new Map(thresholds.map((t) => [t.metric, t]));
   const oni = indicators.find((i) => i.key === "ONI");
+  const dailyWatch = indicators.filter((i) => DAILY_WATCH_KEYS.has(i.key));
+  const coreIndicators = indicators.filter((i) => !DAILY_WATCH_KEYS.has(i.key));
 
   return (
     <main className="min-h-screen bg-surface-0 text-text-1">
@@ -61,7 +64,7 @@ export default async function ClimatePage() {
             />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {indicators.map((i) => (
+              {coreIndicators.map((i) => (
                 <IndicatorGauge
                   key={i.key}
                   indicator={i}
@@ -71,6 +74,24 @@ export default async function ClimatePage() {
             </div>
           )}
         </section>
+
+        {dailyWatch.length > 0 && (
+          <section aria-label="Daily Watch">
+            <SectionHeader
+              title="Daily Watch · 7-day, refreshed daily"
+              description="Fast-moving local signals from Open-Meteo, refreshed every cycle. These are a daily complement to the dekadal/monthly indicators above — they drive local hazard, not the national ENSO alert."
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {dailyWatch.map((i) => (
+                <IndicatorGauge
+                  key={i.key}
+                  indicator={i}
+                  threshold={thresholdByKey.get(i.key)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section aria-label="12-month trend">
           <SectionHeader
