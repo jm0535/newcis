@@ -290,6 +290,22 @@ describe("rollUpNational", () => {
     expect(r.alert_level).toBe("GREEN");
   });
 
+  it("daily rainfall + wind do NOT raise the national alert", () => {
+    // A wet/dry week and a windy week with a neutral ocean must stay GREEN —
+    // short-window local hazards drive their own gauges, never the ENSO alert.
+    const r = rollUpNational(
+      [
+        indicator("ONI", 0.1),
+        indicator("RAINFALL_DAILY", -80), // far below normal = drought band
+        indicator("WIND_ANOM", 150), // 150% above normal = strong-wind band
+      ],
+      TH,
+      [],
+      FOCUS,
+    );
+    expect(r.alert_level).toBe("GREEN");
+  });
+
   it("one focus province in high risk → med rating", () => {
     const sectors: SectorRisk[] = [
       {

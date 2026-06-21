@@ -302,12 +302,17 @@ export function rollUpNational(
   //     not a climate signal. It escalates the per-province Disaster & Hazard cell
   //     via the USGS/GDACS sector rows, but a routine seismic month must not pin
   //     the national ENSO traffic-light AMBER while the ocean reads neutral.
+  //   - RAINFALL_DAILY, WIND_ANOM: Open-Meteo 7-day local signals; they drive the
+  //     Daily Watch gauges and per-province cells but a wet/windy week must not
+  //     pin the national ENSO alert.
   const NON_ALERT_KEYS = new Set([
     "PROJECTED_ONI",
     "MALARIA_INCIDENCE",
     "CPI_INFLATION",
     "FOOD_UNDERNOURISH",
     "SEISMIC",
+    "RAINFALL_DAILY",
+    "WIND_ANOM",
   ]);
   let worstAlert: AlertLevel = "GREEN";
   for (const ind of indicators) {
