@@ -33,6 +33,7 @@ const NORMAL_YEARS = 8;
 interface DailyBlock {
   precipitation_sum: (number | null)[];
   temperature_2m_max: (number | null)[];
+  wind_speed_10m_max: (number | null)[];
 }
 
 function isoDate(d: Date): string {
@@ -74,7 +75,7 @@ async function fetchWindow(lon: number, lat: number, start: Date, end: Date): Pr
     longitude: String(lon),
     start_date: isoDate(start),
     end_date: isoDate(end),
-    daily: "precipitation_sum,temperature_2m_max",
+    daily: "precipitation_sum,temperature_2m_max,wind_speed_10m_max",
     timezone: "UTC",
   });
   return fetchWithRetry(`${ARCHIVE}?${params}`);
@@ -116,43 +117,64 @@ export function countStormDays(
 
 interface ProvinceAnomaly {
   code: string;
-  rainfall_anom_pct: number;
-  temp_anom_c: number;
+  rainfall_anom_pct: number; // 30-day, feeds the RAINFALL_ANOM backstop
+  temp_anom_c: number; // 30-day, feeds TEMP_ANOM
+  rain7_anom_pct: number; // 7-day, feeds RAINFALL_DAILY
+  wind7_anom_pct: number; // 7-day mean daily-max wind, feeds WIND_ANOM
+  windDailyMax: (number | null)[]; // recent 7 daily-max winds, for storm-day counting
 }
 
 async function fetchProvince(p: (typeof POINTS)[number]): Promise<ProvinceAnomaly> {
   const now = new Date();
-  // Recent 30-day window, ending 5 days back (archive has a short lag).
+  // Recent windows end 5 days back (the archive has a short lag).
   const recEnd = new Date(now.getTime() - 5 * 24 * 3600 * 1000);
-  const recStart = new Date(recEnd.getTime() - 30 * 24 * 3600 * 1000);
+  const recStart30 = new Date(recEnd.getTime() - 30 * 24 * 3600 * 1000);
+  const recStart7 = new Date(recEnd.getTime() - 7 * 24 * 3600 * 1000);
 
-  const recent = await fetchWindow(p.lon, p.lat, recStart, recEnd);
-  const recentPrecip = sum(recent.precipitation_sum);
-  const recentTmax = mean(recent.temperature_2m_max.filter((v): v is number => v !== null));
+  // 30-day window (existing RAINFALL_ANOM backstop + TEMP_ANOM).
+  const recent30 = await fetchWindow(p.lon, p.lat, recStart30, recEnd);
+  const recentPrecip30 = sum(recent30.precipitation_sum);
+  const recentTmax = mean(recent30.temperature_2m_max.filter((v): v is number => v !== null));
 
-  const normPrecip: number[] = [];
+  // 7-day window (new daily rainfall + wind).
+  const recent7 = await fetchWindow(p.lon, p.lat, recStart7, recEnd);
+  const recentPrecip7 = sum(recent7.precipitation_sum);
+  const recentWind7 = mean(recent7.wind_speed_10m_max.filter((v): v is number => v !== null));
+
+  const normPrecip30: number[] = [];
+  const normPrecip7: number[] = [];
+  const normWind7: number[] = [];
   const normTmax: number[] = [];
   for (let y = 1; y <= NORMAL_YEARS; y++) {
-    const block = await fetchWindow(p.lon, p.lat, shiftYears(recStart, y), shiftYears(recEnd, y));
-    normPrecip.push(sum(block.precipitation_sum));
-    const t = block.temperature_2m_max.filter((v): v is number => v !== null);
+    const block30 = await fetchWindow(p.lon, p.lat, shiftYears(recStart30, y), shiftYears(recEnd, y));
+    normPrecip30.push(sum(block30.precipitation_sum));
+    const t = block30.temperature_2m_max.filter((v): v is number => v !== null);
     if (t.length) normTmax.push(mean(t));
+
+    const block7 = await fetchWindow(p.lon, p.lat, shiftYears(recStart7, y), shiftYears(recEnd, y));
+    normPrecip7.push(sum(block7.precipitation_sum));
+    const w = block7.wind_speed_10m_max.filter((v): v is number => v !== null);
+    if (w.length) normWind7.push(mean(w));
     await sleep(250);
   }
 
-  const normalPrecip = mean(normPrecip);
-  const normalTmax = mean(normTmax);
-
   return {
     code: p.code,
-    rainfall_anom_pct: anomalyPct(recentPrecip, normalPrecip),
-    temp_anom_c: Math.round((recentTmax - normalTmax) * 10) / 10,
+    rainfall_anom_pct: anomalyPct(recentPrecip30, mean(normPrecip30)),
+    temp_anom_c: Math.round((recentTmax - mean(normTmax)) * 10) / 10,
+    rain7_anom_pct: anomalyPct(recentPrecip7, mean(normPrecip7)),
+    wind7_anom_pct: anomalyPct(recentWind7, mean(normWind7)),
+    windDailyMax: recent7.wind_speed_10m_max.slice(0, 7),
   };
 }
 
 export interface OpenMeteoResult {
   rainfall_indicator: Indicator;
   temp_indicator: Indicator;
+  rainfall_daily_indicator: Indicator;
+  wind_anom_indicator: Indicator;
+  /** Days in the recent 7-day window with a storm-force gust in any province. */
+  storm_days: number;
   /** Water/Food/Public-Health sector rows derived from per-province rainfall. */
   sector_rows: SectorRisk[];
   note: string;
@@ -193,6 +215,34 @@ export async function fetchOpenMeteo(focusCodes: string[]): Promise<OpenMeteoRes
     trend: "flat",
   };
 
+  const meanRain7 = Math.round((results.reduce((s, r) => s + r.rain7_anom_pct, 0) / results.length) * 10) / 10;
+  const meanWind7 = Math.round((results.reduce((s, r) => s + r.wind7_anom_pct, 0) / results.length) * 10) / 10;
+  const stormDays = countStormDays(results.map((r) => r.windDailyMax), STORM_DAY_MS);
+
+  const rainfall_daily_indicator: Indicator = {
+    key: "RAINFALL_DAILY",
+    label: `Rainfall (7-day, daily · ${results.length} of ${POINTS.length} provinces)`,
+    unit: "% of 8-yr normal",
+    source: "Open-Meteo archive (ERA5-derived)",
+    update_frequency: "daily",
+    provenance: "LIVE",
+    value: meanRain7,
+    observed_at: observedAt,
+    trend: "flat",
+  };
+
+  const wind_anom_indicator: Indicator = {
+    key: "WIND_ANOM",
+    label: `Wind anomaly (7-day, daily · ${stormDays} storm-day${stormDays === 1 ? "" : "s"} / 7)`,
+    unit: "% of 8-yr normal",
+    source: "Open-Meteo archive (ERA5-derived)",
+    update_frequency: "daily",
+    provenance: "LIVE",
+    value: meanWind7,
+    observed_at: observedAt,
+    trend: "flat",
+  };
+
   // Per-province Water Security rows from the rainfall anomaly. Bands mirror
   // RAINFALL_ANOM in risk_thresholds.json (inverted: more negative = worse).
   function classifyRain(pct: number): SectorRisk["level"] {
@@ -216,7 +266,10 @@ export async function fetchOpenMeteo(focusCodes: string[]): Promise<OpenMeteoRes
   return {
     rainfall_indicator,
     temp_indicator,
+    rainfall_daily_indicator,
+    wind_anom_indicator,
+    storm_days: stormDays,
     sector_rows,
-    note: `Open-Meteo: rainfall ${meanRain}% of normal, temp +${meanTemp}°C (mean of ${results.length} provinces)`,
+    note: `Open-Meteo: rainfall ${meanRain}% of normal, temp +${meanTemp}°C, 7d rain ${meanRain7}% / wind ${meanWind7}% / ${stormDays} storm-days (mean of ${results.length} provinces)`,
   };
 }
