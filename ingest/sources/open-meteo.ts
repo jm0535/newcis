@@ -145,7 +145,7 @@ async function fetchProvince(p: (typeof POINTS)[number]): Promise<ProvinceAnomal
 
   return {
     code: p.code,
-    rainfall_anom_pct: normalPrecip > 0 ? Math.round(((recentPrecip - normalPrecip) / normalPrecip) * 1000) / 10 : 0,
+    rainfall_anom_pct: anomalyPct(recentPrecip, normalPrecip),
     temp_anom_c: Math.round((recentTmax - normalTmax) * 10) / 10,
   };
 }
