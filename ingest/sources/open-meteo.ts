@@ -88,6 +88,32 @@ function mean(xs: number[]): number {
   return xs.length ? xs.reduce((s, v) => s + v, 0) / xs.length : 0;
 }
 
+// Storm-day cutoff: a day counts as a "storm day" when any focus-province
+// daily-max 10 m wind reaches this speed. 10.8 m/s = Beaufort 6 ("strong
+// breeze"). A single explainable absolute threshold; the authoritative value
+// lives in risk_thresholds.json (WIND_STORM_DAY_MS) and is passed in by the
+// orchestrator — this constant is the fallback default for tests and direct use.
+export const STORM_DAY_MS = 10.8;
+
+// Anomaly as a percentage of the long-term normal, rounded to one decimal.
+// Guards divide-by-zero (a zero normal — e.g. a desert window — yields 0).
+export function anomalyPct(recent: number, normal: number): number {
+  if (normal <= 0) return 0;
+  return Math.round(((recent - normal) / normal) * 1000) / 10;
+}
+
+// Count days in the recent window where AT LEAST ONE focus province's daily-max
+// wind reached the cutoff. Input is [day][province] of daily-max wind (m/s);
+// nulls (missing) are treated as below-cutoff.
+export function countStormDays(
+  perDayMaxByProvince: (number | null)[][],
+  cutoff: number,
+): number {
+  return perDayMaxByProvince.filter((day) =>
+    day.some((w) => w !== null && w >= cutoff),
+  ).length;
+}
+
 interface ProvinceAnomaly {
   code: string;
   rainfall_anom_pct: number;
