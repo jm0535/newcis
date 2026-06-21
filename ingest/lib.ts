@@ -275,6 +275,21 @@ export async function runIngest(): Promise<LastRun> {
       liveIndicators.push(tempInd);
       history.push({ key: tempInd.key, value: tempInd.value, observed_at: tempInd.observed_at });
     }
+    // Daily watch indicators (RAINFALL_DAILY, WIND_ANOM): additive, promoted
+    // every cycle Open-Meteo succeeds — NOT gated on a primary feed. They sit
+    // in the risk engine's NON_ALERT_KEYS so they never raise the national alert.
+    const rainDaily = openMeteoRes.value.rainfall_daily_indicator;
+    if (rainDaily.value !== null) {
+      rainDaily.trend = computeTrend(rainDaily.key, rainDaily.value, history, 0.05, 0.05, rainDaily.observed_at);
+      liveIndicators.push(rainDaily);
+      history.push({ key: rainDaily.key, value: rainDaily.value, observed_at: rainDaily.observed_at });
+    }
+    const windAnom = openMeteoRes.value.wind_anom_indicator;
+    if (windAnom.value !== null) {
+      windAnom.trend = computeTrend(windAnom.key, windAnom.value, history, 0.05, 0.05, windAnom.observed_at);
+      liveIndicators.push(windAnom);
+      history.push({ key: windAnom.key, value: windAnom.value, observed_at: windAnom.observed_at });
+    }
   }
 
   // Backfill last-good: any indicator the previous cycle had but this cycle
@@ -341,6 +356,25 @@ export async function runIngest(): Promise<LastRun> {
   // Open-Meteo Water Security rows only when HDX rainfall is absent (backstop).
   if (openMeteoRes.ok && openMeteoRes.value && !(rainfallRes.ok && rainfallRes.value)) {
     upstreamRows.push(...openMeteoRes.value.sector_rows);
+  }
+  // Storm-day Disaster & Hazard rows: emitted whenever the 7-day window saw any
+  // storm-force day, independent of the rainfall backstop gate above. Per focus
+  // province so the map's Disaster cell escalates with the storm tempo.
+  if (openMeteoRes.ok && openMeteoRes.value && openMeteoRes.value.storm_days > 0) {
+    const sd = openMeteoRes.value.storm_days;
+    const level: SectorRisk["level"] = sd >= 5 ? "high" : sd >= 3 ? "med" : "low";
+    for (const code of FOCUS_CODES) {
+      upstreamRows.push({
+        province_code: code,
+        sector: "Disaster & Hazard",
+        level,
+        score: Math.min(1, sd / 7),
+        trend: "flat",
+        provenance: "LIVE",
+        as_of: new Date().toISOString(),
+        data_source: `Open-Meteo · ${sd} storm-day${sd === 1 ? "" : "s"} / 7 (≥10.8 m/s)`,
+      });
+    }
   }
 
   // When two upstream sources target the same (province, sector) cell, collapse
