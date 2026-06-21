@@ -27,7 +27,7 @@ import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
 import { fetchGvpVolcanoes } from "./sources/gvp-volcanoes";
 import { loadHazards } from "./sources/hazards-csv";
-import { fetchOpenMeteo } from "./sources/open-meteo";
+import { fetchOpenMeteo, STORM_DAY_MS } from "./sources/open-meteo";
 import { run } from "./sources/run";
 import {
   readJson,
@@ -64,6 +64,12 @@ export async function runIngest(): Promise<LastRun> {
   const startedAt = new Date().toISOString();
 
   const appId = process.env.HDX_APP_ID;
+
+  // Thresholds drive the risk engine later, but the storm-day cutoff is needed
+  // up front to parameterise the Open-Meteo pull (config, not a hardcoded const).
+  const thresholds = await readJson<RiskThreshold[]>("risk_thresholds.json", []);
+  const stormDayCutoffMs =
+    thresholds.find((t) => t.metric === "WIND_STORM_DAY_MS")?.green_max ?? STORM_DAY_MS;
 
   const oniRes = await run("noaa_oni", fetchOni);
   // NOAA CPC ENSO precursors — keyless monthly grids, always run. SOI is the
@@ -123,7 +129,7 @@ export async function runIngest(): Promise<LastRun> {
   const eonetRes = await run("nasa_eonet", () =>
     fetchNasaEonet(FOCUS_CODES, provincePolygons, provinceReps),
   );
-  const openMeteoRes = await run("open_meteo", () => fetchOpenMeteo(FOCUS_CODES));
+  const openMeteoRes = await run("open_meteo", () => fetchOpenMeteo(FOCUS_CODES, stormDayCutoffMs));
 
   const history = await readJson<HistoricalReading[]>("readings_history.json", []);
   const existingSectorRisk = await readJson<SectorRisk[]>("sector_risk.json", []);
@@ -398,7 +404,7 @@ export async function runIngest(): Promise<LastRun> {
   //    combining national indicators with any matching upstream row. Seed rows
   //    (data/sector_risk_seed.json) feed in for gap sectors with no live driver
   //    — the engine sees them and only overrides when it has a stronger signal.
-  const thresholds = await readJson<RiskThreshold[]>("risk_thresholds.json", []);
+  //    (thresholds loaded up front to parameterise the Open-Meteo storm cutoff.)
   const seedRows = await readJson<SectorRisk[]>("sector_risk_seed.json", []);
   const seedByKey = new Map(seedRows.map((r) => [`${r.province_code}::${r.sector}`, r]));
   const upstreamByKey = new Map(mergedUpstream.map((r) => [`${r.province_code}::${r.sector}`, r]));

@@ -114,8 +114,9 @@ function buildIndicator(
 // Storm-day cutoff: a day counts as a "storm day" when any focus-province
 // daily-max 10 m wind reaches this speed. 10.8 m/s = Beaufort 6 ("strong
 // breeze"). A single explainable absolute threshold; the authoritative value
-// lives in risk_thresholds.json (WIND_STORM_DAY_MS) and is passed in by the
-// orchestrator — this constant is the fallback default for tests and direct use.
+// lives in risk_thresholds.json (WIND_STORM_DAY_MS) and the orchestrator passes
+// it to fetchOpenMeteo — this constant is the fallback default for tests and
+// direct use when no cutoff is supplied.
 export const STORM_DAY_MS = 10.8;
 
 // Anomaly as a percentage of the long-term normal, rounded to one decimal.
@@ -202,7 +203,10 @@ export interface OpenMeteoResult {
   note: string;
 }
 
-export async function fetchOpenMeteo(focusCodes: string[]): Promise<OpenMeteoResult> {
+export async function fetchOpenMeteo(
+  focusCodes: string[],
+  stormDayCutoffMs: number = STORM_DAY_MS,
+): Promise<OpenMeteoResult> {
   const points = POINTS.filter((p) => focusCodes.includes(p.code));
   const results: ProvinceAnomaly[] = [];
   for (const point of points) {
@@ -237,7 +241,7 @@ export async function fetchOpenMeteo(focusCodes: string[]): Promise<OpenMeteoRes
   const byDay: (number | null)[][] = Array.from({ length: dayCount }, (_, d) =>
     results.map((r) => r.windDailyMax[d] ?? null),
   );
-  const stormDays = countStormDays(byDay, STORM_DAY_MS);
+  const stormDays = countStormDays(byDay, stormDayCutoffMs);
 
   const rainfall_daily_indicator = buildIndicator(
     "RAINFALL_DAILY",
@@ -250,7 +254,7 @@ export async function fetchOpenMeteo(focusCodes: string[]): Promise<OpenMeteoRes
   const wind_anom_indicator = buildIndicator(
     "WIND_ANOM",
     `Wind anomaly (7-day, daily · ${stormDays} storm-day${stormDays === 1 ? "" : "s"} / 7)`,
-    "% of 8-yr normal",
+    "% above 8-yr normal",
     meanWind7,
     observedAt,
   );
