@@ -89,6 +89,28 @@ function mean(xs: number[]): number {
   return xs.length ? xs.reduce((s, v) => s + v, 0) / xs.length : 0;
 }
 
+// Build an Open-Meteo LIVE indicator. All four Open-Meteo indicators share the
+// same source/cadence/provenance/timestamp/trend; only key/label/unit/value vary.
+function buildIndicator(
+  key: string,
+  label: string,
+  unit: string,
+  value: number,
+  observedAt: string,
+): Indicator {
+  return {
+    key,
+    label,
+    unit,
+    source: "Open-Meteo archive (ERA5-derived)",
+    update_frequency: "daily",
+    provenance: "LIVE",
+    value,
+    observed_at: observedAt,
+    trend: "flat",
+  };
+}
+
 // Storm-day cutoff: a day counts as a "storm day" when any focus-province
 // daily-max 10 m wind reaches this speed. 10.8 m/s = Beaufort 6 ("strong
 // breeze"). A single explainable absolute threshold; the authoritative value
@@ -191,57 +213,41 @@ export async function fetchOpenMeteo(focusCodes: string[]): Promise<OpenMeteoRes
   const meanTemp = Math.round((results.reduce((s, r) => s + r.temp_anom_c, 0) / results.length) * 10) / 10;
   const observedAt = new Date().toISOString();
 
-  const rainfall_indicator: Indicator = {
-    key: "RAINFALL_ANOM",
-    label: "Rainfall anomaly (focus provinces, 30-day)",
-    unit: "% of 8-yr normal",
-    source: "Open-Meteo archive (ERA5-derived)",
-    update_frequency: "daily",
-    provenance: "LIVE",
-    value: meanRain,
-    observed_at: observedAt,
-    trend: "flat",
-  };
+  const rainfall_indicator = buildIndicator(
+    "RAINFALL_ANOM",
+    "Rainfall anomaly (focus provinces, 30-day)",
+    "% of 8-yr normal",
+    meanRain,
+    observedAt,
+  );
 
-  const temp_indicator: Indicator = {
-    key: "TEMP_ANOM",
-    label: "Temperature anomaly (focus provinces, 30-day Tmax)",
-    unit: "°C vs 8-yr normal",
-    source: "Open-Meteo archive (ERA5-derived)",
-    update_frequency: "daily",
-    provenance: "LIVE",
-    value: meanTemp,
-    observed_at: observedAt,
-    trend: "flat",
-  };
+  const temp_indicator = buildIndicator(
+    "TEMP_ANOM",
+    "Temperature anomaly (focus provinces, 30-day Tmax)",
+    "°C vs 8-yr normal",
+    meanTemp,
+    observedAt,
+  );
 
   const meanRain7 = Math.round((results.reduce((s, r) => s + r.rain7_anom_pct, 0) / results.length) * 10) / 10;
   const meanWind7 = Math.round((results.reduce((s, r) => s + r.wind7_anom_pct, 0) / results.length) * 10) / 10;
   const stormDays = countStormDays(results.map((r) => r.windDailyMax), STORM_DAY_MS);
 
-  const rainfall_daily_indicator: Indicator = {
-    key: "RAINFALL_DAILY",
-    label: `Rainfall (7-day, daily · ${results.length} of ${POINTS.length} provinces)`,
-    unit: "% of 8-yr normal",
-    source: "Open-Meteo archive (ERA5-derived)",
-    update_frequency: "daily",
-    provenance: "LIVE",
-    value: meanRain7,
-    observed_at: observedAt,
-    trend: "flat",
-  };
+  const rainfall_daily_indicator = buildIndicator(
+    "RAINFALL_DAILY",
+    `Rainfall (7-day, daily · ${results.length} of ${POINTS.length} provinces)`,
+    "% of 8-yr normal",
+    meanRain7,
+    observedAt,
+  );
 
-  const wind_anom_indicator: Indicator = {
-    key: "WIND_ANOM",
-    label: `Wind anomaly (7-day, daily · ${stormDays} storm-day${stormDays === 1 ? "" : "s"} / 7)`,
-    unit: "% of 8-yr normal",
-    source: "Open-Meteo archive (ERA5-derived)",
-    update_frequency: "daily",
-    provenance: "LIVE",
-    value: meanWind7,
-    observed_at: observedAt,
-    trend: "flat",
-  };
+  const wind_anom_indicator = buildIndicator(
+    "WIND_ANOM",
+    `Wind anomaly (7-day, daily · ${stormDays} storm-day${stormDays === 1 ? "" : "s"} / 7)`,
+    "% of 8-yr normal",
+    meanWind7,
+    observedAt,
+  );
 
   // Per-province Water Security rows from the rainfall anomaly. Bands mirror
   // RAINFALL_ANOM in risk_thresholds.json (inverted: more negative = worse).
