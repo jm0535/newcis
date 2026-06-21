@@ -25,17 +25,17 @@ import { fetchOchaFts } from "./sources/ocha-fts";
 import { fetchNasaEonet } from "./sources/nasa-eonet";
 import { fetchUsgsEarthquakes } from "./sources/usgs-earthquakes";
 import { fetchGdacs } from "./sources/gdacs";
-import { fetchGvpVolcanoes, recencyLevel } from "./sources/gvp-volcanoes";
+import { fetchGvpVolcanoes } from "./sources/gvp-volcanoes";
 import { loadHazards } from "./sources/hazards-csv";
 import { fetchOpenMeteo } from "./sources/open-meteo";
 import { run } from "./sources/run";
 import {
   readJson,
   writeJson,
-  writePublicJson,
   loadProvincePopulations,
   loadProvincePolygons,
 } from "./io";
+import { writeForecastBundle, writeVolcanoes, writeHazards, writeLastRun } from "./writers";
 import type {
   Indicator,
   HistoricalReading,
@@ -46,7 +46,6 @@ import type {
 } from "../src/lib/types";
 import { FOCUS_CODES, FOCUS_PROVINCES } from "../src/lib/focus-provinces";
 import { rollUpNational, scoreSector, computeTrend as engineTrend } from "../src/lib/risk-engine";
-import { deriveOutlook } from "../src/lib/outlook";
 
 const SECTORS: Sector[] = [
   "Food Security",
@@ -466,139 +465,13 @@ export async function runIngest(): Promise<LastRun> {
   await writeJson("sector_risk.json", mergedSectorRisk);
   await writeJson("national_status.json", nationalStatus);
 
-  // Forecast bundle for the /forecast page: the NMME ensemble plume (per-member
-  // projected ONI + mean/min/max + target window) plus the precursor-alignment
-  // outlook derived from the present-state ENSO signals. Outlook is a pure read
-  // over liveIndicators — relayed model + diagnostic alignment, never a NEWCIS
-  // forecast. Written whether or not the model fetch succeeded: on failure the
-  // page degrades to the precursor panel alone (LIVE) and flags the missing model.
-  const outlook = deriveOutlook(
-    liveIndicators,
-    thresholds,
-    nmmeRes.ok && nmmeRes.value ? nmmeRes.value.target_window : null,
-  );
-  await writeJson("forecast.json", {
-    generated_at: new Date().toISOString(),
-    model: nmmeRes.ok && nmmeRes.value
-      ? {
-          provenance: "LIVE" as const,
-          source: nmmeRes.value.indicator.source,
-          init_month: nmmeRes.value.init_month,
-          target_window: nmmeRes.value.target_window,
-          ensemble_mean: nmmeRes.value.ensemble_mean,
-          ensemble_min: nmmeRes.value.ensemble_min,
-          ensemble_max: nmmeRes.value.ensemble_max,
-          members: nmmeRes.value.members,
-        }
-      : null,
-    outlook,
+  await writeForecastBundle(liveIndicators, thresholds, nmmeRes);
+  await writeVolcanoes(gvpRes);
+  await writeHazards(await loadHazards());
+
+  return writeLastRun(startedAt, {
+    oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes,
+    asiRes, acledRes, whoRes, wbRes, faostatRes, ftsRes, usgsRes, gdacsRes, gvpRes,
+    eonetRes, openMeteoRes,
   });
-
-  // Persist the volcanoes that actually erupted in the MODERN record (last 100
-  // years) at their real coordinates, for the map to render — not the one-worst-
-  // per-province that drives the matrix cell. We deliberately EXCLUDE volcanoes
-  // with no dated eruption and centuries-old / Pleistocene cones: an undated or
-  // 1580 eruption is not a current hazard and only clutters the operating picture.
-  // This still shows every recent eruption — Manam/Langila/Ulawun/Bagana (active),
-  // Rabaul 2014, Karkar 1979 — and is why Madang shows Manam AND Karkar, with a
-  // marker on Umboi Island, not a province centroid. Written to /public so the
-  // client map can fetch it like provinces.geojson.
-  const VOLCANO_RECENCY_YEARS = 100; // modern-record window for map markers
-  const currentYear = new Date().getUTCFullYear();
-  const volcanoFeatures = (gvpRes.ok && gvpRes.value ? gvpRes.value.volcanoes : [])
-    .filter(
-      (v) =>
-        v.lastEruptionYear !== null && currentYear - v.lastEruptionYear <= VOLCANO_RECENCY_YEARS,
-    )
-    .map((v) => ({
-      name: v.name,
-      type: v.type,
-      last_eruption_year: v.lastEruptionYear,
-      lon: v.lon,
-      lat: v.lat,
-      province_code: v.provinceCode,
-      attribution: v.attribution,
-      level: recencyLevel(v.lastEruptionYear, currentYear),
-    }));
-  await writePublicJson("volcanoes.json", {
-    source: "Smithsonian Global Volcanism Program (GVP) · VOTW Holocene",
-    recency_window_years: VOLCANO_RECENCY_YEARS,
-    note: `volcanoes with a dated eruption within the last ${VOLCANO_RECENCY_YEARS} years`,
-    generated_at: new Date().toISOString(),
-    count: volcanoFeatures.length,
-    volcanoes: volcanoFeatures,
-  });
-
-  // Curated historical-hazard layers (volcanoes / tsunamis / major disasters)
-  // parsed + geocoded from the hand-compiled CSVs in /data. These are toggleable
-  // reference layers on the map — provenance REFERENCE, never LIVE. Written to
-  // /public so the client map can fetch them like the other map artefacts.
-  const hazards = await loadHazards();
-  await writePublicJson("hazards.json", {
-    source: "NEWCIS curated PNG hazard record (volcanoes, tsunamis, major disasters)",
-    provenance: "REFERENCE",
-    generated_at: new Date().toISOString(),
-    by_kind: hazards.by_kind,
-    count: hazards.events.length,
-    events: hazards.events,
-  });
-
-  const lastRun: LastRun = {
-    started_at: startedAt,
-    finished_at: new Date().toISOString(),
-    status: [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, whoRes, wbRes, faostatRes, ftsRes, usgsRes, gdacsRes, gvpRes, eonetRes, openMeteoRes].every((r) => r.ok)
-      ? "ok"
-      : [oniRes, soiRes, tradeWindRes, nmmeRes, rainfallRes, foodRes, soilRes, ndviRes, asiRes, acledRes, whoRes, wbRes, faostatRes, ftsRes, usgsRes, gdacsRes, gvpRes, eonetRes, openMeteoRes].some((r) => r.ok)
-        ? "partial"
-        : "failed",
-    sources_ok: {
-      noaa_oni: oniRes.ok,
-      noaa_soi: soiRes.ok,
-      noaa_trade_wind: tradeWindRes.ok,
-      ccsr_nmme: nmmeRes.ok,
-      hdx_rainfall: rainfallRes.ok,
-      hdx_food_security: foodRes.ok,
-      nasa_power_soil: soilRes.ok,
-      neo_ndvi: ndviRes.ok,
-      fao_asi: asiRes.ok,
-      hdx_acled: acledRes.ok,
-      who_gho: whoRes.ok,
-      world_bank: wbRes.ok,
-      faostat: faostatRes.ok,
-      ocha_fts: ftsRes.ok,
-      usgs_earthquakes: usgsRes.ok,
-      gdacs: gdacsRes.ok,
-      gvp_volcanoes: gvpRes.ok,
-      nasa_eonet: eonetRes.ok,
-      open_meteo: openMeteoRes.ok,
-    },
-    notes: [
-      oniRes.ok ? `ONI ${oniRes.value?.indicator.value} (${oniRes.ms}ms)` : `ONI failed: ${oniRes.error}`,
-      soiRes.ok ? `SOI ${soiRes.value?.indicator.value} (${soiRes.ms}ms)` : `SOI failed: ${soiRes.error}`,
-      tradeWindRes.ok ? `Trade-wind ${tradeWindRes.value?.indicator.value} (${tradeWindRes.ms}ms)` : `Trade-wind failed: ${tradeWindRes.error}`,
-      nmmeRes.ok ? `NMME projected ONI ${nmmeRes.value?.ensemble_mean} (${nmmeRes.value?.target_window}, ${nmmeRes.value?.members.length} members, ${nmmeRes.ms}ms)` : `NMME failed: ${nmmeRes.error}`,
-      rainfallRes.ok
-        ? `Rainfall mean anom ${rainfallRes.value?.indicator.value}% (${rainfallRes.value?.reporting_count}/${rainfallRes.value?.focus_count} provinces reporting, ${rainfallRes.value?.raw_count} raw rows, ${rainfallRes.ms}ms)`
-        : `Rainfall failed: ${rainfallRes.error}`,
-      foodRes.ok ? `Food security: ${foodRes.value?.note}` : `Food security failed: ${foodRes.error}`,
-      soilRes.ok
-        ? `Soil moisture median ${soilRes.value?.indicator.value}th pctile (${soilRes.value?.per_province.length} provinces, ${soilRes.ms}ms)`
-        : `Soil moisture failed: ${soilRes.error}`,
-      ndviRes.ok ? `${ndviRes.value?.note} (${ndviRes.ms}ms)` : `NDVI failed: ${ndviRes.error}`,
-      asiRes.ok ? `${asiRes.value?.note} (${asiRes.ms}ms)` : `FAO ASI failed: ${asiRes.error}`,
-      acledRes.ok ? `ACLED: ${acledRes.value?.note}` : `ACLED failed: ${acledRes.error}`,
-      whoRes.ok ? `WHO GHO: ${whoRes.value?.note} (${whoRes.ms}ms)` : `WHO GHO failed: ${whoRes.error}`,
-      wbRes.ok ? `World Bank: ${wbRes.value?.note} (${wbRes.ms}ms)` : `World Bank failed: ${wbRes.error}`,
-      faostatRes.ok ? `FAOSTAT: ${faostatRes.value?.note} (${faostatRes.ms}ms)` : `FAOSTAT failed: ${faostatRes.error}`,
-      ftsRes.ok ? `OCHA FTS: ${ftsRes.value?.note} (${ftsRes.ms}ms)` : `OCHA FTS failed: ${ftsRes.error}`,
-      usgsRes.ok ? `USGS: ${usgsRes.value?.note} (${usgsRes.ms}ms)` : `USGS failed: ${usgsRes.error}`,
-      gdacsRes.ok ? `GDACS: ${gdacsRes.value?.note} (${gdacsRes.ms}ms)` : `GDACS failed: ${gdacsRes.error}`,
-      gvpRes.ok ? `GVP volcanoes: ${gvpRes.value?.note} (${gvpRes.ms}ms)` : `GVP volcanoes failed: ${gvpRes.error}`,
-      eonetRes.ok ? `NASA EONET: ${eonetRes.value?.note} (${eonetRes.ms}ms)` : `NASA EONET failed: ${eonetRes.error}`,
-      openMeteoRes.ok ? `Open-Meteo: ${openMeteoRes.value?.note} (${openMeteoRes.ms}ms)` : `Open-Meteo failed: ${openMeteoRes.error}`,
-    ].join(" | "),
-  };
-  await writeJson("last_run.json", lastRun);
-
-  return lastRun;
 }
