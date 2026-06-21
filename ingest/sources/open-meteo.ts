@@ -231,7 +231,13 @@ export async function fetchOpenMeteo(focusCodes: string[]): Promise<OpenMeteoRes
 
   const meanRain7 = Math.round((results.reduce((s, r) => s + r.rain7_anom_pct, 0) / results.length) * 10) / 10;
   const meanWind7 = Math.round((results.reduce((s, r) => s + r.wind7_anom_pct, 0) / results.length) * 10) / 10;
-  const stormDays = countStormDays(results.map((r) => r.windDailyMax), STORM_DAY_MS);
+  // results is [province][day]; countStormDays wants [day][province]. Transpose
+  // so a "storm day" counts ACROSS provinces, capping the result at 7.
+  const dayCount = Math.max(0, ...results.map((r) => r.windDailyMax.length));
+  const byDay: (number | null)[][] = Array.from({ length: dayCount }, (_, d) =>
+    results.map((r) => r.windDailyMax[d] ?? null),
+  );
+  const stormDays = countStormDays(byDay, STORM_DAY_MS);
 
   const rainfall_daily_indicator = buildIndicator(
     "RAINFALL_DAILY",

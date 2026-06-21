@@ -35,4 +35,11 @@ describe("countStormDays", () => {
   it("ignores null wind values", () => {
     expect(countStormDays([[null, 12.0], [null, null]], STORM_DAY_MS)).toBe(1);
   });
+  it("caps at the window length, not the province count", () => {
+    // 22 provinces, 7-day window: a per-[day][province] grid can never exceed 7.
+    const byDay = Array.from({ length: 7 }, () =>
+      Array.from({ length: 22 }, () => 12.0),
+    );
+    expect(countStormDays(byDay, STORM_DAY_MS)).toBe(7);
+  });
 });
